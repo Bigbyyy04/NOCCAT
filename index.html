@@ -122,7 +122,7 @@
             color: #fff;
         }
 
-        /* --- README / SYSTEM MANUAL STYLES --- */
+        /* --- COLLAPSIBLE WRAPPERS --- */
         .readme-wrapper {
             max-height: 0;
             overflow: hidden;
@@ -130,7 +130,7 @@
         }
 
         .readme-wrapper.expanded {
-            max-height: 800px;
+            max-height: 1500px;
             padding-top: 15px;
             margin-top: 10px;
             border-top: 1px dashed rgba(188, 140, 255, 0.4);
@@ -152,6 +152,8 @@
         }
 
         .readme-content p { margin: 0 0 10px 0; }
+        .readme-content ul { margin: 5px 0 15px 0; padding-left: 20px; }
+        .readme-content li { margin-bottom: 6px; }
 
         .sample-code {
             background: var(--code-bg);
@@ -194,6 +196,32 @@
         textarea::-webkit-scrollbar-track { background: var(--code-bg); }
         textarea::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
         textarea::selection { background: rgba(88, 166, 255, 0.3); }
+
+        /* --- MULTI-TENANT DEVICE HUD --- */
+        .device-hud {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--text-main);
+            font-family: "Courier New", Courier, monospace;
+            opacity: 0;
+            transition: opacity 0.3s;
+            max-width: 500px;
+        }
+        .device-hud.visible { opacity: 1; }
+        .host-tag {
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid rgba(88, 166, 255, 0.3);
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+        }
+        .host-tag strong { color: #fff; margin-right: 5px; }
+        .ip-highlight { font-weight: bold; text-shadow: 0 0 5px rgba(57, 255, 20, 0.4); }
 
         /* --- UI CONTROLS --- */
         .controls-row { display: flex; gap: 12px; margin-bottom: 20px; margin-top: 15px; align-items: flex-end;}
@@ -385,6 +413,29 @@
         .code-content { padding: 10px; color: #79c0ff; white-space: pre; overflow-x: auto; flex-grow: 1; }
         
         #statusMsg { font-size: 11px; color: var(--accent-blue); margin-top: 5px; display: none; }
+        
+        /* BOTTOM BUTTONS & MANIFEST/DB STYLES */
+        .bottom-actions { text-align: center; margin-top: 30px; margin-bottom: 20px; display: flex; justify-content: center; gap: 15px; }
+        
+        .manifest-box {
+            background: var(--code-bg);
+            border: 1px dashed var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .db-box {
+            background: var(--code-bg);
+            border: 1px solid var(--accent-green);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .db-box textarea { height: 150px; margin-bottom: 10px; }
+        .db-controls { display: flex; justify-content: space-between; align-items: center; }
+        .db-status { font-size: 11px; color: var(--accent-green); font-family: monospace; }
     </style>
 </head>
 <body>
@@ -393,7 +444,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v2.5 [Config Automation Tool]</span>
+        <span class="version-tag">// v3.1 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -409,7 +460,7 @@
                 <p>To provide the engine with the current interface states, you must paste the raw terminal output of the <code>show running-config interface</code> command from your access switch.</p>
                 
                 <p><strong>REQUIRED SAMPLE FORMAT:</strong></p>
-                <div class="sample-code"><span style="color: #ff9d00;">PH-PH-ACC000#</span>sh running-config interface Gi1/0/1
+                <div class="sample-code"><span style="color: #ff9d00;">PH-NOC-ACC0101#</span>sh running-config interface Gi1/0/1
 Building configuration...
 
 Current configuration : 157 bytes
@@ -433,7 +484,10 @@ end</div>
     <div class="form-group input-section">
         <div class="header-row">
             <label>01 // Config Input</label>
-            <button class="expand-btn" id="expandBtn" onclick="toggleExpand()">[ EXPAND ]</button>
+            <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-grow: 1;">
+                <div id="deviceHud" class="device-hud">Waiting for target...</div>
+                <button class="expand-btn" id="expandBtn" style="margin-left: 10px;" onclick="toggleExpand()">[ EXPAND ]</button>
+            </div>
         </div>
         <textarea id="configInput" placeholder="Waiting for logs..." spellcheck="false" oninput="checkDynamicWarnings()"></textarea>
     </div>
@@ -501,9 +555,146 @@ end</div>
         <div id="rollbackLines" class="line-numbers" style="color:#6e3636"></div>
         <div id="rollbackCode" class="code-content" style="color: #ffa198;">-- system_idle --</div>
     </div>
+    
+    <div class="bottom-actions">
+        <button class="expand-btn" id="manifestBtn" onclick="toggleWrapper('manifestWrapper', 'manifestBtn', 'SYSTEM_MANIFEST')">[ VIEW_SYSTEM_MANIFEST ]</button>
+        <button class="expand-btn" id="dbBtn" style="color: var(--accent-green); border-color: var(--border-color);" onclick="toggleWrapper('dbWrapper', 'dbBtn', 'LOCAL_DATABASE')">[ LOCAL_DATABASE ]</button>
+    </div>
+    
+    <div id="manifestWrapper" class="readme-wrapper">
+        <div class="readme-content manifest-box">
+            <h3 style="margin-top: 0;">🧠 1. The Core Idempotent Engine</h3>
+            <ul>
+                <li><strong>Smart State Parsing:</strong> Reads current running-config, compares to target settings, and <em>only</em> generates commands for exact missing or differing lines.</li>
+                <li><strong>Automated Rollback Generation:</strong> Builds a reverse script to perfectly undo changes and return ports to their original state.</li>
+                <li><strong>Interface Chunking:</strong> Groups targets into <code>interface range</code> commands (up to 5 ports) to keep scripts clean.</li>
+                <li><strong>Surgical Command Stripping:</strong> Automatically injects exact <code>no</code> commands to scrub old protocols before applying new ones.</li>
+            </ul>
+
+            <h3>🛡️ 2. Advanced Security & Protocol Management</h3>
+            <ul>
+                <li><strong>VLAN Assignment:</strong> Updates access VLANs only if the target differs.</li>
+                <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates (<code>dot1x pae authenticator</code> & <code>authentication port-control auto</code>).</li>
+                <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates (<code>switchport port-security</code> & <code>...mac-address sticky</code>).</li>
+                <li><strong>Universal RESET:</strong> Intelligently detects existing security and wipes it clean.</li>
+                <li><strong>Smart Port Bouncing:</strong> Calculates if a change requires <code>shut</code> / <code>no shut</code> to clear violation states, handling it in both scripts.</li>
+            </ul>
+
+            <h3>🚨 3. Real-Time Dynamic Warning Scanner</h3>
+            <ul>
+                <li><strong style="color: var(--accent-red);">Critical Warning (Red):</strong> Detects Trunk/Uplink ports (missing <code>switchport mode access</code>).</li>
+                <li><strong style="color: var(--hl-magenta);">Dual-Security Conflict (Magenta):</strong> Detects ports infected with both 802.1X and Sticky MAC. Blocks "RESET" to force explicit protocol cleanup.</li>
+                <li><strong style="color: var(--hl-yellow);">Fragmented Config (Yellow):</strong> Detects partial security templates (e.g., missing base commands) and prompts for repair.</li>
+                <li><strong style="color: var(--hl-cyan);">Unsecured Port Notice (Cyan):</strong> Flags naked ports with zero port security configured.</li>
+                <li><strong style="color: var(--hl-orange);">Shutdown Notice (Orange):</strong> Lists currently <code>shutdown</code> ports to prevent troubleshooting confusion.</li>
+            </ul>
+
+            <h3>⚡ 4. Edge & State Controls</h3>
+            <ul>
+                <li><strong>Independent EDGE Evaluation:</strong> Checks <code>portfast</code> and <code>bpduguard enable</code> separately. Only pushes missing lines.</li>
+                <li><strong>UNSHUT Override:</strong> Injects a <code>no shut</code> command to wake up dead ports. Rollback intelligently reverts them to <code>shut</code>.</li>
+            </ul>
+
+            <h3 style="margin-bottom: 0;">🎨 5. Zero-Trust Local Storage DB</h3>
+            <ul style="margin-bottom: 0;">
+                <li><strong>Local Browser Cache:</strong> Safely stores Switch Hostnames and IP addresses strictly in your browser. Data never touches the internet.</li>
+                <li><strong>Auto-Cross Reference:</strong> Automatically extracts hostnames from pasted terminal prompts and projects the target IP into the HUD.</li>
+                <li><strong>Regex Smart Parser:</strong> Allows pasting raw data direct from Excel or IPAM tools regardless of column order.</li>
+                <li><strong>Multi-Tenant HUD:</strong> Dynamically scans logs and generates individual tracking tags for every unique switch detected in the payload.</li>
+                <li><strong>Auto-Merge Capability:</strong> Automatically appends new pastes to your existing master list without deleting your previous hosts.</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="dbWrapper" class="readme-wrapper">
+        <div class="db-box">
+            <label style="color: var(--accent-green); margin-bottom: 10px;">> ZERO-TRUST_LOCAL_DB</label>
+            <p style="font-size: 11.5px; color: var(--text-main); opacity: 0.8; margin-top: 0;">Any new data pasted here is <strong>MERGED</strong> into your existing local database. To remove old switches, click 'Clear Memory' and paste a fresh master list.</p>
+            <textarea id="dbInput" placeholder="-- Formats Accepted --&#10;PH-NOC-ACC0101, 10.20.30.40&#10;PH-NOC-AS0202   10.30.40.50   Access Switch" spellcheck="false" style="border-color: rgba(35, 134, 54, 0.5);"></textarea>
+            <div class="db-controls">
+                <span class="db-status" id="dbStatus">STATUS: DB_IDLE</span>
+                <div style="display: flex; gap: 10px;">
+                    <button class="clear-btn" style="padding: 4px 15px;" onclick="clearDB()">Clear Memory</button>
+                    <button class="cyber-btn" style="padding: 4px 15px;" onclick="saveDB()">Merge & Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
+    // --- LOCAL DATABASE LOGIC ---
+    let switchDB = {};
+
+    window.onload = function() {
+        const savedDB = localStorage.getItem('noccat_db');
+        if (savedDB) {
+            parseToDB(savedDB);
+            document.getElementById('dbInput').value = generateDBString();
+            document.getElementById('dbStatus').innerText = `STATUS: LOADED_${Object.keys(switchDB).length}_HOSTS`;
+        }
+    };
+
+    function parseToDB(text) {
+        const lines = text.split('\n');
+        const ipRegex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/;
+
+        lines.forEach(line => {
+            let cleanLine = line.trim();
+            if (!cleanLine) return;
+
+            let ipMatch = cleanLine.match(ipRegex);
+            if (!ipMatch) return; 
+
+            let hostMatch = cleanLine.split(/[,\t\s]+/); 
+            if (hostMatch && hostMatch.length > 0) {
+                let host = hostMatch[0].toLowerCase();
+                switchDB[host] = ipMatch[0]; // Adds or updates existing
+            }
+        });
+    }
+
+    function generateDBString() {
+        let mergedDBArray = [];
+        for (let host in switchDB) {
+            mergedDBArray.push(`${host.toUpperCase()}, ${switchDB[host]}`);
+        }
+        mergedDBArray.sort(); // Keeps the list looking neat
+        return mergedDBArray.join('\n');
+    }
+
+    function saveDB() {
+        const dbText = document.getElementById('dbInput').value;
+        
+        // Merge pasted text into the global switchDB object
+        parseToDB(dbText);
+        
+        // Regenerate the clean, sorted string
+        const mergedString = generateDBString();
+        
+        // Save to localStorage and update the textarea UI
+        localStorage.setItem('noccat_db', mergedString);
+        document.getElementById('dbInput').value = mergedString;
+
+        const count = Object.keys(switchDB).length;
+        const statusElem = document.getElementById('dbStatus');
+        statusElem.innerText = `STATUS: MERGED_&_SAVED_${count}_HOSTS`;
+        statusElem.style.color = 'var(--neon-green)';
+        setTimeout(() => { statusElem.style.color = 'var(--accent-green)'; }, 2000);
+        checkDynamicWarnings(); 
+    }
+
+    function clearDB() {
+        if(confirm("Are you sure you want to wipe the Local Browser Database?")) {
+            localStorage.removeItem('noccat_db');
+            document.getElementById('dbInput').value = "";
+            switchDB = {};
+            document.getElementById('dbStatus').innerText = "STATUS: MEMORY_WIPED";
+            document.getElementById('deviceHud').classList.remove('visible');
+        }
+    }
+
     // --- UI LOGIC ---
     function toggleReadme() {
         const wrapper = document.getElementById('readmeWrapper');
@@ -517,6 +708,22 @@ end</div>
         const btn = document.getElementById('expandBtn');
         textarea.classList.toggle('expanded');
         btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]";
+    }
+    
+    function toggleWrapper(wrapperId, btnId, name) {
+        const wrapper = document.getElementById(wrapperId);
+        const btn = document.getElementById(btnId);
+        
+        if (wrapperId === 'manifestWrapper') {
+            document.getElementById('dbWrapper').classList.remove('expanded');
+            document.getElementById('dbBtn').innerText = `[ LOCAL_DATABASE ]`;
+        } else {
+            document.getElementById('manifestWrapper').classList.remove('expanded');
+            document.getElementById('manifestBtn').innerText = `[ VIEW_SYSTEM_MANIFEST ]`;
+        }
+
+        wrapper.classList.toggle('expanded');
+        btn.innerText = wrapper.classList.contains('expanded') ? `[ CLOSE_${name} ]` : `[ ${name.startsWith('VIEW') ? '' : 'VIEW_'}${name} ]`;
     }
 
     function clearAll() {
@@ -533,6 +740,7 @@ end</div>
         
         document.getElementById('statusMsg').style.display = 'none';
         document.getElementById('warningBox').style.display = 'none';
+        document.getElementById('deviceHud').classList.remove('visible');
         
         const textarea = document.getElementById('configInput');
         if (textarea.classList.contains('expanded')) toggleExpand();
@@ -557,14 +765,44 @@ end</div>
         linesElem.innerText = lineNumbers;
     }
 
-    // --- REAL-TIME WARNING SCANNER ---
+    // --- REAL-TIME WARNING & MULTI-HOSTNAME SCANNER ---
     function checkDynamicWarnings() {
         const configText = document.getElementById('configInput').value;
         const warningBox = document.getElementById('warningBox');
+        const deviceHud = document.getElementById('deviceHud');
         
         if (!configText.trim()) {
             warningBox.style.display = 'none';
+            deviceHud.classList.remove('visible');
             return;
+        }
+
+        // Multi-Tenant Hostname Cross-Reference Logic
+        const hostMatches = [...configText.matchAll(/^([A-Za-z0-9\-\_]+)#/gm)];
+        let uniqueHosts = [];
+        
+        hostMatches.forEach(match => {
+            let host = match[1];
+            if (!uniqueHosts.includes(host)) {
+                uniqueHosts.push(host);
+            }
+        });
+
+        if (uniqueHosts.length > 0) {
+            let hudHTML = `<span style="opacity: 0.7; margin-right: 5px;">Target${uniqueHosts.length > 1 ? 's' : ''}:</span>`;
+            
+            let hostTags = uniqueHosts.map(hostName => {
+                const lowerHost = hostName.toLowerCase();
+                let targetIp = switchDB[lowerHost] ? switchDB[lowerHost] : "NOT_IN_DB";
+                let ipColor = targetIp === 'NOT_IN_DB' ? 'var(--hl-orange)' : 'var(--neon-green)';
+                
+                return `<span class="host-tag"><strong>${hostName}</strong> <span class="ip-highlight" style="color: ${ipColor}">${targetIp}</span></span>`;
+            });
+            
+            deviceHud.innerHTML = hudHTML + hostTags.join(' ');
+            deviceHud.classList.add('visible');
+        } else {
+            deviceHud.classList.remove('visible');
         }
 
         let textBlocks = configText.split(/(?=^[ \t]*interface\s|^[ \t]*int\s)/im);
@@ -587,7 +825,6 @@ end</div>
                 let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*(?:\n|$)/i.test(block);
                 if (isShutdown && !shutdownPorts.includes(normalizedIf)) shutdownPorts.push(normalizedIf);
 
-                // Strict Line Parsing for Security
                 let hasStickyMac = /(?:^|\n)[ \t]*switchport port-security mac-address sticky[ \t]*(?:\n|$)/i.test(block);
                 let hasPortSec = /(?:^|\n)[ \t]*switchport port-security[ \t]*(?:\n|$)/i.test(block);
                 let hasDot1xPae = /(?:^|\n)[ \t]*dot1x pae authenticator[ \t]*(?:\n|$)/i.test(block);
