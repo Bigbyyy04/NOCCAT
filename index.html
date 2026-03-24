@@ -17,6 +17,7 @@
             --accent-purple: #bc8cff;
             --accent-red: #f85149;
             --hl-orange: #ff9d00;
+            --hl-magenta: #ff00ff;
             --code-bg: #010409;
         }
 
@@ -334,6 +335,7 @@
 
         .warning-box strong { font-size: 12.5px; letter-spacing: 1px; }
         .notice-section { border-top: 1px solid rgba(255, 157, 0, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
+        .conflict-section { border-top: 1px solid rgba(255, 0, 255, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
 
         /* SCRIPT BOXES */
         .script-header {
@@ -387,7 +389,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v2.0 [Config Automation Tool]</span>
+        <span class="version-tag">// v2.1 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -416,7 +418,7 @@ switchport access vlan <span style="color: #00ffff; font-weight: bold;">100</spa
 end</div>
 
                 <h3>> Safety Failsafe & Notices</h3>
-                <p>If the engine detects a Trunk port or a port missing the explicit <code>switchport mode access</code> command, it will generate a warning to prevent accidental network outages. If it detects a port that is currently <code>shutdown</code>, it will notify you so you can choose to unshut it.</p>
+                <p>If the engine detects a Trunk port, a dead/shutdown port, or a port with conflicting dual security (802.1X + Sticky MAC), it will immediately notify you in the active warning pane.</p>
 
                 <h3>> Target Parameters (02 - 05)</h3>
                 <p>Set your desired Global VLAN, Protocol Mode, Spanning-Tree, and Unshut requirements. The engine will evaluate the pasted logs and output the exact CLI commands needed to reach your target state.</p>
@@ -566,35 +568,52 @@ end</div>
 
         let unsafePorts = [];
         let shutdownPorts = [];
+        let conflictedPorts = [];
 
         textBlocks.forEach(block => {
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
             if (ifMatch) {
                 let normalizedIf = ifMatch[1].replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te');
                 
+                // Unsafe port detection (missing access mode)
                 let isAccessMode = /switchport mode access/i.test(block);
                 if (!isAccessMode && !unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
 
+                // Shutdown port detection
                 let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*(?:\n|$)/i.test(block);
                 if (isShutdown && !shutdownPorts.includes(normalizedIf)) shutdownPorts.push(normalizedIf);
+
+                // Dual Security Conflict Detection (Sticky + Dot1x)
+                let hasSticky = /switchport port-security/i.test(block);
+                let hasDot1x = /(?:dot1x|authentication port-control)/i.test(block);
+                if (hasSticky && hasDot1x && !conflictedPorts.includes(normalizedIf)) conflictedPorts.push(normalizedIf);
             }
         });
 
         let warningHTML = "";
+        let baseHasContent = false;
 
         if (unsafePorts.length > 0) {
-            warningHTML += `<div style="margin-bottom: ${shutdownPorts.length > 0 ? '10px' : '0'};"><strong>////// WARNING: NON-ACCESS PORTS DETECTED //////</strong><br>Missing <code>switchport mode access</code>: <span style="color: #fff; font-weight: bold;">${unsafePorts.join(', ')}</span><br><em>Applying edge configs to trunk/uplink ports can cause outages. Proceed with caution!</em></div>`;
+            warningHTML += `<div style="margin-bottom: ${(shutdownPorts.length > 0 || conflictedPorts.length > 0) ? '10px' : '0'};"><strong>////// WARNING: NON-ACCESS PORTS DETECTED //////</strong><br>Missing <code>switchport mode access</code>: <span style="color: #fff; font-weight: bold;">${unsafePorts.join(', ')}</span><br><em>Applying edge configs to trunk/uplink ports can cause outages. Proceed with caution!</em></div>`;
+            baseHasContent = true;
+        }
+
+        if (conflictedPorts.length > 0) {
+            warningHTML += `<div class="${baseHasContent ? 'conflict-section' : ''}"><strong style="color: var(--hl-magenta); text-shadow: 0 0 5px rgba(255, 0, 255, 0.4);">////// CONFLICT: DUAL SECURITY DETECTED //////</strong><br>Sticky MAC & 802.1X found on: <span style="color: #fff; font-weight: bold;">${conflictedPorts.join(', ')}</span><br><em style="color: var(--text-main);">Note: 802.1X provides dynamic user authentication, while Sticky MAC rigidly locks physical hardware. Combining them causes severe race conditions and port lockouts. Select a Protocol Mode (03) to overwrite and clean up these ports.</em></div>`;
+            baseHasContent = true;
         }
 
         if (shutdownPorts.length > 0) {
-            warningHTML += `<div class="${unsafePorts.length > 0 ? 'notice-section' : ''}"><strong style="color: var(--hl-orange); text-shadow: 0 0 5px rgba(255, 157, 0, 0.4);">////// NOTICE: SHUTDOWN PORTS DETECTED //////</strong><br>Administratively down: <span style="color: #fff; font-weight: bold;">${shutdownPorts.join(', ')}</span><br><em>Toggle '05 // UNSHUT' to explicitly bring them online.</em></div>`;
+            warningHTML += `<div class="${baseHasContent ? 'notice-section' : ''}"><strong style="color: var(--hl-orange); text-shadow: 0 0 5px rgba(255, 157, 0, 0.4);">////// NOTICE: SHUTDOWN PORTS DETECTED //////</strong><br>Administratively down: <span style="color: #fff; font-weight: bold;">${shutdownPorts.join(', ')}</span><br><em style="color: var(--text-main);">Toggle '05 // UNSHUT' to explicitly bring them online.</em></div>`;
         }
 
         if (warningHTML !== "") {
             warningBox.style.display = 'block';
             warningBox.innerHTML = warningHTML;
-            // Force red border if unsafe ports exist, else orange border for just shutdown notices
-            warningBox.style.borderColor = unsafePorts.length > 0 ? 'var(--accent-red)' : 'var(--hl-orange)';
+            // Adaptive border color logic
+            if (unsafePorts.length > 0) warningBox.style.borderColor = 'var(--accent-red)';
+            else if (conflictedPorts.length > 0) warningBox.style.borderColor = 'var(--hl-magenta)';
+            else warningBox.style.borderColor = 'var(--hl-orange)';
         } else {
             warningBox.style.display = 'none';
         }
@@ -622,7 +641,15 @@ end</div>
                 let normalizedIf = rawIf.replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te');
                 
                 let vlanMatch = block.match(/switchport access vlan (\d+)/i);
-                let origSecurity = /switchport port-security/i.test(block) ? 'sticky' : (/(?:dot1x|authentication)/i.test(block) ? 'dot1x' : 'none');
+                
+                // Advanced Security State Parsing
+                let hasSticky = /switchport port-security/i.test(block);
+                let hasDot1x = /(?:dot1x|authentication port-control)/i.test(block);
+                let origSecurity = 'none';
+                if (hasSticky && hasDot1x) origSecurity = 'both';
+                else if (hasSticky) origSecurity = 'sticky';
+                else if (hasDot1x) origSecurity = 'dot1x';
+
                 let hasPortfast = /spanning-tree portfast/i.test(block);
                 let hasBpduguard = /spanning-tree bpduguard/i.test(block);
                 let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*(?:\n|$)/i.test(block);
@@ -668,7 +695,7 @@ end</div>
             
             if (securityMode === 'dot1x' && iface.origSecurity !== 'dot1x') secChanged = true;
             if (securityMode === 'sticky' && iface.origSecurity !== 'sticky') secChanged = true;
-            if (securityMode === 'resetSticky' && iface.origSecurity === 'sticky') secChanged = true;
+            if (securityMode === 'resetSticky' && (iface.origSecurity === 'sticky' || iface.origSecurity === 'both')) secChanged = true;
 
             let needsBounce = vlanChanged || stpChanged || secChanged;
 
@@ -681,12 +708,19 @@ end</div>
             }
 
             if (securityMode === 'dot1x' && secChanged) {
-                if (iface.origSecurity === 'sticky') cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
+                if (iface.origSecurity === 'sticky' || iface.origSecurity === 'both') {
+                    cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
+                }
                 cmds.push("shut", "dot1x pae authenticator", "authentication port-control auto");
             } else if (securityMode === 'sticky' && secChanged) {
-                if (iface.origSecurity === 'dot1x') cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
+                if (iface.origSecurity === 'dot1x' || iface.origSecurity === 'both') {
+                    cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
+                }
                 cmds.push("shut", "switchport port-security mac-address sticky", "switchport port-security");
             } else if (securityMode === 'resetSticky' && secChanged) {
+                if (iface.origSecurity === 'both') {
+                    cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
+                }
                 cmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "shut", "switchport port-security mac-address sticky", "switchport port-security");
             } else if (needsBounce) {
                 cmds.push("shut");
@@ -712,7 +746,7 @@ end</div>
             
             if (securityMode === 'dot1x' && iface.origSecurity !== 'dot1x') secChanged = true;
             if (securityMode === 'sticky' && iface.origSecurity !== 'sticky') secChanged = true;
-            if (securityMode === 'resetSticky' && iface.origSecurity === 'sticky') secChanged = true;
+            if (securityMode === 'resetSticky' && (iface.origSecurity === 'sticky' || iface.origSecurity === 'both')) secChanged = true;
 
             let needsBounce = vlanChanged || stpChanged || secChanged;
 
@@ -727,9 +761,13 @@ end</div>
             if (securityMode === 'dot1x' && secChanged) {
                 if (iface.origSecurity === 'sticky') cmds.push("no dot1x pae authenticator", "no authentication port-control auto", "shut", "switchport port-security mac-address sticky", "switchport port-security");
                 else if (iface.origSecurity === 'none') cmds.push("no dot1x pae authenticator", "no authentication port-control auto", "shut");
+                else if (iface.origSecurity === 'both') cmds.push("shut", "switchport port-security mac-address sticky", "switchport port-security");
             } else if (securityMode === 'sticky' && secChanged) {
                 if (iface.origSecurity === 'dot1x') cmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "shut", "dot1x pae authenticator", "authentication port-control auto");
                 else if (iface.origSecurity === 'none') cmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "shut");
+                else if (iface.origSecurity === 'both') cmds.push("shut", "dot1x pae authenticator", "authentication port-control auto");
+            } else if (securityMode === 'resetSticky' && secChanged) {
+                if (iface.origSecurity === 'both') cmds.push("shut", "dot1x pae authenticator", "authentication port-control auto");
             } else if (needsBounce) {
                 cmds.push("shut");
             }
