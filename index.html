@@ -16,6 +16,7 @@
             --neon-green: #39ff14;
             --accent-purple: #bc8cff;
             --accent-red: #f85149;
+            --hl-orange: #ff9d00;
             --code-bg: #010409;
         }
 
@@ -51,10 +52,10 @@
 
         .logo-accent {
             background-color: var(--neon-green);
-            color: var(--code-bg); /* Dark text on neon background */
+            color: var(--code-bg);
             padding: 0px 6px;
-            margin: 0 6px; /* Perfect spacing to detach from C and A */
-            box-shadow: 0 0 12px rgba(57, 255, 20, 0.4); /* Glow effect on the box */
+            margin: 0 6px;
+            box-shadow: 0 0 12px rgba(57, 255, 20, 0.4);
             display: inline-block;
             font-weight: 900;
         }
@@ -192,14 +193,14 @@
         textarea::selection { background: rgba(88, 166, 255, 0.3); }
 
         /* --- UI CONTROLS --- */
-        .controls-row { display: flex; gap: 15px; margin-bottom: 20px; margin-top: 15px; align-items: flex-end;}
+        .controls-row { display: flex; gap: 12px; margin-bottom: 20px; margin-top: 15px; align-items: flex-end;}
 
         .radio-group, .checkbox-group { display: flex; gap: 8px; }
         .radio-group label, .checkbox-group label {
             background: var(--bg-color);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 6px 12px;
+            padding: 6px 10px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
@@ -224,7 +225,7 @@
             color: #d29922;
             padding: 7px;
             border-radius: 4px;
-            width: 80px;
+            width: 70px;
             outline: none;
             font-family: "Courier New", Courier, monospace;
             text-align: center;
@@ -281,7 +282,7 @@
         .cyber-btn {
             background: var(--accent-green);
             color: #fff;
-            padding: 8px 25px;
+            padding: 8px 20px;
             font-size: 13px;
             font-weight: bold;
             text-transform: uppercase;
@@ -318,7 +319,7 @@
 
         /* --- WARNING BOX --- */
         .warning-box {
-            background: rgba(248, 81, 73, 0.15);
+            background: rgba(248, 81, 73, 0.08);
             border: 1px dashed var(--accent-red);
             color: var(--accent-red);
             padding: 10px 15px;
@@ -328,11 +329,11 @@
             font-size: 11.5px;
             text-align: center;
             line-height: 1.4;
-            text-shadow: 0 0 5px rgba(248, 81, 73, 0.4);
             display: none; 
         }
 
         .warning-box strong { font-size: 12.5px; letter-spacing: 1px; }
+        .notice-section { border-top: 1px solid rgba(255, 157, 0, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
 
         /* SCRIPT BOXES */
         .script-header {
@@ -386,7 +387,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v1.9 [Config Automation Tool]</span>
+        <span class="version-tag">// v2.0 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -414,11 +415,11 @@ switchport access vlan <span style="color: #00ffff; font-weight: bold;">100</spa
 <span style="color: #ff00ff;">spanning-tree bpduguard enable</span>
 end</div>
 
-                <h3>> Safety Failsafe</h3>
-                <p>If the engine detects a Trunk port or a port missing the explicit <code>switchport mode access</code> command, it will generate a warning to prevent accidental network outages.</p>
+                <h3>> Safety Failsafe & Notices</h3>
+                <p>If the engine detects a Trunk port or a port missing the explicit <code>switchport mode access</code> command, it will generate a warning to prevent accidental network outages. If it detects a port that is currently <code>shutdown</code>, it will notify you so you can choose to unshut it.</p>
 
-                <h3>> Target Parameters (02 - 04)</h3>
-                <p>Set your desired Global VLAN, Protocol Mode, and Spanning-Tree requirements. The engine will evaluate the pasted logs and output the exact CLI commands needed to reach your target state.</p>
+                <h3>> Target Parameters (02 - 05)</h3>
+                <p>Set your desired Global VLAN, Protocol Mode, Spanning-Tree, and Unshut requirements. The engine will evaluate the pasted logs and output the exact CLI commands needed to reach your target state.</p>
             </div>
         </div>
     </div>
@@ -428,11 +429,11 @@ end</div>
             <label>01 // Config Input</label>
             <button class="expand-btn" id="expandBtn" onclick="toggleExpand()">[ EXPAND ]</button>
         </div>
-        <textarea id="configInput" placeholder="Waiting for logs..." spellcheck="false"></textarea>
+        <textarea id="configInput" placeholder="Waiting for logs..." spellcheck="false" oninput="checkDynamicWarnings()"></textarea>
     </div>
 
     <div class="controls-row">
-        <div class="form-group" style="width: 120px; margin-bottom: 0;">
+        <div class="form-group" style="width: 100px; margin-bottom: 0;">
             <label>02 // VLAN</label>
             <input type="number" id="vlanInput" placeholder="VID" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </div>
@@ -447,13 +448,23 @@ end</div>
             </div>
         </div>
 
-        <div class="form-group" style="width: 110px; margin-bottom: 0;">
+        <div class="form-group" style="width: 105px; margin-bottom: 0;">
             <label style="display: flex; align-items: center; gap: 6px;">
                 04 // EDGE
                 <div class="tooltip-icon" data-tooltip="Applies 'spanning-tree portfast' and 'bpduguard enable'. PortFast bypasses listening/learning states. BPDUGuard disables the port if a switch loop is detected. Use only for end-user devices.">i</div>
             </label>
             <div class="checkbox-group">
                 <label><input type="checkbox" id="stpCheckbox"><span>ENABLE</span></label>
+            </div>
+        </div>
+
+        <div class="form-group" style="width: 110px; margin-bottom: 0;">
+            <label style="display: flex; align-items: center; gap: 6px;">
+                05 // UNSHUT
+                <div class="tooltip-icon" data-tooltip="If a parsed port is currently 'shutdown', this will generate a 'no shut' command to explicitly bring it online.">i</div>
+            </label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="unshutCheckbox"><span>ENABLE</span></label>
             </div>
         </div>
 
@@ -507,6 +518,7 @@ end</div>
         document.getElementById('vlanInput').value = "";
         document.querySelector('input[value="leave"]').checked = true;
         document.getElementById('stpCheckbox').checked = false;
+        document.getElementById('unshutCheckbox').checked = false;
         
         document.getElementById('primaryCode').innerText = "-- system_idle --";
         document.getElementById('primaryLines').innerText = "";
@@ -539,13 +551,62 @@ end</div>
         linesElem.innerText = lineNumbers;
     }
 
+    // --- REAL-TIME WARNING SCANNER ---
+    function checkDynamicWarnings() {
+        const configText = document.getElementById('configInput').value;
+        const warningBox = document.getElementById('warningBox');
+        
+        if (!configText.trim()) {
+            warningBox.style.display = 'none';
+            return;
+        }
+
+        let textBlocks = configText.split(/(?=^[ \t]*interface\s|^[ \t]*int\s)/im);
+        if (textBlocks.length > 0 && !/^[ \t]*(?:interface|int)\s/im.test(textBlocks[0])) textBlocks.shift();
+
+        let unsafePorts = [];
+        let shutdownPorts = [];
+
+        textBlocks.forEach(block => {
+            const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
+            if (ifMatch) {
+                let normalizedIf = ifMatch[1].replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te');
+                
+                let isAccessMode = /switchport mode access/i.test(block);
+                if (!isAccessMode && !unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
+
+                let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*(?:\n|$)/i.test(block);
+                if (isShutdown && !shutdownPorts.includes(normalizedIf)) shutdownPorts.push(normalizedIf);
+            }
+        });
+
+        let warningHTML = "";
+
+        if (unsafePorts.length > 0) {
+            warningHTML += `<div style="margin-bottom: ${shutdownPorts.length > 0 ? '10px' : '0'};"><strong>////// WARNING: NON-ACCESS PORTS DETECTED //////</strong><br>Missing <code>switchport mode access</code>: <span style="color: #fff; font-weight: bold;">${unsafePorts.join(', ')}</span><br><em>Applying edge configs to trunk/uplink ports can cause outages. Proceed with caution!</em></div>`;
+        }
+
+        if (shutdownPorts.length > 0) {
+            warningHTML += `<div class="${unsafePorts.length > 0 ? 'notice-section' : ''}"><strong style="color: var(--hl-orange); text-shadow: 0 0 5px rgba(255, 157, 0, 0.4);">////// NOTICE: SHUTDOWN PORTS DETECTED //////</strong><br>Administratively down: <span style="color: #fff; font-weight: bold;">${shutdownPorts.join(', ')}</span><br><em>Toggle '05 // UNSHUT' to explicitly bring them online.</em></div>`;
+        }
+
+        if (warningHTML !== "") {
+            warningBox.style.display = 'block';
+            warningBox.innerHTML = warningHTML;
+            // Force red border if unsafe ports exist, else orange border for just shutdown notices
+            warningBox.style.borderColor = unsafePorts.length > 0 ? 'var(--accent-red)' : 'var(--hl-orange)';
+        } else {
+            warningBox.style.display = 'none';
+        }
+    }
+
     // --- GENERATOR LOGIC ---
     function generateScript() {
         const configText = document.getElementById('configInput').value;
         const targetVlan = document.getElementById('vlanInput').value;
         const securityMode = document.querySelector('input[name="securityMode"]:checked').value;
         const applyStp = document.getElementById('stpCheckbox').checked;
-        const warningBox = document.getElementById('warningBox');
+        const applyUnshut = document.getElementById('unshutCheckbox').checked;
 
         if (!configText.trim()) return;
 
@@ -553,7 +614,6 @@ end</div>
         if (textBlocks.length > 0 && !/^[ \t]*(?:interface|int)\s/im.test(textBlocks[0])) textBlocks.shift();
 
         const interfacesDataMap = {}; 
-        let unsafePorts = [];
 
         textBlocks.forEach(block => {
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
@@ -561,16 +621,11 @@ end</div>
                 let rawIf = ifMatch[1];
                 let normalizedIf = rawIf.replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te');
                 
-                let isAccessMode = /switchport mode access/i.test(block);
-                if (!isAccessMode) {
-                    if (!unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
-                }
-
                 let vlanMatch = block.match(/switchport access vlan (\d+)/i);
                 let origSecurity = /switchport port-security/i.test(block) ? 'sticky' : (/(?:dot1x|authentication)/i.test(block) ? 'dot1x' : 'none');
-                
                 let hasPortfast = /spanning-tree portfast/i.test(block);
                 let hasBpduguard = /spanning-tree bpduguard/i.test(block);
+                let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*(?:\n|$)/i.test(block);
 
                 if (!interfacesDataMap[normalizedIf]) {
                     interfacesDataMap[normalizedIf] = { 
@@ -578,23 +633,21 @@ end</div>
                         origVlan: vlanMatch ? vlanMatch[1] : null, 
                         origSecurity,
                         hasPortfast,
-                        hasBpduguard
+                        hasBpduguard,
+                        isShutdown
                     };
                 } else {
                     if (vlanMatch) interfacesDataMap[normalizedIf].origVlan = vlanMatch[1];
                     if (origSecurity !== 'none') interfacesDataMap[normalizedIf].origSecurity = origSecurity;
                     if (hasPortfast) interfacesDataMap[normalizedIf].hasPortfast = true;
                     if (hasBpduguard) interfacesDataMap[normalizedIf].hasBpduguard = true;
+                    if (isShutdown) interfacesDataMap[normalizedIf].isShutdown = true;
                 }
             }
         });
 
-        if (unsafePorts.length > 0) {
-            warningBox.style.display = 'block';
-            warningBox.innerHTML = `<strong>////// WARNING: NON-ACCESS PORTS DETECTED //////</strong><br>Missing <code>switchport mode access</code>: <span style="color: #fff; font-weight: bold;">${unsafePorts.join(', ')}</span><br><em>Applying edge configs to trunk/uplink ports can cause outages. They are included below—proceed with caution!</em>`;
-        } else {
-            warningBox.style.display = 'none';
-        }
+        // Trigger dynamic check to ensure UI reflects current reality
+        checkDynamicWarnings();
 
         const interfacesData = Object.values(interfacesDataMap);
         if (interfacesData.length === 0) {
@@ -611,12 +664,15 @@ end</div>
             let vlanChanged = targetVlan && targetVlan !== iface.origVlan;
             let secChanged = false;
             let stpChanged = applyStp && (!iface.hasPortfast || !iface.hasBpduguard);
+            let needsUnshut = applyUnshut && iface.isShutdown;
             
             if (securityMode === 'dot1x' && iface.origSecurity !== 'dot1x') secChanged = true;
             if (securityMode === 'sticky' && iface.origSecurity !== 'sticky') secChanged = true;
             if (securityMode === 'resetSticky' && iface.origSecurity === 'sticky') secChanged = true;
 
-            if (!vlanChanged && !secChanged && !stpChanged) return null;
+            let needsBounce = vlanChanged || stpChanged || secChanged;
+
+            if (!needsBounce && !needsUnshut) return null;
 
             if (vlanChanged) cmds.push(`switchport access vlan ${targetVlan}`);
             if (applyStp) {
@@ -626,16 +682,25 @@ end</div>
 
             if (securityMode === 'dot1x' && secChanged) {
                 if (iface.origSecurity === 'sticky') cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
-                cmds.push("shut", "dot1x pae authenticator", "authentication port-control auto", "no shut");
+                cmds.push("shut", "dot1x pae authenticator", "authentication port-control auto");
             } else if (securityMode === 'sticky' && secChanged) {
                 if (iface.origSecurity === 'dot1x') cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
-                cmds.push("shut", "switchport port-security mac-address sticky", "switchport port-security", "no shut");
+                cmds.push("shut", "switchport port-security mac-address sticky", "switchport port-security");
             } else if (securityMode === 'resetSticky' && secChanged) {
-                cmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "shut", "switchport port-security mac-address sticky", "switchport port-security", "no shut");
-            } else if (vlanChanged || stpChanged) {
-                cmds.push("shut", "no shut");
+                cmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "shut", "switchport port-security mac-address sticky", "switchport port-security");
+            } else if (needsBounce) {
+                cmds.push("shut");
             }
-            return cmds;
+
+            // Final state decision for the port
+            if (!iface.isShutdown || applyUnshut) {
+                if (cmds[cmds.length - 1] !== "no shut") cmds.push("no shut");
+            } else {
+                // Port was originally shutdown, and unshut toggle is OFF. Keep it shut.
+                if (cmds[cmds.length - 1] !== "shut") cmds.push("shut");
+            }
+
+            return cmds.length ? cmds : null;
         }
 
         function getRollback(iface) {
@@ -643,12 +708,15 @@ end</div>
             let vlanChanged = targetVlan && targetVlan !== iface.origVlan;
             let secChanged = false;
             let stpChanged = applyStp && (!iface.hasPortfast || !iface.hasBpduguard);
+            let needsUnshut = applyUnshut && iface.isShutdown;
             
             if (securityMode === 'dot1x' && iface.origSecurity !== 'dot1x') secChanged = true;
             if (securityMode === 'sticky' && iface.origSecurity !== 'sticky') secChanged = true;
             if (securityMode === 'resetSticky' && iface.origSecurity === 'sticky') secChanged = true;
 
-            if (!vlanChanged && !secChanged && !stpChanged) return null;
+            let needsBounce = vlanChanged || stpChanged || secChanged;
+
+            if (!needsBounce && !needsUnshut) return null;
 
             if (vlanChanged) cmds.push(iface.origVlan ? `switchport access vlan ${iface.origVlan}` : "no switchport access vlan");
             if (applyStp) {
@@ -657,16 +725,22 @@ end</div>
             }
             
             if (securityMode === 'dot1x' && secChanged) {
-                if (iface.origSecurity === 'sticky') cmds.push("no dot1x pae authenticator", "no authentication port-control auto", "shut", "switchport port-security mac-address sticky", "switchport port-security", "no shut");
-                else if (iface.origSecurity === 'none') cmds.push("no dot1x pae authenticator", "no authentication port-control auto", "shut", "no shut");
-                else if (vlanChanged || stpChanged) cmds.push("shut", "no shut");
+                if (iface.origSecurity === 'sticky') cmds.push("no dot1x pae authenticator", "no authentication port-control auto", "shut", "switchport port-security mac-address sticky", "switchport port-security");
+                else if (iface.origSecurity === 'none') cmds.push("no dot1x pae authenticator", "no authentication port-control auto", "shut");
             } else if (securityMode === 'sticky' && secChanged) {
-                if (iface.origSecurity === 'dot1x') cmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "shut", "dot1x pae authenticator", "authentication port-control auto", "no shut");
-                else if (iface.origSecurity === 'none') cmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "shut", "no shut");
-                else if (vlanChanged || stpChanged) cmds.push("shut", "no shut");
-            } else if (vlanChanged || stpChanged) {
-                cmds.push("shut", "no shut");
+                if (iface.origSecurity === 'dot1x') cmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "shut", "dot1x pae authenticator", "authentication port-control auto");
+                else if (iface.origSecurity === 'none') cmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "shut");
+            } else if (needsBounce) {
+                cmds.push("shut");
             }
+
+            // Final state rollback decision
+            if (iface.isShutdown) {
+                if (cmds[cmds.length - 1] !== "shut") cmds.push("shut");
+            } else {
+                if (cmds[cmds.length - 1] !== "no shut") cmds.push("no shut");
+            }
+
             return cmds.length ? cmds : null;
         }
 
