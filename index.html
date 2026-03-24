@@ -17,6 +17,7 @@
             --accent-purple: #bc8cff;
             --accent-red: #f85149;
             --hl-orange: #ff9d00;
+            --hl-yellow: #e3b341;
             --hl-magenta: #ff00ff;
             --code-bg: #010409;
         }
@@ -336,6 +337,7 @@
         .warning-box strong { font-size: 12.5px; letter-spacing: 1px; }
         .notice-section { border-top: 1px solid rgba(255, 157, 0, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
         .conflict-section { border-top: 1px solid rgba(255, 0, 255, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
+        .fragment-section { border-top: 1px solid rgba(227, 179, 65, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
 
         /* SCRIPT BOXES */
         .script-header {
@@ -389,7 +391,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v2.1 [Config Automation Tool]</span>
+        <span class="version-tag">// v2.4 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -418,7 +420,7 @@ switchport access vlan <span style="color: #00ffff; font-weight: bold;">100</spa
 end</div>
 
                 <h3>> Safety Failsafe & Notices</h3>
-                <p>If the engine detects a Trunk port, a dead/shutdown port, or a port with conflicting dual security (802.1X + Sticky MAC), it will immediately notify you in the active warning pane.</p>
+                <p>The real-time engine continuously scans your input. It will warn you of Trunk ports, explicitly disabled/shutdown links, incomplete/fragmented security configurations, and critically dangerous dual-security (Sticky + 802.1X) overlaps.</p>
 
                 <h3>> Target Parameters (02 - 05)</h3>
                 <p>Set your desired Global VLAN, Protocol Mode, Spanning-Tree, and Unshut requirements. The engine will evaluate the pasted logs and output the exact CLI commands needed to reach your target state.</p>
@@ -446,7 +448,7 @@ end</div>
                 <label><input type="radio" name="securityMode" value="leave" checked><span>NONE</span></label>
                 <label><input type="radio" name="securityMode" value="dot1x"><span>DOT1X</span></label>
                 <label><input type="radio" name="securityMode" value="sticky"><span>STICKY</span></label>
-                <label><input type="radio" name="securityMode" value="resetSticky"><span>RESET</span></label>
+                <label><input type="radio" name="securityMode" value="reset"><span>RESET</span></label>
             </div>
         </div>
 
@@ -569,24 +571,33 @@ end</div>
         let unsafePorts = [];
         let shutdownPorts = [];
         let conflictedPorts = [];
+        let fragmentPorts = [];
 
         textBlocks.forEach(block => {
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
             if (ifMatch) {
                 let normalizedIf = ifMatch[1].replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te');
                 
-                // Unsafe port detection (missing access mode)
                 let isAccessMode = /switchport mode access/i.test(block);
                 if (!isAccessMode && !unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
 
-                // Shutdown port detection
                 let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*(?:\n|$)/i.test(block);
                 if (isShutdown && !shutdownPorts.includes(normalizedIf)) shutdownPorts.push(normalizedIf);
 
-                // Dual Security Conflict Detection (Sticky + Dot1x)
-                let hasSticky = /switchport port-security/i.test(block);
-                let hasDot1x = /(?:dot1x|authentication port-control)/i.test(block);
-                if (hasSticky && hasDot1x && !conflictedPorts.includes(normalizedIf)) conflictedPorts.push(normalizedIf);
+                // Strict Line Parsing
+                let hasStickyMac = /(?:^|\n)[ \t]*switchport port-security mac-address sticky[ \t]*(?:\n|$)/i.test(block);
+                let hasPortSec = /(?:^|\n)[ \t]*switchport port-security[ \t]*(?:\n|$)/i.test(block);
+                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x pae authenticator[ \t]*(?:\n|$)/i.test(block);
+                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication port-control auto[ \t]*(?:\n|$)/i.test(block);
+
+                let isAnySticky = hasStickyMac || hasPortSec;
+                let isAnyDot1x = hasDot1xPae || hasAuthPortControl;
+
+                if (isAnySticky && isAnyDot1x && !conflictedPorts.includes(normalizedIf)) {
+                    conflictedPorts.push(normalizedIf);
+                } else if (((hasStickyMac && !hasPortSec) || (!hasStickyMac && hasPortSec) || (hasDot1xPae && !hasAuthPortControl) || (!hasDot1xPae && hasAuthPortControl)) && !fragmentPorts.includes(normalizedIf)) {
+                    fragmentPorts.push(normalizedIf);
+                }
             }
         });
 
@@ -594,12 +605,17 @@ end</div>
         let baseHasContent = false;
 
         if (unsafePorts.length > 0) {
-            warningHTML += `<div style="margin-bottom: ${(shutdownPorts.length > 0 || conflictedPorts.length > 0) ? '10px' : '0'};"><strong>////// WARNING: NON-ACCESS PORTS DETECTED //////</strong><br>Missing <code>switchport mode access</code>: <span style="color: #fff; font-weight: bold;">${unsafePorts.join(', ')}</span><br><em>Applying edge configs to trunk/uplink ports can cause outages. Proceed with caution!</em></div>`;
+            warningHTML += `<div style="margin-bottom: ${(shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0) ? '10px' : '0'};"><strong>////// WARNING: NON-ACCESS PORTS DETECTED //////</strong><br>Missing <code>switchport mode access</code>: <span style="color: #fff; font-weight: bold;">${unsafePorts.join(', ')}</span><br><em>Applying edge configs to trunk/uplink ports can cause outages. Proceed with caution!</em></div>`;
             baseHasContent = true;
         }
 
         if (conflictedPorts.length > 0) {
-            warningHTML += `<div class="${baseHasContent ? 'conflict-section' : ''}"><strong style="color: var(--hl-magenta); text-shadow: 0 0 5px rgba(255, 0, 255, 0.4);">////// CONFLICT: DUAL SECURITY DETECTED //////</strong><br>Sticky MAC & 802.1X found on: <span style="color: #fff; font-weight: bold;">${conflictedPorts.join(', ')}</span><br><em style="color: var(--text-main);">Note: 802.1X provides dynamic user authentication, while Sticky MAC rigidly locks physical hardware. Combining them causes severe race conditions and port lockouts. Select a Protocol Mode (03) to overwrite and clean up these ports.</em></div>`;
+            warningHTML += `<div class="${baseHasContent ? 'conflict-section' : ''}"><strong style="color: var(--hl-magenta); text-shadow: 0 0 5px rgba(255, 0, 255, 0.4);">////// CONFLICT: DUAL SECURITY DETECTED //////</strong><br>Sticky MAC & 802.1X found on: <span style="color: #fff; font-weight: bold;">${conflictedPorts.join(', ')}</span><br><em style="color: var(--text-main);">Note: Combining 802.1X and Sticky MAC causes severe race conditions. <strong>RESET is disabled for these ports.</strong> Select DOT1X or STICKY to explicitly overwrite and clean them up.</em></div>`;
+            baseHasContent = true;
+        }
+
+        if (fragmentPorts.length > 0) {
+            warningHTML += `<div class="${baseHasContent ? 'fragment-section' : ''}"><strong style="color: var(--hl-yellow); text-shadow: 0 0 5px rgba(227, 179, 65, 0.4);">////// FRAGMENTED SECURITY CONFIG //////</strong><br>Incomplete security setup on: <span style="color: #fff; font-weight: bold;">${fragmentPorts.join(', ')}</span><br><em style="color: var(--text-main);">Select a Protocol Mode (03) to automatically repair and complete these configurations.</em></div>`;
             baseHasContent = true;
         }
 
@@ -610,9 +626,9 @@ end</div>
         if (warningHTML !== "") {
             warningBox.style.display = 'block';
             warningBox.innerHTML = warningHTML;
-            // Adaptive border color logic
             if (unsafePorts.length > 0) warningBox.style.borderColor = 'var(--accent-red)';
             else if (conflictedPorts.length > 0) warningBox.style.borderColor = 'var(--hl-magenta)';
+            else if (fragmentPorts.length > 0) warningBox.style.borderColor = 'var(--hl-yellow)';
             else warningBox.style.borderColor = 'var(--hl-orange)';
         } else {
             warningBox.style.display = 'none';
@@ -642,13 +658,11 @@ end</div>
                 
                 let vlanMatch = block.match(/switchport access vlan (\d+)/i);
                 
-                // Advanced Security State Parsing
-                let hasSticky = /switchport port-security/i.test(block);
-                let hasDot1x = /(?:dot1x|authentication port-control)/i.test(block);
-                let origSecurity = 'none';
-                if (hasSticky && hasDot1x) origSecurity = 'both';
-                else if (hasSticky) origSecurity = 'sticky';
-                else if (hasDot1x) origSecurity = 'dot1x';
+                // STRICT LINE-BY-LINE SECURITY PARSING
+                let hasStickyMac = /(?:^|\n)[ \t]*switchport port-security mac-address sticky[ \t]*(?:\n|$)/i.test(block);
+                let hasPortSec = /(?:^|\n)[ \t]*switchport port-security[ \t]*(?:\n|$)/i.test(block);
+                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x pae authenticator[ \t]*(?:\n|$)/i.test(block);
+                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication port-control auto[ \t]*(?:\n|$)/i.test(block);
 
                 let hasPortfast = /spanning-tree portfast/i.test(block);
                 let hasBpduguard = /spanning-tree bpduguard/i.test(block);
@@ -658,14 +672,15 @@ end</div>
                     interfacesDataMap[normalizedIf] = { 
                         name: normalizedIf, 
                         origVlan: vlanMatch ? vlanMatch[1] : null, 
-                        origSecurity,
-                        hasPortfast,
-                        hasBpduguard,
-                        isShutdown
+                        hasStickyMac, hasPortSec, hasDot1xPae, hasAuthPortControl,
+                        hasPortfast, hasBpduguard, isShutdown
                     };
                 } else {
                     if (vlanMatch) interfacesDataMap[normalizedIf].origVlan = vlanMatch[1];
-                    if (origSecurity !== 'none') interfacesDataMap[normalizedIf].origSecurity = origSecurity;
+                    if (hasStickyMac) interfacesDataMap[normalizedIf].hasStickyMac = true;
+                    if (hasPortSec) interfacesDataMap[normalizedIf].hasPortSec = true;
+                    if (hasDot1xPae) interfacesDataMap[normalizedIf].hasDot1xPae = true;
+                    if (hasAuthPortControl) interfacesDataMap[normalizedIf].hasAuthPortControl = true;
                     if (hasPortfast) interfacesDataMap[normalizedIf].hasPortfast = true;
                     if (hasBpduguard) interfacesDataMap[normalizedIf].hasBpduguard = true;
                     if (isShutdown) interfacesDataMap[normalizedIf].isShutdown = true;
@@ -673,7 +688,6 @@ end</div>
             }
         });
 
-        // Trigger dynamic check to ensure UI reflects current reality
         checkDynamicWarnings();
 
         const interfacesData = Object.values(interfacesDataMap);
@@ -689,13 +703,22 @@ end</div>
         function getPrimary(iface) {
             let cmds = [];
             let vlanChanged = targetVlan && targetVlan !== iface.origVlan;
-            let secChanged = false;
             let stpChanged = applyStp && (!iface.hasPortfast || !iface.hasBpduguard);
             let needsUnshut = applyUnshut && iface.isShutdown;
             
-            if (securityMode === 'dot1x' && iface.origSecurity !== 'dot1x') secChanged = true;
-            if (securityMode === 'sticky' && iface.origSecurity !== 'sticky') secChanged = true;
-            if (securityMode === 'resetSticky' && (iface.origSecurity === 'sticky' || iface.origSecurity === 'both')) secChanged = true;
+            let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
+            let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
+            let isDual = isCurrentlyDot1x && isCurrentlySticky;
+            
+            let secChanged = false;
+            
+            if (securityMode === 'dot1x') {
+                if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true;
+            } else if (securityMode === 'sticky') {
+                if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true;
+            } else if (securityMode === 'reset') {
+                if ((isCurrentlySticky || isCurrentlyDot1x) && !isDual) secChanged = true;
+            }
 
             let needsBounce = vlanChanged || stpChanged || secChanged;
 
@@ -708,31 +731,45 @@ end</div>
             }
 
             if (securityMode === 'dot1x' && secChanged) {
-                if (iface.origSecurity === 'sticky' || iface.origSecurity === 'both') {
-                    cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
+                if (isCurrentlySticky) {
+                    if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
+                    if (iface.hasPortSec) cmds.push("no switchport port-security");
                 }
-                cmds.push("shut", "dot1x pae authenticator", "authentication port-control auto");
+                cmds.push("shut");
+                if (!iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
+                if (!iface.hasAuthPortControl) cmds.push("authentication port-control auto");
             } else if (securityMode === 'sticky' && secChanged) {
-                if (iface.origSecurity === 'dot1x' || iface.origSecurity === 'both') {
-                    cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
+                if (isCurrentlyDot1x) {
+                    if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
+                    if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
                 }
-                cmds.push("shut", "switchport port-security mac-address sticky", "switchport port-security");
-            } else if (securityMode === 'resetSticky' && secChanged) {
-                if (iface.origSecurity === 'both') {
-                    cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
+                cmds.push("shut");
+                if (!iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
+                if (!iface.hasPortSec) cmds.push("switchport port-security");
+            } else if (securityMode === 'reset' && secChanged) {
+                if (isCurrentlySticky) {
+                    if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
+                    if (iface.hasPortSec) cmds.push("no switchport port-security");
+                    cmds.push("shut");
+                    cmds.push("switchport port-security mac-address sticky", "switchport port-security");
+                } else if (isCurrentlyDot1x) {
+                    if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
+                    if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
+                    cmds.push("shut");
+                    cmds.push("dot1x pae authenticator", "authentication port-control auto");
                 }
-                cmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "shut", "switchport port-security mac-address sticky", "switchport port-security");
-            } else if (needsBounce) {
+            } else if (needsBounce && cmds.length > 0 && cmds[cmds.length - 1] !== "shut") {
                 cmds.push("shut");
             }
 
-            // Final state decision for the port
             if (!iface.isShutdown || applyUnshut) {
-                if (cmds[cmds.length - 1] !== "no shut") cmds.push("no shut");
+                if (cmds.length > 0 && cmds[cmds.length - 1] !== "no shut") cmds.push("no shut");
             } else {
-                // Port was originally shutdown, and unshut toggle is OFF. Keep it shut.
-                if (cmds[cmds.length - 1] !== "shut") cmds.push("shut");
+                if (cmds.length > 0 && cmds[cmds.length - 1] !== "shut") cmds.push("shut");
             }
+
+            // Cleanup for Edge case: If only bounce was needed and port was originally shut and we didn't unshut
+            if (cmds.length === 2 && cmds[0] === "shut" && cmds[1] === "shut") cmds.pop();
 
             return cmds.length ? cmds : null;
         }
@@ -740,13 +777,22 @@ end</div>
         function getRollback(iface) {
             let cmds = [];
             let vlanChanged = targetVlan && targetVlan !== iface.origVlan;
-            let secChanged = false;
             let stpChanged = applyStp && (!iface.hasPortfast || !iface.hasBpduguard);
             let needsUnshut = applyUnshut && iface.isShutdown;
             
-            if (securityMode === 'dot1x' && iface.origSecurity !== 'dot1x') secChanged = true;
-            if (securityMode === 'sticky' && iface.origSecurity !== 'sticky') secChanged = true;
-            if (securityMode === 'resetSticky' && (iface.origSecurity === 'sticky' || iface.origSecurity === 'both')) secChanged = true;
+            let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
+            let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
+            let isDual = isCurrentlyDot1x && isCurrentlySticky;
+            
+            let secChanged = false;
+            
+            if (securityMode === 'dot1x') {
+                if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true;
+            } else if (securityMode === 'sticky') {
+                if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true;
+            } else if (securityMode === 'reset') {
+                if ((isCurrentlySticky || isCurrentlyDot1x) && !isDual) secChanged = true;
+            }
 
             let needsBounce = vlanChanged || stpChanged || secChanged;
 
@@ -758,26 +804,45 @@ end</div>
                 if (!iface.hasBpduguard) cmds.push("no spanning-tree bpduguard enable");
             }
             
-            if (securityMode === 'dot1x' && secChanged) {
-                if (iface.origSecurity === 'sticky') cmds.push("no dot1x pae authenticator", "no authentication port-control auto", "shut", "switchport port-security mac-address sticky", "switchport port-security");
-                else if (iface.origSecurity === 'none') cmds.push("no dot1x pae authenticator", "no authentication port-control auto", "shut");
-                else if (iface.origSecurity === 'both') cmds.push("shut", "switchport port-security mac-address sticky", "switchport port-security");
-            } else if (securityMode === 'sticky' && secChanged) {
-                if (iface.origSecurity === 'dot1x') cmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "shut", "dot1x pae authenticator", "authentication port-control auto");
-                else if (iface.origSecurity === 'none') cmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "shut");
-                else if (iface.origSecurity === 'both') cmds.push("shut", "dot1x pae authenticator", "authentication port-control auto");
-            } else if (securityMode === 'resetSticky' && secChanged) {
-                if (iface.origSecurity === 'both') cmds.push("shut", "dot1x pae authenticator", "authentication port-control auto");
-            } else if (needsBounce) {
+            if (secChanged) {
+                // 1. Strip what Primary ADDED
+                if (securityMode === 'dot1x' || (securityMode === 'reset' && isCurrentlyDot1x)) {
+                    if (!iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
+                    if (!iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
+                } else if (securityMode === 'sticky' || (securityMode === 'reset' && isCurrentlySticky)) {
+                    if (!iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
+                    if (!iface.hasPortSec) cmds.push("no switchport port-security");
+                }
+                
+                cmds.push("shut");
+                
+                // 2. Restore what Primary REMOVED
+                if (securityMode === 'dot1x' && isCurrentlySticky) {
+                    if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
+                    if (iface.hasPortSec) cmds.push("switchport port-security");
+                } else if (securityMode === 'sticky' && isCurrentlyDot1x) {
+                    if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
+                    if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
+                } else if (securityMode === 'reset') {
+                    if (isCurrentlySticky) {
+                        if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
+                        if (iface.hasPortSec) cmds.push("switchport port-security");
+                    } else if (isCurrentlyDot1x) {
+                        if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
+                        if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
+                    }
+                }
+            } else if (needsBounce && cmds.length > 0 && cmds[cmds.length - 1] !== "shut") {
                 cmds.push("shut");
             }
 
-            // Final state rollback decision
             if (iface.isShutdown) {
-                if (cmds[cmds.length - 1] !== "shut") cmds.push("shut");
+                if (cmds.length > 0 && cmds[cmds.length - 1] !== "shut") cmds.push("shut");
             } else {
-                if (cmds[cmds.length - 1] !== "no shut") cmds.push("no shut");
+                if (cmds.length > 0 && cmds[cmds.length - 1] !== "no shut") cmds.push("no shut");
             }
+
+            if (cmds.length === 2 && cmds[0] === "shut" && cmds[1] === "shut") cmds.pop();
 
             return cmds.length ? cmds : null;
         }
