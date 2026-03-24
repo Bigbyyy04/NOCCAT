@@ -433,6 +433,17 @@
             box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
         
+        .db-security-note {
+            background: rgba(35, 134, 54, 0.1);
+            border-left: 3px solid var(--accent-green);
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            font-size: 11px;
+            color: var(--text-main);
+            line-height: 1.4;
+            border-radius: 0 4px 4px 0;
+        }
+
         .db-box textarea { height: 150px; margin-bottom: 10px; }
         .db-controls { display: flex; justify-content: space-between; align-items: center; }
         .db-status { font-size: 11px; color: var(--accent-green); font-family: monospace; }
@@ -444,7 +455,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v3.1 [Config Automation Tool]</span>
+        <span class="version-tag">// v3.2 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -609,6 +620,11 @@ end</div>
     <div id="dbWrapper" class="readme-wrapper">
         <div class="db-box">
             <label style="color: var(--accent-green); margin-bottom: 10px;">> ZERO-TRUST_LOCAL_DB</label>
+            
+            <div class="db-security-note">
+                <strong>🔒 SECURITY NOTE:</strong> This database is completely offline and Zero-Trust. Your data is saved directly into your browser's local cache (localStorage). It is <strong>never</strong> transmitted to GitHub, any external server, or the public internet. Only you can see this data on this specific computer.
+            </div>
+
             <p style="font-size: 11.5px; color: var(--text-main); opacity: 0.8; margin-top: 0;">Any new data pasted here is <strong>MERGED</strong> into your existing local database. To remove old switches, click 'Clear Memory' and paste a fresh master list.</p>
             <textarea id="dbInput" placeholder="-- Formats Accepted --&#10;PH-NOC-ACC0101, 10.20.30.40&#10;PH-NOC-AS0202   10.30.40.50   Access Switch" spellcheck="false" style="border-color: rgba(35, 134, 54, 0.5);"></textarea>
             <div class="db-controls">
