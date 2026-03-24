@@ -19,6 +19,7 @@
             --hl-orange: #ff9d00;
             --hl-yellow: #e3b341;
             --hl-magenta: #ff00ff;
+            --hl-cyan: #00ffff;
             --code-bg: #010409;
         }
 
@@ -338,6 +339,7 @@
         .notice-section { border-top: 1px solid rgba(255, 157, 0, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
         .conflict-section { border-top: 1px solid rgba(255, 0, 255, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
         .fragment-section { border-top: 1px solid rgba(227, 179, 65, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
+        .nosec-section { border-top: 1px solid rgba(0, 255, 255, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
 
         /* SCRIPT BOXES */
         .script-header {
@@ -391,7 +393,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v2.4 [Config Automation Tool]</span>
+        <span class="version-tag">// v2.5 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -420,7 +422,7 @@ switchport access vlan <span style="color: #00ffff; font-weight: bold;">100</spa
 end</div>
 
                 <h3>> Safety Failsafe & Notices</h3>
-                <p>The real-time engine continuously scans your input. It will warn you of Trunk ports, explicitly disabled/shutdown links, incomplete/fragmented security configurations, and critically dangerous dual-security (Sticky + 802.1X) overlaps.</p>
+                <p>The real-time engine continuously scans your input. It will warn you of Trunk ports, disabled/shutdown links, un-secured/naked ports, incomplete/fragmented security configurations, and critically dangerous dual-security (Sticky + 802.1X) overlaps.</p>
 
                 <h3>> Target Parameters (02 - 05)</h3>
                 <p>Set your desired Global VLAN, Protocol Mode, Spanning-Tree, and Unshut requirements. The engine will evaluate the pasted logs and output the exact CLI commands needed to reach your target state.</p>
@@ -572,6 +574,7 @@ end</div>
         let shutdownPorts = [];
         let conflictedPorts = [];
         let fragmentPorts = [];
+        let noSecPorts = [];
 
         textBlocks.forEach(block => {
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
@@ -584,7 +587,7 @@ end</div>
                 let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*(?:\n|$)/i.test(block);
                 if (isShutdown && !shutdownPorts.includes(normalizedIf)) shutdownPorts.push(normalizedIf);
 
-                // Strict Line Parsing
+                // Strict Line Parsing for Security
                 let hasStickyMac = /(?:^|\n)[ \t]*switchport port-security mac-address sticky[ \t]*(?:\n|$)/i.test(block);
                 let hasPortSec = /(?:^|\n)[ \t]*switchport port-security[ \t]*(?:\n|$)/i.test(block);
                 let hasDot1xPae = /(?:^|\n)[ \t]*dot1x pae authenticator[ \t]*(?:\n|$)/i.test(block);
@@ -597,6 +600,8 @@ end</div>
                     conflictedPorts.push(normalizedIf);
                 } else if (((hasStickyMac && !hasPortSec) || (!hasStickyMac && hasPortSec) || (hasDot1xPae && !hasAuthPortControl) || (!hasDot1xPae && hasAuthPortControl)) && !fragmentPorts.includes(normalizedIf)) {
                     fragmentPorts.push(normalizedIf);
+                } else if (!isAnySticky && !isAnyDot1x && !noSecPorts.includes(normalizedIf)) {
+                    noSecPorts.push(normalizedIf);
                 }
             }
         });
@@ -605,7 +610,7 @@ end</div>
         let baseHasContent = false;
 
         if (unsafePorts.length > 0) {
-            warningHTML += `<div style="margin-bottom: ${(shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0) ? '10px' : '0'};"><strong>////// WARNING: NON-ACCESS PORTS DETECTED //////</strong><br>Missing <code>switchport mode access</code>: <span style="color: #fff; font-weight: bold;">${unsafePorts.join(', ')}</span><br><em>Applying edge configs to trunk/uplink ports can cause outages. Proceed with caution!</em></div>`;
+            warningHTML += `<div style="margin-bottom: ${(shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// WARNING: NON-ACCESS PORTS DETECTED //////</strong><br>Missing <code>switchport mode access</code>: <span style="color: #fff; font-weight: bold;">${unsafePorts.join(', ')}</span><br><em>Applying edge configs to trunk/uplink ports can cause outages. Proceed with caution!</em></div>`;
             baseHasContent = true;
         }
 
@@ -616,6 +621,11 @@ end</div>
 
         if (fragmentPorts.length > 0) {
             warningHTML += `<div class="${baseHasContent ? 'fragment-section' : ''}"><strong style="color: var(--hl-yellow); text-shadow: 0 0 5px rgba(227, 179, 65, 0.4);">////// FRAGMENTED SECURITY CONFIG //////</strong><br>Incomplete security setup on: <span style="color: #fff; font-weight: bold;">${fragmentPorts.join(', ')}</span><br><em style="color: var(--text-main);">Select a Protocol Mode (03) to automatically repair and complete these configurations.</em></div>`;
+            baseHasContent = true;
+        }
+        
+        if (noSecPorts.length > 0) {
+            warningHTML += `<div class="${baseHasContent ? 'nosec-section' : ''}"><strong style="color: var(--hl-cyan); text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);">⚠️ NOTICE: NO PORT SECURITY DETECTED</strong><br>Unsecured ports: <span style="color: #fff; font-weight: bold;">${noSecPorts.join(', ')}</span><br><em style="color: var(--text-main);">Port security is a mandatory config for most ports specially in production use. Proceed with caution.</em></div>`;
             baseHasContent = true;
         }
 
@@ -629,6 +639,7 @@ end</div>
             if (unsafePorts.length > 0) warningBox.style.borderColor = 'var(--accent-red)';
             else if (conflictedPorts.length > 0) warningBox.style.borderColor = 'var(--hl-magenta)';
             else if (fragmentPorts.length > 0) warningBox.style.borderColor = 'var(--hl-yellow)';
+            else if (noSecPorts.length > 0) warningBox.style.borderColor = 'var(--hl-cyan)';
             else warningBox.style.borderColor = 'var(--hl-orange)';
         } else {
             warningBox.style.display = 'none';
@@ -768,7 +779,6 @@ end</div>
                 if (cmds.length > 0 && cmds[cmds.length - 1] !== "shut") cmds.push("shut");
             }
 
-            // Cleanup for Edge case: If only bounce was needed and port was originally shut and we didn't unshut
             if (cmds.length === 2 && cmds[0] === "shut" && cmds[1] === "shut") cmds.pop();
 
             return cmds.length ? cmds : null;
@@ -805,7 +815,6 @@ end</div>
             }
             
             if (secChanged) {
-                // 1. Strip what Primary ADDED
                 if (securityMode === 'dot1x' || (securityMode === 'reset' && isCurrentlyDot1x)) {
                     if (!iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
                     if (!iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
@@ -816,7 +825,6 @@ end</div>
                 
                 cmds.push("shut");
                 
-                // 2. Restore what Primary REMOVED
                 if (securityMode === 'dot1x' && isCurrentlySticky) {
                     if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
                     if (iface.hasPortSec) cmds.push("switchport port-security");
