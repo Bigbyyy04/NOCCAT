@@ -455,7 +455,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v3.4 [Config Automation Tool]</span>
+        <span class="version-tag">// v3.5 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -506,7 +506,7 @@ end</div>
     <div class="controls-row">
         <div class="form-group" style="width: 100px; margin-bottom: 0;">
             <label>02 // VLAN</label>
-            <input type="number" id="vlanInput" placeholder="VID" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            <input type="number" id="vlanInput" placeholder="VID" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094;">
         </div>
         
         <div class="form-group" style="flex-grow: 1; margin-bottom: 0;">
@@ -584,7 +584,7 @@ end</div>
 
             <h3>🛡️ 2. Advanced Security & Protocol Management</h3>
             <ul>
-                <li><strong>VLAN Assignment:</strong> Updates access VLANs only if the target differs.</li>
+                <li><strong>VLAN Assignment:</strong> Updates access VLANs only if the target differs. Prevents entry of invalid VLANs (> 4094).</li>
                 <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates (<code>dot1x pae authenticator</code> & <code>authentication port-control auto</code>).</li>
                 <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates (<code>switchport port-security</code> & <code>...mac-address sticky</code>).</li>
                 <li><strong>Universal RESET:</strong> Wipes existing security clean. Security resets intentionally omit rollback commands, but if paired with a VLAN change, the engine will still independently roll back the VLAN.</li>
@@ -1045,6 +1045,7 @@ end</div>
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
+            let isDual = isCurrentlyDot1x && isCurrentlySticky;
             
             let secChanged = false;
             
