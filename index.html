@@ -455,7 +455,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v3.2 [Config Automation Tool]</span>
+        <span class="version-tag">// v3.3 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -587,7 +587,7 @@ end</div>
                 <li><strong>VLAN Assignment:</strong> Updates access VLANs only if the target differs.</li>
                 <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates (<code>dot1x pae authenticator</code> & <code>authentication port-control auto</code>).</li>
                 <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates (<code>switchport port-security</code> & <code>...mac-address sticky</code>).</li>
-                <li><strong>Universal RESET:</strong> Intelligently detects existing security and wipes it clean.</li>
+                <li><strong>Universal RESET:</strong> Intelligently detects existing security and wipes it clean. By design, security resets omit rollback commands, as bouncing ports cannot be undone logically.</li>
                 <li><strong>Smart Port Bouncing:</strong> Calculates if a change requires <code>shut</code> / <code>no shut</code> to clear violation states, handling it in both scripts.</li>
             </ul>
 
@@ -1045,7 +1045,6 @@ end</div>
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
-            let isDual = isCurrentlyDot1x && isCurrentlySticky;
             
             let secChanged = false;
             
@@ -1054,7 +1053,8 @@ end</div>
             } else if (securityMode === 'sticky') {
                 if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true;
             } else if (securityMode === 'reset') {
-                if ((isCurrentlySticky || isCurrentlyDot1x) && !isDual) secChanged = true;
+                // INTENTIONAL: No rollback for a security reset. Bouncing/clearing MACs cannot be undone logically.
+                secChanged = false; 
             }
 
             let needsBounce = vlanChanged || stpChanged || secChanged;
@@ -1068,10 +1068,10 @@ end</div>
             }
             
             if (secChanged) {
-                if (securityMode === 'dot1x' || (securityMode === 'reset' && isCurrentlyDot1x)) {
+                if (securityMode === 'dot1x') {
                     if (!iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
                     if (!iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
-                } else if (securityMode === 'sticky' || (securityMode === 'reset' && isCurrentlySticky)) {
+                } else if (securityMode === 'sticky') {
                     if (!iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
                     if (!iface.hasPortSec) cmds.push("no switchport port-security");
                 }
@@ -1084,14 +1084,6 @@ end</div>
                 } else if (securityMode === 'sticky' && isCurrentlyDot1x) {
                     if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
                     if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
-                } else if (securityMode === 'reset') {
-                    if (isCurrentlySticky) {
-                        if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
-                        if (iface.hasPortSec) cmds.push("switchport port-security");
-                    } else if (isCurrentlyDot1x) {
-                        if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
-                        if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
-                    }
                 }
             } else if (needsBounce && cmds.length > 0 && cmds[cmds.length - 1] !== "shut") {
                 cmds.push("shut");
