@@ -310,6 +310,13 @@
 
         .btn-column { display: flex; flex-direction: column; gap: 8px; justify-content: flex-end; }
 
+        /* --- CYBER BUTTON & PULSE ANIMATION --- */
+        @keyframes pulse-ready {
+            0% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.3); }
+            50% { box-shadow: 0 0 18px rgba(57, 255, 20, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.3); }
+        }
+
         .cyber-btn {
             background: var(--accent-green);
             color: #fff;
@@ -322,11 +329,26 @@
             border-radius: 4px;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 0 10px rgba(35, 134, 54, 0.3);
             white-space: nowrap;
         }
 
-        .cyber-btn:hover { background: #2ea043; box-shadow: 0 0 20px rgba(57, 255, 20, 0.5); }
+        .cyber-btn.ready {
+            animation: pulse-ready 2s infinite;
+        }
+
+        .cyber-btn:not(:disabled):hover { 
+            background: #2ea043; 
+            box-shadow: 0 0 25px rgba(57, 255, 20, 0.9); 
+        }
+
+        .cyber-btn:disabled {
+            background: #21262d;
+            color: #8b949e;
+            border-color: #30363d;
+            cursor: not-allowed;
+            box-shadow: none;
+            animation: none;
+        }
 
         .clear-btn {
             background: transparent;
@@ -455,7 +477,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v3.6 [Config Automation Tool]</span>
+        <span class="version-tag">// v3.7 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -542,7 +564,7 @@ end</div>
         </div>
 
         <div class="btn-column">
-            <button class="cyber-btn" onclick="generateScript()">Execute_Run</button>
+            <button id="executeBtn" class="cyber-btn" onclick="generateScript()" disabled>Execute_Run</button>
             <button class="clear-btn" onclick="clearAll()">Clear</button>
         </div>
     </div>
@@ -606,6 +628,7 @@ end</div>
             <ul>
                 <li><strong>Independent EDGE Evaluation:</strong> Checks <code>portfast</code> and <code>bpduguard enable</code> separately. Only pushes missing lines.</li>
                 <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
+                <li><strong>Input Validation:</strong> Execute button remains locked until a valid Cisco interface block is successfully parsed from the input window.</li>
             </ul>
 
             <h3 style="margin-bottom: 0;">🎨 5. Zero-Trust Local Storage DB</h3>
@@ -750,6 +773,11 @@ end</div>
         document.getElementById('rollbackCode').innerText = "-- system_idle --";
         document.getElementById('rollbackLines').innerText = "";
         
+        // Reset the execute button state completely
+        const execBtn = document.getElementById('executeBtn');
+        execBtn.disabled = true;
+        execBtn.classList.remove('ready');
+        
         document.getElementById('statusMsg').style.display = 'none';
         document.getElementById('warningBox').style.display = 'none';
         document.getElementById('deviceHud').classList.remove('visible');
@@ -777,12 +805,23 @@ end</div>
         linesElem.innerText = lineNumbers;
     }
 
-    // --- REAL-TIME WARNING & MULTI-HOSTNAME SCANNER ---
+    // --- REAL-TIME WARNING, HUD, & BUTTON VALIDATION ---
     function checkDynamicWarnings() {
         const configText = document.getElementById('configInput').value;
         const warningBox = document.getElementById('warningBox');
         const deviceHud = document.getElementById('deviceHud');
+        const execBtn = document.getElementById('executeBtn');
         
+        // Validation Logic for the Execute Button
+        const hasValidInterface = /(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/i.test(configText);
+        if (hasValidInterface) {
+            execBtn.disabled = false;
+            execBtn.classList.add('ready');
+        } else {
+            execBtn.disabled = true;
+            execBtn.classList.remove('ready');
+        }
+
         if (!configText.trim()) {
             warningBox.style.display = 'none';
             deviceHud.classList.remove('visible');
