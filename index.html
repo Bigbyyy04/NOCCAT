@@ -477,7 +477,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v3.7 [Config Automation Tool]</span>
+        <span class="version-tag">// v3.8 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -812,8 +812,8 @@ end</div>
         const deviceHud = document.getElementById('deviceHud');
         const execBtn = document.getElementById('executeBtn');
         
-        // Validation Logic for the Execute Button
-        const hasValidInterface = /(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/i.test(configText);
+        // V3.8 Validation Logic: Requires "interface" to be at the START of a line
+        const hasValidInterface = /^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         if (hasValidInterface) {
             execBtn.disabled = false;
             execBtn.classList.add('ready');
