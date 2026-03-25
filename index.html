@@ -477,7 +477,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v3.9 [Config Automation Tool]</span>
+        <span class="version-tag">// v4.0 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -552,15 +552,16 @@ end</div>
             </div>
         </div>
 
-        <div class="form-group" style="width: 140px; margin-bottom: 0;">
+        <div class="form-group" style="width: 195px; margin-bottom: 0;">
             <label style="display: flex; align-items: center; gap: 4px;">
                 05 // ADMIN STATE
-                <div class="tooltip-icon" data-tooltip="UP forces a 'no shut'. DWN forces a 'shut'. LEAVE preserves the original state.">i</div>
+                <div class="tooltip-icon" data-tooltip="UP forces 'no shut'. DWN forces 'shut'. BNC explicitly bounces the port (shut/no shut). LEAVE preserves original state.">i</div>
             </label>
             <div class="radio-group">
                 <label><input type="radio" name="adminState" value="leave" checked><span>--</span></label>
                 <label><input type="radio" name="adminState" value="up"><span>UP</span></label>
                 <label><input type="radio" name="adminState" value="down"><span>DWN</span></label>
+                <label><input type="radio" name="adminState" value="bounce"><span>BNC</span></label>
             </div>
         </div>
 
@@ -639,7 +640,7 @@ end</div>
             <h3>⚡ 4. Edge & State Controls</h3>
             <ul>
                 <li><strong>Independent EDGE Evaluation:</strong> Checks <code>portfast</code> and <code>bpduguard enable</code> separately. Only pushes missing lines.</li>
-                <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
+                <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
                 <li><strong>Open Override:</strong> The <code>06 // OPEN</code> toggle suppresses the cyan "No Port Security" compliance warning when you are intentionally configuring an unsecured port.</li>
                 <li><strong>Input Validation:</strong> Execute button remains locked until a valid Cisco interface block is successfully parsed from the input window.</li>
             </ul>
@@ -1020,7 +1021,8 @@ end</div>
             
             let forceUp = adminState === 'up';
             let forceDown = adminState === 'down';
-            let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown);
+            let forceBounce = adminState === 'bounce';
+            let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown) || forceBounce;
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
@@ -1038,7 +1040,7 @@ end</div>
                 if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
             }
 
-            let needsBounce = vlanChanged || stpChanged || secChanged;
+            let needsBounce = vlanChanged || stpChanged || secChanged || forceBounce;
 
             if (!needsBounce && !stateChanged) return null;
 
@@ -1085,7 +1087,7 @@ end</div>
             } 
             
             // Insert bounce explicitly if needed and not already pushed by security block
-            if (needsBounce && !cmds.includes("shut") && !iface.isShutdown) {
+            if (needsBounce && !cmds.includes("shut") && (!iface.isShutdown || forceBounce)) {
                 cmds.push("shut");
             }
 
@@ -1096,6 +1098,9 @@ end</div>
                 if (!isShutNow) cmds.push("shut");
             } else if (forceUp) {
                 if (isShutNow) cmds.push("no shut");
+            } else if (forceBounce) {
+                if (!isShutNow) cmds.push("shut");
+                if (cmds[cmds.length - 1] !== "no shut") cmds.push("no shut");
             } else { // LEAVE
                 if (!iface.isShutdown && isShutNow) cmds.push("no shut");
             }
@@ -1113,7 +1118,8 @@ end</div>
             
             let forceUp = adminState === 'up';
             let forceDown = adminState === 'down';
-            let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown);
+            let forceBounce = adminState === 'bounce';
+            let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown) || (forceBounce && iface.isShutdown);
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
@@ -1169,7 +1175,7 @@ end</div>
             } 
             
             // Calculate what the port state is BEFORE the rollback script runs
-            let portStateBeforeRollback = forceDown ? "shut" : (forceUp ? "no shut" : (iface.isShutdown ? "shut" : "no shut"));
+            let portStateBeforeRollback = forceDown ? "shut" : ((forceUp || forceBounce) ? "no shut" : (iface.isShutdown ? "shut" : "no shut"));
             
             // Insert bounce explicitly if needed
             if (needsBounce && !cmds.includes("shut") && portStateBeforeRollback !== "shut") {
