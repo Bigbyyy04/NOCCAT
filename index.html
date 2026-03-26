@@ -410,6 +410,18 @@
             font-size: 11px;
             font-weight: bold;
             text-transform: uppercase;
+            transition: 0.3s;
+        }
+        
+        .copy-btn.rollback {
+            background: var(--accent-red);
+        }
+
+        .copy-btn:disabled {
+            background: #30363d;
+            color: #8b949e;
+            cursor: not-allowed;
+            opacity: 0.6;
         }
 
         .code-window {
@@ -477,7 +489,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v4.1 [Config Automation Tool]</span>
+        <span class="version-tag">// v4.2 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -588,7 +600,7 @@ end</div>
 
     <div class="script-header">
         <label style="margin:0;">> Implementation_Output</label>
-        <button class="copy-btn" onclick="copyCode('primaryCode')">Copy</button>
+        <button id="copyPrimaryBtn" class="copy-btn" onclick="copyCode('primaryCode')" disabled>Copy</button>
     </div>
     <div class="code-window">
         <div id="primaryLines" class="line-numbers"></div>
@@ -597,7 +609,7 @@ end</div>
 
     <div class="script-header">
         <label style="margin:0; color:var(--accent-red);">> Rollback_Protocol</label>
-        <button class="copy-btn" onclick="copyCode('rollbackCode')" style="background:var(--accent-red)">Copy</button>
+        <button id="copyRollbackBtn" class="copy-btn rollback" onclick="copyCode('rollbackCode')" disabled>Copy</button>
     </div>
     <div class="code-window" style="border-color: #442d30;">
         <div id="rollbackLines" class="line-numbers" style="color:#6e3636"></div>
@@ -643,7 +655,7 @@ end</div>
                 <li><strong>Independent EDGE Evaluation:</strong> Checks <code>portfast</code> and <code>bpduguard enable</code> separately. Only pushes missing lines.</li>
                 <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
                 <li><strong>OPEN_PORT Toggle:</strong> Mini-toggle inside the Protocol Mode box suppresses the cyan "No Port Security" compliance warning when you intentionally configure an unsecured port.</li>
-                <li><strong>Input Validation:</strong> Execute button remains locked until a valid Cisco interface block is successfully parsed from the input window.</li>
+                <li><strong>Input Validation:</strong> Execute button remains locked until a valid Cisco interface block is successfully parsed. Copy buttons remain grayed out until an actionable script is generated.</li>
             </ul>
 
             <h3 style="margin-bottom: 0;">🎨 5. Zero-Trust Local Storage DB</h3>
@@ -789,9 +801,14 @@ end</div>
         document.getElementById('rollbackCode').innerText = "-- system_idle --";
         document.getElementById('rollbackLines').innerText = "";
         
+        // Reset the execute button state completely
         const execBtn = document.getElementById('executeBtn');
         execBtn.disabled = true;
         execBtn.classList.remove('ready');
+        
+        // Reset the copy buttons
+        document.getElementById('copyPrimaryBtn').disabled = true;
+        document.getElementById('copyRollbackBtn').disabled = true;
         
         document.getElementById('statusMsg').style.display = 'none';
         document.getElementById('warningBox').style.display = 'none';
@@ -1009,6 +1026,10 @@ end</div>
         if (interfacesData.length === 0) {
             updateCodeDisplay('primaryCode', 'primaryLines', "-- system_idle --");
             updateCodeDisplay('rollbackCode', 'rollbackLines', "-- system_idle --");
+            
+            document.getElementById('copyPrimaryBtn').disabled = true;
+            document.getElementById('copyRollbackBtn').disabled = true;
+            
             document.getElementById('statusMsg').innerText = `STATUS: 0 ELIGIBLE PORTS_PARSED`;
             return;
         }
@@ -1232,6 +1253,11 @@ end</div>
 
         updateCodeDisplay('primaryCode', 'primaryLines', build(getPrimary));
         updateCodeDisplay('rollbackCode', 'rollbackLines', build(getRollback));
+        
+        // Disable copy buttons if there is no script generated
+        document.getElementById('copyPrimaryBtn').disabled = document.getElementById('primaryCode').innerText === "-- system_idle --";
+        document.getElementById('copyRollbackBtn').disabled = document.getElementById('rollbackCode').innerText === "-- system_idle --";
+
         document.getElementById('statusMsg').style.display = 'block';
         document.getElementById('statusMsg').innerText = `STATUS: ${interfacesData.length} PORTS_PARSED_AND_COMPILED`;
     }
