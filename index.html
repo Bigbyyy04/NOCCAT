@@ -627,11 +627,11 @@ end</div>
                 </div>
             </div>
             <div class="radio-group">
-                <label><input type="radio" name="securityMode" value="leave" checked><span>--</span></label>
-                <label class="disabled"><input type="radio" name="securityMode" value="dot1x" disabled><span>DOT1X</span></label>
-                <label class="disabled"><input type="radio" name="securityMode" value="sticky" disabled><span>STICKY</span></label>
-                <label class="disabled"><input type="radio" name="securityMode" value="remove" onclick="handleRemoveClick(this)" disabled><span>REMOVE</span></label>
-                <label class="disabled"><input type="radio" name="securityMode" value="reset" disabled><span>RESET</span></label>
+                <label><input type="radio" name="securityMode" value="leave" checked onchange="checkDynamicWarnings()"><span>--</span></label>
+                <label class="disabled"><input type="radio" name="securityMode" value="dot1x" disabled onchange="checkDynamicWarnings()"><span>DOT1X</span></label>
+                <label class="disabled"><input type="radio" name="securityMode" value="sticky" disabled onchange="checkDynamicWarnings()"><span>STICKY</span></label>
+                <label class="disabled"><input type="radio" name="securityMode" value="remove" onclick="handleRemoveClick(this)" onchange="checkDynamicWarnings()" disabled><span>REMOVE</span></label>
+                <label class="disabled"><input type="radio" name="securityMode" value="reset" disabled onchange="checkDynamicWarnings()"><span>RESET</span></label>
             </div>
         </div>
 
@@ -724,6 +724,7 @@ end</div>
             <ul>
                 <li><strong>Independent EDGE Evaluation:</strong> Checks <code>portfast</code> and <code>bpduguard enable</code> separately. Only pushes missing lines.</li>
                 <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
+                <li><strong>Cross-Panel Locking:</strong> If any security protocol modification is selected (DOT1X, STICKY, REMOVE, RESET), the `BNC` button is automatically disabled to prevent redundant port bouncing.</li>
                 <li><strong>Smart Idempotent Locking:</strong> UI parameter buttons (such as EDGE, DOT1X, UP, DWN) will completely lock down and gray out if the engine detects that your pasted logs <em>already</em> meet those specific conditions natively, actively preventing redundant script execution.</li>
                 <li><strong>OPEN_PORT Toggle:</strong> Mini-toggle inside the Protocol Mode box suppresses the cyan "No Port Security" compliance warning when you intentionally configure an unsecured port.</li>
                 <li><strong>Input Validation:</strong> Execute button remains locked until a valid Cisco interface block is successfully parsed from the input window. Copy buttons remain grayed out until an actionable script is generated.</li>
@@ -891,16 +892,19 @@ end</div>
         if(elem.checked) {
             const isSuppressed = localStorage.getItem('noccat_suppress_remove_warning');
             if (isSuppressed === 'true') {
+                checkDynamicWarnings(); // Trigger UI logic
                 return; 
             }
             document.getElementById('dontShowAgainCheckbox').checked = false; 
             document.getElementById('removeWarningModal').classList.add('visible');
+            checkDynamicWarnings(); // Trigger UI logic
         }
     }
 
     function cancelRemove() {
         document.getElementById('removeWarningModal').classList.remove('visible');
         document.querySelector('input[name="securityMode"][value="leave"]').checked = true;
+        checkDynamicWarnings(); // Re-trigger UI logic to unlock BNC
     }
 
     function confirmRemove() {
@@ -909,6 +913,7 @@ end</div>
             localStorage.setItem('noccat_suppress_remove_warning', 'true');
         }
         document.getElementById('removeWarningModal').classList.remove('visible');
+        checkDynamicWarnings(); // Update UI
     }
 
     function clearAll() {
@@ -1140,6 +1145,10 @@ end</div>
             }
         });
 
+        // Track Current Selected State 
+        const selectedSecurityMode = document.querySelector('input[name="securityMode"]:checked').value;
+        const isSecurityModifying = selectedSecurityMode !== 'leave';
+
         // --- IDEMPOTENT UI LOCKING ENGINE ---
         if (totalParsedPorts > 0) {
             
@@ -1185,13 +1194,19 @@ end</div>
                 upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled');
             }
 
-            // ADMIN STATE: DOWN & BOUNCE
+            // ADMIN STATE: DOWN
             if (portsWithShutdown === totalParsedPorts) {
                 downRadio.disabled = true; downRadio.closest('label').classList.add('disabled');
-                bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled');
-                if (downRadio.checked || bounceRadio.checked) leaveAdminRadio.checked = true;
+                if (downRadio.checked) leaveAdminRadio.checked = true;
             } else {
                 downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled');
+            }
+            
+            // ADMIN STATE: BOUNCE (Locks if ports are dead OR if a security mode is actively selected)
+            if (portsWithShutdown === totalParsedPorts || isSecurityModifying) {
+                bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled');
+                if (bounceRadio.checked) leaveAdminRadio.checked = true;
+            } else {
                 bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled');
             }
             
@@ -1260,6 +1275,7 @@ end</div>
                 
                 let vlanMatch = block.match(/switchport\s+access\s+vlan\s+(\d+)/i);
                 
+                // STRICT LINE-BY-LINE SECURITY PARSING
                 let hasStickyMac = /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky[ \t]*\r?(?:\n|$)/i.test(block);
                 let hasPortSec = /(?:^|\n)[ \t]*switchport\s+port-security[ \t]*\r?(?:\n|$)/i.test(block);
                 let hasDot1xPae = /(?:^|\n)[ \t]*dot1x\s+pae\s+authenticator[ \t]*\r?(?:\n|$)/i.test(block);
