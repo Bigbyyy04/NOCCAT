@@ -559,7 +559,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v4.7 [Config Automation Tool]</span>
+        <span class="version-tag">// v4.8 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -654,7 +654,7 @@ end</div>
                 <label><input type="radio" name="adminState" value="leave" checked><span>--</span></label>
                 <label><input type="radio" name="adminState" value="up"><span>UP</span></label>
                 <label><input type="radio" name="adminState" value="down"><span>DWN</span></label>
-                <label><input type="radio" name="adminState" value="bounce"><span>BNC</span></label>
+                <label class="disabled"><input type="radio" name="adminState" value="bounce" disabled><span>BNC</span></label>
             </div>
         </div>
 
@@ -724,6 +724,7 @@ end</div>
             <ul>
                 <li><strong>Independent EDGE Evaluation:</strong> Checks <code>portfast</code> and <code>bpduguard enable</code> separately. Only pushes missing lines.</li>
                 <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
+                <li><strong>Smart BNC Lock:</strong> BNC button automatically locks if all parsed ports are currently <code>shutdown</code>. If mixed, the engine intelligently skips bouncing the dead ports.</li>
                 <li><strong>OPEN_PORT Toggle:</strong> Mini-toggle inside the Protocol Mode box suppresses the cyan "No Port Security" compliance warning when you intentionally configure an unsecured port.</li>
                 <li><strong>Input Validation:</strong> Execute button remains locked until a valid Cisco interface block is successfully parsed from the input window. Copy buttons remain grayed out until an actionable script is generated.</li>
             </ul>
@@ -860,6 +861,7 @@ end</div>
         textarea.classList.toggle('expanded');
         btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]";
         
+        // Remember if user manually collapsed a long log so we don't fight them later
         if (!textarea.classList.contains('expanded') && textarea.value.split('\n').length > 8) {
             textarea.dataset.manualCollapse = "true";
         } else {
@@ -922,11 +924,12 @@ end</div>
         document.getElementById('rollbackCode').innerText = "-- system_idle --";
         document.getElementById('rollbackLines').innerText = "";
         
+        // Reset the execute button state completely
         const execBtn = document.getElementById('executeBtn');
         execBtn.disabled = true;
         execBtn.classList.remove('ready');
         
-        // Ensure buttons are solidly locked on clear
+        // Ensure security buttons are solidly locked on clear
         const removeRadio = document.querySelector('input[name="securityMode"][value="remove"]');
         removeRadio.disabled = true;
         removeRadio.closest('label').classList.add('disabled');
@@ -934,6 +937,11 @@ end</div>
         const resetRadio = document.querySelector('input[name="securityMode"][value="reset"]');
         resetRadio.disabled = true;
         resetRadio.closest('label').classList.add('disabled');
+        
+        // Ensure bounce button is solidly locked on clear
+        const bounceRadio = document.querySelector('input[name="adminState"][value="bounce"]');
+        bounceRadio.disabled = true;
+        bounceRadio.closest('label').classList.add('disabled');
         
         document.getElementById('copyPrimaryBtn').disabled = true;
         document.getElementById('copyRollbackBtn').disabled = true;
@@ -982,6 +990,10 @@ end</div>
         const resetRadio = document.querySelector('input[name="securityMode"][value="reset"]');
         const resetLabel = resetRadio.closest('label');
         
+        const bounceRadio = document.querySelector('input[name="adminState"][value="bounce"]');
+        const bounceLabel = bounceRadio.closest('label');
+        
+        // Validation Logic for the Execute Button
         const hasValidInterface = /^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         if (hasValidInterface) {
             execBtn.disabled = false;
@@ -1005,12 +1017,19 @@ end</div>
             removeLabel.classList.add('disabled');
             resetRadio.disabled = true;
             resetLabel.classList.add('disabled');
+            bounceRadio.disabled = true;
+            bounceLabel.classList.add('disabled');
+            
             if (removeRadio.checked || resetRadio.checked) {
                 document.querySelector('input[name="securityMode"][value="leave"]').checked = true;
+            }
+            if (bounceRadio.checked) {
+                document.querySelector('input[name="adminState"][value="leave"]').checked = true;
             }
             return;
         }
 
+        // Smart Auto-Expand Box
         if (lineCount > 8) {
             if (!textarea.classList.contains('expanded') && !textarea.dataset.manualCollapse) {
                 textarea.classList.add('expanded');
@@ -1024,6 +1043,7 @@ end</div>
             }
         }
 
+        // Multi-Tenant Hostname Cross-Reference Logic
         const hostMatches = [...configText.matchAll(/^([A-Za-z0-9\-\_]+)#/gm)];
         let uniqueHosts = [];
         
@@ -1060,6 +1080,7 @@ end</div>
         let fragmentPorts = [];
         let noSecPorts = [];
         let hasAnySecurity = false;
+        let hasActivePorts = false;
 
         textBlocks.forEach(block => {
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
@@ -1070,7 +1091,11 @@ end</div>
                 if (!isAccessMode && !unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
 
                 let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
-                if (isShutdown && !shutdownPorts.includes(normalizedIf)) shutdownPorts.push(normalizedIf);
+                if (isShutdown && !shutdownPorts.includes(normalizedIf)) {
+                    shutdownPorts.push(normalizedIf);
+                } else {
+                    hasActivePorts = true;
+                }
 
                 let hasStickyMac = /(?:^|\n)[ \t]*switchport port-security mac-address sticky[ \t]*\r?(?:\n|$)/i.test(block);
                 let hasPortSec = /(?:^|\n)[ \t]*switchport port-security[ \t]*\r?(?:\n|$)/i.test(block);
@@ -1094,7 +1119,7 @@ end</div>
             }
         });
 
-        // --- Smart Button Lock Logic ---
+        // --- Smart Button Lock Logic (Security) ---
         if (hasAnySecurity) {
             removeRadio.disabled = false;
             removeLabel.classList.remove('disabled');
@@ -1106,9 +1131,21 @@ end</div>
             resetRadio.disabled = true;
             resetLabel.classList.add('disabled');
             
-            // Failsafe auto-revert if they had it selected and pasted a clean block
             if (removeRadio.checked || resetRadio.checked) {
                 document.querySelector('input[name="securityMode"][value="leave"]').checked = true;
+            }
+        }
+        
+        // --- Smart Button Lock Logic (Bounce) ---
+        if (hasActivePorts) {
+            bounceRadio.disabled = false;
+            bounceLabel.classList.remove('disabled');
+        } else {
+            bounceRadio.disabled = true;
+            bounceLabel.classList.add('disabled');
+            
+            if (bounceRadio.checked) {
+                document.querySelector('input[name="adminState"][value="leave"]').checked = true;
             }
         }
 
@@ -1175,6 +1212,7 @@ end</div>
                 
                 let vlanMatch = block.match(/switchport access vlan (\d+)/i);
                 
+                // STRICT LINE-BY-LINE SECURITY PARSING
                 let hasStickyMac = /(?:^|\n)[ \t]*switchport port-security mac-address sticky[ \t]*\r?(?:\n|$)/i.test(block);
                 let hasPortSec = /(?:^|\n)[ \t]*switchport port-security[ \t]*\r?(?:\n|$)/i.test(block);
                 let hasDot1xPae = /(?:^|\n)[ \t]*dot1x pae authenticator[ \t]*\r?(?:\n|$)/i.test(block);
@@ -1227,7 +1265,7 @@ end</div>
             
             let forceUp = adminState === 'up';
             let forceDown = adminState === 'down';
-            let forceBounce = adminState === 'bounce';
+            let forceBounce = adminState === 'bounce' && !iface.isShutdown; 
             let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown) || forceBounce;
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
@@ -1293,7 +1331,7 @@ end</div>
             } 
             
             // Insert bounce explicitly if needed and not already pushed by security block
-            if (needsBounce && !cmds.includes("shut") && (!iface.isShutdown || forceBounce)) {
+            if (needsBounce && !cmds.includes("shut") && !iface.isShutdown) {
                 cmds.push("shut");
             }
 
@@ -1324,8 +1362,8 @@ end</div>
             
             let forceUp = adminState === 'up';
             let forceDown = adminState === 'down';
-            let forceBounce = adminState === 'bounce';
-            let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown) || (forceBounce && iface.isShutdown);
+            let forceBounce = adminState === 'bounce' && !iface.isShutdown;
+            let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown) || forceBounce;
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
