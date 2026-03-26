@@ -559,7 +559,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v5.0 [Config Automation Tool]</span>
+        <span class="version-tag">// v5.1 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -695,7 +695,7 @@ end</div>
         <div class="readme-content manifest-box">
             <h3 style="margin-top: 0;">🧠 1. The Core Idempotent Engine</h3>
             <ul>
-                <li><strong>Smart State Parsing:</strong> Reads current running-config, compares to target settings, and <em>only</em> generates commands for exact missing or differing lines.</li>
+                <li><strong>Smart State Parsing:</strong> Reads current running-config, compares to target settings, and <em>only</em> generates commands for exact missing or differing lines. Resilient against terminal emulator copy/paste spacing quirks.</li>
                 <li><strong>Automated Rollback Generation:</strong> Builds a reverse script to perfectly undo changes and return ports to their original state.</li>
                 <li><strong>Interface Chunking:</strong> Groups targets into <code>interface range</code> commands (up to 5 ports) to keep scripts clean.</li>
                 <li><strong>Surgical Command Stripping:</strong> Automatically injects exact <code>no</code> commands to scrub old protocols before applying new ones.</li>
@@ -1102,7 +1102,7 @@ end</div>
                 totalParsedPorts++;
                 let normalizedIf = ifMatch[1].replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te');
                 
-                let isAccessMode = /switchport mode access/i.test(block);
+                let isAccessMode = /switchport\s+mode\s+access/i.test(block);
                 if (!isAccessMode && !unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
 
                 let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
@@ -1113,13 +1113,13 @@ end</div>
                     portsWithNoShut++;
                 }
 
-                let hasStickyMac = /(?:^|\n)[ \t]*switchport port-security mac-address sticky[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasPortSec = /(?:^|\n)[ \t]*switchport port-security[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x pae authenticator[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication port-control auto[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasStickyMac = /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasPortSec = /(?:^|\n)[ \t]*switchport\s+port-security[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x\s+pae\s+authenticator[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication\s+port-control\s+auto[ \t]*\r?(?:\n|$)/i.test(block);
                 
-                let hasPortfast = /spanning-tree portfast/i.test(block);
-                let hasBpduguard = /spanning-tree bpduguard/i.test(block);
+                let hasPortfast = /spanning-tree\s+portfast/i.test(block);
+                let hasBpduguard = /spanning-tree\s+bpduguard/i.test(block);
 
                 let isAnySticky = hasStickyMac || hasPortSec;
                 let isAnyDot1x = hasDot1xPae || hasAuthPortControl;
@@ -1258,16 +1258,15 @@ end</div>
                 let rawIf = ifMatch[1];
                 let normalizedIf = rawIf.replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te');
                 
-                let vlanMatch = block.match(/switchport access vlan (\d+)/i);
+                let vlanMatch = block.match(/switchport\s+access\s+vlan\s+(\d+)/i);
                 
-                // STRICT LINE-BY-LINE SECURITY PARSING
-                let hasStickyMac = /(?:^|\n)[ \t]*switchport port-security mac-address sticky[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasPortSec = /(?:^|\n)[ \t]*switchport port-security[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x pae authenticator[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication port-control auto[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasStickyMac = /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasPortSec = /(?:^|\n)[ \t]*switchport\s+port-security[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x\s+pae\s+authenticator[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication\s+port-control\s+auto[ \t]*\r?(?:\n|$)/i.test(block);
 
-                let hasPortfast = /spanning-tree portfast/i.test(block);
-                let hasBpduguard = /spanning-tree bpduguard/i.test(block);
+                let hasPortfast = /spanning-tree\s+portfast/i.test(block);
+                let hasBpduguard = /spanning-tree\s+bpduguard/i.test(block);
                 let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
 
                 if (!interfacesDataMap[normalizedIf]) {
@@ -1379,7 +1378,7 @@ end</div>
             } 
             
             // Insert bounce explicitly if needed and not already pushed by security block
-            if (needsBounce && !cmds.includes("shut") && !iface.isShutdown) {
+            if (needsBounce && !cmds.includes("shut") && (!iface.isShutdown || forceBounce)) {
                 cmds.push("shut");
             }
 
