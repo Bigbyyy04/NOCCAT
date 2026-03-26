@@ -489,7 +489,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v4.3 [Config Automation Tool]</span>
+        <span class="version-tag">// v4.4 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -560,7 +560,7 @@ end</div>
                 <label><input type="radio" name="securityMode" value="leave" checked><span>--</span></label>
                 <label><input type="radio" name="securityMode" value="dot1x"><span>DOT1X</span></label>
                 <label><input type="radio" name="securityMode" value="sticky"><span>STICKY</span></label>
-                <label><input type="radio" name="securityMode" value="remove"><span>REMOVE</span></label>
+                <label><input type="radio" name="securityMode" value="remove" onclick="handleRemoveClick(this)"><span>REMOVE</span></label>
                 <label><input type="radio" name="securityMode" value="reset"><span>RESET</span></label>
             </div>
         </div>
@@ -636,7 +636,7 @@ end</div>
                 <li><strong>VLAN Assignment:</strong> Updates access VLANs only if the target differs. Prevents entry of invalid VLANs (> 4094).</li>
                 <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates (<code>dot1x pae authenticator</code> & <code>authentication port-control auto</code>).</li>
                 <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates (<code>switchport port-security</code> & <code>...mac-address sticky</code>).</li>
-                <li><strong>REMOVE Mode:</strong> Explicitly strips existing 802.1X or Sticky MAC configurations to create a completely open port. Rollback intelligently restores them.</li>
+                <li><strong>REMOVE Mode:</strong> Explicitly strips existing 802.1X or Sticky MAC configurations to create a completely open port. Triggering this option requires a mandatory compliance confirmation prompt. Rollback intelligently restores the deleted security.</li>
                 <li><strong>Universal RESET:</strong> Wipes existing security clean. Security resets intentionally omit rollback commands, but if paired with a VLAN change, the engine will still independently roll back the VLAN.</li>
                 <li><strong>Smart Port Bouncing:</strong> Calculates if a change requires <code>shut</code> / <code>no shut</code> to clear violation states, handling it in both scripts.</li>
             </ul>
@@ -655,7 +655,7 @@ end</div>
                 <li><strong>Independent EDGE Evaluation:</strong> Checks <code>portfast</code> and <code>bpduguard enable</code> separately. Only pushes missing lines.</li>
                 <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
                 <li><strong>OPEN_PORT Toggle:</strong> Mini-toggle inside the Protocol Mode box suppresses the cyan "No Port Security" compliance warning when you intentionally configure an unsecured port.</li>
-                <li><strong>Smart Input UI:</strong> Textbox automatically expands when pasting large config blocks. Execute button remains locked until a valid Cisco interface block is parsed. Copy buttons remain grayed out until an actionable script is generated.</li>
+                <li><strong>Input Validation:</strong> Execute button remains locked until a valid Cisco interface block is successfully parsed from the input window. Copy buttons remain grayed out until an actionable script is generated.</li>
             </ul>
 
             <h3 style="margin-bottom: 0;">🎨 5. Zero-Trust Local Storage DB</h3>
@@ -795,10 +795,20 @@ end</div>
         btn.innerText = wrapper.classList.contains('expanded') ? `[ CLOSE_${name} ]` : `[ ${name.startsWith('VIEW') ? '' : 'VIEW_'}${name} ]`;
     }
 
+    function handleRemoveClick(elem) {
+        if(elem.checked) {
+            let proceed = confirm("⚠️ CRITICAL SECURITY WARNING ⚠️\n\nYou are selecting the REMOVE protocol. This will actively strip 802.1X and Sticky MAC configurations from the targeted ports, leaving them completely open to the network.\n\nPlease ensure you have:\n1. Secured proper CAB/Change approvals.\n2. Created the necessary IT documentation or tickets.\n\nDo you wish to proceed and unlock these ports?");
+            if(!proceed) {
+                // User got scared and canceled. Revert back to Leave mode.
+                document.querySelector('input[name="securityMode"][value="leave"]').checked = true;
+            }
+        }
+    }
+
     function clearAll() {
         document.getElementById('configInput').value = "";
         document.getElementById('vlanInput').value = "";
-        document.querySelector('input[value="leave"]').checked = true;
+        document.querySelector('input[name="securityMode"][value="leave"]').checked = true;
         document.getElementById('stpCheckbox').checked = false;
         document.querySelector('input[name="adminState"][value="leave"]').checked = true;
         document.getElementById('suppressCheckbox').checked = false;
