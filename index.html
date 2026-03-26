@@ -477,7 +477,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v4.0 [Config Automation Tool]</span>
+        <span class="version-tag">// v4.1 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -508,7 +508,7 @@ end</div>
                 <h3>> Safety Failsafe & Notices</h3>
                 <p>The real-time engine continuously scans your input. It will warn you of Trunk ports, disabled/shutdown links, un-secured/naked ports, incomplete/fragmented security configurations, and critically dangerous dual-security (Sticky + 802.1X) overlaps.</p>
 
-                <h3>> Target Parameters (02 - 06)</h3>
+                <h3>> Target Parameters (02 - 05)</h3>
                 <p>Set your desired Global VLAN, Protocol Mode, Spanning-Tree, and Admin State requirements. The engine will evaluate the pasted logs and output the exact CLI commands needed to reach your target state.</p>
             </div>
         </div>
@@ -532,7 +532,18 @@ end</div>
         </div>
         
         <div class="form-group" style="flex-grow: 1; margin-bottom: 0;">
-            <label>03 // Protocol Mode</label>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <label style="margin-bottom: 0;">03 // Protocol Mode</label>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <div class="checkbox-group">
+                        <label style="padding: 2px 6px; font-size: 9px; letter-spacing: 0.5px;">
+                            <input type="checkbox" id="suppressCheckbox" onchange="checkDynamicWarnings()">
+                            <span>OPEN_PORT</span>
+                        </label>
+                    </div>
+                    <div class="tooltip-icon" data-tooltip="Suppresses the 'No Port Security' warning for intentional IT or specific campaign use.">i</div>
+                </div>
+            </div>
             <div class="radio-group">
                 <label><input type="radio" name="securityMode" value="leave" checked><span>--</span></label>
                 <label><input type="radio" name="securityMode" value="dot1x"><span>DOT1X</span></label>
@@ -562,16 +573,6 @@ end</div>
                 <label><input type="radio" name="adminState" value="up"><span>UP</span></label>
                 <label><input type="radio" name="adminState" value="down"><span>DWN</span></label>
                 <label><input type="radio" name="adminState" value="bounce"><span>BNC</span></label>
-            </div>
-        </div>
-
-        <div class="form-group" style="width: 85px; margin-bottom: 0;">
-            <label style="display: flex; align-items: center; gap: 4px;">
-                06 // OPEN
-                <div class="tooltip-icon" data-tooltip="Suppresses the 'No Port Security' warning for intentional IT or specific campaign use.">i</div>
-            </label>
-            <div class="checkbox-group">
-                <label><input type="checkbox" id="suppressCheckbox" onchange="checkDynamicWarnings()"><span>ENABLE</span></label>
             </div>
         </div>
 
@@ -641,7 +642,7 @@ end</div>
             <ul>
                 <li><strong>Independent EDGE Evaluation:</strong> Checks <code>portfast</code> and <code>bpduguard enable</code> separately. Only pushes missing lines.</li>
                 <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
-                <li><strong>Open Override:</strong> The <code>06 // OPEN</code> toggle suppresses the cyan "No Port Security" compliance warning when you are intentionally configuring an unsecured port.</li>
+                <li><strong>OPEN_PORT Toggle:</strong> Mini-toggle inside the Protocol Mode box suppresses the cyan "No Port Security" compliance warning when you intentionally configure an unsecured port.</li>
                 <li><strong>Input Validation:</strong> Execute button remains locked until a valid Cisco interface block is successfully parsed from the input window.</li>
             </ul>
 
