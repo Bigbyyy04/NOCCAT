@@ -249,6 +249,16 @@
             box-shadow: 0 0 8px rgba(57, 255, 20, 0.2);
         }
 
+        /* --- TRUE DISABLED STATE CSS --- */
+        .radio-group label.disabled {
+            opacity: 0.3 !important;
+            cursor: not-allowed !important;
+            background: #0d1117 !important;
+            border-color: #30363d !important;
+            color: #484f58 !important;
+            box-shadow: none !important;
+        }
+
         input[type="number"] {
             background: var(--code-bg);
             border: 1px solid var(--border-color);
@@ -549,7 +559,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v4.5 [Config Automation Tool]</span>
+        <span class="version-tag">// v4.7 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -620,8 +630,8 @@ end</div>
                 <label><input type="radio" name="securityMode" value="leave" checked><span>--</span></label>
                 <label><input type="radio" name="securityMode" value="dot1x"><span>DOT1X</span></label>
                 <label><input type="radio" name="securityMode" value="sticky"><span>STICKY</span></label>
-                <label><input type="radio" name="securityMode" value="remove" onclick="handleRemoveClick(this)"><span>REMOVE</span></label>
-                <label><input type="radio" name="securityMode" value="reset"><span>RESET</span></label>
+                <label class="disabled"><input type="radio" name="securityMode" value="remove" onclick="handleRemoveClick(this)" disabled><span>REMOVE</span></label>
+                <label class="disabled"><input type="radio" name="securityMode" value="reset" disabled><span>RESET</span></label>
             </div>
         </div>
 
@@ -696,8 +706,8 @@ end</div>
                 <li><strong>VLAN Assignment:</strong> Updates access VLANs only if the target differs. Prevents entry of invalid VLANs (> 4094).</li>
                 <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates (<code>dot1x pae authenticator</code> & <code>authentication port-control auto</code>).</li>
                 <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates (<code>switchport port-security</code> & <code>...mac-address sticky</code>).</li>
-                <li><strong>REMOVE Mode:</strong> Explicitly strips existing 802.1X or Sticky MAC configurations to create a completely open port. Triggering this option requires a mandatory compliance confirmation prompt. Rollback intelligently restores the deleted security.</li>
-                <li><strong>Universal RESET:</strong> Wipes existing security clean. Security resets intentionally omit rollback commands, but if paired with a VLAN change, the engine will still independently roll back the VLAN.</li>
+                <li><strong>REMOVE Mode:</strong> Automatically disabled unless port security is actually present. Explicitly strips existing 802.1X or Sticky MAC configurations to create a completely open port. Triggering this option requires a mandatory compliance confirmation prompt. Rollback intelligently restores the deleted security.</li>
+                <li><strong>Universal RESET:</strong> Automatically disabled unless port security is actually present. Wipes existing security clean. Security resets intentionally omit rollback commands, but if paired with a VLAN change, the engine will still independently roll back the VLAN.</li>
                 <li><strong>Smart Port Bouncing:</strong> Calculates if a change requires <code>shut</code> / <code>no shut</code> to clear violation states, handling it in both scripts.</li>
             </ul>
 
@@ -828,7 +838,7 @@ end</div>
     function clearDB() {
         if(confirm("Are you sure you want to wipe the Local Browser Database AND all saved preferences?")) {
             localStorage.removeItem('noccat_db');
-            localStorage.removeItem('noccat_suppress_remove_warning'); // Also wipe the warning suppression token
+            localStorage.removeItem('noccat_suppress_remove_warning'); 
             document.getElementById('dbInput').value = "";
             switchDB = {};
             document.getElementById('dbStatus').innerText = "STATUS: MEMORY_WIPED";
@@ -850,7 +860,6 @@ end</div>
         textarea.classList.toggle('expanded');
         btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]";
         
-        // Remember if user manually collapsed a long log so we don't fight them later
         if (!textarea.classList.contains('expanded') && textarea.value.split('\n').length > 8) {
             textarea.dataset.manualCollapse = "true";
         } else {
@@ -876,20 +885,19 @@ end</div>
 
     // --- CUSTOM MODAL LOGIC ---
     function handleRemoveClick(elem) {
+        if(elem.disabled) return; 
         if(elem.checked) {
             const isSuppressed = localStorage.getItem('noccat_suppress_remove_warning');
             if (isSuppressed === 'true') {
-                return; // User already acknowledged and suppressed the warning
+                return; 
             }
-            // Trigger the modal
-            document.getElementById('dontShowAgainCheckbox').checked = false; // Reset checkbox
+            document.getElementById('dontShowAgainCheckbox').checked = false; 
             document.getElementById('removeWarningModal').classList.add('visible');
         }
     }
 
     function cancelRemove() {
         document.getElementById('removeWarningModal').classList.remove('visible');
-        // Auto-revert the radio button back to 'leave'
         document.querySelector('input[name="securityMode"][value="leave"]').checked = true;
     }
 
@@ -899,7 +907,6 @@ end</div>
             localStorage.setItem('noccat_suppress_remove_warning', 'true');
         }
         document.getElementById('removeWarningModal').classList.remove('visible');
-        // The radio button remains checked on 'remove'
     }
 
     function clearAll() {
@@ -915,12 +922,19 @@ end</div>
         document.getElementById('rollbackCode').innerText = "-- system_idle --";
         document.getElementById('rollbackLines').innerText = "";
         
-        // Reset the execute button state completely
         const execBtn = document.getElementById('executeBtn');
         execBtn.disabled = true;
         execBtn.classList.remove('ready');
         
-        // Reset the copy buttons
+        // Ensure buttons are solidly locked on clear
+        const removeRadio = document.querySelector('input[name="securityMode"][value="remove"]');
+        removeRadio.disabled = true;
+        removeRadio.closest('label').classList.add('disabled');
+        
+        const resetRadio = document.querySelector('input[name="securityMode"][value="reset"]');
+        resetRadio.disabled = true;
+        resetRadio.closest('label').classList.add('disabled');
+        
         document.getElementById('copyPrimaryBtn').disabled = true;
         document.getElementById('copyRollbackBtn').disabled = true;
         
@@ -929,7 +943,7 @@ end</div>
         document.getElementById('deviceHud').classList.remove('visible');
         
         const textarea = document.getElementById('configInput');
-        textarea.dataset.manualCollapse = ""; // Clear manual override on reset
+        textarea.dataset.manualCollapse = ""; 
         if (textarea.classList.contains('expanded')) toggleExpand();
     }
 
@@ -963,7 +977,11 @@ end</div>
         const lineCount = configText.split('\n').length;
         const suppressSecWarn = document.getElementById('suppressCheckbox').checked;
         
-        // Validation Logic for the Execute Button
+        const removeRadio = document.querySelector('input[name="securityMode"][value="remove"]');
+        const removeLabel = removeRadio.closest('label');
+        const resetRadio = document.querySelector('input[name="securityMode"][value="reset"]');
+        const resetLabel = resetRadio.closest('label');
+        
         const hasValidInterface = /^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         if (hasValidInterface) {
             execBtn.disabled = false;
@@ -976,29 +994,36 @@ end</div>
         if (!configText.trim()) {
             warningBox.style.display = 'none';
             deviceHud.classList.remove('visible');
-            textarea.dataset.manualCollapse = ""; // Reset manual flag
+            textarea.dataset.manualCollapse = ""; 
             if (textarea.classList.contains('expanded')) {
                 textarea.classList.remove('expanded');
                 expandBtn.innerText = "[ EXPAND ]";
             }
+            
+            // Re-lock Context Buttons on Empty
+            removeRadio.disabled = true;
+            removeLabel.classList.add('disabled');
+            resetRadio.disabled = true;
+            resetLabel.classList.add('disabled');
+            if (removeRadio.checked || resetRadio.checked) {
+                document.querySelector('input[name="securityMode"][value="leave"]').checked = true;
+            }
             return;
         }
 
-        // Smart Auto-Expand Box
         if (lineCount > 8) {
             if (!textarea.classList.contains('expanded') && !textarea.dataset.manualCollapse) {
                 textarea.classList.add('expanded');
                 expandBtn.innerText = "[ COLLAPSE ]";
             }
         } else {
-            textarea.dataset.manualCollapse = ""; // Reset manual flag if text gets short
+            textarea.dataset.manualCollapse = ""; 
             if (textarea.classList.contains('expanded')) {
                 textarea.classList.remove('expanded');
                 expandBtn.innerText = "[ EXPAND ]";
             }
         }
 
-        // Multi-Tenant Hostname Cross-Reference Logic
         const hostMatches = [...configText.matchAll(/^([A-Za-z0-9\-\_]+)#/gm)];
         let uniqueHosts = [];
         
@@ -1034,6 +1059,7 @@ end</div>
         let conflictedPorts = [];
         let fragmentPorts = [];
         let noSecPorts = [];
+        let hasAnySecurity = false;
 
         textBlocks.forEach(block => {
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
@@ -1043,16 +1069,20 @@ end</div>
                 let isAccessMode = /switchport mode access/i.test(block);
                 if (!isAccessMode && !unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
 
-                let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*(?:\n|$)/i.test(block);
+                let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
                 if (isShutdown && !shutdownPorts.includes(normalizedIf)) shutdownPorts.push(normalizedIf);
 
-                let hasStickyMac = /(?:^|\n)[ \t]*switchport port-security mac-address sticky[ \t]*(?:\n|$)/i.test(block);
-                let hasPortSec = /(?:^|\n)[ \t]*switchport port-security[ \t]*(?:\n|$)/i.test(block);
-                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x pae authenticator[ \t]*(?:\n|$)/i.test(block);
-                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication port-control auto[ \t]*(?:\n|$)/i.test(block);
+                let hasStickyMac = /(?:^|\n)[ \t]*switchport port-security mac-address sticky[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasPortSec = /(?:^|\n)[ \t]*switchport port-security[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x pae authenticator[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication port-control auto[ \t]*\r?(?:\n|$)/i.test(block);
 
                 let isAnySticky = hasStickyMac || hasPortSec;
                 let isAnyDot1x = hasDot1xPae || hasAuthPortControl;
+
+                if (isAnySticky || isAnyDot1x) {
+                    hasAnySecurity = true;
+                }
 
                 if (isAnySticky && isAnyDot1x && !conflictedPorts.includes(normalizedIf)) {
                     conflictedPorts.push(normalizedIf);
@@ -1063,6 +1093,24 @@ end</div>
                 }
             }
         });
+
+        // --- Smart Button Lock Logic ---
+        if (hasAnySecurity) {
+            removeRadio.disabled = false;
+            removeLabel.classList.remove('disabled');
+            resetRadio.disabled = false;
+            resetLabel.classList.remove('disabled');
+        } else {
+            removeRadio.disabled = true;
+            removeLabel.classList.add('disabled');
+            resetRadio.disabled = true;
+            resetLabel.classList.add('disabled');
+            
+            // Failsafe auto-revert if they had it selected and pasted a clean block
+            if (removeRadio.checked || resetRadio.checked) {
+                document.querySelector('input[name="securityMode"][value="leave"]').checked = true;
+            }
+        }
 
         let warningHTML = "";
         let baseHasContent = false;
@@ -1127,15 +1175,14 @@ end</div>
                 
                 let vlanMatch = block.match(/switchport access vlan (\d+)/i);
                 
-                // STRICT LINE-BY-LINE SECURITY PARSING
-                let hasStickyMac = /(?:^|\n)[ \t]*switchport port-security mac-address sticky[ \t]*(?:\n|$)/i.test(block);
-                let hasPortSec = /(?:^|\n)[ \t]*switchport port-security[ \t]*(?:\n|$)/i.test(block);
-                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x pae authenticator[ \t]*(?:\n|$)/i.test(block);
-                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication port-control auto[ \t]*(?:\n|$)/i.test(block);
+                let hasStickyMac = /(?:^|\n)[ \t]*switchport port-security mac-address sticky[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasPortSec = /(?:^|\n)[ \t]*switchport port-security[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x pae authenticator[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication port-control auto[ \t]*\r?(?:\n|$)/i.test(block);
 
                 let hasPortfast = /spanning-tree portfast/i.test(block);
                 let hasBpduguard = /spanning-tree bpduguard/i.test(block);
-                let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*(?:\n|$)/i.test(block);
+                let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
 
                 if (!interfacesDataMap[normalizedIf]) {
                     interfacesDataMap[normalizedIf] = { 
