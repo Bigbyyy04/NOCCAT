@@ -489,7 +489,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v4.2 [Config Automation Tool]</span>
+        <span class="version-tag">// v4.3 [Config Automation Tool]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -655,7 +655,7 @@ end</div>
                 <li><strong>Independent EDGE Evaluation:</strong> Checks <code>portfast</code> and <code>bpduguard enable</code> separately. Only pushes missing lines.</li>
                 <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
                 <li><strong>OPEN_PORT Toggle:</strong> Mini-toggle inside the Protocol Mode box suppresses the cyan "No Port Security" compliance warning when you intentionally configure an unsecured port.</li>
-                <li><strong>Input Validation:</strong> Execute button remains locked until a valid Cisco interface block is successfully parsed. Copy buttons remain grayed out until an actionable script is generated.</li>
+                <li><strong>Smart Input UI:</strong> Textbox automatically expands when pasting large config blocks. Execute button remains locked until a valid Cisco interface block is parsed. Copy buttons remain grayed out until an actionable script is generated.</li>
             </ul>
 
             <h3 style="margin-bottom: 0;">🎨 5. Zero-Trust Local Storage DB</h3>
@@ -770,6 +770,13 @@ end</div>
         const btn = document.getElementById('expandBtn');
         textarea.classList.toggle('expanded');
         btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]";
+        
+        // Remember if user manually collapsed a long log so we don't fight them later
+        if (!textarea.classList.contains('expanded') && textarea.value.split('\n').length > 8) {
+            textarea.dataset.manualCollapse = "true";
+        } else {
+            textarea.dataset.manualCollapse = "";
+        }
     }
     
     function toggleWrapper(wrapperId, btnId, name) {
@@ -815,6 +822,7 @@ end</div>
         document.getElementById('deviceHud').classList.remove('visible');
         
         const textarea = document.getElementById('configInput');
+        textarea.dataset.manualCollapse = ""; // Clear manual override on reset
         if (textarea.classList.contains('expanded')) toggleExpand();
     }
 
@@ -843,6 +851,9 @@ end</div>
         const warningBox = document.getElementById('warningBox');
         const deviceHud = document.getElementById('deviceHud');
         const execBtn = document.getElementById('executeBtn');
+        const textarea = document.getElementById('configInput');
+        const expandBtn = document.getElementById('expandBtn');
+        const lineCount = configText.split('\n').length;
         const suppressSecWarn = document.getElementById('suppressCheckbox').checked;
         
         // Validation Logic for the Execute Button
@@ -858,7 +869,26 @@ end</div>
         if (!configText.trim()) {
             warningBox.style.display = 'none';
             deviceHud.classList.remove('visible');
+            textarea.dataset.manualCollapse = ""; // Reset manual flag
+            if (textarea.classList.contains('expanded')) {
+                textarea.classList.remove('expanded');
+                expandBtn.innerText = "[ EXPAND ]";
+            }
             return;
+        }
+
+        // Smart Auto-Expand Box
+        if (lineCount > 8) {
+            if (!textarea.classList.contains('expanded') && !textarea.dataset.manualCollapse) {
+                textarea.classList.add('expanded');
+                expandBtn.innerText = "[ COLLAPSE ]";
+            }
+        } else {
+            textarea.dataset.manualCollapse = ""; // Reset manual flag if text gets short
+            if (textarea.classList.contains('expanded')) {
+                textarea.classList.remove('expanded');
+                expandBtn.innerText = "[ EXPAND ]";
+            }
         }
 
         // Multi-Tenant Hostname Cross-Reference Logic
