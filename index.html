@@ -299,6 +299,27 @@
             box-shadow: none !important;
         }
 
+        /* --- DANGEROUS ACTION (GLITCH) CSS --- */
+        @keyframes danger-glitch {
+            0% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(0deg); text-shadow: none; }
+            2% { box-shadow: 0 0 20px rgba(248, 81, 73, 1); transform: skewX(5deg) translate(-2px, 1px); text-shadow: 2px 0 var(--accent-red), -2px 0 var(--accent-blue); }
+            4% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(-5deg) translate(2px, -1px); text-shadow: -2px 0 var(--accent-red), 2px 0 var(--accent-blue); }
+            6% { transform: skewX(0deg) translate(0, 0); text-shadow: none; }
+            50% { box-shadow: 0 0 15px rgba(248, 81, 73, 0.8); }
+            94% { transform: skewX(0deg) translate(0, 0); text-shadow: none; }
+            96% { box-shadow: 0 0 25px rgba(248, 81, 73, 1); transform: skewX(8deg) translate(3px, 0); text-shadow: 3px 0 var(--accent-red), -3px 0 var(--accent-blue); }
+            98% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(-8deg) translate(-3px, 0); text-shadow: -3px 0 var(--accent-red), 3px 0 var(--accent-blue); }
+            100% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(0deg) translate(0, 0); text-shadow: none; }
+        }
+
+        /* Targets specifically the REMOVE radio label when checked */
+        .radio-group label:has(input[value="remove"]:checked) {
+            border-color: var(--accent-red) !important;
+            color: #ff7b72 !important;
+            background: rgba(248, 81, 73, 0.1) !important;
+            animation: danger-glitch 3s infinite !important;
+        }
+
         input[type="number"] {
             background: var(--code-bg);
             border: 1px solid var(--border-color);
@@ -310,7 +331,7 @@
             outline: none;
             font-family: "Courier New", Courier, monospace;
             text-align: center;
-            height: 31px; /* Align perfectly with adjacent radio buttons */
+            height: 31px; 
         }
 
         /* --- PER-PORT OVERRIDE TABLE CSS --- */
@@ -351,6 +372,7 @@
         }
         .override-table tr:last-child td { border-bottom: none; }
         .override-table tr:hover { background: rgba(88, 166, 255, 0.05); }
+        
         .override-input {
             background: var(--code-bg);
             border: 1px dashed rgba(88, 166, 255, 0.5);
@@ -387,6 +409,12 @@
             border-color: var(--neon-green);
             border-style: solid;
             box-shadow: 0 0 5px rgba(57,255,20,0.3);
+        }
+        .override-select.danger-mode {
+            border-color: var(--accent-red) !important;
+            color: #ff7b72 !important;
+            background: rgba(248, 81, 73, 0.1) !important;
+            animation: danger-glitch 3s infinite !important;
         }
 
         /* --- TOOLTIP CSS --- */
@@ -650,7 +678,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v7.3 [UI/UX Polish Update]</span>
+        <span class="version-tag">// v7.4 [Glitch Protocol Update]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -858,7 +886,7 @@ end</div>
                 <li><strong>Omni-Matrix Assignment:</strong> Updates configurations dynamically. Set Global Master parameters to apply to all ports simultaneously, or use the Per-Port Override Grid (07) to surgically assign different VLANs and Security Protocols to specific interfaces within the same execution batch.</li>
                 <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates (<code>dot1x pae authenticator</code> & <code>authentication port-control auto</code>).</li>
                 <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates (<code>switchport port-security</code> & <code>...mac-address sticky</code>).</li>
-                <li><strong>REMOVE Mode:</strong> Automatically disabled unless port security is actually present. Explicitly strips existing configurations. Requires a mandatory compliance confirmation prompt. Rollback intelligently restores the deleted security.</li>
+                <li><strong>REMOVE Mode:</strong> Triggers Critical Danger Glitch. Explicitly strips existing configurations. Requires a mandatory compliance confirmation prompt. Rollback intelligently restores the deleted security.</li>
                 <li><strong>Universal RESET:</strong> Automatically disabled unless port security is actually present. Wipes existing security clean. Security resets intentionally omit rollback commands, but if paired with a VLAN change, the engine will still independently roll back the VLAN.</li>
                 <li><strong>Smart Port Bouncing:</strong> Calculates if a change requires <code>shut</code> / <code>no shut</code> to clear violation states, handling it in both scripts.</li>
             </ul>
@@ -1055,6 +1083,7 @@ end</div>
         textarea.classList.toggle('expanded');
         btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]";
         
+        // Remember if user manually collapsed a long log so we don't fight them later
         if (!textarea.classList.contains('expanded') && textarea.value.split('\n').length > 8) {
             textarea.dataset.manualCollapse = "true";
         } else {
@@ -1103,6 +1132,7 @@ end</div>
     
     function handleMatrixSecChange(elem) {
         if (elem.value === 'remove') {
+            elem.classList.add('danger-mode');
             const isSuppressed = localStorage.getItem('noccat_suppress_remove_warning');
             if (isSuppressed === 'true') {
                 return; 
@@ -1110,6 +1140,8 @@ end</div>
             currentMatrixTriggerElem = elem; 
             document.getElementById('dontShowAgainCheckbox').checked = false; 
             document.getElementById('removeWarningModal').classList.add('visible');
+        } else {
+            elem.classList.remove('danger-mode');
         }
     }
 
@@ -1118,6 +1150,7 @@ end</div>
         
         if (currentMatrixTriggerElem) {
             currentMatrixTriggerElem.value = 'global';
+            currentMatrixTriggerElem.classList.remove('danger-mode');
             currentMatrixTriggerElem = null;
         } else {
             document.querySelector('input[name="securityMode"][value="leave"]').checked = true;
@@ -1523,7 +1556,13 @@ end</div>
             
             for (let id in currentOverrides) {
                 let el = document.getElementById(id);
-                if (el) el.value = currentOverrides[id];
+                if (el) {
+                    el.value = currentOverrides[id];
+                    // Re-apply glitch style if remove was previously selected
+                    if (el.classList.contains('override-select') && el.value === 'remove') {
+                        el.classList.add('danger-mode');
+                    }
+                }
             }
         } else {
             overrideSection.style.display = 'none';
