@@ -144,12 +144,16 @@
             font-size: 11px;
             outline: none;
             cursor: text;
-            width: 62px;
+            width: 82px;
             padding: 0;
             text-align: center;
+            transition: color 0.2s;
         }
-        .tz-time-input::-webkit-calendar-picker-indicator { display: none; }
-        .tz-time-input:focus { color: #fff; }
+        .tz-time-input:focus { 
+            color: #fff; 
+            border-bottom: 1px solid var(--accent-blue); 
+            margin-bottom: -1px;
+        }
 
         .tz-select {
             background: transparent;
@@ -182,6 +186,23 @@
         }
 
         .tz-select:hover { text-decoration: underline; }
+
+        .fmt-toggle {
+            background: transparent;
+            color: var(--neon-green);
+            border: 1px solid var(--accent-green);
+            padding: 2px 6px;
+            font-size: 9px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: 0.2s;
+            font-family: "Courier New", Courier, monospace;
+            margin-right: 6px;
+        }
+        
+        .fmt-toggle:hover {
+            background: rgba(57, 255, 20, 0.1);
+        }
 
         .form-group {
             background: rgba(22, 27, 34, 0.85); 
@@ -796,10 +817,11 @@
     <div class="top-bar">
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v7.9 Omni-Chronos Update</span>
+            <span class="version-tag">// Configuration Automation Tool // v8.0 Omni-Format Update</span>
         </h2>
         
         <div class="tz-widget">
+            <button id="fmtToggleBtn" class="fmt-toggle" onclick="toggleTimeFormat()" title="Toggle 12H / 24H Format">[ 24H ]</button>
             <div id="liveIndicator" class="live-dot pulse" onclick="resetToLiveTime()" title="LIVE CLOCK (Click to resume)"></div>
             
             <select id="sourceTzSelector" class="tz-select source-tz" onchange="updateClocks()">
@@ -815,7 +837,7 @@
             </select>
             
             <span style="opacity: 0.5; margin: 0 2px;">></span>
-            <input type="time" id="localTimeInput" step="1" class="tz-time-input" oninput="setCustomTime()" onfocus="setCustomTime()">
+            <input type="text" id="localTimeInput" class="tz-time-input" maxlength="11" autocomplete="off" onfocus="setCustomTime()" oninput="updateClocks()">
             <span style="opacity: 0.3; margin: 0 4px;">|</span>
             
             <select id="tzSelector" class="tz-select" onchange="updateClocks()">
@@ -1058,7 +1080,7 @@ end</div>
                 <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
                 <li><strong>Cross-Panel Locking & Smart Idempotency:</strong> Modifying security automatically locks the Bounce button. UI buttons gray out if the engine detects the config already meets targeted conditions natively.</li>
                 <li><strong>Omni-Drop Zone:</strong> Supports drag-and-drop ingestion of raw text highlights, IDE tabs, or `.txt` log files directly into the UI. Direct `[ DOWNLOAD ]` buttons export scripts named intelligently after the target hostname.</li>
-                <li><strong>Omni-Chronos Planning Module:</strong> Real-time timezone converter with a built-in planning feature. Pause the clock, select a Source Timezone, input a custom execution window, and instantly see it converted to your Target Timezone.</li>
+                <li><strong>Omni-Chronos Module:</strong> A fully unrestricted, text-parseable dual-world clock. Click the `[ 24H ]` toggle to force 12/24 hour display regardless of OS formatting rules. Type any custom time (e.g. "16:00" or "4pm") to intelligently offset target timezones for rapid NOC planning.</li>
                 <li><strong>Haptic/Audio Engine:</strong> Triggers synthesized Web Audio confirmation on execution. Includes Dry Run Diff visualizer in the terminal output status string. Includes interactive dynamic network canvas background.</li>
             </ul>
 
@@ -1116,7 +1138,30 @@ end</div>
 <script>
     // --- REAL-TIME CLOCK LOGIC (OMNI-CHRONOS MODULE) ---
     let isLiveTime = true;
+    let is24Hour = true;
     
+    function toggleTimeFormat() {
+        is24Hour = !is24Hour;
+        document.getElementById('fmtToggleBtn').innerText = is24Hour ? "[ 24H ]" : "[ 12H ]";
+        
+        // If in planning mode, smart-convert whatever text is currently in the box to the new format
+        if (!isLiveTime) {
+            const timeInput = document.getElementById('localTimeInput');
+            let t = timeInput.value.trim();
+            if (/^\d{3,4}$/.test(t)) {
+                t = t.substring(0, t.length - 2) + ':' + t.substring(t.length - 2);
+            }
+            let parsedDate = new Date("1/1/2000 " + t);
+            if (!isNaN(parsedDate.getTime())) {
+                const opts = { hour12: !is24Hour, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                let newStr = parsedDate.toLocaleTimeString('en-US', opts);
+                if(is24Hour && newStr.startsWith('24:')) newStr = newStr.replace('24:', '00:');
+                timeInput.value = newStr;
+            }
+        }
+        updateClocks();
+    }
+
     function getTzOffsetDiff(srcTz, tgtTz) {
         const now = new Date();
         const getStr = (tz) => tz === 'Local' 
@@ -1133,46 +1178,64 @@ end</div>
         const srcTz = document.getElementById('sourceTzSelector').value;
         const tgtTz = document.getElementById('tzSelector').value;
         
+        const formatOpts = { 
+            hour12: !is24Hour, 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit' 
+        };
+
         if (isLiveTime) {
             const now = new Date();
-            const srcOpts = srcTz === 'Local' ? {hour12: false} : {timeZone: srcTz, hour12: false};
-            const tgtOpts = tgtTz === 'Local' ? {hour12: false} : {timeZone: tgtTz, hour12: false};
+            const srcOpts = srcTz === 'Local' ? { ...formatOpts } : { timeZone: srcTz, ...formatOpts };
+            const tgtOpts = tgtTz === 'Local' ? { ...formatOpts } : { timeZone: tgtTz, ...formatOpts };
             
             let srcTimeString = now.toLocaleTimeString('en-US', srcOpts);
-            if(srcTimeString.startsWith('24:')) srcTimeString = srcTimeString.replace('24:', '00:');
-            timeInput.value = srcTimeString;
+            if(is24Hour && srcTimeString.startsWith('24:')) srcTimeString = srcTimeString.replace('24:', '00:');
+            
+            if (document.activeElement !== timeInput) {
+                timeInput.value = srcTimeString;
+            }
             
             let tgtTimeString = now.toLocaleTimeString('en-US', tgtOpts);
-            if(tgtTimeString.startsWith('24:')) tgtTimeString = tgtTimeString.replace('24:', '00:');
+            if(is24Hour && tgtTimeString.startsWith('24:')) tgtTimeString = tgtTimeString.replace('24:', '00:');
             document.getElementById('convertedTimeDisplay').innerText = tgtTimeString;
+            
         } else {
-            if(timeInput.value) {
-                let parts = timeInput.value.split(':');
-                let h = parseInt(parts[0] || 0);
-                let m = parseInt(parts[1] || 0);
-                let s = parseInt(parts[2] || 0);
+            let t = timeInput.value.trim();
+            // Auto format '1600' to '16:00' for the parser
+            if (/^\d{3,4}$/.test(t)) {
+                t = t.substring(0, t.length - 2) + ':' + t.substring(t.length - 2);
+            }
+            let parsedDate = new Date("1/1/2000 " + t);
+            
+            if (!isNaN(parsedDate.getTime())) {
+                let h = parsedDate.getHours();
+                let m = parsedDate.getMinutes();
+                let s = parsedDate.getSeconds();
                 
                 let diffMs = getTzOffsetDiff(srcTz, tgtTz);
                 
-                let d = new Date();
-                d.setHours(h, m, s, 0);
+                let d = new Date(1970, 0, 1, h, m, s);
                 d = new Date(d.getTime() + diffMs);
                 
-                const hh = String(d.getHours()).padStart(2, '0');
-                const mm = String(d.getMinutes()).padStart(2, '0');
-                const ss = String(d.getSeconds()).padStart(2, '0');
-                document.getElementById('convertedTimeDisplay').innerText = `${hh}:${mm}:${ss}`;
+                let tgtTimeString = d.toLocaleTimeString('en-US', formatOpts);
+                if(is24Hour && tgtTimeString.startsWith('24:')) tgtTimeString = tgtTimeString.replace('24:', '00:');
+                document.getElementById('convertedTimeDisplay').innerText = tgtTimeString;
+            } else {
+                document.getElementById('convertedTimeDisplay').innerText = "--:--:--";
             }
         }
     }
     
     function setCustomTime() {
-        isLiveTime = false;
-        const dot = document.getElementById('liveIndicator');
-        dot.classList.remove('pulse');
-        dot.classList.add('paused');
-        dot.setAttribute('title', 'PLANNING MODE: Click to resume live clock');
-        updateClocks();
+        if (isLiveTime) {
+            isLiveTime = false;
+            const dot = document.getElementById('liveIndicator');
+            dot.classList.remove('pulse');
+            dot.classList.add('paused');
+            dot.setAttribute('title', 'PLANNING MODE: Click to resume live clock');
+        }
     }
     
     function resetToLiveTime() {
@@ -1279,6 +1342,7 @@ end</div>
             document.getElementById('dbStatus').innerText = `STATUS: LOADED_${Object.keys(switchDB).length}_HOSTS`;
         }
         
+        // Setup Universal Drag and Drop for Files & Raw Text
         const configTextarea = document.getElementById('configInput');
         configTextarea.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -1387,6 +1451,7 @@ end</div>
         textarea.classList.toggle('expanded');
         btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]";
         
+        // Remember if user manually collapsed a long log so we don't fight them later
         if (!textarea.classList.contains('expanded') && textarea.value.split('\n').length > 8) {
             textarea.dataset.manualCollapse = "true";
         } else {
@@ -2184,6 +2249,7 @@ end</div>
                 if (isShutNow) cmds.push("no shut");
             }
 
+            // Cleanup redundant shut commands
             if (cmds.length >= 2 && cmds[cmds.length - 1] === "shut" && cmds[cmds.length - 2] === "shut") cmds.pop();
 
             return cmds.length ? cmds : null;
