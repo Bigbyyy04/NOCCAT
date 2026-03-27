@@ -599,7 +599,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v6.1 [Enterprise Safeguard Update]</span>
+        <span class="version-tag">// v6.2 [Omni-Drop Update]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -612,7 +612,7 @@
                 <p>Welcome to <strong>N0&lt;AT</strong>. This utility dynamically compiles bulk configuration and rollback scripts for Cisco access switches. It features an <strong>idempotent logic engine</strong>, meaning it will cross-reference your targets and only generate commands for ports that actually require state changes.</p>
                 
                 <h3>> Config Input (01)</h3>
-                <p>To provide the engine with the current interface states, paste the raw terminal output of the <code>show running-config interface</code> command from your access switch. <strong>You can also drag and drop a .txt log file or highlighted text directly into the input box.</strong></p>
+                <p>To provide the engine with the current interface states, paste the raw terminal output of the <code>show running-config interface</code> command from your access switch. <strong>You can also drag and drop a .txt log file directly into the input box.</strong></p>
                 
                 <p><strong>REQUIRED SAMPLE FORMAT:</strong></p>
                 <div class="sample-code"><span style="color: #ff9d00;">PH-NOC-ACC0101#</span>sh running-config interface Gi1/0/1
@@ -787,7 +787,7 @@ end</div>
                 <li><strong>Independent EDGE Evaluation:</strong> Checks <code>portfast</code> and <code>bpduguard enable</code> separately. Only pushes missing lines.</li>
                 <li><strong>Admin State Override:</strong> Includes UP, DWN, BNC, and LEAVE. Rollback intelligently reverses any forced state changes.</li>
                 <li><strong>Cross-Panel Locking & Smart Idempotency:</strong> Modifying security automatically locks the Bounce button. UI buttons gray out if the engine detects the config already meets targeted conditions natively.</li>
-                <li><strong>Direct File Handling:</strong> Support for drag-and-drop ingestion of `.txt` logs or highlighted text snippets. Direct `[ DOWNLOAD ]` buttons to export implementation and rollback scripts named intelligently after the target hostname.</li>
+                <li><strong>Omni-Drop Zone:</strong> Supports drag-and-drop ingestion of raw text highlights, IDE tabs, or `.txt` log files directly into the UI. Direct `[ DOWNLOAD ]` buttons export scripts named intelligently after the target hostname.</li>
                 <li><strong>Haptic/Audio Engine:</strong> Triggers synthesized Web Audio confirmation on execution. Includes Dry Run Diff visualizer in the terminal output status string.</li>
             </ul>
 
@@ -869,8 +869,8 @@ end</div>
             e.preventDefault(); // Stop default browser navigation
             configTextarea.classList.remove('drag-active');
             
+            // 1. Check if the drag payload contains an actual File 
             if(e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                // If it's a file (.txt, .log)
                 const file = e.dataTransfer.files[0];
                 const reader = new FileReader();
                 reader.onload = function(evt) {
@@ -878,17 +878,24 @@ end</div>
                     checkDynamicWarnings();
                 };
                 reader.readAsText(file);
-            } else {
-                // If it's highlighted text dragged from another window
-                const draggedText = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text');
-                if (draggedText) {
-                    const start = configTextarea.selectionStart;
-                    const end = configTextarea.selectionEnd;
-                    const currentText = configTextarea.value;
-                    configTextarea.value = currentText.substring(0, start) + draggedText + currentText.substring(end);
-                    configTextarea.selectionStart = configTextarea.selectionEnd = start + draggedText.length;
-                    checkDynamicWarnings();
-                }
+                return; // Exit out if we successfully grabbed a file
+            } 
+            
+            // 2. Check for highlighted text OR advanced tab text payloads
+            let draggedText = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text');
+            
+            // 3. Fallback: Some editors (like VS Code) pass the file path/URI when dragging a tab
+            if (!draggedText) {
+                draggedText = e.dataTransfer.getData('text/uri-list');
+            }
+
+            if (draggedText) {
+                const start = configTextarea.selectionStart;
+                const end = configTextarea.selectionEnd;
+                const currentText = configTextarea.value;
+                configTextarea.value = currentText.substring(0, start) + draggedText + currentText.substring(end);
+                configTextarea.selectionStart = configTextarea.selectionEnd = start + draggedText.length;
+                checkDynamicWarnings();
             }
         });
     };
@@ -961,6 +968,7 @@ end</div>
         textarea.classList.toggle('expanded');
         btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]";
         
+        // Remember if user manually collapsed a long log so we don't fight them later
         if (!textarea.classList.contains('expanded') && textarea.value.split('\n').length > 8) {
             textarea.dataset.manualCollapse = "true";
         } else {
@@ -1028,10 +1036,12 @@ end</div>
         document.getElementById('rollbackCode').innerText = "-- system_idle --";
         document.getElementById('rollbackLines').innerText = "";
         
+        // Reset the execute button state completely
         const execBtn = document.getElementById('executeBtn');
         execBtn.disabled = true;
         execBtn.classList.remove('ready');
         
+        // Lock all idempotent UI buttons back to default state
         const uiControlsToLock = [
             document.querySelector('input[name="securityMode"][value="dot1x"]'),
             document.querySelector('input[name="securityMode"][value="sticky"]'),
@@ -1134,6 +1144,7 @@ end</div>
         const lineCount = configText.split('\n').length;
         const suppressSecWarn = document.getElementById('suppressCheckbox').checked;
         
+        // Grab UI Control Elements for Dynamic Locking
         const dot1xRadio = document.querySelector('input[name="securityMode"][value="dot1x"]');
         const stickyRadio = document.querySelector('input[name="securityMode"][value="sticky"]');
         const removeRadio = document.querySelector('input[name="securityMode"][value="remove"]');
@@ -1147,6 +1158,7 @@ end</div>
         const bounceRadio = document.querySelector('input[name="adminState"][value="bounce"]');
         const leaveAdminRadio = document.querySelector('input[name="adminState"][value="leave"]');
         
+        // Validation Logic for the Execute Button
         const hasValidInterface = /^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         if (hasValidInterface) {
             execBtn.disabled = false;
@@ -1156,6 +1168,7 @@ end</div>
             execBtn.classList.remove('ready');
         }
 
+        // Failsafe: Re-lock everything if input is empty
         if (!configText.trim()) {
             warningBox.style.display = 'none';
             deviceHud.classList.remove('visible');
@@ -1178,6 +1191,7 @@ end</div>
             return;
         }
 
+        // Smart Auto-Expand Box
         if (lineCount > 8) {
             if (!textarea.classList.contains('expanded') && !textarea.dataset.manualCollapse) {
                 textarea.classList.add('expanded');
@@ -1191,6 +1205,7 @@ end</div>
             }
         }
 
+        // Multi-Tenant Hostname Cross-Reference Logic
         const hostMatches = [...configText.matchAll(/^([A-Za-z0-9\-\_]+)#/gm)];
         let uniqueHosts = [];
         
@@ -1202,7 +1217,7 @@ end</div>
         });
 
         if (uniqueHosts.length > 0) {
-            detectedGlobalHostname = uniqueHosts[0]; 
+            detectedGlobalHostname = uniqueHosts[0]; // Set default for download
             let hudHTML = `<span style="opacity: 0.7; margin-right: 5px;">Target${uniqueHosts.length > 1 ? 's' : ''}:</span>`;
             
             let hostTags = uniqueHosts.map(hostName => {
@@ -1287,10 +1302,14 @@ end</div>
             }
         });
 
+        // Track Current Selected State 
         const selectedSecurityMode = document.querySelector('input[name="securityMode"]:checked').value;
         const isSecurityModifying = selectedSecurityMode !== 'leave';
 
+        // --- IDEMPOTENT UI LOCKING ENGINE ---
         if (totalParsedPorts > 0) {
+            
+            // SECURITY: DOT1X
             if (portsWithFullDot1x === totalParsedPorts) {
                 dot1xRadio.disabled = true; dot1xRadio.closest('label').classList.add('disabled');
                 if (dot1xRadio.checked) leaveSecRadio.checked = true;
@@ -1298,6 +1317,7 @@ end</div>
                 dot1xRadio.disabled = false; dot1xRadio.closest('label').classList.remove('disabled');
             }
 
+            // SECURITY: STICKY
             if (portsWithFullSticky === totalParsedPorts) {
                 stickyRadio.disabled = true; stickyRadio.closest('label').classList.add('disabled');
                 if (stickyRadio.checked) leaveSecRadio.checked = true;
@@ -1305,6 +1325,7 @@ end</div>
                 stickyRadio.disabled = false; stickyRadio.closest('label').classList.remove('disabled');
             }
 
+            // SECURITY: REMOVE / RESET
             if (hasAnySecurity) {
                 removeRadio.disabled = false; removeRadio.closest('label').classList.remove('disabled');
                 resetRadio.disabled = false; resetRadio.closest('label').classList.remove('disabled');
@@ -1314,6 +1335,7 @@ end</div>
                 if (removeRadio.checked || resetRadio.checked) leaveSecRadio.checked = true;
             }
 
+            // EDGE CONFIG
             if (portsWithFullEdge === totalParsedPorts) {
                 edgeCheckbox.disabled = true; edgeCheckbox.closest('label').classList.add('disabled');
                 edgeCheckbox.checked = false;
@@ -1321,6 +1343,7 @@ end</div>
                 edgeCheckbox.disabled = false; edgeCheckbox.closest('label').classList.remove('disabled');
             }
 
+            // ADMIN STATE: UP
             if (portsWithNoShut === totalParsedPorts) {
                 upRadio.disabled = true; upRadio.closest('label').classList.add('disabled');
                 if (upRadio.checked) leaveAdminRadio.checked = true;
@@ -1328,6 +1351,7 @@ end</div>
                 upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled');
             }
 
+            // ADMIN STATE: DOWN
             if (portsWithShutdown === totalParsedPorts) {
                 downRadio.disabled = true; downRadio.closest('label').classList.add('disabled');
                 if (downRadio.checked) leaveAdminRadio.checked = true;
@@ -1335,12 +1359,14 @@ end</div>
                 downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled');
             }
             
+            // ADMIN STATE: BOUNCE (Locks if ports are dead OR if a security mode is actively selected)
             if (portsWithShutdown === totalParsedPorts || isSecurityModifying) {
                 bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled');
                 if (bounceRadio.checked) leaveAdminRadio.checked = true;
             } else {
                 bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled');
             }
+            
         }
 
         let warningHTML = "";
