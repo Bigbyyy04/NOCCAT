@@ -31,6 +31,8 @@
             display: flex;
             justify-content: center;
             overflow-x: hidden;
+            /* THE FIX: Permanently reserves scrollbar space to prevent UI shifting */
+            overflow-y: scroll; 
         }
 
         /* --- DYNAMIC BACKGROUND CANVAS --- */
@@ -784,7 +786,7 @@
     <div class="top-bar">
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// NOC Configuration Automation Tool // v7.7 Chronos update</span>
+            <span class="version-tag">// Configuration Automation Tool // v7.8 Chronos update</span>
         </h2>
         
         <div class="tz-widget">
@@ -1334,6 +1336,7 @@ end</div>
         textarea.classList.toggle('expanded');
         btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]";
         
+        // Remember if user manually collapsed a long log so we don't fight them later
         if (!textarea.classList.contains('expanded') && textarea.value.split('\n').length > 8) {
             textarea.dataset.manualCollapse = "true";
         } else {
@@ -1570,6 +1573,7 @@ end</div>
             execBtn.classList.remove('ready');
         }
 
+        // Failsafe: Re-lock everything if input is empty
         if (!configText.trim()) {
             warningBox.style.display = 'none';
             deviceHud.classList.remove('visible');
