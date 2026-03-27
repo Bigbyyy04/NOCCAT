@@ -271,7 +271,6 @@
             box-shadow: 0 0 8px rgba(57, 255, 20, 0.2);
         }
 
-        /* --- TRUE DISABLED STATE CSS --- */
         .radio-group label.disabled, .checkbox-group label.disabled {
             opacity: 0.3 !important;
             cursor: not-allowed !important;
@@ -292,6 +291,63 @@
             font-family: "Courier New", Courier, monospace;
             text-align: center;
         }
+
+        /* --- PER-PORT OVERRIDE TABLE CSS --- */
+        .override-section { display: none; margin-bottom: 20px; padding: 10px 15px; }
+        .override-table-wrapper {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) var(--code-bg);
+            margin-top: 10px;
+        }
+        .override-table-wrapper::-webkit-scrollbar { width: 10px; }
+        .override-table-wrapper::-webkit-scrollbar-track { background: var(--code-bg); }
+        .override-table-wrapper::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        
+        .override-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            font-family: "Courier New", Courier, monospace;
+        }
+        .override-table th {
+            background: #0d1117;
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--accent-blue);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .override-table td {
+            padding: 6px 12px;
+            border-bottom: 1px solid #21262d;
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+        .override-table tr:last-child td { border-bottom: none; }
+        .override-table tr:hover { background: rgba(88, 166, 255, 0.05); }
+        .override-input {
+            background: var(--code-bg);
+            border: 1px dashed rgba(88, 166, 255, 0.5);
+            color: var(--neon-green);
+            padding: 4px 6px;
+            border-radius: 3px;
+            width: 60px;
+            font-family: monospace;
+            outline: none;
+            transition: 0.2s;
+        }
+        .override-input:focus {
+            border-color: var(--neon-green);
+            border-style: solid;
+            box-shadow: 0 0 5px rgba(57,255,20,0.3);
+        }
+        .override-input::placeholder { color: #484f58; font-style: italic; }
 
         /* --- TOOLTIP CSS --- */
         .tooltip-icon {
@@ -329,7 +385,7 @@
             opacity: 0;
             visibility: hidden;
             transition: 0.2s;
-            z-index: 10;
+            z-index: 20;
             pointer-events: none;
             font-family: "Segoe UI", Roboto, monospace;
             text-align: center;
@@ -431,10 +487,7 @@
             margin-bottom: 5px;
         }
 
-        .btn-group-small {
-            display: flex;
-            gap: 8px;
-        }
+        .btn-group-small { display: flex; gap: 8px; }
 
         .copy-btn {
             background: #8957e5;
@@ -500,33 +553,9 @@
         /* BOTTOM BUTTONS & MANIFEST/DB STYLES */
         .bottom-actions { text-align: center; margin-top: 30px; margin-bottom: 20px; display: flex; justify-content: center; gap: 15px; }
         
-        .manifest-box {
-            background: var(--code-bg);
-            border: 1px dashed var(--border-color);
-            padding: 20px;
-            border-radius: 8px;
-            text-align: left;
-        }
-
-        .db-box {
-            background: var(--code-bg);
-            border: 1px solid var(--accent-green);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
-        
-        .db-security-note {
-            background: rgba(35, 134, 54, 0.1);
-            border-left: 3px solid var(--accent-green);
-            padding: 8px 12px;
-            margin-bottom: 12px;
-            font-size: 11px;
-            color: var(--text-main);
-            line-height: 1.4;
-            border-radius: 0 4px 4px 0;
-        }
-
+        .manifest-box { background: var(--code-bg); border: 1px dashed var(--border-color); padding: 20px; border-radius: 8px; text-align: left; }
+        .db-box { background: var(--code-bg); border: 1px solid var(--accent-green); padding: 15px; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+        .db-security-note { background: rgba(35, 134, 54, 0.1); border-left: 3px solid var(--accent-green); padding: 8px 12px; margin-bottom: 12px; font-size: 11px; color: var(--text-main); line-height: 1.4; border-radius: 0 4px 4px 0; }
         .db-box textarea { height: 150px; margin-bottom: 10px; }
         .db-controls { display: flex; justify-content: space-between; align-items: center; }
         .db-status { font-size: 11px; color: var(--accent-green); font-family: monospace; }
@@ -546,10 +575,7 @@
             transition: 0.3s ease;
         }
         
-        .modal-overlay.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+        .modal-overlay.visible { opacity: 1; visibility: visible; }
         
         .modal-box {
             background: var(--card-bg);
@@ -563,34 +589,10 @@
             line-height: 1.6;
         }
 
-        .modal-box h3 {
-            color: var(--accent-red);
-            margin-top: 0;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 16px;
-            text-shadow: 0 0 8px rgba(248, 81, 73, 0.4);
-        }
-
-        .modal-checkbox-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            color: #8b949e;
-        }
-        
-        .modal-checkbox-row input {
-            cursor: pointer;
-        }
-
-        .modal-buttons {
-            margin-top: 25px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
+        .modal-box h3 { color: var(--accent-red); margin-top: 0; font-family: "Courier New", Courier, monospace; font-size: 16px; text-shadow: 0 0 8px rgba(248, 81, 73, 0.4); }
+        .modal-checkbox-row { display: flex; align-items: center; gap: 8px; margin-top: 20px; font-size: 12px; cursor: pointer; color: #8b949e; }
+        .modal-checkbox-row input { cursor: pointer; }
+        .modal-buttons { margin-top: 25px; display: flex; justify-content: flex-end; gap: 12px; }
     </style>
 </head>
 <body>
@@ -599,7 +601,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v6.2 [Omni-Drop Update]</span>
+        <span class="version-tag">// v7.0 [Omni-Matrix Update]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -630,8 +632,8 @@ end</div>
                 <h3>> Safety Failsafe & Notices</h3>
                 <p>The real-time engine continuously scans your input. It will warn you of disabled links, un-secured ports, and fragmented security configurations. <strong>Trunk/Uplink ports are completely hard-locked by the engine for safety.</strong></p>
 
-                <h3>> Target Parameters (02 - 07)</h3>
-                <p>Set your desired Global VLAN, Protocol Mode, Spanning-Tree, Admin State, and Buffer controls. The engine will evaluate the pasted logs and output the exact CLI commands needed to reach your target state.</p>
+                <h3>> Target Parameters (02 - 08)</h3>
+                <p>Set your desired Global parameters. The engine will evaluate the pasted logs and output the exact CLI commands needed to reach your target state. You can override the Global VLAN on a per-port basis using the dynamic Matrix Grid (08).</p>
             </div>
         </div>
     </div>
@@ -652,8 +654,11 @@ end</div>
 
     <div class="controls-row">
         <div class="form-group" style="width: 70px; margin-bottom: 0;">
-            <label>02 // VLAN</label>
-            <input type="number" id="vlanInput" placeholder="VID" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094;">
+            <label style="display: flex; align-items: center; gap: 4px;">
+                02 // VLAN
+                <div class="tooltip-icon" data-tooltip="GLOBAL MASTER: This VLAN applies to all parsed ports simultaneously. Overrides can be set in Section 08.">i</div>
+            </label>
+            <input type="number" id="vlanInput" placeholder="ALL" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094;">
         </div>
         
         <div class="form-group" style="flex-grow: 1; margin-bottom: 0;">
@@ -717,6 +722,26 @@ end</div>
         </div>
     </div>
     
+    <div id="overrideSection" class="form-group override-section">
+        <div class="header-row">
+            <label style="color: var(--hl-yellow);">08 // PER-PORT OVERRIDES (MATRIX)</label>
+            <div class="tooltip-icon" style="color: var(--hl-yellow); border-color: var(--hl-yellow);" data-tooltip="Leave blank to naturally inherit the Global VLAN (02). Type a number here to force a specific port into a different VLAN.">i</div>
+        </div>
+        <div class="override-table-wrapper">
+            <table class="override-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">INTERFACE</th>
+                        <th style="width: 40%;">CURRENT STATE</th>
+                        <th style="width: 20%;">TARGET VLAN</th>
+                    </tr>
+                </thead>
+                <tbody id="overrideTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
     <div id="warningBox" class="warning-box"></div>
     
     <div class="status-container">
@@ -758,14 +783,14 @@ end</div>
             <ul>
                 <li><strong>Smart State Parsing:</strong> Reads current running-config, compares to target settings, and <em>only</em> generates commands for exact missing or differing lines. Resilient against terminal emulator copy/paste spacing quirks.</li>
                 <li><strong>Automated Rollback Generation:</strong> Builds a reverse script to perfectly undo changes and return ports to their original state.</li>
-                <li><strong>Interface Chunking:</strong> Groups targets into <code>interface range</code> commands to keep scripts clean. Reduces chunk size automatically if Slow Paste is enabled.</li>
+                <li><strong>Dynamic Interface Chunking:</strong> The Omni-Matrix engine evaluates every single port individually. It then smartly groups ports that share the exact same resulting commands into <code>interface range</code> chunks to keep scripts impeccably clean. Reduces chunk size automatically if Slow Paste is enabled.</li>
                 <li><strong>Surgical Command Stripping:</strong> Automatically injects exact <code>no</code> commands to scrub old protocols before applying new ones.</li>
             </ul>
 
             <h3>🛡️ 2. Advanced Security & Protocol Management</h3>
             <ul>
                 <li><strong>Trunk Port Hard-Stop:</strong> Actively locks out ports detected as uplinks or trunks to prevent catastrophic network outages.</li>
-                <li><strong>VLAN Assignment:</strong> Updates access VLANs only if the target differs. Prevents entry of invalid VLANs (> 4094).</li>
+                <li><strong>Omni-Matrix VLAN Assignment:</strong> Updates access VLANs dynamically. Set a Global Master VLAN (02) to apply to all ports simultaneously, or use the Per-Port Override Grid (08) to surgically assign different VLANs to specific interfaces within the same execution batch.</li>
                 <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates (<code>dot1x pae authenticator</code> & <code>authentication port-control auto</code>).</li>
                 <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates (<code>switchport port-security</code> & <code>...mac-address sticky</code>).</li>
                 <li><strong>REMOVE Mode:</strong> Automatically disabled unless port security is actually present. Explicitly strips existing configurations. Requires a mandatory compliance confirmation prompt. Rollback intelligently restores the deleted security.</li>
@@ -785,7 +810,7 @@ end</div>
             <h3>⚡ 4. Edge, State, & Output Controls</h3>
             <ul>
                 <li><strong>Independent EDGE Evaluation:</strong> Checks <code>portfast</code> and <code>bpduguard enable</code> separately. Only pushes missing lines.</li>
-                <li><strong>Admin State Override:</strong> Includes UP, DWN, BNC, and LEAVE. Rollback intelligently reverses any forced state changes.</li>
+                <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
                 <li><strong>Cross-Panel Locking & Smart Idempotency:</strong> Modifying security automatically locks the Bounce button. UI buttons gray out if the engine detects the config already meets targeted conditions natively.</li>
                 <li><strong>Omni-Drop Zone:</strong> Supports drag-and-drop ingestion of raw text highlights, IDE tabs, or `.txt` log files directly into the UI. Direct `[ DOWNLOAD ]` buttons export scripts named intelligently after the target hostname.</li>
                 <li><strong>Haptic/Audio Engine:</strong> Triggers synthesized Web Audio confirmation on execution. Includes Dry Run Diff visualizer in the terminal output status string.</li>
@@ -845,7 +870,7 @@ end</div>
 <script>
     // --- LOCAL DATABASE LOGIC ---
     let switchDB = {};
-    let detectedGlobalHostname = "N0CAT_Script"; // For file export naming
+    let detectedGlobalHostname = "N0CAT_Script"; 
 
     window.onload = function() {
         const savedDB = localStorage.getItem('noccat_db');
@@ -866,10 +891,9 @@ end</div>
             configTextarea.classList.remove('drag-active');
         });
         configTextarea.addEventListener('drop', (e) => {
-            e.preventDefault(); // Stop default browser navigation
+            e.preventDefault(); 
             configTextarea.classList.remove('drag-active');
             
-            // 1. Check if the drag payload contains an actual File 
             if(e.dataTransfer.files && e.dataTransfer.files.length > 0) {
                 const file = e.dataTransfer.files[0];
                 const reader = new FileReader();
@@ -878,13 +902,10 @@ end</div>
                     checkDynamicWarnings();
                 };
                 reader.readAsText(file);
-                return; // Exit out if we successfully grabbed a file
+                return; 
             } 
             
-            // 2. Check for highlighted text OR advanced tab text payloads
             let draggedText = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text');
-            
-            // 3. Fallback: Some editors (like VS Code) pass the file path/URI when dragging a tab
             if (!draggedText) {
                 draggedText = e.dataTransfer.getData('text/uri-list');
             }
@@ -968,7 +989,6 @@ end</div>
         textarea.classList.toggle('expanded');
         btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]";
         
-        // Remember if user manually collapsed a long log so we don't fight them later
         if (!textarea.classList.contains('expanded') && textarea.value.split('\n').length > 8) {
             textarea.dataset.manualCollapse = "true";
         } else {
@@ -1036,12 +1056,10 @@ end</div>
         document.getElementById('rollbackCode').innerText = "-- system_idle --";
         document.getElementById('rollbackLines').innerText = "";
         
-        // Reset the execute button state completely
         const execBtn = document.getElementById('executeBtn');
         execBtn.disabled = true;
         execBtn.classList.remove('ready');
         
-        // Lock all idempotent UI buttons back to default state
         const uiControlsToLock = [
             document.querySelector('input[name="securityMode"][value="dot1x"]'),
             document.querySelector('input[name="securityMode"][value="sticky"]'),
@@ -1068,6 +1086,7 @@ end</div>
         document.getElementById('statusMsg').style.display = 'none';
         document.getElementById('warningBox').style.display = 'none';
         document.getElementById('deviceHud').classList.remove('visible');
+        document.getElementById('overrideSection').style.display = 'none';
         
         const textarea = document.getElementById('configInput');
         textarea.dataset.manualCollapse = ""; 
@@ -1133,7 +1152,7 @@ end</div>
         linesElem.innerText = lineNumbers;
     }
 
-    // --- REAL-TIME WARNING, HUD, & BUTTON VALIDATION ---
+    // --- REAL-TIME WARNING, HUD, OVERRIDE GRID & BUTTON VALIDATION ---
     function checkDynamicWarnings() {
         const configText = document.getElementById('configInput').value;
         const warningBox = document.getElementById('warningBox');
@@ -1141,10 +1160,12 @@ end</div>
         const execBtn = document.getElementById('executeBtn');
         const textarea = document.getElementById('configInput');
         const expandBtn = document.getElementById('expandBtn');
+        const overrideSection = document.getElementById('overrideSection');
+        const overrideTableBody = document.getElementById('overrideTableBody');
+        
         const lineCount = configText.split('\n').length;
         const suppressSecWarn = document.getElementById('suppressCheckbox').checked;
         
-        // Grab UI Control Elements for Dynamic Locking
         const dot1xRadio = document.querySelector('input[name="securityMode"][value="dot1x"]');
         const stickyRadio = document.querySelector('input[name="securityMode"][value="sticky"]');
         const removeRadio = document.querySelector('input[name="securityMode"][value="remove"]');
@@ -1158,7 +1179,7 @@ end</div>
         const bounceRadio = document.querySelector('input[name="adminState"][value="bounce"]');
         const leaveAdminRadio = document.querySelector('input[name="adminState"][value="leave"]');
         
-        // Validation Logic for the Execute Button
+        // Execute Button Lock
         const hasValidInterface = /^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         if (hasValidInterface) {
             execBtn.disabled = false;
@@ -1172,6 +1193,7 @@ end</div>
         if (!configText.trim()) {
             warningBox.style.display = 'none';
             deviceHud.classList.remove('visible');
+            overrideSection.style.display = 'none';
             textarea.dataset.manualCollapse = ""; 
             if (textarea.classList.contains('expanded')) {
                 textarea.classList.remove('expanded');
@@ -1205,7 +1227,7 @@ end</div>
             }
         }
 
-        // Multi-Tenant Hostname Cross-Reference Logic
+        // Multi-Tenant Hostname Logic
         const hostMatches = [...configText.matchAll(/^([A-Za-z0-9\-\_]+)#/gm)];
         let uniqueHosts = [];
         
@@ -1217,7 +1239,7 @@ end</div>
         });
 
         if (uniqueHosts.length > 0) {
-            detectedGlobalHostname = uniqueHosts[0]; // Set default for download
+            detectedGlobalHostname = uniqueHosts[0]; 
             let hudHTML = `<span style="opacity: 0.7; margin-right: 5px;">Target${uniqueHosts.length > 1 ? 's' : ''}:</span>`;
             
             let hostTags = uniqueHosts.map(hostName => {
@@ -1252,6 +1274,8 @@ end</div>
         let conflictedPorts = [];
         let fragmentPorts = [];
         let noSecPorts = [];
+        
+        let validAccessPortsForGrid = [];
 
         textBlocks.forEach(block => {
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
@@ -1299,17 +1323,24 @@ end</div>
                 } else if (!isAnySticky && !isAnyDot1x && !noSecPorts.includes(normalizedIf) && !suppressSecWarn) {
                     noSecPorts.push(normalizedIf);
                 }
+                
+                // Build Override Grid Array (Only for Access Ports)
+                if (isAccessMode) {
+                    let vlanMatch = block.match(/switchport\s+access\s+vlan\s+(\d+)/i);
+                    validAccessPortsForGrid.push({
+                        name: normalizedIf,
+                        origVlan: vlanMatch ? vlanMatch[1] : '1 (Default)',
+                        isDown: isShutdown
+                    });
+                }
             }
         });
 
-        // Track Current Selected State 
+        // --- IDEMPOTENT UI LOCKING ENGINE ---
         const selectedSecurityMode = document.querySelector('input[name="securityMode"]:checked').value;
         const isSecurityModifying = selectedSecurityMode !== 'leave';
 
-        // --- IDEMPOTENT UI LOCKING ENGINE ---
         if (totalParsedPorts > 0) {
-            
-            // SECURITY: DOT1X
             if (portsWithFullDot1x === totalParsedPorts) {
                 dot1xRadio.disabled = true; dot1xRadio.closest('label').classList.add('disabled');
                 if (dot1xRadio.checked) leaveSecRadio.checked = true;
@@ -1317,7 +1348,6 @@ end</div>
                 dot1xRadio.disabled = false; dot1xRadio.closest('label').classList.remove('disabled');
             }
 
-            // SECURITY: STICKY
             if (portsWithFullSticky === totalParsedPorts) {
                 stickyRadio.disabled = true; stickyRadio.closest('label').classList.add('disabled');
                 if (stickyRadio.checked) leaveSecRadio.checked = true;
@@ -1325,7 +1355,6 @@ end</div>
                 stickyRadio.disabled = false; stickyRadio.closest('label').classList.remove('disabled');
             }
 
-            // SECURITY: REMOVE / RESET
             if (hasAnySecurity) {
                 removeRadio.disabled = false; removeRadio.closest('label').classList.remove('disabled');
                 resetRadio.disabled = false; resetRadio.closest('label').classList.remove('disabled');
@@ -1335,7 +1364,6 @@ end</div>
                 if (removeRadio.checked || resetRadio.checked) leaveSecRadio.checked = true;
             }
 
-            // EDGE CONFIG
             if (portsWithFullEdge === totalParsedPorts) {
                 edgeCheckbox.disabled = true; edgeCheckbox.closest('label').classList.add('disabled');
                 edgeCheckbox.checked = false;
@@ -1343,7 +1371,6 @@ end</div>
                 edgeCheckbox.disabled = false; edgeCheckbox.closest('label').classList.remove('disabled');
             }
 
-            // ADMIN STATE: UP
             if (portsWithNoShut === totalParsedPorts) {
                 upRadio.disabled = true; upRadio.closest('label').classList.add('disabled');
                 if (upRadio.checked) leaveAdminRadio.checked = true;
@@ -1351,7 +1378,6 @@ end</div>
                 upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled');
             }
 
-            // ADMIN STATE: DOWN
             if (portsWithShutdown === totalParsedPorts) {
                 downRadio.disabled = true; downRadio.closest('label').classList.add('disabled');
                 if (downRadio.checked) leaveAdminRadio.checked = true;
@@ -1359,14 +1385,43 @@ end</div>
                 downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled');
             }
             
-            // ADMIN STATE: BOUNCE (Locks if ports are dead OR if a security mode is actively selected)
             if (portsWithShutdown === totalParsedPorts || isSecurityModifying) {
                 bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled');
                 if (bounceRadio.checked) leaveAdminRadio.checked = true;
             } else {
                 bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled');
             }
+        }
+        
+        // --- MATRIX OVR GRID LOGIC ---
+        if (validAccessPortsForGrid.length > 0) {
+            // Save state of currently typed overrides so they aren't wiped while typing
+            const currentOverrides = {};
+            document.querySelectorAll('.override-input').forEach(inp => {
+                if (inp.value) currentOverrides[inp.id] = inp.value;
+            });
             
+            let gridHTML = "";
+            validAccessPortsForGrid.forEach(p => {
+                let safeName = p.name.replace(/[^a-zA-Z0-9]/g, '_');
+                let statusDot = p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>';
+                gridHTML += `<tr>
+                    <td><strong>${p.name}</strong></td>
+                    <td style="opacity: 0.8; font-size: 10px;">${statusDot} | VLAN: ${p.origVlan}</td>
+                    <td><input type="number" id="ovr_vlan_${safeName}" class="override-input" placeholder="Global" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();"></td>
+                </tr>`;
+            });
+            overrideTableBody.innerHTML = gridHTML;
+            overrideSection.style.display = 'block';
+            
+            // Restore saved inputs
+            for (let id in currentOverrides) {
+                let el = document.getElementById(id);
+                if (el) el.value = currentOverrides[id];
+            }
+        } else {
+            overrideSection.style.display = 'none';
+            overrideTableBody.innerHTML = "";
         }
 
         let warningHTML = "";
@@ -1412,7 +1467,7 @@ end</div>
     // --- GENERATOR LOGIC ---
     function generateScript() {
         const configText = document.getElementById('configInput').value;
-        const targetVlan = document.getElementById('vlanInput').value;
+        const globalTargetVlan = document.getElementById('vlanInput').value;
         const securityMode = document.querySelector('input[name="securityMode"]:checked').value;
         const applyStp = document.getElementById('stpCheckbox').checked;
         const adminState = document.querySelector('input[name="adminState"]:checked').value;
@@ -1434,9 +1489,7 @@ end</div>
                 let rawIf = ifMatch[1];
                 let normalizedIf = rawIf.replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te');
                 
-                // HARD STOP: Trunk Logic
                 let isAccessMode = /switchport\s+mode\s+access/i.test(block);
-                
                 let vlanMatch = block.match(/switchport\s+access\s+vlan\s+(\d+)/i);
                 
                 let hasStickyMac = /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky[ \t]*\r?(?:\n|$)/i.test(block);
@@ -1470,8 +1523,8 @@ end</div>
             }
         });
 
-        checkDynamicWarnings();
-
+        // DO NOT call checkDynamicWarnings() here, it causes recursive loop with Matrix input!
+        
         const interfacesData = Object.values(interfacesDataMap);
         if (interfacesData.length === 0) {
             updateCodeDisplay('primaryCode', 'primaryLines', "-- system_idle --");
@@ -1492,7 +1545,13 @@ end</div>
             if (iface.isTrunk) return null; // TRUNK HARD STOP
 
             let cmds = [];
-            let vlanChanged = targetVlan && targetVlan !== iface.origVlan;
+            
+            // --- OMNI-MATRIX VLAN RESOLUTION ---
+            let safeName = iface.name.replace(/[^a-zA-Z0-9]/g, '_');
+            let overrideEl = document.getElementById('ovr_vlan_' + safeName);
+            let actualTargetVlan = (overrideEl && overrideEl.value) ? overrideEl.value : globalTargetVlan;
+            
+            let vlanChanged = actualTargetVlan && actualTargetVlan !== iface.origVlan;
             let stpChanged = applyStp && (!iface.hasPortfast || !iface.hasBpduguard);
             
             let forceUp = adminState === 'up';
@@ -1520,7 +1579,7 @@ end</div>
 
             if (!needsBounce && !stateChanged) return null;
 
-            if (vlanChanged) cmds.push(`switchport access vlan ${targetVlan}`);
+            if (vlanChanged) cmds.push(`switchport access vlan ${actualTargetVlan}`);
             if (applyStp) {
                 if (!iface.hasPortfast) cmds.push("spanning-tree portfast");
                 if (!iface.hasBpduguard) cmds.push("spanning-tree bpduguard enable");
@@ -1602,7 +1661,13 @@ end</div>
             if (iface.isTrunk) return null; // TRUNK HARD STOP
 
             let cmds = [];
-            let vlanChanged = targetVlan && targetVlan !== iface.origVlan;
+            
+            // --- OMNI-MATRIX VLAN RESOLUTION ---
+            let safeName = iface.name.replace(/[^a-zA-Z0-9]/g, '_');
+            let overrideEl = document.getElementById('ovr_vlan_' + safeName);
+            let actualTargetVlan = (overrideEl && overrideEl.value) ? overrideEl.value : globalTargetVlan;
+            
+            let vlanChanged = actualTargetVlan && actualTargetVlan !== iface.origVlan;
             let stpChanged = applyStp && (!iface.hasPortfast || !iface.hasBpduguard);
             
             let forceUp = adminState === 'up';
@@ -1757,7 +1822,7 @@ end</div>
             });
         }
 
-        document.getElementById('statusMsg').style.display = 'block';
+        document.getElementById('statusMsg').style.display = 'flex';
         if (hasPrimaryChanges) {
             document.getElementById('statusMsg').innerHTML = `
                 <span>STATUS: ${compiledPorts} PORTS COMPILED_SUCCESSFULLY</span>
@@ -1768,7 +1833,7 @@ end</div>
                 </span>
             `;
         } else {
-            document.getElementById('statusMsg').innerHTML = `<span>STATUS: 0 ELIGIBLE PORTS_COMPILED</span>`;
+            document.getElementById('statusMsg').innerHTML = `<span>STATUS: 0 ELIGIBLE PORTS_COMPILED</span><span></span>`;
         }
     }
 </script>
