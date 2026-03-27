@@ -290,6 +290,7 @@
             box-shadow: 0 0 8px rgba(57, 255, 20, 0.2);
         }
 
+        /* --- TRUE DISABLED STATE CSS --- */
         .radio-group label.disabled, .checkbox-group label.disabled {
             opacity: 0.3 !important;
             cursor: not-allowed !important;
@@ -312,7 +313,6 @@
             100% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(0deg) translate(0, 0); text-shadow: none; }
         }
 
-        /* Targets specifically the REMOVE radio label when checked */
         .radio-group label:has(input[value="remove"]:checked) {
             border-color: var(--accent-red) !important;
             color: #ff7b72 !important;
@@ -678,7 +678,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v7.4 [Glitch Protocol Update]</span>
+        <span class="version-tag">// NOC Configuration Automation Tool // v7.4 Kibble update</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -1558,7 +1558,6 @@ end</div>
                 let el = document.getElementById(id);
                 if (el) {
                     el.value = currentOverrides[id];
-                    // Re-apply glitch style if remove was previously selected
                     if (el.classList.contains('override-select') && el.value === 'remove') {
                         el.classList.add('danger-mode');
                     }
