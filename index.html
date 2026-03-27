@@ -625,7 +625,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v7.1 [Advanced Matrix Update]</span>
+        <span class="version-tag">// v7.2 [Staged Execution Update]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -750,7 +750,7 @@ end</div>
         <div class="header-row">
             <label style="color: var(--hl-yellow); text-shadow: 0 0 8px rgba(227, 179, 65, 0.4); display: flex; align-items: center; gap: 6px;">
                 08 // ADVANCED OPTIONS [ PER-PORT MATRIX ]
-                <div class="tooltip-icon" style="color: var(--hl-yellow); border-color: var(--hl-yellow);" data-tooltip="Granular control. Inputs here will overwrite the Global selections for specific individual ports.">i</div>
+                <div class="tooltip-icon" style="color: var(--hl-yellow); border-color: var(--hl-yellow);" data-tooltip="Granular control. Inputs here will overwrite the Global selections for specific individual ports. Edits here will NOT auto-execute until you hit Execute_Run.">i</div>
             </label>
             <button class="expand-btn" id="advOptionsBtn" style="color: var(--hl-yellow); border-color: var(--hl-yellow);" onclick="toggleAdvOptions()">[ EXPAND ]</button>
         </div>
@@ -901,7 +901,7 @@ end</div>
     // --- LOCAL DATABASE LOGIC ---
     let switchDB = {};
     let detectedGlobalHostname = "N0CAT_Script"; 
-    let currentMatrixTriggerElem = null; // To handle targeted modal cancels
+    let currentMatrixTriggerElem = null; 
 
     window.onload = function() {
         const savedDB = localStorage.getItem('noccat_db');
@@ -1059,7 +1059,7 @@ end</div>
                 checkDynamicWarnings(); 
                 return; 
             }
-            currentMatrixTriggerElem = null; // Global radio triggered it
+            currentMatrixTriggerElem = null; 
             document.getElementById('dontShowAgainCheckbox').checked = false; 
             document.getElementById('removeWarningModal').classList.add('visible');
             checkDynamicWarnings(); 
@@ -1070,14 +1070,11 @@ end</div>
         if (elem.value === 'remove') {
             const isSuppressed = localStorage.getItem('noccat_suppress_remove_warning');
             if (isSuppressed === 'true') {
-                generateScript(); 
                 return; 
             }
-            currentMatrixTriggerElem = elem; // Matrix dropdown triggered it
+            currentMatrixTriggerElem = elem; 
             document.getElementById('dontShowAgainCheckbox').checked = false; 
             document.getElementById('removeWarningModal').classList.add('visible');
-        } else {
-            generateScript();
         }
     }
 
@@ -1085,11 +1082,9 @@ end</div>
         document.getElementById('removeWarningModal').classList.remove('visible');
         
         if (currentMatrixTriggerElem) {
-            // Revert the Matrix dropdown to global
             currentMatrixTriggerElem.value = 'global';
             currentMatrixTriggerElem = null;
         } else {
-            // Revert the global radio to leave
             document.querySelector('input[name="securityMode"][value="leave"]').checked = true;
             checkDynamicWarnings(); 
         }
@@ -1104,7 +1099,6 @@ end</div>
         
         if (currentMatrixTriggerElem) {
             currentMatrixTriggerElem = null;
-            generateScript();
         } else {
             checkDynamicWarnings(); 
         }
@@ -1249,7 +1243,6 @@ end</div>
         const bounceRadio = document.querySelector('input[name="adminState"][value="bounce"]');
         const leaveAdminRadio = document.querySelector('input[name="adminState"][value="leave"]');
         
-        // Execute Button Lock
         const hasValidInterface = /^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         if (hasValidInterface) {
             execBtn.disabled = false;
@@ -1259,7 +1252,6 @@ end</div>
             execBtn.classList.remove('ready');
         }
 
-        // Failsafe: Re-lock everything if input is empty
         if (!configText.trim()) {
             warningBox.style.display = 'none';
             deviceHud.classList.remove('visible');
@@ -1283,7 +1275,6 @@ end</div>
             return;
         }
 
-        // Smart Auto-Expand Box
         if (lineCount > 8) {
             if (!textarea.classList.contains('expanded') && !textarea.dataset.manualCollapse) {
                 textarea.classList.add('expanded');
@@ -1297,7 +1288,6 @@ end</div>
             }
         }
 
-        // Multi-Tenant Hostname Logic
         const hostMatches = [...configText.matchAll(/^([A-Za-z0-9\-\_]+)#/gm)];
         let uniqueHosts = [];
         
@@ -1394,7 +1384,6 @@ end</div>
                     noSecPorts.push(normalizedIf);
                 }
                 
-                // Build Override Grid Array (Only for Access Ports)
                 if (isAccessMode) {
                     let vlanMatch = block.match(/switchport\s+access\s+vlan\s+(\d+)/i);
                     validAccessPortsForGrid.push({
@@ -1407,12 +1396,10 @@ end</div>
             }
         });
 
-        // --- IDEMPOTENT UI LOCKING ENGINE ---
         const selectedSecurityMode = document.querySelector('input[name="securityMode"]:checked').value;
         const isSecurityModifying = selectedSecurityMode !== 'leave';
 
         if (totalParsedPorts > 0) {
-            
             if (portsWithFullDot1x === totalParsedPorts) {
                 dot1xRadio.disabled = true; dot1xRadio.closest('label').classList.add('disabled');
                 if (dot1xRadio.checked) leaveSecRadio.checked = true;
@@ -1463,12 +1450,9 @@ end</div>
             } else {
                 bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled');
             }
-            
         }
         
-        // --- MATRIX OVR GRID LOGIC ---
         if (validAccessPortsForGrid.length > 0) {
-            // Save state of currently typed overrides so they aren't wiped while typing/updating
             const currentOverrides = {};
             document.querySelectorAll('.override-input, .override-select').forEach(inp => {
                 if (inp.value && inp.value !== 'global') {
@@ -1486,7 +1470,7 @@ end</div>
                 gridHTML += `<tr>
                     <td><strong>${p.name}</strong></td>
                     <td style="opacity: 0.8; font-size: 10px;">${statusDot} | VLAN: ${p.origVlan} | SEC: ${curSec}</td>
-                    <td><input type="number" id="ovr_vlan_${safeName}" class="override-input" placeholder="Global" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();"></td>
+                    <td><input type="number" id="ovr_vlan_${safeName}" class="override-input" placeholder="Global" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094;"></td>
                     <td>
                         <select id="ovr_sec_${safeName}" class="override-select" onchange="handleMatrixSecChange(this)">
                             <option value="global">Global</option>
@@ -1502,7 +1486,6 @@ end</div>
             overrideTableBody.innerHTML = gridHTML;
             overrideSection.style.display = 'block';
             
-            // Restore saved inputs
             for (let id in currentOverrides) {
                 let el = document.getElementById(id);
                 if (el) el.value = currentOverrides[id];
