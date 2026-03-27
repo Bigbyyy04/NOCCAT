@@ -30,7 +30,7 @@
             color: var(--text-main);
             display: flex;
             justify-content: center;
-            overflow-x: hidden; /* Prevent scrollbars from canvas edge */
+            overflow-x: hidden;
         }
 
         /* --- DYNAMIC BACKGROUND CANVAS --- */
@@ -41,21 +41,28 @@
             width: 100vw;
             height: 100vh;
             z-index: -1;
-            pointer-events: none; /* Ensures it never blocks clicks */
+            pointer-events: none; 
         }
 
         .container { 
             max-width: 1050px; 
             width: 100%; 
-            position: relative; /* Keeps it layered above the canvas */
+            position: relative; 
             z-index: 1; 
         }
 
-        /* --- PURE CSS TEXT LOGO WITH TERMINAL CURSOR --- */
+        /* --- HEADER ROW (LOGO & TIMEZONE) --- */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }
+
         h2 {
             color: #ffffff;
             font-size: 1.7rem;
-            margin-bottom: 20px;
+            margin: 0;
             display: flex;
             align-items: baseline;
             gap: 12px;
@@ -89,9 +96,50 @@
             font-family: "Segoe UI", Roboto, monospace;
         }
 
+        /* --- TIMEZONE WIDGET --- */
+        .tz-widget {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 11px;
+            color: var(--text-main);
+            background: rgba(13, 17, 23, 0.85);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 4px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .tz-select {
+            background: transparent;
+            color: var(--neon-green);
+            border: none;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 11px;
+            cursor: pointer;
+            outline: none;
+            font-weight: bold;
+            appearance: none;
+            -webkit-appearance: none;
+            padding-right: 4px;
+            text-shadow: 0 0 5px rgba(57, 255, 20, 0.4);
+        }
+
+        .tz-select option {
+            background: var(--card-bg);
+            color: var(--neon-green);
+            text-shadow: none;
+        }
+        
+        .tz-select:hover {
+            text-decoration: underline;
+        }
+
         .form-group {
-            background: rgba(22, 27, 34, 0.85); /* Slightly transparent to see network */
-            backdrop-filter: blur(4px); /* Frost glass effect */
+            background: rgba(22, 27, 34, 0.85); 
+            backdrop-filter: blur(4px); 
             padding: 15px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -699,10 +747,28 @@
 
 <div class="container">
     
-    <h2>
-        <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// NOC Configuration Automation Tool // v7.5 Kibble update</span>
-    </h2>
+    <div class="top-bar">
+        <h2>
+            <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
+            <span class="version-tag">// NOC Configuration Automation Tool // v7.6 Kibble update</span>
+        </h2>
+        
+        <div class="tz-widget">
+            <span id="localTimeDisplay">LOCAL: 00:00:00</span>
+            <span style="opacity: 0.3;">|</span>
+            <select id="tzSelector" class="tz-select" onchange="updateClocks()">
+                <option value="UTC" selected>UTC</option>
+                <option value="America/New_York">EST</option>
+                <option value="America/Los_Angeles">PST</option>
+                <option value="Europe/London">GMT</option>
+                <option value="Europe/Berlin">CET</option>
+                <option value="Asia/Kolkata">IST</option>
+                <option value="Asia/Manila">PHT</option>
+                <option value="Australia/Sydney">AEST</option>
+            </select>
+            <span id="convertedTimeDisplay" style="color: var(--neon-green);">00:00:00</span>
+        </div>
+    </div>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
         <div class="header-row">
@@ -984,6 +1050,22 @@ end</div>
 </div>
 
 <script>
+    // --- REAL-TIME CLOCK LOGIC ---
+    function updateClocks() {
+        const now = new Date();
+        // Update Local Time
+        document.getElementById('localTimeDisplay').innerText = 'LOCAL: ' + now.toLocaleTimeString('en-US', { hour12: false });
+        
+        // Update Target Time based on Selector
+        const tz = document.getElementById('tzSelector').value;
+        const converted = now.toLocaleTimeString('en-US', { timeZone: tz, hour12: false });
+        document.getElementById('convertedTimeDisplay').innerText = converted;
+    }
+    
+    // Initialize Clocks immediately, then tick every 1000ms
+    updateClocks();
+    setInterval(updateClocks, 1000);
+
     // --- NETWORK BACKGROUND CANVAS ENGINE ---
     (function() {
         const canvas = document.getElementById('networkBg');
@@ -1426,6 +1508,7 @@ end</div>
             execBtn.classList.remove('ready');
         }
 
+        // Failsafe: Re-lock everything if input is empty
         if (!configText.trim()) {
             warningBox.style.display = 'none';
             deviceHud.classList.remove('visible');
