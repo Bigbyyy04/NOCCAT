@@ -134,6 +134,12 @@
             margin-top: 10px;
             border-top: 1px dashed rgba(188, 140, 255, 0.4);
         }
+        
+        /* Specific transition for Advanced Options to allow larger tables */
+        #advOptionsWrapper.expanded {
+            max-height: 2500px; 
+            border-top-color: rgba(227, 179, 65, 0.4);
+        }
 
         .readme-content {
             font-size: 12px;
@@ -293,7 +299,6 @@
         }
 
         /* --- PER-PORT OVERRIDE TABLE CSS --- */
-        .override-section { display: none; margin-bottom: 20px; padding: 10px 15px; }
         .override-table-wrapper {
             max-height: 250px;
             overflow-y: auto;
@@ -301,7 +306,7 @@
             border-radius: 4px;
             scrollbar-width: thin;
             scrollbar-color: var(--border-color) var(--code-bg);
-            margin-top: 10px;
+            margin-top: 5px;
         }
         .override-table-wrapper::-webkit-scrollbar { width: 10px; }
         .override-table-wrapper::-webkit-scrollbar-track { background: var(--code-bg); }
@@ -348,6 +353,25 @@
             box-shadow: 0 0 5px rgba(57,255,20,0.3);
         }
         .override-input::placeholder { color: #484f58; font-style: italic; }
+        
+        .override-select {
+            background: var(--code-bg);
+            border: 1px dashed rgba(88, 166, 255, 0.5);
+            color: var(--text-main);
+            padding: 4px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            outline: none;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100px;
+        }
+        .override-select:focus {
+            border-color: var(--neon-green);
+            border-style: solid;
+            box-shadow: 0 0 5px rgba(57,255,20,0.3);
+        }
 
         /* --- TOOLTIP CSS --- */
         .tooltip-icon {
@@ -601,7 +625,7 @@
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// v7.0 [Omni-Matrix Update]</span>
+        <span class="version-tag">// v7.1 [Advanced Matrix Update]</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -633,7 +657,7 @@ end</div>
                 <p>The real-time engine continuously scans your input. It will warn you of disabled links, un-secured ports, and fragmented security configurations. <strong>Trunk/Uplink ports are completely hard-locked by the engine for safety.</strong></p>
 
                 <h3>> Target Parameters (02 - 08)</h3>
-                <p>Set your desired Global parameters. The engine will evaluate the pasted logs and output the exact CLI commands needed to reach your target state. You can override the Global VLAN on a per-port basis using the dynamic Matrix Grid (08).</p>
+                <p>Set your desired Global parameters. The engine will evaluate the pasted logs and output the exact CLI commands needed to reach your target state. You can override the Global VLAN and Security Protocols on a per-port basis using the dynamic Advanced Options Matrix (08).</p>
             </div>
         </div>
     </div>
@@ -722,23 +746,29 @@ end</div>
         </div>
     </div>
     
-    <div id="overrideSection" class="form-group override-section">
+    <div id="advancedOptionsContainer" class="form-group input-section" style="display: none; border-color: rgba(227, 179, 65, 0.3);">
         <div class="header-row">
-            <label style="color: var(--hl-yellow);">08 // PER-PORT OVERRIDES (MATRIX)</label>
-            <div class="tooltip-icon" style="color: var(--hl-yellow); border-color: var(--hl-yellow);" data-tooltip="Leave blank to naturally inherit the Global VLAN (02). Type a number here to force a specific port into a different VLAN.">i</div>
+            <label style="color: var(--hl-yellow); text-shadow: 0 0 8px rgba(227, 179, 65, 0.4); display: flex; align-items: center; gap: 6px;">
+                08 // ADVANCED OPTIONS [ PER-PORT MATRIX ]
+                <div class="tooltip-icon" style="color: var(--hl-yellow); border-color: var(--hl-yellow);" data-tooltip="Granular control. Inputs here will overwrite the Global selections for specific individual ports.">i</div>
+            </label>
+            <button class="expand-btn" id="advOptionsBtn" style="color: var(--hl-yellow); border-color: var(--hl-yellow);" onclick="toggleAdvOptions()">[ EXPAND ]</button>
         </div>
-        <div class="override-table-wrapper">
-            <table class="override-table">
-                <thead>
-                    <tr>
-                        <th style="width: 40%;">INTERFACE</th>
-                        <th style="width: 40%;">CURRENT STATE</th>
-                        <th style="width: 20%;">TARGET VLAN</th>
-                    </tr>
-                </thead>
-                <tbody id="overrideTableBody">
-                    </tbody>
-            </table>
+        <div id="advOptionsWrapper" class="readme-wrapper">
+            <div class="override-table-wrapper">
+                <table class="override-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">INTERFACE</th>
+                            <th style="width: 35%;">CURRENT STATE</th>
+                            <th style="width: 15%;">OVR: VLAN</th>
+                            <th style="width: 20%;">OVR: SECURITY</th>
+                        </tr>
+                    </thead>
+                    <tbody id="overrideTableBody">
+                        </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -790,7 +820,7 @@ end</div>
             <h3>🛡️ 2. Advanced Security & Protocol Management</h3>
             <ul>
                 <li><strong>Trunk Port Hard-Stop:</strong> Actively locks out ports detected as uplinks or trunks to prevent catastrophic network outages.</li>
-                <li><strong>Omni-Matrix VLAN Assignment:</strong> Updates access VLANs dynamically. Set a Global Master VLAN (02) to apply to all ports simultaneously, or use the Per-Port Override Grid (08) to surgically assign different VLANs to specific interfaces within the same execution batch.</li>
+                <li><strong>Omni-Matrix Assignment:</strong> Updates configurations dynamically. Set Global Master parameters to apply to all ports simultaneously, or use the Per-Port Override Grid (08) to surgically assign different VLANs and Security Protocols to specific interfaces within the same execution batch.</li>
                 <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates (<code>dot1x pae authenticator</code> & <code>authentication port-control auto</code>).</li>
                 <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates (<code>switchport port-security</code> & <code>...mac-address sticky</code>).</li>
                 <li><strong>REMOVE Mode:</strong> Automatically disabled unless port security is actually present. Explicitly strips existing configurations. Requires a mandatory compliance confirmation prompt. Rollback intelligently restores the deleted security.</li>
@@ -871,6 +901,7 @@ end</div>
     // --- LOCAL DATABASE LOGIC ---
     let switchDB = {};
     let detectedGlobalHostname = "N0CAT_Script"; 
+    let currentMatrixTriggerElem = null; // To handle targeted modal cancels
 
     window.onload = function() {
         const savedDB = localStorage.getItem('noccat_db');
@@ -1011,6 +1042,13 @@ end</div>
         wrapper.classList.toggle('expanded');
         btn.innerText = wrapper.classList.contains('expanded') ? `[ CLOSE_${name} ]` : `[ ${name.startsWith('VIEW') ? '' : 'VIEW_'}${name} ]`;
     }
+    
+    function toggleAdvOptions() {
+        const wrapper = document.getElementById('advOptionsWrapper');
+        const btn = document.getElementById('advOptionsBtn');
+        wrapper.classList.toggle('expanded');
+        btn.innerText = wrapper.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]";
+    }
 
     // --- CUSTOM MODAL LOGIC ---
     function handleRemoveClick(elem) {
@@ -1021,16 +1059,40 @@ end</div>
                 checkDynamicWarnings(); 
                 return; 
             }
+            currentMatrixTriggerElem = null; // Global radio triggered it
             document.getElementById('dontShowAgainCheckbox').checked = false; 
             document.getElementById('removeWarningModal').classList.add('visible');
             checkDynamicWarnings(); 
         }
     }
+    
+    function handleMatrixSecChange(elem) {
+        if (elem.value === 'remove') {
+            const isSuppressed = localStorage.getItem('noccat_suppress_remove_warning');
+            if (isSuppressed === 'true') {
+                generateScript(); 
+                return; 
+            }
+            currentMatrixTriggerElem = elem; // Matrix dropdown triggered it
+            document.getElementById('dontShowAgainCheckbox').checked = false; 
+            document.getElementById('removeWarningModal').classList.add('visible');
+        } else {
+            generateScript();
+        }
+    }
 
     function cancelRemove() {
         document.getElementById('removeWarningModal').classList.remove('visible');
-        document.querySelector('input[name="securityMode"][value="leave"]').checked = true;
-        checkDynamicWarnings(); 
+        
+        if (currentMatrixTriggerElem) {
+            // Revert the Matrix dropdown to global
+            currentMatrixTriggerElem.value = 'global';
+            currentMatrixTriggerElem = null;
+        } else {
+            // Revert the global radio to leave
+            document.querySelector('input[name="securityMode"][value="leave"]').checked = true;
+            checkDynamicWarnings(); 
+        }
     }
 
     function confirmRemove() {
@@ -1039,7 +1101,13 @@ end</div>
             localStorage.setItem('noccat_suppress_remove_warning', 'true');
         }
         document.getElementById('removeWarningModal').classList.remove('visible');
-        checkDynamicWarnings(); 
+        
+        if (currentMatrixTriggerElem) {
+            currentMatrixTriggerElem = null;
+            generateScript();
+        } else {
+            checkDynamicWarnings(); 
+        }
     }
 
     function clearAll() {
@@ -1086,7 +1154,9 @@ end</div>
         document.getElementById('statusMsg').style.display = 'none';
         document.getElementById('warningBox').style.display = 'none';
         document.getElementById('deviceHud').classList.remove('visible');
-        document.getElementById('overrideSection').style.display = 'none';
+        
+        document.getElementById('advancedOptionsContainer').style.display = 'none';
+        document.getElementById('overrideTableBody').innerHTML = '';
         
         const textarea = document.getElementById('configInput');
         textarea.dataset.manualCollapse = ""; 
@@ -1160,7 +1230,7 @@ end</div>
         const execBtn = document.getElementById('executeBtn');
         const textarea = document.getElementById('configInput');
         const expandBtn = document.getElementById('expandBtn');
-        const overrideSection = document.getElementById('overrideSection');
+        const overrideSection = document.getElementById('advancedOptionsContainer');
         const overrideTableBody = document.getElementById('overrideTableBody');
         
         const lineCount = configText.split('\n').length;
@@ -1330,7 +1400,8 @@ end</div>
                     validAccessPortsForGrid.push({
                         name: normalizedIf,
                         origVlan: vlanMatch ? vlanMatch[1] : '1 (Default)',
-                        isDown: isShutdown
+                        isDown: isShutdown,
+                        hasStickyMac, hasDot1xPae
                     });
                 }
             }
@@ -1341,6 +1412,7 @@ end</div>
         const isSecurityModifying = selectedSecurityMode !== 'leave';
 
         if (totalParsedPorts > 0) {
+            
             if (portsWithFullDot1x === totalParsedPorts) {
                 dot1xRadio.disabled = true; dot1xRadio.closest('label').classList.add('disabled');
                 if (dot1xRadio.checked) leaveSecRadio.checked = true;
@@ -1391,24 +1463,40 @@ end</div>
             } else {
                 bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled');
             }
+            
         }
         
         // --- MATRIX OVR GRID LOGIC ---
         if (validAccessPortsForGrid.length > 0) {
-            // Save state of currently typed overrides so they aren't wiped while typing
+            // Save state of currently typed overrides so they aren't wiped while typing/updating
             const currentOverrides = {};
-            document.querySelectorAll('.override-input').forEach(inp => {
-                if (inp.value) currentOverrides[inp.id] = inp.value;
+            document.querySelectorAll('.override-input, .override-select').forEach(inp => {
+                if (inp.value && inp.value !== 'global') {
+                    currentOverrides[inp.id] = inp.value;
+                }
             });
             
             let gridHTML = "";
             validAccessPortsForGrid.forEach(p => {
                 let safeName = p.name.replace(/[^a-zA-Z0-9]/g, '_');
+                
+                let curSec = p.hasStickyMac && p.hasDot1xPae ? "DUAL" : p.hasStickyMac ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE";
                 let statusDot = p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>';
+                
                 gridHTML += `<tr>
                     <td><strong>${p.name}</strong></td>
-                    <td style="opacity: 0.8; font-size: 10px;">${statusDot} | VLAN: ${p.origVlan}</td>
+                    <td style="opacity: 0.8; font-size: 10px;">${statusDot} | VLAN: ${p.origVlan} | SEC: ${curSec}</td>
                     <td><input type="number" id="ovr_vlan_${safeName}" class="override-input" placeholder="Global" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();"></td>
+                    <td>
+                        <select id="ovr_sec_${safeName}" class="override-select" onchange="handleMatrixSecChange(this)">
+                            <option value="global">Global</option>
+                            <option value="leave">-- (Leave)</option>
+                            <option value="dot1x">DOT1X</option>
+                            <option value="sticky">STICKY</option>
+                            <option value="remove">REMOVE</option>
+                            <option value="reset">RESET</option>
+                        </select>
+                    </td>
                 </tr>`;
             });
             overrideTableBody.innerHTML = gridHTML;
@@ -1468,7 +1556,7 @@ end</div>
     function generateScript() {
         const configText = document.getElementById('configInput').value;
         const globalTargetVlan = document.getElementById('vlanInput').value;
-        const securityMode = document.querySelector('input[name="securityMode"]:checked').value;
+        const globalSecurityMode = document.querySelector('input[name="securityMode"]:checked').value;
         const applyStp = document.getElementById('stpCheckbox').checked;
         const adminState = document.querySelector('input[name="adminState"]:checked').value;
         const slowPaste = document.getElementById('slowPasteCheckbox').checked;
@@ -1522,8 +1610,6 @@ end</div>
                 }
             }
         });
-
-        // DO NOT call checkDynamicWarnings() here, it causes recursive loop with Matrix input!
         
         const interfacesData = Object.values(interfacesDataMap);
         if (interfacesData.length === 0) {
@@ -1545,12 +1631,15 @@ end</div>
             if (iface.isTrunk) return null; // TRUNK HARD STOP
 
             let cmds = [];
-            
-            // --- OMNI-MATRIX VLAN RESOLUTION ---
             let safeName = iface.name.replace(/[^a-zA-Z0-9]/g, '_');
-            let overrideEl = document.getElementById('ovr_vlan_' + safeName);
-            let actualTargetVlan = (overrideEl && overrideEl.value) ? overrideEl.value : globalTargetVlan;
             
+            // --- OMNI-MATRIX RESOLUTION ---
+            let overrideVlanEl = document.getElementById('ovr_vlan_' + safeName);
+            let actualTargetVlan = (overrideVlanEl && overrideVlanEl.value) ? overrideVlanEl.value : globalTargetVlan;
+            
+            let overrideSecEl = document.getElementById('ovr_sec_' + safeName);
+            let actualSecurityMode = (overrideSecEl && overrideSecEl.value && overrideSecEl.value !== 'global') ? overrideSecEl.value : globalSecurityMode;
+
             let vlanChanged = actualTargetVlan && actualTargetVlan !== iface.origVlan;
             let stpChanged = applyStp && (!iface.hasPortfast || !iface.hasBpduguard);
             
@@ -1565,13 +1654,13 @@ end</div>
             
             let secChanged = false;
             
-            if (securityMode === 'dot1x') {
+            if (actualSecurityMode === 'dot1x') {
                 if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true;
-            } else if (securityMode === 'sticky') {
+            } else if (actualSecurityMode === 'sticky') {
                 if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true;
-            } else if (securityMode === 'reset') {
+            } else if (actualSecurityMode === 'reset') {
                 if ((isCurrentlySticky || isCurrentlyDot1x) && !isDual) secChanged = true;
-            } else if (securityMode === 'remove') {
+            } else if (actualSecurityMode === 'remove') {
                 if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
             }
 
@@ -1585,7 +1674,7 @@ end</div>
                 if (!iface.hasBpduguard) cmds.push("spanning-tree bpduguard enable");
             }
 
-            if (securityMode === 'dot1x' && secChanged) {
+            if (actualSecurityMode === 'dot1x' && secChanged) {
                 if (isCurrentlySticky) {
                     if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
                     if (iface.hasPortSec) cmds.push("no switchport port-security");
@@ -1593,7 +1682,7 @@ end</div>
                 cmds.push("shut");
                 if (!iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
                 if (!iface.hasAuthPortControl) cmds.push("authentication port-control auto");
-            } else if (securityMode === 'sticky' && secChanged) {
+            } else if (actualSecurityMode === 'sticky' && secChanged) {
                 if (isCurrentlyDot1x) {
                     if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
                     if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
@@ -1601,7 +1690,7 @@ end</div>
                 cmds.push("shut");
                 if (!iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
                 if (!iface.hasPortSec) cmds.push("switchport port-security");
-            } else if (securityMode === 'reset' && secChanged) {
+            } else if (actualSecurityMode === 'reset' && secChanged) {
                 if (isCurrentlySticky) {
                     if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
                     if (iface.hasPortSec) cmds.push("no switchport port-security");
@@ -1613,7 +1702,7 @@ end</div>
                     cmds.push("shut");
                     cmds.push("dot1x pae authenticator", "authentication port-control auto");
                 }
-            } else if (securityMode === 'remove' && secChanged) {
+            } else if (actualSecurityMode === 'remove' && secChanged) {
                 if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
                 if (iface.hasPortSec) cmds.push("no switchport port-security");
                 if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
@@ -1661,12 +1750,15 @@ end</div>
             if (iface.isTrunk) return null; // TRUNK HARD STOP
 
             let cmds = [];
-            
-            // --- OMNI-MATRIX VLAN RESOLUTION ---
             let safeName = iface.name.replace(/[^a-zA-Z0-9]/g, '_');
-            let overrideEl = document.getElementById('ovr_vlan_' + safeName);
-            let actualTargetVlan = (overrideEl && overrideEl.value) ? overrideEl.value : globalTargetVlan;
             
+            // --- OMNI-MATRIX RESOLUTION ---
+            let overrideVlanEl = document.getElementById('ovr_vlan_' + safeName);
+            let actualTargetVlan = (overrideVlanEl && overrideVlanEl.value) ? overrideVlanEl.value : globalTargetVlan;
+            
+            let overrideSecEl = document.getElementById('ovr_sec_' + safeName);
+            let actualSecurityMode = (overrideSecEl && overrideSecEl.value && overrideSecEl.value !== 'global') ? overrideSecEl.value : globalSecurityMode;
+
             let vlanChanged = actualTargetVlan && actualTargetVlan !== iface.origVlan;
             let stpChanged = applyStp && (!iface.hasPortfast || !iface.hasBpduguard);
             
@@ -1677,17 +1769,16 @@ end</div>
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
-            let isDual = isCurrentlyDot1x && isCurrentlySticky;
             
             let secChanged = false;
             
-            if (securityMode === 'dot1x') {
+            if (actualSecurityMode === 'dot1x') {
                 if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true;
-            } else if (securityMode === 'sticky') {
+            } else if (actualSecurityMode === 'sticky') {
                 if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true;
-            } else if (securityMode === 'remove') {
+            } else if (actualSecurityMode === 'remove') {
                 if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
-            } else if (securityMode === 'reset') {
+            } else if (actualSecurityMode === 'reset') {
                 secChanged = false; 
             }
 
@@ -1703,10 +1794,10 @@ end</div>
             
             if (secChanged) {
                 // Strip what Primary ADDED
-                if (securityMode === 'dot1x') {
+                if (actualSecurityMode === 'dot1x') {
                     if (!iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
                     if (!iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
-                } else if (securityMode === 'sticky') {
+                } else if (actualSecurityMode === 'sticky') {
                     if (!iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
                     if (!iface.hasPortSec) cmds.push("no switchport port-security");
                 }
@@ -1714,13 +1805,13 @@ end</div>
                 cmds.push("shut");
                 
                 // Restore what Primary REMOVED
-                if (securityMode === 'dot1x' && isCurrentlySticky) {
+                if (actualSecurityMode === 'dot1x' && isCurrentlySticky) {
                     if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
                     if (iface.hasPortSec) cmds.push("switchport port-security");
-                } else if (securityMode === 'sticky' && isCurrentlyDot1x) {
+                } else if (actualSecurityMode === 'sticky' && isCurrentlyDot1x) {
                     if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
                     if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
-                } else if (securityMode === 'remove') {
+                } else if (actualSecurityMode === 'remove') {
                     if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
                     if (iface.hasPortSec) cmds.push("switchport port-security");
                     if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
