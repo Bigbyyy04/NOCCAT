@@ -96,7 +96,7 @@
             font-family: "Segoe UI", Roboto, monospace;
         }
 
-        /* --- TIMEZONE WIDGET --- */
+        /* --- TIMEZONE WIDGET (CHRONOS) --- */
         .tz-widget {
             display: flex;
             align-items: center;
@@ -111,6 +111,43 @@
             box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
             backdrop-filter: blur(4px);
         }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--neon-green);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .live-dot.pulse {
+            box-shadow: 0 0 8px var(--neon-green);
+            animation: pulse-dot 1.5s infinite;
+        }
+        @keyframes pulse-dot {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .live-dot.paused {
+            background-color: var(--hl-orange);
+            box-shadow: 0 0 8px var(--hl-orange);
+            animation: none;
+        }
+
+        .tz-time-input {
+            background: transparent;
+            color: var(--text-main);
+            border: none;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 11px;
+            outline: none;
+            cursor: text;
+            width: 65px;
+            padding: 0;
+        }
+        .tz-time-input::-webkit-calendar-picker-indicator { display: none; }
+        .tz-time-input:focus { color: #fff; }
 
         .tz-select {
             background: transparent;
@@ -132,10 +169,7 @@
             color: var(--neon-green);
             text-shadow: none;
         }
-        
-        .tz-select:hover {
-            text-decoration: underline;
-        }
+        .tz-select:hover { text-decoration: underline; }
 
         .form-group {
             background: rgba(22, 27, 34, 0.85); 
@@ -750,12 +784,14 @@
     <div class="top-bar">
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// NOC Configuration Automation Tool // v7.6 Kibble update</span>
+            <span class="version-tag">// NOC Configuration Automation Tool // v7.7 Chronos update</span>
         </h2>
         
         <div class="tz-widget">
-            <span id="localTimeDisplay">LOCAL: 00:00:00</span>
-            <span style="opacity: 0.3;">|</span>
+            <div id="liveIndicator" class="live-dot pulse" onclick="resetToLiveTime()" title="LIVE CLOCK (Click to resume)"></div>
+            <label style="margin: 0; color: var(--text-main); font-size: 11px; cursor: pointer;" onclick="resetToLiveTime()">LOCAL:</label>
+            <input type="time" id="localTimeInput" step="1" class="tz-time-input" oninput="setCustomTime()" onfocus="setCustomTime()">
+            <span style="opacity: 0.3; margin: 0 4px;">|</span>
             <select id="tzSelector" class="tz-select" onchange="updateClocks()">
                 <option value="UTC" selected>UTC</option>
                 <option value="America/New_York">EST</option>
@@ -995,6 +1031,7 @@ end</div>
                 <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
                 <li><strong>Cross-Panel Locking & Smart Idempotency:</strong> Modifying security automatically locks the Bounce button. UI buttons gray out if the engine detects the config already meets targeted conditions natively.</li>
                 <li><strong>Omni-Drop Zone:</strong> Supports drag-and-drop ingestion of raw text highlights, IDE tabs, or `.txt` log files directly into the UI. Direct `[ DOWNLOAD ]` buttons export scripts named intelligently after the target hostname.</li>
+                <li><strong>Chronos Planning Module:</strong> Real-time timezone converter with a built-in planning feature. Click the Local Time to pause the clock and input a custom execution window to immediately see it converted to your target timezone.</li>
                 <li><strong>Haptic/Audio Engine:</strong> Triggers synthesized Web Audio confirmation on execution. Includes Dry Run Diff visualizer in the terminal output status string. Includes interactive dynamic network canvas background.</li>
             </ul>
 
@@ -1050,16 +1087,46 @@ end</div>
 </div>
 
 <script>
-    // --- REAL-TIME CLOCK LOGIC ---
+    // --- REAL-TIME CLOCK LOGIC (CHRONOS MODULE) ---
+    let isLiveTime = true;
+    
     function updateClocks() {
-        const now = new Date();
-        // Update Local Time
-        document.getElementById('localTimeDisplay').innerText = 'LOCAL: ' + now.toLocaleTimeString('en-US', { hour12: false });
+        const timeInput = document.getElementById('localTimeInput');
+        let d = new Date();
         
-        // Update Target Time based on Selector
+        if (isLiveTime) {
+            const hh = String(d.getHours()).padStart(2, '0');
+            const mm = String(d.getMinutes()).padStart(2, '0');
+            const ss = String(d.getSeconds()).padStart(2, '0');
+            timeInput.value = `${hh}:${mm}:${ss}`;
+        } else {
+            if(timeInput.value) {
+                let parts = timeInput.value.split(':');
+                d.setHours(parts[0] || 0, parts[1] || 0, parts[2] || 0, 0);
+            }
+        }
+
         const tz = document.getElementById('tzSelector').value;
-        const converted = now.toLocaleTimeString('en-US', { timeZone: tz, hour12: false });
+        const converted = d.toLocaleTimeString('en-US', { timeZone: tz, hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
         document.getElementById('convertedTimeDisplay').innerText = converted;
+    }
+    
+    function setCustomTime() {
+        isLiveTime = false;
+        const dot = document.getElementById('liveIndicator');
+        dot.classList.remove('pulse');
+        dot.classList.add('paused');
+        dot.setAttribute('title', 'PLANNING MODE: Click to resume live clock');
+        updateClocks();
+    }
+    
+    function resetToLiveTime() {
+        isLiveTime = true;
+        const dot = document.getElementById('liveIndicator');
+        dot.classList.remove('paused');
+        dot.classList.add('pulse');
+        dot.setAttribute('title', 'LIVE CLOCK (Click to resume)');
+        updateClocks();
     }
     
     // Initialize Clocks immediately, then tick every 1000ms
@@ -1099,7 +1166,6 @@ end</div>
                 this.x += this.vx;
                 this.y += this.vy;
                 
-                // Wrap around edges for continuous flow
                 if (this.x < 0) this.x = width;
                 if (this.x > width) this.x = 0;
                 if (this.y < 0) this.y = height;
@@ -1116,13 +1182,11 @@ end</div>
         function animate() {
             ctx.clearRect(0, 0, width, height);
             
-            // Update and draw particles
             particles.forEach(p => {
                 p.update();
                 p.draw();
             });
             
-            // Draw connecting lines
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     let dx = particles[i].x - particles[j].x;
@@ -1133,7 +1197,6 @@ end</div>
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
-                        // Opacity fades out as distance increases
                         let opacity = 1 - (dist / connectionDistance);
                         ctx.strokeStyle = `rgba(88, 166, 255, ${opacity * 0.25})`;
                         ctx.lineWidth = 1;
@@ -1271,7 +1334,6 @@ end</div>
         textarea.classList.toggle('expanded');
         btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]";
         
-        // Remember if user manually collapsed a long log so we don't fight them later
         if (!textarea.classList.contains('expanded') && textarea.value.split('\n').length > 8) {
             textarea.dataset.manualCollapse = "true";
         } else {
@@ -1508,7 +1570,6 @@ end</div>
             execBtn.classList.remove('ready');
         }
 
-        // Failsafe: Re-lock everything if input is empty
         if (!configText.trim()) {
             warningBox.style.display = 'none';
             deviceHud.classList.remove('visible');
