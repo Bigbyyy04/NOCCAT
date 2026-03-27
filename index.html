@@ -30,9 +30,26 @@
             color: var(--text-main);
             display: flex;
             justify-content: center;
+            overflow-x: hidden; /* Prevent scrollbars from canvas edge */
         }
 
-        .container { max-width: 1050px; width: 100%; }
+        /* --- DYNAMIC BACKGROUND CANVAS --- */
+        #networkBg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none; /* Ensures it never blocks clicks */
+        }
+
+        .container { 
+            max-width: 1050px; 
+            width: 100%; 
+            position: relative; /* Keeps it layered above the canvas */
+            z-index: 1; 
+        }
 
         /* --- PURE CSS TEXT LOGO WITH TERMINAL CURSOR --- */
         h2 {
@@ -73,7 +90,8 @@
         }
 
         .form-group {
-            background: var(--card-bg);
+            background: rgba(22, 27, 34, 0.85); /* Slightly transparent to see network */
+            backdrop-filter: blur(4px); /* Frost glass effect */
             padding: 15px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -177,7 +195,7 @@
         textarea {
             width: 100%;
             height: 120px;
-            background: var(--code-bg);
+            background: rgba(1, 4, 9, 0.9);
             color: #79c0ff;
             border: 1px solid var(--border-color);
             border-radius: 4px;
@@ -268,7 +286,7 @@
 
         .radio-group, .checkbox-group { display: flex; gap: 6px; width: 100%; }
         .radio-group label, .checkbox-group label {
-            background: var(--bg-color);
+            background: rgba(13, 17, 23, 0.8);
             border: 1px solid var(--border-color);
             color: var(--text-main);
             padding: 6px 8px;
@@ -290,7 +308,6 @@
             box-shadow: 0 0 8px rgba(57, 255, 20, 0.2);
         }
 
-        /* --- TRUE DISABLED STATE CSS --- */
         .radio-group label.disabled, .checkbox-group label.disabled {
             opacity: 0.3 !important;
             cursor: not-allowed !important;
@@ -321,7 +338,7 @@
         }
 
         input[type="number"] {
-            background: var(--code-bg);
+            background: rgba(1, 4, 9, 0.8);
             border: 1px solid var(--border-color);
             color: #d29922;
             padding: 6px;
@@ -355,7 +372,7 @@
             font-family: "Courier New", Courier, monospace;
         }
         .override-table th {
-            background: #0d1117;
+            background: rgba(13, 17, 23, 0.95);
             padding: 8px 12px;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
@@ -369,12 +386,13 @@
             border-bottom: 1px solid #21262d;
             color: var(--text-main);
             vertical-align: middle;
+            background: rgba(22, 27, 34, 0.6);
         }
         .override-table tr:last-child td { border-bottom: none; }
-        .override-table tr:hover { background: rgba(88, 166, 255, 0.05); }
+        .override-table tr:hover td { background: rgba(88, 166, 255, 0.1); }
         
         .override-input {
-            background: var(--code-bg);
+            background: rgba(1, 4, 9, 0.8);
             border: 1px dashed rgba(88, 166, 255, 0.5);
             color: var(--neon-green);
             padding: 4px 6px;
@@ -393,7 +411,7 @@
         .override-input::placeholder { color: #484f58; font-style: italic; }
         
         .override-select {
-            background: var(--code-bg);
+            background: rgba(1, 4, 9, 0.8);
             border: 1px dashed rgba(88, 166, 255, 0.5);
             color: var(--text-main);
             padding: 4px 6px;
@@ -413,7 +431,7 @@
         .override-select.danger-mode {
             border-color: var(--accent-red) !important;
             color: #ff7b72 !important;
-            background: rgba(248, 81, 73, 0.1) !important;
+            background: rgba(248, 81, 73, 0.3) !important;
             animation: danger-glitch 3s infinite !important;
         }
 
@@ -505,7 +523,7 @@
         }
 
         .cyber-btn:disabled {
-            background: #21262d;
+            background: rgba(33, 38, 45, 0.8);
             color: #8b949e;
             border-color: #30363d;
             cursor: not-allowed;
@@ -514,7 +532,7 @@
         }
 
         .clear-btn {
-            background: transparent;
+            background: rgba(13, 17, 23, 0.6);
             color: var(--text-main);
             border: 1px solid var(--border-color);
             padding: 12px 30px;
@@ -523,7 +541,7 @@
             cursor: pointer;
             border-radius: 4px;
             transition: 0.2s;
-            opacity: 0.7;
+            opacity: 0.8;
             letter-spacing: 1px;
         }
 
@@ -531,12 +549,13 @@
             opacity: 1;
             border-color: var(--accent-purple);
             color: var(--accent-purple);
-            background: rgba(188, 140, 255, 0.05);
+            background: rgba(188, 140, 255, 0.1);
+            box-shadow: 0 0 10px rgba(188, 140, 255, 0.2);
         }
 
         /* --- WARNING BOX --- */
         .warning-box {
-            background: rgba(248, 81, 73, 0.08);
+            background: rgba(248, 81, 73, 0.15);
             border: 1px dashed var(--accent-red);
             color: var(--accent-red);
             padding: 10px 15px;
@@ -547,6 +566,7 @@
             text-align: center;
             line-height: 1.4;
             display: none; 
+            backdrop-filter: blur(2px);
         }
 
         .warning-box strong { font-size: 12.5px; letter-spacing: 1px; }
@@ -582,16 +602,16 @@
         .copy-btn.rollback { background: var(--accent-red); }
         
         .dl-btn {
-            background: transparent;
+            background: rgba(13, 17, 23, 0.6);
             border: 1px solid #8957e5;
             color: #8957e5;
         }
         .dl-btn.rollback { border-color: var(--accent-red); color: var(--accent-red); }
-        .dl-btn:hover:not(:disabled) { background: rgba(137, 87, 229, 0.1); }
-        .dl-btn.rollback:hover:not(:disabled) { background: rgba(248, 81, 73, 0.1); }
+        .dl-btn:hover:not(:disabled) { background: rgba(137, 87, 229, 0.2); }
+        .dl-btn.rollback:hover:not(:disabled) { background: rgba(248, 81, 73, 0.2); }
 
         .copy-btn:disabled, .dl-btn:disabled {
-            background: #30363d;
+            background: rgba(48, 54, 61, 0.5);
             color: #8b949e;
             border-color: #30363d;
             cursor: not-allowed;
@@ -600,17 +620,18 @@
 
         .code-window {
             display: flex;
-            background: var(--code-bg);
+            background: rgba(1, 4, 9, 0.85);
             border: 1px solid var(--border-color);
             border-radius: 4px;
             font-family: "Courier New", Courier, monospace;
             font-size: 12px;
             line-height: 1.5;
+            backdrop-filter: blur(2px);
         }
 
         .line-numbers {
             padding: 10px 8px;
-            background: #0d1117;
+            background: rgba(13, 17, 23, 0.5);
             border-right: 1px solid var(--border-color);
             color: #484f58;
             text-align: right;
@@ -621,7 +642,7 @@
         .code-content { padding: 10px; color: #79c0ff; white-space: pre; overflow-x: auto; flex-grow: 1; }
         
         .status-container { display: flex; justify-content: space-between; align-items: baseline; margin-top: 5px; }
-        #statusMsg { font-size: 11px; color: var(--accent-blue); display: none; }
+        #statusMsg { font-size: 11px; color: var(--accent-blue); display: none; background: rgba(13, 17, 23, 0.6); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(88, 166, 255, 0.2); }
         .diff-stats { font-family: monospace; font-size: 10.5px; opacity: 0.8; }
         .diff-add { color: var(--neon-green); }
         .diff-rem { color: var(--accent-red); }
@@ -630,8 +651,8 @@
         /* BOTTOM BUTTONS & MANIFEST/DB STYLES */
         .bottom-actions { text-align: center; margin-top: 30px; margin-bottom: 20px; display: flex; justify-content: center; gap: 15px; }
         
-        .manifest-box { background: var(--code-bg); border: 1px dashed var(--border-color); padding: 20px; border-radius: 8px; text-align: left; }
-        .db-box { background: var(--code-bg); border: 1px solid var(--accent-green); padding: 15px; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+        .manifest-box { background: rgba(1, 4, 9, 0.8); border: 1px dashed var(--border-color); padding: 20px; border-radius: 8px; text-align: left; }
+        .db-box { background: rgba(1, 4, 9, 0.8); border: 1px solid var(--accent-green); padding: 15px; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
         .db-security-note { background: rgba(35, 134, 54, 0.1); border-left: 3px solid var(--accent-green); padding: 8px 12px; margin-bottom: 12px; font-size: 11px; color: var(--text-main); line-height: 1.4; border-radius: 0 4px 4px 0; }
         .db-box textarea { height: 150px; margin-bottom: 10px; }
         .db-controls { display: flex; justify-content: space-between; align-items: center; }
@@ -674,11 +695,13 @@
 </head>
 <body>
 
+<canvas id="networkBg"></canvas>
+
 <div class="container">
     
     <h2>
         <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-        <span class="version-tag">// NOC Configuration Automation Tool // v7.4 Kibble update</span>
+        <span class="version-tag">// NOC Configuration Automation Tool // v7.5 Kibble update</span>
     </h2>
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
@@ -804,7 +827,7 @@ end</div>
 
     </div>
     
-    <div id="advancedOptionsContainer" class="form-group input-section" style="display: none; border-color: rgba(227, 179, 65, 0.3);">
+    <div id="advancedOptionsContainer" class="form-group input-section" style="display: none; border-color: rgba(227, 179, 65, 0.4); background: rgba(22, 27, 34, 0.9);">
         <div class="header-row">
             <label style="color: var(--hl-yellow); text-shadow: 0 0 8px rgba(227, 179, 65, 0.4); display: flex; align-items: center; gap: 6px;">
                 07 // ADVANCED OPTIONS [ PER-PORT MATRIX ]
@@ -906,7 +929,7 @@ end</div>
                 <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
                 <li><strong>Cross-Panel Locking & Smart Idempotency:</strong> Modifying security automatically locks the Bounce button. UI buttons gray out if the engine detects the config already meets targeted conditions natively.</li>
                 <li><strong>Omni-Drop Zone:</strong> Supports drag-and-drop ingestion of raw text highlights, IDE tabs, or `.txt` log files directly into the UI. Direct `[ DOWNLOAD ]` buttons export scripts named intelligently after the target hostname.</li>
-                <li><strong>Haptic/Audio Engine:</strong> Triggers synthesized Web Audio confirmation on execution. Includes Dry Run Diff visualizer in the terminal output status string.</li>
+                <li><strong>Haptic/Audio Engine:</strong> Triggers synthesized Web Audio confirmation on execution. Includes Dry Run Diff visualizer in the terminal output status string. Includes interactive dynamic network canvas background.</li>
             </ul>
 
             <h3 style="margin-bottom: 0;">🎨 5. Zero-Trust Local Storage DB</h3>
@@ -961,12 +984,95 @@ end</div>
 </div>
 
 <script>
+    // --- NETWORK BACKGROUND CANVAS ENGINE ---
+    (function() {
+        const canvas = document.getElementById('networkBg');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        
+        // Settings
+        const connectionDistance = 140;
+        const particleCount = 80;
+        const speed = 0.3;
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * speed;
+                this.vy = (Math.random() - 0.5) * speed;
+                this.radius = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                // Wrap around edges for continuous flow
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(88, 166, 255, 0.4)';
+                ctx.fill();
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Update and draw particles
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            
+            // Draw connecting lines
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        // Opacity fades out as distance increases
+                        let opacity = 1 - (dist / connectionDistance);
+                        ctx.strokeStyle = `rgba(88, 166, 255, ${opacity * 0.25})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        animate();
+    })();
+
     // --- LOCAL DATABASE LOGIC ---
     let switchDB = {};
     let detectedGlobalHostname = "N0CAT_Script"; 
     let currentMatrixTriggerElem = null; 
 
-    window.onload = function() {
+    window.addEventListener('load', function() {
         const savedDB = localStorage.getItem('noccat_db');
         if (savedDB) {
             parseToDB(savedDB);
@@ -1013,7 +1119,7 @@ end</div>
                 checkDynamicWarnings();
             }
         });
-    };
+    });
 
     function parseToDB(text) {
         const lines = text.split('\n');
