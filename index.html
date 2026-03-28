@@ -53,9 +53,7 @@
             --particle-color: rgba(255, 71, 133, 0.3); 
             --particle-line: rgba(11, 203, 212, 0.2);  
             --p-matrix-title: #ff9f43;    
-        }
-        
-        [data-theme="timeline-neko"] {
+        }[data-theme="timeline-neko"] {
             --bg-color: #3a281e; 
             --card-bg: #5c473c; 
             --border-color: #c18e6e; 
@@ -91,9 +89,7 @@
             --particle-color: rgba(200, 20, 40, 0.3); 
             --particle-line: rgba(255, 0, 51, 0.1); 
             --p-matrix-title: #ff4d6d; 
-        }
-        
-        [data-theme="h2o-neko"] {
+        }[data-theme="h2o-neko"] {
             --bg-color: #050a14; 
             --card-bg: #121e36; 
             --border-color: #243b61; 
@@ -167,19 +163,10 @@
         .sample-code strong { color: #fff; }
         .sample-code code { color: #fff; }
         
-        /* Theme Specific Syntax Colors */
-        [data-theme="fab-neko"] .sample-code div { color: var(--text-main); }
-        [data-theme="fab-neko"] .sample-code span[style*="color: #ff00ff;"] { color: var(--neon-green) !important; }
-        
-        [data-theme="timeline-neko"] .sample-code div,
+        /* Theme Specific Syntax Colors */[data-theme="fab-neko"] .sample-code div { color: var(--text-main); }[data-theme="fab-neko"] .sample-code span[style*="color: #ff00ff;"] { color: var(--neon-green) !important; }[data-theme="timeline-neko"] .sample-code div,
         [data-theme="timeline-neko"] .sample-code strong { color: #3a281e; }
         
-        /* Ensure Table Interface Names stay bright in Timeline Neko */[data-theme="timeline-neko"] .override-table td strong { color: var(--text-main) !important; }
-        
-        [data-theme="crimson-neko"] .sample-code div { color: #ffd1dc; } 
-        [data-theme="crimson-neko"] code { color: #ffb3c6; }
-        
-        [data-theme="firefly-neko"] code { color: var(--text-main); }
+        /* Ensure Table Interface Names stay bright in Timeline Neko */[data-theme="timeline-neko"] .override-table td strong { color: var(--text-main) !important; }[data-theme="crimson-neko"] .sample-code div { color: #ffd1dc; }[data-theme="crimson-neko"] code { color: #ffb3c6; }[data-theme="firefly-neko"] code { color: var(--text-main); }
         
         [data-theme="gamer-neko"] .sample-code div { color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }[data-theme="gamer-neko"] .sample-code strong { color: #fff; text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
         [data-theme="gamer-neko"] code { color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
@@ -203,9 +190,7 @@
         h2 {
             color: #ffffff; font-size: 1.7rem; margin: 0; display: flex; align-items: baseline;
             gap: 12px; font-family: "Courier New", Courier, monospace; font-weight: bold; flex-grow: 1;
-        }[data-theme="fab-neko"] h2 { color: var(--text-main); }[data-theme="timeline-neko"] h2 { color: var(--accent-blue); }[data-theme="crimson-neko"] h2 { color: var(--text-main); text-shadow: 0 0 10px rgba(255,0,51,0.5); }
-        [data-theme="firefly-neko"] h2 { color: var(--text-main); }
-        [data-theme="gamer-neko"] h2 { color: var(--text-main); text-shadow: 0 0 10px rgba(240, 98, 240, 0.6); } 
+        }[data-theme="fab-neko"] h2 { color: var(--text-main); }[data-theme="timeline-neko"] h2 { color: var(--accent-blue); }[data-theme="crimson-neko"] h2 { color: var(--text-main); text-shadow: 0 0 10px rgba(255,0,51,0.5); }[data-theme="firefly-neko"] h2 { color: var(--text-main); }[data-theme="gamer-neko"] h2 { color: var(--text-main); text-shadow: 0 0 10px rgba(240, 98, 240, 0.6); } 
 
         .logo-text { letter-spacing: 1px; display: flex; align-items: center; }
         .logo-accent {
@@ -214,8 +199,7 @@
         }
         
         [data-theme="fab-neko"] .logo-accent { box-shadow: 0 0 12px rgba(255, 71, 133, 0.6); background-color: var(--neon-green); color: #fff; }
-        [data-theme="timeline-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 140, 0, 0.6); color: var(--bg-color); }
-        [data-theme="crimson-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 15px rgba(230, 0, 38, 0.8); color: #fff; }[data-theme="h2o-neko"] .logo-accent { background-color: var(--accent-blue); box-shadow: 0 0 15px rgba(77, 187, 194, 0.6); color: #fff; }
+        [data-theme="timeline-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 140, 0, 0.6); color: var(--bg-color); }[data-theme="crimson-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 15px rgba(230, 0, 38, 0.8); color: #fff; }[data-theme="h2o-neko"] .logo-accent { background-color: var(--accent-blue); box-shadow: 0 0 15px rgba(77, 187, 194, 0.6); color: #fff; }
         [data-theme="firefly-neko"] .logo-accent { background-color: var(--neon-green); box-shadow: 0 0 15px rgba(63, 255, 63, 0.6); color: #fff; }
         [data-theme="gamer-neko"] .logo-accent { background-color: var(--neon-green); box-shadow: 0 0 15px rgba(240, 98, 240, 0.8); color: #fff; }
 
@@ -230,8 +214,7 @@
         }
         .qol-menu-btn:hover { opacity: 1; border-color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 8px rgba(188, 140, 255, 0.4); }[data-theme="fab-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(255, 71, 133, 0.5); border-color: var(--neon-green); background: rgba(255, 71, 133, 0.15); }
         [data-theme="timeline-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(255, 140, 0, 0.5); border-color: var(--accent-green); background: rgba(255, 140, 0, 0.15); }[data-theme="crimson-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(255, 0, 51, 0.6); border-color: var(--accent-green); background: rgba(255, 0, 51, 0.15); }
-        [data-theme="h2o-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(77, 187, 194, 0.6); border-color: var(--accent-blue); background: rgba(77, 187, 194, 0.15); }
-        [data-theme="firefly-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(63, 255, 63, 0.6); border-color: var(--accent-green); background: rgba(63, 255, 63, 0.15); }[data-theme="gamer-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(240, 98, 240, 0.6); border-color: var(--accent-green); background: rgba(240, 98, 240, 0.15); }
+        [data-theme="h2o-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(77, 187, 194, 0.6); border-color: var(--accent-blue); background: rgba(77, 187, 194, 0.15); }[data-theme="firefly-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(63, 255, 63, 0.6); border-color: var(--accent-green); background: rgba(63, 255, 63, 0.15); }[data-theme="gamer-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(240, 98, 240, 0.6); border-color: var(--accent-green); background: rgba(240, 98, 240, 0.15); }
 
         .qol-dropdown-content {
             opacity: 0; visibility: hidden; transform: translateY(-10px);
@@ -254,8 +237,7 @@
         .qol-dropdown-content button.active { font-weight: bold; color: var(--neon-green); }
         
         [data-theme="fab-neko"] .qol-dropdown-content button:hover { background: rgba(11, 203, 212, 0.15); color: var(--accent-blue); }[data-theme="timeline-neko"] .qol-dropdown-content button:hover { background: rgba(255, 140, 0, 0.15); color: var(--accent-blue); }
-        [data-theme="crimson-neko"] .qol-dropdown-content button:hover { background: rgba(255, 0, 51, 0.15); color: var(--accent-blue); }
-        [data-theme="h2o-neko"] .qol-dropdown-content button:hover { background: rgba(77, 187, 194, 0.15); color: var(--accent-blue); }[data-theme="firefly-neko"] .qol-dropdown-content button:hover { background: rgba(63, 255, 63, 0.15); color: var(--accent-blue); }[data-theme="gamer-neko"] .qol-dropdown-content button:hover { background: rgba(240, 98, 240, 0.15); color: var(--accent-blue); }
+        [data-theme="crimson-neko"] .qol-dropdown-content button:hover { background: rgba(255, 0, 51, 0.15); color: var(--accent-blue); }[data-theme="h2o-neko"] .qol-dropdown-content button:hover { background: rgba(77, 187, 194, 0.15); color: var(--accent-blue); }[data-theme="firefly-neko"] .qol-dropdown-content button:hover { background: rgba(63, 255, 63, 0.15); color: var(--accent-blue); }[data-theme="gamer-neko"] .qol-dropdown-content button:hover { background: rgba(240, 98, 240, 0.15); color: var(--accent-blue); }
         
         /* --- TIMEZONE WIDGET --- */
         .tz-widget {
@@ -266,8 +248,7 @@
         }
         
         [data-theme="fab-neko"] .tz-widget { background: rgba(39, 32, 54, 0.85); box-shadow: inset 0 0 10px rgba(0,0,0,0.4); }[data-theme="timeline-neko"] .tz-widget { background: rgba(92, 71, 60, 0.85); box-shadow: inset 0 0 10px rgba(0,0,0,0.4); }[data-theme="crimson-neko"] .tz-widget { background: rgba(26, 2, 6, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
-        [data-theme="h2o-neko"] .tz-widget { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.6); }
-        [data-theme="firefly-neko"] .tz-widget { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.6); }[data-theme="gamer-neko"] .tz-widget { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        [data-theme="h2o-neko"] .tz-widget { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.6); }[data-theme="firefly-neko"] .tz-widget { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.6); }[data-theme="gamer-neko"] .tz-widget { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
 
         .live-dot { width: 8px; height: 8px; background-color: var(--neon-green); border-radius: 50%; cursor: pointer; transition: 0.3s; flex-shrink: 0; }
         .live-dot.pulse { box-shadow: 0 0 8px var(--neon-green); animation: pulse-dot 1.5s infinite; }
@@ -308,16 +289,13 @@
             background: rgba(22, 27, 34, 0.85); backdrop-filter: blur(4px); 
             padding: 15px; border: 1px solid var(--border-color); border-radius: 8px;
         }[data-theme="fab-neko"] .form-group { background: rgba(39, 32, 54, 0.85); }
-        [data-theme="timeline-neko"] .form-group { background: rgba(92, 71, 60, 0.85); }
-        [data-theme="crimson-neko"] .form-group { background: rgba(26, 2, 6, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }[data-theme="h2o-neko"] .form-group { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
-        [data-theme="firefly-neko"] .form-group { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
-        [data-theme="gamer-neko"] .form-group { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
+        [data-theme="timeline-neko"] .form-group { background: rgba(92, 71, 60, 0.85); }[data-theme="crimson-neko"] .form-group { background: rgba(26, 2, 6, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }[data-theme="h2o-neko"] .form-group { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+        [data-theme="firefly-neko"] .form-group { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }[data-theme="gamer-neko"] .form-group { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
 
         .input-section { margin-bottom: 15px; position: relative; }
         .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; position: relative; z-index: 10; }
         label { font-weight: 600; display: block; margin-bottom: 8px; color: var(--accent-blue); font-size: 0.75rem; text-transform: uppercase; opacity: 0.8; }
-        .header-row label { margin-bottom: 0; }[data-theme="timeline-neko"] label { color: var(--text-main); }
-        [data-theme="crimson-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(255, 77, 109, 0.3); }[data-theme="h2o-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(77, 187, 194, 0.3); } 
+        .header-row label { margin-bottom: 0; }[data-theme="timeline-neko"] label { color: var(--text-main); }[data-theme="crimson-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(255, 77, 109, 0.3); }[data-theme="h2o-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(77, 187, 194, 0.3); } 
         [data-theme="firefly-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(63, 255, 63, 0.3); }
         [data-theme="gamer-neko"] label { color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
 
@@ -329,8 +307,7 @@
         }
         .expand-btn:hover { border-color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 8px rgba(188, 140, 255, 0.3); color: #fff; }
         
-        [data-theme="fab-neko"] .expand-btn { color: var(--accent-blue); border-color: var(--border-color); }
-        [data-theme="fab-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(11, 203, 212, 0.5); border-color: var(--accent-blue); color: #fff; }
+        [data-theme="fab-neko"] .expand-btn { color: var(--accent-blue); border-color: var(--border-color); }[data-theme="fab-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(11, 203, 212, 0.5); border-color: var(--accent-blue); color: #fff; }
         
         /* --- COLLAPSIBLE WRAPPERS --- */
         .readme-wrapper { 
@@ -343,14 +320,10 @@
         .readme-wrapper.expanded { 
             grid-template-rows: 1fr; 
             padding-top: 15px; margin-top: 10px; border-top-color: rgba(188, 140, 255, 0.4); 
-        }[data-theme="fab-neko"] .readme-wrapper.expanded { border-top-color: rgba(255, 71, 133, 0.4); }[data-theme="fab-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 159, 67, 0.4); }[data-theme="timeline-neko"] .readme-wrapper.expanded { border-top-color: var(--accent-red); }
-        [data-theme="crimson-neko"] .readme-wrapper.expanded { border-top-color: rgba(255, 77, 109, 0.4); }
-        [data-theme="h2o-neko"] .readme-wrapper.expanded { border-top-color: rgba(77, 187, 194, 0.4); }
-        [data-theme="firefly-neko"] .readme-wrapper.expanded { border-top-color: rgba(63, 255, 63, 0.4); }
+        }[data-theme="fab-neko"] .readme-wrapper.expanded { border-top-color: rgba(255, 71, 133, 0.4); }[data-theme="fab-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 159, 67, 0.4); }[data-theme="timeline-neko"] .readme-wrapper.expanded { border-top-color: var(--accent-red); }[data-theme="crimson-neko"] .readme-wrapper.expanded { border-top-color: rgba(255, 77, 109, 0.4); }[data-theme="h2o-neko"] .readme-wrapper.expanded { border-top-color: rgba(77, 187, 194, 0.4); }[data-theme="firefly-neko"] .readme-wrapper.expanded { border-top-color: rgba(63, 255, 63, 0.4); }
         [data-theme="gamer-neko"] .readme-wrapper.expanded { border-top-color: rgba(240, 98, 240, 0.6); }
         
-        #advOptionsWrapper.expanded { border-top-color: rgba(227, 179, 65, 0.4); }
-        [data-theme="timeline-neko"] #advOptionsWrapper.expanded { border-top-color: var(--accent-red); }[data-theme="crimson-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 77, 109, 0.4); }[data-theme="h2o-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(220, 163, 65, 0.4); }[data-theme="firefly-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 191, 0, 0.4); }[data-theme="gamer-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(163, 217, 255, 0.4); }
+        #advOptionsWrapper.expanded { border-top-color: rgba(227, 179, 65, 0.4); }[data-theme="timeline-neko"] #advOptionsWrapper.expanded { border-top-color: var(--accent-red); }[data-theme="crimson-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 77, 109, 0.4); }[data-theme="h2o-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(220, 163, 65, 0.4); }[data-theme="firefly-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 191, 0, 0.4); }[data-theme="gamer-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(163, 217, 255, 0.4); }
 
         .readme-content { font-size: 12px; line-height: 1.6; color: var(--text-main); opacity: 0.9; }
         .readme-content h3 { color: var(--accent-purple); font-size: 12px; margin: 12px 0 6px 0; text-transform: uppercase; letter-spacing: 1px; }
@@ -377,10 +350,8 @@
             transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.5s ease-in-out, border-color 0.5s ease-in-out, color 0.5s ease-in-out, box-shadow 0.5s ease-in-out, text-shadow 0.5s ease-in-out !important;
         }
         
-        [data-theme="fab-neko"] textarea { background: rgba(20, 16, 29, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }
-        [data-theme="timeline-neko"] textarea { background: #f1eae0; color: #3a281e; scrollbar-color: var(--border-color) #f1eae0; }[data-theme="crimson-neko"] textarea { background: rgba(10, 0, 5, 0.9); color: #ffb3c6; scrollbar-color: var(--border-color) var(--code-bg); }
-        [data-theme="h2o-neko"] textarea { background: rgba(9, 16, 31, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }[data-theme="firefly-neko"] textarea { background: rgba(2, 5, 3, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }
-        [data-theme="gamer-neko"] textarea { background: rgba(8, 1, 15, 0.9); color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        [data-theme="fab-neko"] textarea { background: rgba(20, 16, 29, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }[data-theme="timeline-neko"] textarea { background: #f1eae0; color: #3a281e; scrollbar-color: var(--border-color) #f1eae0; }[data-theme="crimson-neko"] textarea { background: rgba(10, 0, 5, 0.9); color: #ffb3c6; scrollbar-color: var(--border-color) var(--code-bg); }
+        [data-theme="h2o-neko"] textarea { background: rgba(9, 16, 31, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }[data-theme="firefly-neko"] textarea { background: rgba(2, 5, 3, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }[data-theme="gamer-neko"] textarea { background: rgba(8, 1, 15, 0.9); color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
 
         textarea:focus { border-color: var(--accent-blue); }
         textarea.expanded { height: 400px; }
@@ -399,17 +370,14 @@
             font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 16px;
             pointer-events: none; opacity: 0; text-shadow: 0 0 8px rgba(57, 255, 20, 0.5); z-index: 5;
         }
-        textarea.drag-active + .drag-overlay-text { opacity: 1; }
-        
-        [data-theme="fab-neko"] .drag-overlay-text { text-shadow: 0 0 12px rgba(255, 71, 133, 0.6); color: var(--neon-green); }
+        textarea.drag-active + .drag-overlay-text { opacity: 1; }[data-theme="fab-neko"] .drag-overlay-text { text-shadow: 0 0 12px rgba(255, 71, 133, 0.6); color: var(--neon-green); }
 
         /* --- MULTI-TENANT DEVICE HUD --- */
         .device-hud { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 6px; font-size: 11px; color: var(--text-main); font-family: "Courier New", Courier, monospace; opacity: 0; max-width: 500px; }
         .device-hud.visible { opacity: 1; }
         .host-tag { background: rgba(88, 166, 255, 0.1); border: 1px solid rgba(88, 166, 255, 0.3); padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; }
         .host-tag strong { color: #fff; margin-right: 5px; }
-        .ip-highlight { font-weight: bold; text-shadow: 0 0 5px rgba(57, 255, 20, 0.4); }[data-theme="fab-neko"] .host-tag { background: rgba(11, 203, 212, 0.15); border-color: rgba(11, 203, 212, 0.3); }
-        [data-theme="fab-neko"] .ip-highlight { text-shadow: 0 0 5px rgba(11, 203, 212, 0.6); color: var(--accent-blue); }
+        .ip-highlight { font-weight: bold; text-shadow: 0 0 5px rgba(57, 255, 20, 0.4); }[data-theme="fab-neko"] .host-tag { background: rgba(11, 203, 212, 0.15); border-color: rgba(11, 203, 212, 0.3); }[data-theme="fab-neko"] .ip-highlight { text-shadow: 0 0 5px rgba(11, 203, 212, 0.6); color: var(--accent-blue); }
 
         /* --- UI CONTROLS --- */
         .controls-row { display: flex; gap: 12px; margin-bottom: 15px; margin-top: 15px; align-items: stretch; flex-wrap: wrap; }
@@ -418,8 +386,7 @@
         .radio-group label, .checkbox-group label { background: rgba(13, 17, 23, 0.8); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-bottom: 0; display: inline-block; text-align: center; flex-grow: 1; box-sizing: border-box; }
         
         [data-theme="fab-neko"] .radio-group label,[data-theme="fab-neko"] .checkbox-group label { background: rgba(26, 21, 37, 0.8); }
-        [data-theme="fab-neko"] .radio-group label:has(input:checked),[data-theme="fab-neko"] .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: var(--btn-text); background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 71, 133, 0.5); }[data-theme="fab-neko"] .radio-group label.disabled, [data-theme="fab-neko"] .checkbox-group label.disabled { background: #16121d !important; border-color: #312540 !important; color: #554166 !important; }
-        [data-theme="fab-neko"] .radio-group label:has(input[value="remove"]:checked) { color: #fff !important; background: rgba(255, 107, 129, 0.9) !important; border-color: var(--accent-red) !important; }
+        [data-theme="fab-neko"] .radio-group label:has(input:checked),[data-theme="fab-neko"] .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: var(--btn-text); background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 71, 133, 0.5); }[data-theme="fab-neko"] .radio-group label.disabled, [data-theme="fab-neko"] .checkbox-group label.disabled { background: #16121d !important; border-color: #312540 !important; color: #554166 !important; }[data-theme="fab-neko"] .radio-group label:has(input[value="remove"]:checked) { color: #fff !important; background: rgba(255, 107, 129, 0.9) !important; border-color: var(--accent-red) !important; }
         
         .radio-group input, .checkbox-group input { display: none; }
         .radio-group label:has(input:checked), .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 8px rgba(57, 255, 20, 0.2); }
@@ -451,7 +418,7 @@
         
         .override-select { background: rgba(1, 4, 9, 0.8); border: 1px dashed rgba(88, 166, 255, 0.5); color: var(--text-main); padding: 4px 6px; border-radius: 3px; font-family: monospace; outline: none; font-size: 11px; cursor: pointer; transition: 0.2s; width: 100px; }
         .override-select:focus { border-color: var(--neon-green); border-style: solid; box-shadow: 0 0 5px rgba(57,255,20,0.3); }
-        .override-select.danger-mode { border-color: var(--accent-red) !important; color: #ff7b72 !important; background: rgba(248, 81, 73, 0.3) !important; animation: danger-glitch 3s infinite !important; }[data-theme="fab-neko"] .override-input, [data-theme="fab-neko"] .override-select { background: rgba(20, 16, 29, 0.8); border-color: var(--border-color); color: var(--text-main); }[data-theme="fab-neko"] .override-input:focus, [data-theme="fab-neko"] .override-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 5px rgba(11, 203, 212, 0.4); border-style: solid; }
+        .override-select.danger-mode { border-color: var(--accent-red) !important; color: #ff7b72 !important; background: rgba(248, 81, 73, 0.3) !important; animation: danger-glitch 3s infinite !important; }[data-theme="fab-neko"] .override-input,[data-theme="fab-neko"] .override-select { background: rgba(20, 16, 29, 0.8); border-color: var(--border-color); color: var(--text-main); }[data-theme="fab-neko"] .override-input:focus,[data-theme="fab-neko"] .override-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 5px rgba(11, 203, 212, 0.4); border-style: solid; }
         [data-theme="fab-neko"] .override-input::placeholder { color: #6e5585; }
 
         /* --- TOOLTIP CSS --- */
@@ -474,9 +441,7 @@
         [data-theme="fab-neko"] .cyber-btn { border: 1px solid var(--neon-green); background: var(--accent-green); }[data-theme="fab-neko"] .cyber-btn.ready { box-shadow: 0 0 15px rgba(255, 71, 133, 0.5); animation: none; }[data-theme="fab-neko"] .cyber-btn:not(:disabled):hover { background: #ff4785; box-shadow: 0 0 25px rgba(255, 71, 133, 0.8); }[data-theme="fab-neko"] .cyber-btn:disabled { background: rgba(39, 32, 54, 0.8); color: #6e5585; border-color: #4a365c; }
 
         .clear-btn { background: rgba(13, 17, 23, 0.6); color: var(--text-main); border: 1px solid var(--border-color); padding: 12px 30px; font-size: 13px; text-transform: uppercase; cursor: pointer; border-radius: 4px; opacity: 0.8; letter-spacing: 1px; }
-        .clear-btn:hover { opacity: 1; border-color: var(--accent-purple); color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 10px rgba(188, 140, 255, 0.2); }
-        
-        [data-theme="fab-neko"] .clear-btn { background: rgba(26, 21, 37, 0.6); }[data-theme="fab-neko"] .clear-btn:hover { background: rgba(11, 203, 212, 0.15); border-color: var(--accent-blue); color: var(--accent-blue); box-shadow: 0 0 12px rgba(11, 203, 212, 0.4); }
+        .clear-btn:hover { opacity: 1; border-color: var(--accent-purple); color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 10px rgba(188, 140, 255, 0.2); }[data-theme="fab-neko"] .clear-btn { background: rgba(26, 21, 37, 0.6); }[data-theme="fab-neko"] .clear-btn:hover { background: rgba(11, 203, 212, 0.15); border-color: var(--accent-blue); color: var(--accent-blue); box-shadow: 0 0 12px rgba(11, 203, 212, 0.4); }
 
         /* --- WARNING BOX --- */
         @keyframes fadeInDown {
@@ -505,8 +470,7 @@
         .dl-btn.rollback:hover:not(:disabled) { background: rgba(248, 81, 73, 0.2); }
         .copy-btn:disabled, .dl-btn:disabled { background: rgba(48, 54, 61, 0.5); color: #8b949e; border-color: #30363d; cursor: not-allowed; opacity: 0.6; }
         
-        [data-theme="fab-neko"] .dl-btn { background: rgba(39, 32, 54, 0.6); border-color: var(--accent-blue); color: var(--accent-blue); }
-        [data-theme="fab-neko"] .copy-btn:disabled,[data-theme="fab-neko"] .dl-btn:disabled { background: rgba(39, 32, 54, 0.5); color: #6e5585; border-color: #4a365c; }
+        [data-theme="fab-neko"] .dl-btn { background: rgba(39, 32, 54, 0.6); border-color: var(--accent-blue); color: var(--accent-blue); }[data-theme="fab-neko"] .copy-btn:disabled,[data-theme="fab-neko"] .dl-btn:disabled { background: rgba(39, 32, 54, 0.5); color: #6e5585; border-color: #4a365c; }
 
         .code-window { display: flex; background: rgba(1, 4, 9, 0.85); border: 1px solid var(--border-color); border-radius: 4px; font-family: "Courier New", Courier, monospace; font-size: 12px; line-height: 1.5; backdrop-filter: blur(2px); }
         .line-numbers { padding: 10px 8px; background: rgba(13, 17, 23, 0.5); border-right: 1px solid var(--border-color); color: #484f58; text-align: right; user-select: none; min-width: 25px; }
@@ -833,45 +797,57 @@
     <div id="manifestWrapper" class="readme-wrapper">
         <div style="min-height: 0; padding-bottom: 5px; overflow: hidden;">
             <div class="readme-content manifest-box">
-                <h3 style="margin-top: 0;">🧠 1. The Core Idempotent Engine</h3>
+                <h3 style="margin-top: 0;">⚙️ 1. Idempotent Execution Engine</h3>
                 <ul>
-                    <li><strong>Omni-Parse Technology:</strong> The engine automatically detects whether you have pasted standard configuration blocks or a raw list of interface names.</li>
-                    <li><strong>Smart Range Aggregation:</strong> To prevent console buffer overrun and reduce script size, the engine automatically detects consecutive targeted ports (e.g. <code>Gi1/0/1, Gi1/0/2</code>) and natively compresses them into perfectly formatted <code>interface range</code> commands.</li>
-                    <li><strong>Smart State Optimization:</strong> The engine prevents duplicate configuration commands. Furthermore, it checks if a port is actively in a <code>shutdown</code> state. If a security change is made to an already down port, the engine completely skips printing the <code>shut</code> command to save processing buffer time.</li>
-                    <li><strong>Blind Force Processing (Raw Mode):</strong> If raw ports are detected, idempotency is dynamically disabled. The engine will forcefully apply your selected parameters without evaluating current states.</li>
-                    <li><strong>Automated Rollback Generation:</strong> Builds a reverse script to perfectly undo changes and return ports to their original state (or applies best-effort defaults for raw ports).</li>
-                    <li><strong>Surgical Command Stripping:</strong> Automatically injects exact <code>no</code> commands to scrub old protocols before applying new ones.</li>
+                    <li><strong>State-Aware Compilation:</strong> Parses current `show run` configurations to evaluate existing states. Only outputs commands needed to reach the target state, completely ignoring parameters that already match.</li>
+                    <li><strong>Smart Range Aggregation:</strong> Automatically compresses sequential ports (e.g., <code>Gi1/0/1, Gi1/0/2, Gi1/0/3</code>) into optimized <code>interface range Gi1/0/1-3</code> blocks to save terminal buffer space.</li>
+                    <li><strong>Automated Rollback Protocol:</strong> Dynamically calculates and generates the exact reverse script required to seamlessly undo applied changes and return interfaces to their pre-execution state.</li>
+                    <li><strong>Surgical Command Stripping:</strong> Intelligently prepends `no` commands (e.g., `no dot1x pae authenticator`) before applying new security protocols to prevent device rejection or ghost configurations.</li>
                 </ul>
 
-                <h3>🛡️ 2. Advanced Security & Protocol Management</h3>
+                <h3>📡 2. Omni-Parse Input & Drag-and-Drop</h3>
                 <ul>
-                    <li><strong>Trunk Port Hard-Stop:</strong> Actively locks out ports detected as uplinks or trunks to prevent catastrophic network outages (Automatically bypassed for Raw Ports).</li>
-                    <li><strong>Omni-Matrix Assignment:</strong> Updates configurations dynamically. Set Global Master parameters to apply to all ports simultaneously, or use the Per-Port Override Grid (07) to surgically assign different VLANs and Security Protocols to specific interfaces within the same execution batch.</li>
-                    <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates.</li>
-                    <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates.</li>
-                    <li><strong>REMOVE Mode:</strong> Triggers Critical Danger Glitch. Explicitly strips existing configurations. Requires a mandatory compliance confirmation prompt.</li>
-                    <li><strong>Universal RESET:</strong> Wipes existing security clean. Security resets intentionally omit rollback commands.</li>
+                    <li><strong>Standard Parsing:</strong> Accepts standard Cisco interface configuration blocks natively (e.g., <code>interface Gi1/0/1...</code>).</li>
+                    <li><strong>Blind Mode (Raw Ports):</strong> Auto-detects flat lists of ports without config data. Disables idempotency, assumes default 'shutdown' states, and allows blind-forcing of parameters. Includes an auto-append toggle for `switchport mode access`.</li>
+                    <li><strong>Omni-Drop Zone:</strong> Seamlessly drag and drop `.txt` log files or raw text highlights directly into the input box for immediate parsing. Auto-clears cache on reload to prevent accidental execution of old data.</li>
                 </ul>
 
-                <h3>🚨 3. Real-Time Dynamic Warning Scanner</h3>
+                <h3>🛡️ 3. Security & Port Protection</h3>
                 <ul>
-                    <li><strong style="color: var(--hl-yellow);">Raw Port List Notice (Yellow):</strong> Alerts the engineer when Blind Override Mode is actively engaged. Includes a quick-toggle to force <code>switchport mode access</code> onto unknown blind targets.</li>
-                    <li><strong style="color: var(--accent-red);">Critical Warning (Red):</strong> Detects Trunk/Uplink ports (missing <code>switchport mode access</code>) and executes a complete script lockout for those specific ports.</li>
-                    <li><strong style="color: var(--hl-magenta);">Dual-Security Conflict (Magenta):</strong> Detects ports infected with both 802.1X and Sticky MAC. Blocks "RESET" to force explicit protocol cleanup.</li>
-                    <li><strong style="color: var(--hl-cyan);">Unsecured Port Notice (Cyan):</strong> Flags naked ports with zero port security configured.</li>
+                    <li><strong>Trunk Port Hard-Stop:</strong> Automatically detects uplinks/trunks (missing `switchport mode access`) and entirely locks them out of the script generation, preventing catastrophic network loops or outages.</li>
+                    <li><strong>DOT1X & STICKY Pushing:</strong> Instantly formats ports with 802.1X or Port Security MAC Sticky templates while removing conflicting protocols.</li>
+                    <li><strong>REMOVE Protocol:</strong> Systematically strips security to leave the port open. Triggers a mandatory Critical Danger validation modal to enforce IT CAB/Ticket compliance.</li>
+                    <li><strong>Universal RESET:</strong> Wipes existing security and immediately replaces it, actively suppressing specific rollback security commands to prevent re-infection.</li>
                 </ul>
 
-                <h3>⚡ 4. Edge, State, & Output Controls</h3>
+                <h3>🎛️ 4. Multi-Tenant Device HUD & DB</h3>
                 <ul>
-                    <li><strong>Admin State Override:</strong> Includes UP, DWN, BNC, and LEAVE toggles. Rollback intelligently reverses any forced state changes.</li>
-                    <li><strong>Cross-Panel Locking & Smart Idempotency:</strong> Modifying security automatically locks the Bounce button. UI buttons gray out if the engine detects the config already meets targeted conditions natively.</li>
-                    <li><strong>Omni-Drop Zone:</strong> Supports drag-and-drop ingestion of raw text highlights, IDE tabs, or `.txt` log files directly into the UI. Direct `[ DOWNLOAD ]` buttons export scripts.</li>
-                    <li><strong>Omni-Chronos Persistent Module:</strong> A fully unrestricted, text-parseable dual-world clock that caches your preferred timezone and 12H/24H format to local storage.</li>
+                    <li><strong>Zero-Trust Local Database:</strong> Offline `localStorage` dictionary mapping hostnames to IPs. (Click [ VIEW_LOCAL_DATABASE ] to configure).</li>
+                    <li><strong>Device HUD:</strong> Actively scans the pasted input for prompt hostnames (e.g., `PH-NOC-ACC01#`) and cross-references the local DB to display target IPs directly above the input box.</li>
                 </ul>
 
-                <h3 style="margin-bottom: 0;">🎮 5. Easter Egg Vault</h3>
+                <h3>🧠 5. Dynamic Warning Scanner (Real-Time)</h3>
+                <ul>
+                    <li><strong style="color: var(--hl-yellow);">Raw Port List Notice:</strong> Flags active Blind Override mode.</li>
+                    <li><strong style="color: var(--accent-red);">Critical Warning:</strong> Flags locked-out Trunk/Uplink interfaces.</li>
+                    <li><strong style="color: var(--hl-magenta);">Dual-Security Conflict:</strong> Detects severe race conditions where a port possesses both 802.1X and Sticky MAC. Temporarily disables "RESET" forcing manual override.</li>
+                    <li><strong style="color: var(--hl-yellow);">Fragmented Security:</strong> Detects half-configured security commands.</li>
+                    <li><strong style="color: var(--hl-cyan);">Unsecured Port:</strong> Flags raw, open ports with no security. Can be silenced with the <code>OPEN_PORT</code> suppression checkbox.</li>
+                </ul>
+
+                <h3>⚡ 6. State, Edge & Delay Flow Control</h3>
+                <ul>
+                    <li><strong>Per-Port Advanced Matrix:</strong> Fine-tune overrides! Apply a Global Master VLAN/Security setting, then use the dynamic grid (07) to surgically override settings for individual ports in the exact same execution batch.</li>
+                    <li><strong>Admin State Bouncer:</strong> Force ports UP, DWN, or gracefully BNC (bounce). Smart logic inherently avoids writing a `shut` command if the port is already known to be offline.</li>
+                    <li><strong>Edge Provisioning:</strong> Quickly injects `spanning-tree portfast` and `bpduguard enable`.</li>
+                    <li><strong>Slow Paste Mode:</strong> Reduces compilation chunks from 5 ports to 2, actively injecting `! --- buffer wait ---` markers for older legacy switches that drop characters during large SSH pastes.</li>
+                </ul>
+
+                <h3 style="margin-bottom: 0;">🌐 7. Environment & QoL Modules</h3>
                 <ul style="margin-bottom: 0;">
-                    <li><strong>Konami Ready:</strong> Type `↑ ↑ ↓ ↓ ← → ← → B A` globally to unlock special Gamer Mode.</li>
+                    <li><strong>Omni-Chronos Widget:</strong> Persistent, localized dual-world clock. Select your Source/Target timezones to instantly convert change-window times. Includes manual input testing & 12/24H toggles.</li>
+                    <li><strong>7-Core Theme Engine:</strong> Toggle between 7 unique aesthetic layouts (Dark, Fabulous Neko, Timeline Neko, Crimson Neko, H2O Neko, Firefly Neko, Gamer Neko), each featuring their own fluid color palettes and multi-canvas particle animations.</li>
+                    <li><strong>Konami Vault:</strong> Input the Konami code (`↑ ↑ ↓ ↓ ← → ← → B A`) to trigger an audio-visual Easter egg and force Gamer Mode execution.</li>
                 </ul>
             </div>
         </div>
@@ -960,7 +936,7 @@
     function playKonamiSound() {
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const sequence = [440, 660, 880, 1320]; 
+            const sequence =[440, 660, 880, 1320]; 
             sequence.forEach((freq, idx) => {
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
@@ -1011,11 +987,11 @@
         const ctx = canvas.getContext('2d');
         let width, height;
         
-        let particles = [];
+        let particles =[];
         const speed = 0.3;
         let timelineBranches =[];
         let timelineTime = 0;
-        let meteors = [];
+        let meteors =[];
         
         let fireflies =[];
         const maxFireflies = 150;
@@ -1024,7 +1000,7 @@
         function initCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            particles = []; timelineBranches = []; meteors = []; fireflies =[];
+            particles = []; timelineBranches = []; meteors =[]; fireflies =[];
             for (let i = 0; i < 80; i++) particles.push(new Particle());
         }
 
@@ -1467,7 +1443,7 @@
         const execBtn = document.getElementById('executeBtn'); 
         execBtn.disabled = true; execBtn.classList.remove('ready'); 
         
-        const uiControlsToLock = [ 
+        const uiControlsToLock =[ 
             document.querySelector('input[name="securityMode"][value="dot1x"]'), 
             document.querySelector('input[name="securityMode"][value="sticky"]'), 
             document.querySelector('input[name="securityMode"][value="remove"]'), 
@@ -1609,7 +1585,7 @@
         }
 
         const hostMatches =[...configText.matchAll(/^([A-Za-z0-9\-\_]+)#/gm)];
-        let uniqueHosts = [];
+        let uniqueHosts =[];
         
         hostMatches.forEach(match => {
             let host = match[1];
@@ -1644,7 +1620,7 @@
         let totalParsedPorts = 0, portsWithFullDot1x = 0, portsWithFullSticky = 0, portsWithFullEdge = 0, portsWithShutdown = 0, portsWithNoShut = 0;
         let hasAnySecurity = false, hasActivePorts = false;
 
-        let unsafePorts =[], shutdownPorts = [], conflictedPorts = [], fragmentPorts = [], noSecPorts = [];
+        let unsafePorts =[], shutdownPorts = [], conflictedPorts =[], fragmentPorts = [], noSecPorts = [];
         let validAccessPortsForGrid =[];
 
         textBlocks.forEach(block => {
@@ -1952,7 +1928,7 @@
         function getPrimary(iface) {
             if (iface.isTrunk) return null; 
 
-            let cmds = [];
+            let cmds =[];
             let safeName = iface.name.replace(/[^a-zA-Z0-9]/g, '_');
             
             let overrideVlanEl = document.getElementById('ovr_vlan_' + safeName);
@@ -2078,7 +2054,7 @@
         function getRollback(iface) {
             if (iface.isTrunk) return null; 
 
-            let cmds = [];
+            let cmds =[];
             let safeName = iface.name.replace(/[^a-zA-Z0-9]/g, '_');
             
             let overrideVlanEl = document.getElementById('ovr_vlan_' + safeName);
@@ -2176,9 +2152,9 @@
         }
 
         function build(fn) {
-            let lines = ["conf t"];
+            let lines =["conf t"];
             let groups = {};
-            let skippedPorts =[];
+            let skippedPorts = [];
             let trunkPorts =[];
             let hasRaw = false;
             
@@ -2192,7 +2168,7 @@
                 let c = fn(d); 
                 if (c) { 
                     let k = c.join('\n'); 
-                    if (!groups[k]) groups[k] =[]; 
+                    if (!groups[k]) groups[k] = []; 
                     groups[k].push(d.name); 
                 } else {
                     skippedPorts.push(d.name);
