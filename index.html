@@ -95,7 +95,7 @@
             --p-matrix-title: #ff4d6d; 
         }
 
-        /* --- THEME: H2O NEKO (Ocean / Space Theme) --- */
+        /* --- THEME: H2O NEKO (Ocean Theme) --- */
         [data-theme="h2o-neko"] {
             --bg-color: #050a14; 
             --card-bg: #121e36; 
@@ -158,7 +158,7 @@
             --p-matrix-title: #a3d9ff; 
         }
 
-        /* Blood Moon CSS Effect (Only active on Crimson Neko) */
+        /* Blood Moon CSS Effect */
         html[data-theme="crimson-neko"] body::after {
             content: "";
             position: fixed;
@@ -559,7 +559,7 @@
         [data-theme="gamer-neko"] .form-group { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
 
         .input-section { margin-bottom: 15px; position: relative; }
-        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; position: relative; z-index: 10; }
         label { font-weight: 600; display: block; margin-bottom: 8px; color: var(--accent-blue); font-size: 0.75rem; text-transform: uppercase; opacity: 0.8; }
         .header-row label { margin-bottom: 0; }
         
@@ -573,15 +573,21 @@
             background: transparent; color: var(--accent-purple); border: 1px solid var(--border-color);
             padding: 4px 10px; font-size: 10px; cursor: pointer; border-radius: 4px;
             font-family: "Courier New", Courier, monospace; text-transform: uppercase; letter-spacing: 1px;
+            z-index: 10;
         }
 
         .expand-btn:hover { border-color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 8px rgba(188, 140, 255, 0.3); color: #fff; }
+        [data-theme="fab-neko"] .expand-btn { color: var(--accent-purple); border-color: var(--border-color); }
         [data-theme="fab-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(192, 132, 207, 0.5); color: #fff; }
         [data-theme="timeline-neko"] .expand-btn { color: var(--accent-blue); border-color: var(--border-color); }
         [data-theme="timeline-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(255, 140, 0, 0.5); border-color: var(--accent-green); color: #fff; }
+        [data-theme="crimson-neko"] .expand-btn { color: var(--accent-blue); border-color: var(--border-color); }
         [data-theme="crimson-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(255, 77, 109, 0.5); border-color: var(--accent-blue); color: #fff; }
+        [data-theme="h2o-neko"] .expand-btn { color: var(--accent-blue); border-color: var(--border-color); }
         [data-theme="h2o-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(77, 187, 194, 0.5); border-color: var(--accent-blue); color: #fff; }
+        [data-theme="firefly-neko"] .expand-btn { color: var(--accent-blue); border-color: var(--border-color); }
         [data-theme="firefly-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(63, 255, 63, 0.5); border-color: var(--accent-blue); color: #fff; }
+        [data-theme="gamer-neko"] .expand-btn { color: var(--accent-blue); border-color: var(--border-color); }
         [data-theme="gamer-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(240, 98, 240, 0.8); border-color: var(--accent-blue); color: #fff; }
 
         /* --- COLLAPSIBLE WRAPPERS --- */
@@ -659,7 +665,7 @@
         .drag-overlay-text {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--neon-green);
             font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 16px;
-            pointer-events: none; opacity: 0; text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+            pointer-events: none; opacity: 0; text-shadow: 0 0 8px rgba(57, 255, 20, 0.5); z-index: 5;
         }
         textarea.drag-active + .drag-overlay-text { opacity: 1; }
         [data-theme="fab-neko"] .drag-overlay-text { text-shadow: 0 0 12px rgba(240, 98, 240, 0.6); }
@@ -1036,6 +1042,7 @@
         [data-theme="timeline-neko"] .db-status { color: var(--accent-green); }
         [data-theme="crimson-neko"] .db-status { color: var(--accent-blue); }
         [data-theme="h2o-neko"] .db-status { color: var(--accent-blue); }
+        [data-theme="firefly-neko"] .db-status { color: var(--accent-blue); }
 
         /* --- CUSTOM MODAL --- */
         .modal-overlay {
@@ -1116,7 +1123,7 @@
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v10.1 [Smart State Optimization]</span>
+            <span class="version-tag">// Configuration Automation Tool // v10.2 [Omni-Canvas Restoration]</span>
         </h2>
         
         <div class="tz-widget">
@@ -1452,10 +1459,16 @@
     }
 
     function changeTheme(themeName) {
-        document.documentElement.setAttribute('data-theme', themeName);
-        localStorage.setItem('noccat_theme', themeName);
-        updateActiveThemeInMenu(themeName);
-        updateFavicon(themeName);
+        const canvas = document.getElementById('networkBg');
+        canvas.style.opacity = 0; 
+        
+        setTimeout(() => {
+            document.documentElement.setAttribute('data-theme', themeName);
+            localStorage.setItem('noccat_theme', themeName);
+            updateActiveThemeInMenu(themeName);
+            updateFavicon(themeName);
+            canvas.style.opacity = 1; 
+        }, 300);
     }
     
     function updateActiveThemeInMenu(themeName) {
@@ -1517,7 +1530,7 @@
         }
     });
 
-    // --- Quad-Core Hologram Engine ---
+    // --- MULTI-CORE HOLOGRAM ENGINE ---
     (function() {
         const canvas = document.getElementById('networkBg');
         const ctx = canvas.getContext('2d');
@@ -1528,11 +1541,15 @@
         let timelineBranches = [];
         let timelineTime = 0;
         let meteors = [];
+        
+        let fireflies = [];
+        const maxFireflies = 150;
+        const fireflyColors = ['rgba(227, 179, 65,', 'rgba(255, 191, 0,', 'rgba(125, 232, 225,'];
 
         function initCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            particles = []; timelineBranches = []; meteors = [];
+            particles = []; timelineBranches = []; meteors = []; fireflies = [];
             for (let i = 0; i < 80; i++) particles.push(new Particle());
         }
 
@@ -1584,16 +1601,251 @@
             }
         }
 
-        function drawBackground() {
-            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-color');
+        class FireflyParticle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.15; 
+                this.vy = (Math.random() - 0.5) * 0.15;
+                this.radius = Math.random() * 2 + 1; 
+                this.colorBase = fireflyColors[Math.floor(Math.random() * fireflyColors.length)];
+                this.opacity = 0;
+                this.maxOpacity = Math.random() * 0.4 + 0.3; 
+                this.fadeSpeed = Math.random() * 0.005 + 0.002;
+                this.state = "appearing"; 
+                this.life = 0;
+                this.targetLife = Math.random() * 15000 + 5000; 
+                this.wobbleSeed = Math.random() * 100;
+            }
+            update(delta) {
+                this.x += this.vx + Math.sin(this.life * 0.002 + this.wobbleSeed) * 0.1;
+                this.y += this.vy + Math.cos(this.life * 0.002 + this.wobbleSeed) * 0.1;
+                
+                if (this.state === "appearing") {
+                    this.opacity += this.fadeSpeed * (delta / 16);
+                    if (this.opacity >= this.maxOpacity) {
+                        this.opacity = this.maxOpacity;
+                        this.state = "alive";
+                    }
+                } else if (this.state === "alive") {
+                    this.life += delta;
+                    let blink = this.maxOpacity * 0.8 + Math.sin(this.life * 0.01) * 0.1;
+                    this.opacity = Math.max(0.1, blink);
+                    
+                    if (this.life >= this.targetLife) {
+                        this.state = "disappearing";
+                    }
+                } else if (this.state === "disappearing") {
+                    this.opacity -= this.fadeSpeed * (delta / 16);
+                    if (this.opacity <= 0) {
+                        this.opacity = 0;
+                        this.state = "dead";
+                    }
+                }
+                
+                if (this.x < -20) this.x = width + 20;
+                if (this.x > width + 20) this.x = -20;
+                if (this.y < -20) this.y = height + 20;
+                if (this.y > height + 20) this.y = -20;
+            }
+            draw() {
+                if (this.opacity <= 0) return;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.colorBase + this.opacity + ')';
+                ctx.shadowBlur = this.radius * 3;
+                ctx.shadowColor = this.colorBase + '0.5)';
+                ctx.fill();
+                ctx.shadowBlur = 0; 
+            }
+        }
+
+        function drawNetwork() {
+            const rootStyles = getComputedStyle(document.documentElement);
+            const lColor = rootStyles.getPropertyValue('--particle-line').trim() || 'rgba(88, 166, 255, 0.25)';
+            const rgbMatch = lColor.match(/rgba?\((\d+,\s*\d+,\s*\d+)/);
+            const rgbBase = rgbMatch ? rgbMatch[1] : '88, 166, 255';
+            
+            particles.forEach(p => { p.update(); p.draw(); });
+            
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 140) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        let opacity = 1 - (dist / 140);
+                        ctx.strokeStyle = `rgba(${rgbBase}, ${opacity * 0.25})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function drawTimeline() {
+            timelineTime += 0.02;
+            let centerY = height / 2;
+            
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = "rgba(255, 170, 51, 0.3)";
+            
+            for (let i = 0; i < 10; i++) {
+                ctx.beginPath();
+                let phase = timelineTime * (1 + i * 0.1);
+                let yOffset = Math.sin(phase) * (8 + i * 1.5);
+                ctx.moveTo(0, centerY + yOffset);
+                
+                for (let x = 0; x <= width; x += 50) {
+                    let y = centerY + yOffset + Math.sin(x * 0.005 + phase) * 15;
+                    ctx.lineTo(x, y);
+                }
+                
+                ctx.strokeStyle = `rgba(255, ${180 + i*5}, ${50 + i*10}, 0.2)`;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
+            ctx.shadowBlur = 0;
+
+            if (Math.random() < 0.02 && timelineBranches.length < 12) {
+                timelineBranches.push({
+                    x: width * 0.2 + Math.random() * width * 0.5, 
+                    y: centerY,
+                    dir: Math.random() > 0.5 ? 1 : -1,
+                    spread: 60 + Math.random() * 120, 
+                    progress: 0,
+                    maxProgress: width,
+                    speed: 4 + Math.random() * 4,
+                    life: 1.0,
+                    color: Math.random() > 0.85 ? 'rgba(218, 85, 96, ' : 'rgba(255, 140, 0, ' 
+                });
+            }
+
+            for (let i = timelineBranches.length - 1; i >= 0; i--) {
+                let b = timelineBranches[i];
+                b.progress += b.speed;
+                if (b.progress > b.maxProgress) b.life -= 0.015; 
+                
+                if (b.life <= 0) { timelineBranches.splice(i, 1); continue; }
+
+                ctx.beginPath();
+                ctx.moveTo(b.x, b.y);
+                let cp1x = b.x + 100, cp1y = b.y;
+                let cp2x = b.x + 150, cp2y = b.y + b.spread * b.dir;
+                let endX = b.x + 250, endY = b.y + b.spread * b.dir;
+                let drawLength = Math.min(b.progress, width - b.x);
+                
+                for (let step = 0; step <= drawLength; step += 15) {
+                    let pct = step / 250; 
+                    let px, py;
+                    if (step <= 250) {
+                        let inv = 1 - pct;
+                        px = inv*inv*inv*b.x + 3*inv*inv*pct*cp1x + 3*inv*pct*pct*cp2x + pct*pct*pct*endX;
+                        py = inv*inv*inv*b.y + 3*inv*inv*pct*cp1y + 3*inv*pct*pct*cp2y + pct*pct*pct*endY;
+                    } else {
+                        px = b.x + step;
+                        py = endY + Math.sin((px * 0.01) + timelineTime) * 10;
+                    }
+                    ctx.lineTo(px, py);
+                }
+
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = b.color + (b.life * 0.5) + ')';
+                ctx.strokeStyle = b.color + b.life + ')';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        function drawBlood() {
+            timelineTime += 0.01; 
+            for (let i = 0; i < 3; i++) {
+                ctx.beginPath();
+                let waveHeight = height - 80 + (i * 25); 
+                ctx.moveTo(0, height);
+                ctx.lineTo(0, waveHeight);
+                for (let x = 0; x <= width; x += 50) {
+                    let y = waveHeight + Math.sin(x * 0.002 + timelineTime + i) * 15; 
+                    ctx.lineTo(x, y);
+                }
+                ctx.lineTo(width, height);
+                ctx.closePath();
+                ctx.fillStyle = `rgba(${120 + i*40}, 0, ${i*15}, 0.15)`; 
+                ctx.fill();
+            }
+
+            particles.forEach((p) => {
+                p.x += (Math.abs(p.vx) + 0.5); 
+                p.y += Math.sin(p.x * 0.01 + timelineTime) * 0.4; 
+                if (p.x > width + 30) { p.x = -30; p.y = Math.random() * height; }
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius * 3.5, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(200, 20, 40, 0.3)'; 
+                ctx.shadowBlur = 10; ctx.shadowColor = 'rgba(255, 0, 51, 0.4)';
+                ctx.fill(); ctx.shadowBlur = 0;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius * 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(100, 5, 15, 0.2)';
+                ctx.fill();
+            });
+        }
+
+        function drawWater() {
+            timelineTime += 0.01; 
+            ctx.fillStyle = 'rgba(5, 10, 20, 0.2)'; 
+            ctx.fillRect(0, 0, width, height);
+
+            for (let i = 0; i < 4; i++) {
+                ctx.beginPath();
+                let waveHeight = height - 80 + (i * 20) + Math.sin(timelineTime * 0.5 + i) * 10; 
+                ctx.moveTo(0, height);
+                ctx.lineTo(0, waveHeight);
+                for (let x = 0; x <= width; x += 40) {
+                    let y = waveHeight + Math.sin(x * 0.005 + timelineTime * 0.5 + i * 0.5) * (10 + i * 5); 
+                    ctx.lineTo(x, y);
+                }
+                ctx.lineTo(width, height);
+                ctx.closePath();
+                let alphas = [0.1, 0.15, 0.2, 0.3]; 
+                let colors = ['18, 30, 54', '34, 153, 168', '45, 156, 166', '77, 194, 186']; 
+                ctx.fillStyle = `rgba(${colors[i]}, ${alphas[i]})`;
+                ctx.fill();
+            }
+            
+            particles.forEach(p => {
+                p.y -= (Math.abs(p.vy) + 0.5); 
+                p.x += Math.sin(p.y * 0.02 + p.vx * 10) * 0.3; 
+                if (p.y < 0) { p.y = height + 20; p.x = Math.random() * width; }
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius * 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(125, 232, 225, 0.15)'; 
+                ctx.strokeStyle = 'rgba(125, 232, 225, 0.25)'; 
+                ctx.lineWidth = 1;
+                ctx.fill(); ctx.stroke();
+            });
+        }
+
+        function drawFireflies(delta) {
+            ctx.fillStyle = 'rgba(2, 8, 4, 0.1)'; 
             ctx.fillRect(0, 0, width, height);
             
-            if (Math.random() < 0.005) meteors.push(new Meteor());
-            meteors = meteors.filter(m => m.update());
-            meteors.forEach(m => m.draw());
+            if (fireflies.length < maxFireflies && Math.random() < 0.1) {
+                fireflies.push(new FireflyParticle());
+            }
+            fireflies = fireflies.filter(f => f.state !== "dead");
             
-            timelineTime += 0.01;
-            drawGamerFloor();
+            ctx.beginPath();
+            let grad = ctx.createRadialGradient(width/2, height, 10, width/2, height, height);
+            grad.addColorStop(0, 'rgba(26, 64, 42, 0.15)');
+            grad.addColorStop(1, 'transparent');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, width, height);
+
+            fireflies.forEach(f => { f.update(delta); f.draw(); });
         }
 
         function drawGamerFloor() {
@@ -1604,66 +1856,122 @@
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, width, height);
 
+            if (Math.random() < 0.005) meteors.push(new Meteor());
+            meteors = meteors.filter(m => m.update());
+            meteors.forEach(m => m.draw());
+
             particles.forEach(p => { p.update(); p.draw(); });
         }
 
-        function animate() {
+        let currentMode = 'dark';
+        let lastTime = 0;
+        
+        function animate(timestamp) {
+            const delta = timestamp - lastTime;
+            lastTime = timestamp;
+            const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+            
+            if (theme !== currentMode) {
+                if (theme === 'timeline-neko') timelineBranches = [];
+                currentMode = theme;
+            }
+            
             ctx.clearRect(0, 0, width, height);
-            drawBackground();
+
+            if (theme === 'timeline-neko') {
+                drawTimeline();
+            } else if (theme === 'crimson-neko') {
+                drawBlood();
+            } else if (theme === 'h2o-neko') {
+                drawWater();
+            } else if (theme === 'firefly-neko') {
+                drawFireflies(delta);
+            } else if (theme === 'gamer-neko') {
+                drawGamerFloor();
+            } else {
+                drawNetwork();
+            }
+            
             requestAnimationFrame(animate);
         }
         
         window.addEventListener('resize', initCanvas);
         initCanvas();
-        animate();
-
+        requestAnimationFrame(animate);
+        
         window.HologramEngine = { mode: 'hologram', particles: particles };
     })();
 
     // --- OMNI-CHRONOS MODULE ---
     let isLiveTime = true, is24Hour = true, forceRawAccess = true;
-    function toggleTimeFormat() { is24Hour = !is24Hour; document.getElementById('fmtToggleBtn').innerText = is24Hour ? "[ 24H ]" : "[ 12H ]"; updateClocks(); }
+    function toggleTimeFormat() { is24Hour = !is24Hour; document.getElementById('fmtToggleBtn').innerText = is24Hour ? "[ 24H ]" : "[ 12H ]"; localStorage.setItem('noccat_tz_24h', is24Hour); updateClocks(); }
     function getTzOffsetDiff(srcTz, tgtTz) { const now = new Date(); const getStr = (tz) => tz === 'Local' ? now.toLocaleString('en-US') : now.toLocaleString('en-US', {timeZone: tz}); return new Date(getStr(tgtTz)).getTime() - new Date(getStr(srcTz)).getTime(); }
-    function updateClocks() { const timeInput = document.getElementById('localTimeInput'); const srcTz = document.getElementById('sourceTzSelector').value, tgtTz = document.getElementById('tzSelector').value; const formatOpts = { hour12: !is24Hour, hour: '2-digit', minute: '2-digit', second: '2-digit' }; if (isLiveTime) { const now = new Date(); let srcStr = now.toLocaleTimeString('en-US', srcTz === 'Local' ? formatOpts : { ...formatOpts, timeZone: srcTz }); if(is24Hour && srcStr.startsWith('24:')) srcStr = srcStr.replace('24:', '00:'); if (document.activeElement !== timeInput) timeInput.value = srcStr; let tgtStr = now.toLocaleTimeString('en-US', tgtTz === 'Local' ? formatOpts : { ...formatOpts, timeZone: tgtTz }); if(is24Hour && tgtStr.startsWith('24:')) tgtStr = tgtStr.replace('24:', '00:'); document.getElementById('convertedTimeDisplay').innerText = tgtStr; } else { let t = timeInput.value.trim(); if (/^\d{3,4}$/.test(t)) t = t.substring(0, t.length - 2) + ':' + t.substring(t.length - 2); let parsedDate = new Date("1/1/2000 " + t); if (!isNaN(parsedDate.getTime())) { let d = new Date(1970, 0, 1, parsedDate.getHours(), parsedDate.getMinutes(), parsedDate.getSeconds()); let tgtStr = new Date(d.getTime() + getTzOffsetDiff(srcTz, tgtTz)).toLocaleTimeString('en-US', formatOpts); if(is24Hour && tgtStr.startsWith('24:')) tgtStr = tgtStr.replace('24:', '00:'); document.getElementById('convertedTimeDisplay').innerText = tgtStr; } else document.getElementById('convertedTimeDisplay').innerText = "--:--:--"; } }
-    function setCustomTime() { if (isLiveTime) { isLiveTime = false; document.getElementById('liveIndicator').className = 'live-dot paused'; updateClocks(); } }
+    function updateClocks() { const timeInput = document.getElementById('localTimeInput'); const srcTz = document.getElementById('sourceTzSelector').value, tgtTz = document.getElementById('tzSelector').value; localStorage.setItem('noccat_tz_src', srcTz); localStorage.setItem('noccat_tz_tgt', tgtTz); const formatOpts = { hour12: !is24Hour, hour: '2-digit', minute: '2-digit', second: '2-digit' }; if (isLiveTime) { const now = new Date(); let srcStr = now.toLocaleTimeString('en-US', srcTz === 'Local' ? formatOpts : { ...formatOpts, timeZone: srcTz }); if(is24Hour && srcStr.startsWith('24:')) srcStr = srcStr.replace('24:', '00:'); if (document.activeElement !== timeInput) timeInput.value = srcStr; let tgtStr = now.toLocaleTimeString('en-US', tgtTz === 'Local' ? formatOpts : { ...formatOpts, timeZone: tgtTz }); if(is24Hour && tgtStr.startsWith('24:')) tgtStr = tgtStr.replace('24:', '00:'); document.getElementById('convertedTimeDisplay').innerText = tgtStr; } else { let t = timeInput.value.trim(); if (/^\d{3,4}$/.test(t)) t = t.substring(0, t.length - 2) + ':' + t.substring(t.length - 2); let parsedDate = new Date("1/1/2000 " + t); if (!isNaN(parsedDate.getTime())) { let d = new Date(1970, 0, 1, parsedDate.getHours(), parsedDate.getMinutes(), parsedDate.getSeconds()); let tgtStr = new Date(d.getTime() + getTzOffsetDiff(srcTz, tgtTz)).toLocaleTimeString('en-US', formatOpts); if(is24Hour && tgtStr.startsWith('24:')) tgtStr = tgtStr.replace('24:', '00:'); document.getElementById('convertedTimeDisplay').innerText = tgtStr; } else document.getElementById('convertedTimeDisplay').innerText = "--:--:--"; } }
+    function setCustomTime() { if (isLiveTime) { isLiveTime = false; document.getElementById('liveIndicator').className = 'live-dot paused'; document.getElementById('localTimeInput').select(); updateClocks(); } }
     function resetToLiveTime() { isLiveTime = true; document.getElementById('liveIndicator').className = 'live-dot pulse'; updateClocks(); }
     function updateForceAccess(c) { forceRawAccess = c; generateScript(); }
 
     // --- UI/LOAD LOGIC ---
     let switchDB = {};
+    let detectedGlobalHostname = "N0CAT_Script"; 
+    let currentMatrixTriggerElem = null; 
+
     window.addEventListener('load', () => {
+        const savedTheme = localStorage.getItem('noccat_theme');
+        if (savedTheme) { document.documentElement.setAttribute('data-theme', savedTheme); updateActiveThemeInMenu(savedTheme); updateFavicon(savedTheme); }
+        
+        const savedSrcTz = localStorage.getItem('noccat_tz_src');
+        if (savedSrcTz) document.getElementById('sourceTzSelector').value = savedSrcTz;
+        const savedTgtTz = localStorage.getItem('noccat_tz_tgt');
+        if (savedTgtTz) document.getElementById('tzSelector').value = savedTgtTz;
+        const saved24h = localStorage.getItem('noccat_tz_24h');
+        if (saved24h !== null) { is24Hour = saved24h === 'true'; document.getElementById('fmtToggleBtn').innerText = is24Hour ? "[ 24H ]" : "[ 12H ]"; }
+        
+        updateClocks(); setInterval(updateClocks, 1000);
+        
         const savedDB = localStorage.getItem('noccat_db');
-        if (savedDB) { parseToDB(savedDB); document.getElementById('dbInput').value = savedDB; document.getElementById('dbStatus').innerText = `LOADED_${Object.keys(switchDB).length}_HOSTS`; }
+        if (savedDB) { parseToDB(savedDB); document.getElementById('dbInput').value = generateDBString(); document.getElementById('dbStatus').innerText = `STATUS: LOADED_${Object.keys(switchDB).length}_HOSTS`; }
         
         const configTextarea = document.getElementById('configInput');
         configTextarea.addEventListener('dragover', (e) => { e.preventDefault(); configTextarea.classList.add('drag-active'); });
         configTextarea.addEventListener('dragleave', () => configTextarea.classList.remove('drag-active'));
         configTextarea.addEventListener('drop', (e) => { e.preventDefault(); configTextarea.classList.remove('drag-active'); if(e.dataTransfer.files[0]) { const reader = new FileReader(); reader.onload = (evt) => { configTextarea.value = evt.target.result; checkDynamicWarnings(); }; reader.readAsText(e.dataTransfer.files[0]); } else { const text = e.dataTransfer.getData('text/plain'); if(text) { configTextarea.value = text; checkDynamicWarnings(); } } });
-        
-        const savedTheme = localStorage.getItem('noccat_theme');
-        if (savedTheme) { updateFavicon(savedTheme); updateActiveThemeInMenu(savedTheme); document.documentElement.setAttribute('data-theme', savedTheme); }
     });
 
     function parseToDB(text) { const ipRegex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/; text.split('\n').forEach(line => { const match = line.match(ipRegex); if (match) { const host = line.split(/[,\t\s]+/)[0].toLowerCase(); switchDB[host] = match[0]; } }); }
     function generateDBString() { return Object.keys(switchDB).map(host => `${host.toUpperCase()}, ${switchDB[host]}`).join('\n'); }
-    function saveDB() { const dbText = document.getElementById('dbInput').value; parseToDB(dbText); localStorage.setItem('noccat_db', dbText); const status = document.getElementById('dbStatus'); status.innerText = `MERGED_&_SAVED_${Object.keys(switchDB).length}_HOSTS`; status.style.color = 'var(--neon-green)'; setTimeout(() => status.style.color = 'var(--accent-green)', 2000); checkDynamicWarnings(); }
-    function clearDB() { if(confirm("Wipe memory?")) { localStorage.removeItem('noccat_db'); location.reload(); } }
-    function toggleReadme() { const w = document.getElementById('readmeWrapper'); w.classList.toggle('expanded'); document.getElementById('readmeBtn').innerText = w.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; }
-    function toggleExpand() { const t = document.getElementById('configInput'), b = document.getElementById('expandBtn'); t.classList.toggle('expanded'); b.innerText = t.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; }
-    function toggleWrapper(wId, bId, name) { document.querySelectorAll('.readme-wrapper').forEach(w => { if(w.id !== wId) {w.classList.remove('expanded'); document.querySelector(`button[id$="${w.id.replace('Wrapper','Btn')}"]`).innerText = `[ VIEW_${w.id.replace('Wrapper','').toUpperCase()} ]`; } }); const w = document.getElementById(wId); w.classList.toggle('expanded'); document.getElementById(bId).innerText = w.classList.contains('expanded') ? `[ CLOSE_${name} ]` : `[ VIEW_${name} ]`; }
-    function toggleAdvOptions() { document.getElementById('advOptionsWrapper').classList.toggle('expanded'); }
-    function handleRemoveClick(elem) { if(elem.checked) { if(localStorage.getItem('noccat_suppress_remove_warning') !== 'true') document.getElementById('removeWarningModal').classList.add('visible'); checkDynamicWarnings(); } }
-    function handleMatrixSecChange(elem) { if(elem.value==='remove') { elem.classList.add('danger-mode'); if(localStorage.getItem('noccat_suppress_remove_warning') !== 'true') { currentMatrixTriggerElem=elem; document.getElementById('removeWarningModal').classList.add('visible'); } } else { elem.classList.remove('danger-mode'); } }
-    function confirmRemove() { localStorage.setItem('noccat_suppress_remove_warning', 'true'); document.getElementById('removeWarningModal').classList.remove('visible'); checkDynamicWarnings(); }
-    function cancelRemove() { document.getElementById('removeWarningModal').classList.remove('visible'); if(currentMatrixTriggerElem){ currentMatrixTriggerElem.value='global'; currentMatrixTriggerElem.classList.remove('danger-mode'); currentMatrixTriggerElem=null; } else { document.querySelector('input[name="securityMode"][value="leave"]').checked = true; checkDynamicWarnings(); } }
-    function clearAll() { document.getElementById('configInput').value = ""; location.reload(); }
-    function copyCode(id) { const text = document.getElementById(id).innerText; if(text.startsWith("-- system_idle")) return; navigator.clipboard.writeText(text); const btn = event.target; btn.innerText = "DONE"; setTimeout(() => btn.innerText = "COPY", 1000); }
-    function downloadCode(id, suffix) { const text = document.getElementById(id).innerText; if(text.startsWith("-- system_idle")) return; const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type: "text/plain" })); a.download = `${detectedGlobalHostname}_${suffix}.txt`; a.click(); }
-    function playCyberBeep() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(), gain = ctx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(880, ctx.currentTime); gain.gain.setValueAtTime(0.05, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1); osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.1); } catch(e) {} }
-    function executeWithSound() { playCyberBeep(); generateScript(); }
-    function updateCodeDisplay(id, linesId, content) { document.getElementById(id).innerText = content; let lineNumbers = ""; const count = content.split('\n').length; for (let i = 1; i <= count; i++) lineNumbers += i + "\n"; document.getElementById(linesId).innerText = lineNumbers; }
+    function saveDB() { const dbText = document.getElementById('dbInput').value; parseToDB(dbText); const mergedString = generateDBString(); localStorage.setItem('noccat_db', mergedString); document.getElementById('dbInput').value = mergedString; const statusElem = document.getElementById('dbStatus'); statusElem.innerText = `STATUS: MERGED_&_SAVED_${Object.keys(switchDB).length}_HOSTS`; statusElem.style.color = 'var(--neon-green)'; setTimeout(() => { statusElem.style.color = 'var(--accent-green)'; }, 2000); checkDynamicWarnings(); }
+    function clearDB() { if(confirm("Are you sure you want to wipe the Local Browser Database AND all saved preferences?")) { localStorage.removeItem('noccat_db'); localStorage.removeItem('noccat_suppress_remove_warning'); localStorage.removeItem('noccat_tz_src'); localStorage.removeItem('noccat_tz_tgt'); localStorage.removeItem('noccat_tz_24h'); localStorage.removeItem('noccat_theme'); document.documentElement.removeAttribute('data-theme'); updateActiveThemeInMenu('dark'); updateFavicon('dark'); document.getElementById('dbInput').value = ""; switchDB = {}; document.getElementById('dbStatus').innerText = "STATUS: MEMORY_WIPED"; document.getElementById('deviceHud').classList.remove('visible'); } }
 
-    // --- FULL REAL-TIME WARNING AND COMPILATION ENGINE RESTORED ---
+    function toggleReadme() { const wrapper = document.getElementById('readmeWrapper'); const btn = document.getElementById('readmeBtn'); wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; }
+    
+    function toggleExpand() { 
+        const textarea = document.getElementById('configInput'); 
+        const btn = document.getElementById('expandBtn'); 
+        textarea.classList.toggle('expanded'); 
+        btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; 
+        if (!textarea.classList.contains('expanded') && textarea.value.split('\n').length > 8) { textarea.dataset.manualCollapse = "true"; } else { textarea.dataset.manualCollapse = ""; } 
+    }
+    
+    function toggleWrapper(wrapperId, btnId, name) { const wrapper = document.getElementById(wrapperId); const btn = document.getElementById(btnId); if (wrapperId === 'manifestWrapper') { document.getElementById('dbWrapper').classList.remove('expanded'); document.getElementById('dbBtn').innerText = `[ LOCAL_DATABASE ]`; } else { document.getElementById('manifestWrapper').classList.remove('expanded'); document.getElementById('manifestBtn').innerText = `[ VIEW_SYSTEM_MANIFEST ]`; } wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? `[ CLOSE_${name} ]` : `[ VIEW_${name} ]`; }
+    function toggleAdvOptions() { const wrapper = document.getElementById('advOptionsWrapper'); const btn = document.getElementById('advOptionsBtn'); wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; }
+
+    function handleRemoveClick(elem) { if(elem.disabled) return; if(elem.checked) { const isSuppressed = localStorage.getItem('noccat_suppress_remove_warning'); if (isSuppressed === 'true') { checkDynamicWarnings(); return; } currentMatrixTriggerElem = null; document.getElementById('dontShowAgainCheckbox').checked = false; document.getElementById('removeWarningModal').classList.add('visible'); checkDynamicWarnings(); } }
+    function handleMatrixSecChange(elem) { if (elem.value === 'remove') { elem.classList.add('danger-mode'); const isSuppressed = localStorage.getItem('noccat_suppress_remove_warning'); if (isSuppressed === 'true') return; currentMatrixTriggerElem = elem; document.getElementById('dontShowAgainCheckbox').checked = false; document.getElementById('removeWarningModal').classList.add('visible'); } else { elem.classList.remove('danger-mode'); } }
+    function cancelRemove() { document.getElementById('removeWarningModal').classList.remove('visible'); if (currentMatrixTriggerElem) { currentMatrixTriggerElem.value = 'global'; currentMatrixTriggerElem.classList.remove('danger-mode'); currentMatrixTriggerElem = null; } else { document.querySelector('input[name="securityMode"][value="leave"]').checked = true; checkDynamicWarnings(); } }
+    function confirmRemove() { const dontShow = document.getElementById('dontShowAgainCheckbox').checked; if(dontShow) { localStorage.setItem('noccat_suppress_remove_warning', 'true'); } document.getElementById('removeWarningModal').classList.remove('visible'); if (currentMatrixTriggerElem) { currentMatrixTriggerElem = null; } else { checkDynamicWarnings(); } }
+
+    function clearAll() { document.getElementById('configInput').value = ""; document.getElementById('vlanInput').value = ""; document.querySelector('input[name="securityMode"][value="leave"]').checked = true; document.getElementById('stpCheckbox').checked = false; document.querySelector('input[name="adminState"][value="leave"]').checked = true; document.getElementById('suppressCheckbox').checked = false; document.getElementById('slowPasteCheckbox').checked = false; document.getElementById('primaryCode').innerText = "-- system_idle --"; document.getElementById('primaryLines').innerText = ""; document.getElementById('rollbackCode').innerText = "-- system_idle --"; document.getElementById('rollbackLines').innerText = ""; const execBtn = document.getElementById('executeBtn'); execBtn.disabled = true; execBtn.classList.remove('ready'); const uiControlsToLock = [ document.querySelector('input[name="securityMode"][value="dot1x"]'), document.querySelector('input[name="securityMode"][value="sticky"]'), document.querySelector('input[name="securityMode"][value="remove"]'), document.querySelector('input[name="securityMode"][value="reset"]'), document.getElementById('stpCheckbox'), document.querySelector('input[name="adminState"][value="up"]'), document.querySelector('input[name="adminState"][value="down"]'), document.querySelector('input[name="adminState"][value="bounce"]') ]; uiControlsToLock.forEach(btn => { if (btn) { btn.disabled = true; btn.closest('label').classList.add('disabled'); } }); document.getElementById('copyPrimaryBtn').disabled = true; document.getElementById('copyRollbackBtn').disabled = true; document.getElementById('dlPrimaryBtn').disabled = true; document.getElementById('dlRollbackBtn').disabled = true; document.getElementById('statusMsg').style.display = 'none'; document.getElementById('warningBox').style.display = 'none'; document.getElementById('deviceHud').classList.remove('visible'); document.getElementById('advancedOptionsContainer').style.display = 'none'; document.getElementById('overrideTableBody').innerHTML = ''; const textarea = document.getElementById('configInput'); textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) toggleExpand(); detectedGlobalHostname = "N0CAT_Script"; }
+
+    function copyCode(id) { const text = document.getElementById(id).innerText; if(text.includes("-- system_idle --") || text.includes("NO_CHANGES_REQUIRED")) return; navigator.clipboard.writeText(text); const btn = event.target; btn.innerText = "DONE"; setTimeout(() => btn.innerText = "COPY", 1000); }
+    function downloadCode(id, suffix) { const text = document.getElementById(id).innerText; if(text.includes("-- system_idle --") || text.includes("NO_CHANGES_REQUIRED")) return; const blob = new Blob([text], { type: "text/plain" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `${detectedGlobalHostname}_${suffix}.txt`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+    
+    function playCyberBeep() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(880, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.1); gain.gain.setValueAtTime(0.05, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1); osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.1); } catch(e) {} }
+    function executeWithSound() { playCyberBeep(); generateScript(); }
+    
+    function updateCodeDisplay(id, linesId, content) { const codeElem = document.getElementById(id); const linesElem = document.getElementById(linesId); codeElem.innerText = content; const lineCount = content.split('\n').length; let lineNumbers = ""; for (let i = 1; i <= lineCount; i++) lineNumbers += i + "\n"; linesElem.innerText = lineNumbers; }
+
+    // --- REAL-TIME WARNING & PARSER ENGINE ---
     function checkDynamicWarnings() {
         let configText = document.getElementById('configInput').value;
         configText = configText.replace(/\r\n/g, '\n');
@@ -1775,7 +2083,6 @@
                 const lowerHost = hostName.toLowerCase();
                 let targetIp = switchDB[lowerHost] ? switchDB[lowerHost] : "NOT_IN_DB";
                 let ipColor = targetIp === 'NOT_IN_DB' ? 'var(--hl-orange)' : 'var(--neon-green)';
-                
                 return `<span class="host-tag"><strong>${hostName}</strong> <span class="ip-highlight" style="color: ${ipColor}">${targetIp}</span></span>`;
             });
             
@@ -1791,21 +2098,10 @@
             }
         }
 
-        let totalParsedPorts = 0;
-        let portsWithFullDot1x = 0;
-        let portsWithFullSticky = 0;
-        let portsWithFullEdge = 0;
-        let portsWithShutdown = 0;
-        let portsWithNoShut = 0;
-        let hasAnySecurity = false;
-        let hasActivePorts = false;
+        let totalParsedPorts = 0, portsWithFullDot1x = 0, portsWithFullSticky = 0, portsWithFullEdge = 0, portsWithShutdown = 0, portsWithNoShut = 0;
+        let hasAnySecurity = false, hasActivePorts = false;
 
-        let unsafePorts = [];
-        let shutdownPorts = [];
-        let conflictedPorts = [];
-        let fragmentPorts = [];
-        let noSecPorts = [];
-        
+        let unsafePorts = [], shutdownPorts = [], conflictedPorts = [], fragmentPorts = [], noSecPorts = [];
         let validAccessPortsForGrid = [];
 
         textBlocks.forEach(block => {
@@ -1813,7 +2109,6 @@
             if (ifMatch) {
                 totalParsedPorts++;
                 let normalizedIf = ifMatch[1].replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te').replace(/\s+/g, '');
-                
                 let isRaw = /! RAW_MODE_FLAG/.test(block);
                 let isAccessMode = isRaw ? true : /switchport\s+mode\s+access/i.test(block);
                 
@@ -1822,9 +2117,7 @@
                 let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
                 if (isShutdown) {
                     portsWithShutdown++;
-                    if (!shutdownPorts.includes(normalizedIf)) {
-                        shutdownPorts.push(normalizedIf);
-                    }
+                    if (!shutdownPorts.includes(normalizedIf)) shutdownPorts.push(normalizedIf);
                 } else {
                     portsWithNoShut++;
                     hasActivePorts = true;
@@ -1838,9 +2131,7 @@
                 let isAnySticky = hasStickyMac || hasPortSec;
                 let isAnyDot1x = hasDot1xPae || hasAuthPortControl;
 
-                if (isAnySticky || isAnyDot1x) {
-                    hasAnySecurity = true;
-                }
+                if (isAnySticky || isAnyDot1x) hasAnySecurity = true;
 
                 if (hasStickyMac && hasPortSec) portsWithFullSticky++;
                 if (hasDot1xPae && hasAuthPortControl) portsWithFullDot1x++;
@@ -1929,15 +2220,12 @@
         if (validAccessPortsForGrid.length > 0) {
             const currentOverrides = {};
             document.querySelectorAll('.override-input, .override-select').forEach(inp => {
-                if (inp.value && inp.value !== 'global') {
-                    currentOverrides[inp.id] = inp.value;
-                }
+                if (inp.value && inp.value !== 'global') currentOverrides[inp.id] = inp.value;
             });
             
             let gridHTML = "";
             validAccessPortsForGrid.forEach(p => {
                 let safeName = p.name.replace(/[^a-zA-Z0-9]/g, '_');
-                
                 let curSec = p.isRaw ? "UNKNOWN" : (p.hasStickyMac && p.hasDot1xPae ? "DUAL" : p.hasStickyMac ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE");
                 let statusDot = p.isRaw ? '<span style="color:#8b949e">● RAW</span>' : (p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>');
                 
@@ -2020,6 +2308,7 @@
         }
     }
 
+    // --- GENERATOR LOGIC ---
     function generateScript() {
         let configText = document.getElementById('configInput').value;
         configText = configText.replace(/\r\n/g, '\n');
@@ -2053,7 +2342,7 @@
         let globalAdds = 0;
         let globalRemoves = 0;
         let globalBounces = 0;
-        primaryCompiledPorts = 0;
+        let primaryCompiledPorts = 0; 
 
         textBlocks.forEach(block => {
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
