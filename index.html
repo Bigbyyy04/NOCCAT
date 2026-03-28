@@ -158,7 +158,7 @@
             --p-matrix-title: #a3d9ff; 
         }
 
-        /* Blood Moon CSS Effect */
+        /* Blood Moon CSS Effect (Only active on Crimson Neko) */
         html[data-theme="crimson-neko"] body::after {
             content: "";
             position: fixed;
@@ -172,7 +172,7 @@
             pointer-events: none;
         }
 
-        /* Update Syntax coloring for Original Output blocks */
+        /* Syntax coloring adjustments */
         .sample-code div { color: #fff; }
         .sample-code span[style*="color: #ff9d00;"] { color: var(--hl-orange) !important; }
         .sample-code span[style*="color: #00ffff;"] { color: var(--hl-cyan) !important; }
@@ -265,12 +265,40 @@
             font-weight: 900;
         }
         
-        [data-theme="fab-neko"] .logo-accent { box-shadow: 0 0 12px rgba(240, 98, 240, 0.6); color: #fff; }
-        [data-theme="timeline-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 140, 0, 0.6); color: var(--bg-color); }
-        [data-theme="crimson-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 15px rgba(230, 0, 38, 0.8); color: #fff; }
-        [data-theme="h2o-neko"] .logo-accent { background-color: var(--accent-blue); box-shadow: 0 0 15px rgba(77, 187, 194, 0.6); color: #fff; }
-        [data-theme="firefly-neko"] .logo-accent { background-color: var(--neon-green); box-shadow: 0 0 15px rgba(63, 255, 63, 0.6); color: #fff; }
-        [data-theme="gamer-neko"] .logo-accent { background-color: var(--neon-green); box-shadow: 0 0 15px rgba(240, 98, 240, 0.8); color: #fff; }
+        [data-theme="fab-neko"] .logo-accent {
+            box-shadow: 0 0 12px rgba(240, 98, 240, 0.6);
+            color: #fff;
+        }
+        
+        [data-theme="timeline-neko"] .logo-accent {
+            background-color: var(--accent-green); 
+            box-shadow: 0 0 12px rgba(255, 140, 0, 0.6);
+            color: var(--bg-color); 
+        }
+
+        [data-theme="crimson-neko"] .logo-accent {
+            background-color: var(--accent-green); 
+            box-shadow: 0 0 15px rgba(230, 0, 38, 0.8);
+            color: #fff; 
+        }
+        
+        [data-theme="h2o-neko"] .logo-accent {
+            background-color: var(--accent-blue); 
+            box-shadow: 0 0 15px rgba(77, 187, 194, 0.6);
+            color: #fff; 
+        }
+
+        [data-theme="firefly-neko"] .logo-accent {
+            background-color: var(--neon-green); 
+            box-shadow: 0 0 15px rgba(63, 255, 63, 0.6);
+            color: #fff; 
+        }
+
+        [data-theme="gamer-neko"] .logo-accent {
+            background-color: var(--neon-green); 
+            box-shadow: 0 0 15px rgba(240, 98, 240, 0.8);
+            color: #fff; 
+        }
 
         .version-tag {
             font-size: 0.8rem;
@@ -312,12 +340,41 @@
             box-shadow: 0 0 8px rgba(188, 140, 255, 0.4);
         }
         
-        [data-theme="fab-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(240, 98, 240, 0.5); border-color: var(--accent-purple); background: rgba(192, 132, 207, 0.15); }
-        [data-theme="timeline-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(255, 140, 0, 0.5); border-color: var(--accent-green); background: rgba(255, 140, 0, 0.15); }
-        [data-theme="crimson-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(255, 0, 51, 0.6); border-color: var(--accent-green); background: rgba(255, 0, 51, 0.15); }
-        [data-theme="h2o-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(77, 187, 194, 0.6); border-color: var(--accent-blue); background: rgba(77, 187, 194, 0.15); }
-        [data-theme="firefly-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(63, 255, 63, 0.6); border-color: var(--accent-green); background: rgba(63, 255, 63, 0.15); }
-        [data-theme="gamer-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(240, 98, 240, 0.6); border-color: var(--accent-green); background: rgba(240, 98, 240, 0.15); }
+        [data-theme="fab-neko"] .qol-menu-btn:hover {
+            box-shadow: 0 0 8px rgba(240, 98, 240, 0.5);
+            border-color: var(--accent-purple);
+            background: rgba(192, 132, 207, 0.15);
+        }
+        
+        [data-theme="timeline-neko"] .qol-menu-btn:hover {
+            box-shadow: 0 0 8px rgba(255, 140, 0, 0.5);
+            border-color: var(--accent-green);
+            background: rgba(255, 140, 0, 0.15);
+        }
+
+        [data-theme="crimson-neko"] .qol-menu-btn:hover {
+            box-shadow: 0 0 10px rgba(255, 0, 51, 0.6);
+            border-color: var(--accent-green);
+            background: rgba(255, 0, 51, 0.15);
+        }
+        
+        [data-theme="h2o-neko"] .qol-menu-btn:hover {
+            box-shadow: 0 0 10px rgba(77, 187, 194, 0.6);
+            border-color: var(--accent-blue);
+            background: rgba(77, 187, 194, 0.15);
+        }
+
+        [data-theme="firefly-neko"] .qol-menu-btn:hover {
+            box-shadow: 0 0 10px rgba(63, 255, 63, 0.6);
+            border-color: var(--accent-green);
+            background: rgba(63, 255, 63, 0.15);
+        }
+
+        [data-theme="gamer-neko"] .qol-menu-btn:hover {
+            box-shadow: 0 0 10px rgba(240, 98, 240, 0.6);
+            border-color: var(--accent-green);
+            background: rgba(240, 98, 240, 0.15);
+        }
 
         .qol-dropdown-content {
             display: none;
@@ -351,8 +408,15 @@
         }
         .qol-dropdown-content button:last-child { border-bottom: none; }
         
-        .qol-dropdown-content button:hover { background: rgba(188, 140, 255, 0.1); color: var(--accent-blue); }
-        .qol-dropdown-content button.active { font-weight: bold; color: var(--neon-green); }
+        .qol-dropdown-content button:hover {
+            background: rgba(188, 140, 255, 0.1);
+            color: var(--accent-blue);
+        }
+        
+        .qol-dropdown-content button.active {
+            font-weight: bold;
+            color: var(--neon-green);
+        }
         
         [data-theme="fab-neko"] .qol-dropdown-content button:hover { background: rgba(240, 98, 240, 0.15); color: var(--accent-blue); }
         [data-theme="timeline-neko"] .qol-dropdown-content button:hover { background: rgba(255, 140, 0, 0.15); color: var(--accent-blue); }
@@ -563,11 +627,11 @@
             font-size: 13px; line-height: 1.5; resize: none; scrollbar-width: thin;
             scrollbar-color: var(--border-color) var(--code-bg);
         }
-        [data-theme="fab-neko"] textarea { background: rgba(18, 12, 26, 0.9); color: var(--text-main); }
+        [data-theme="fab-neko"] textarea { background: rgba(18, 12, 26, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }
         [data-theme="timeline-neko"] textarea { background: #f1eae0; color: #3a281e; scrollbar-color: var(--border-color) #f1eae0; }
-        [data-theme="crimson-neko"] textarea { background: rgba(10, 0, 5, 0.9); color: #ffb3c6; }
-        [data-theme="h2o-neko"] textarea { background: rgba(9, 16, 31, 0.9); color: var(--text-main); }
-        [data-theme="firefly-neko"] textarea { background: rgba(2, 5, 3, 0.9); color: var(--text-main); }
+        [data-theme="crimson-neko"] textarea { background: rgba(10, 0, 5, 0.9); color: #ffb3c6; scrollbar-color: var(--border-color) var(--code-bg); }
+        [data-theme="h2o-neko"] textarea { background: rgba(9, 16, 31, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }
+        [data-theme="firefly-neko"] textarea { background: rgba(2, 5, 3, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }
         [data-theme="gamer-neko"] textarea { background: rgba(8, 1, 15, 0.9); color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
 
         textarea:focus { border-color: var(--accent-blue); }
@@ -850,12 +914,15 @@
         [data-theme="timeline-neko"] .conflict-section strong { color: var(--accent-purple) !important; text-shadow: none; }
         [data-theme="timeline-neko"] .fragment-section strong { color: var(--accent-green) !important; text-shadow: none; }
         [data-theme="timeline-neko"] .nosec-section strong { color: var(--hl-cyan) !important; text-shadow: none; }
+
         [data-theme="crimson-neko"] .conflict-section strong { color: var(--hl-yellow) !important; text-shadow: none; }
         [data-theme="crimson-neko"] .fragment-section strong { color: var(--accent-blue) !important; text-shadow: none; }
         [data-theme="crimson-neko"] .nosec-section strong { color: var(--hl-cyan) !important; text-shadow: none; }
+        
         [data-theme="firefly-neko"] .conflict-section strong { color: var(--hl-yellow) !important; text-shadow: none; }
         [data-theme="firefly-neko"] .fragment-section strong { color: var(--accent-blue) !important; text-shadow: none; }
         [data-theme="firefly-neko"] .nosec-section strong { color: var(--hl-cyan) !important; text-shadow: none; }
+        
         [data-theme="gamer-neko"] .conflict-section strong { color: var(--hl-yellow) !important; text-shadow: none; }
         [data-theme="gamer-neko"] .fragment-section strong { color: var(--accent-blue) !important; text-shadow: none; }
         [data-theme="gamer-neko"] .nosec-section strong { color: var(--hl-cyan) !important; text-shadow: none; }
@@ -1049,7 +1116,7 @@
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v10.1 [Uncut Engine Update]</span>
+            <span class="version-tag">// Configuration Automation Tool // v10.1 [Smart State Optimization]</span>
         </h2>
         
         <div class="tz-widget">
@@ -1291,7 +1358,7 @@
             <ul>
                 <li><strong>Omni-Parse Technology:</strong> The engine automatically detects whether you have pasted standard configuration blocks or a raw list of interface names.</li>
                 <li><strong>Smart Range Aggregation:</strong> To prevent console buffer overrun and reduce script size, the engine automatically detects consecutive targeted ports (e.g. <code>Gi1/0/1, Gi1/0/2</code>) and natively compresses them into perfectly formatted <code>interface range</code> commands.</li>
-                <li><strong>Smart State Parsing (Config Mode):</strong> Reads current running-config, compares to target settings, and <em>only</em> generates commands for exact missing or differing lines.</li>
+                <li><strong>Smart State Optimization:</strong> The engine prevents duplicate configuration commands. Furthermore, it checks if a port is actively in a <code>shutdown</code> state. If a security change is made to an already down port, the engine completely skips printing the <code>shut</code> command to save processing buffer time.</li>
                 <li><strong>Blind Force Processing (Raw Mode):</strong> If raw ports are detected, idempotency is dynamically disabled. The engine will forcefully apply your selected parameters without evaluating current states.</li>
                 <li><strong>Automated Rollback Generation:</strong> Builds a reverse script to perfectly undo changes and return ports to their original state (or applies best-effort defaults for raw ports).</li>
                 <li><strong>Surgical Command Stripping:</strong> Automatically injects exact <code>no</code> commands to scrub old protocols before applying new ones.</li>
@@ -1564,7 +1631,6 @@
 
     // --- UI/LOAD LOGIC ---
     let switchDB = {};
-    let detectedGlobalHostname = "N0CAT_Script"; 
     window.addEventListener('load', () => {
         const savedDB = localStorage.getItem('noccat_db');
         if (savedDB) { parseToDB(savedDB); document.getElementById('dbInput').value = savedDB; document.getElementById('dbStatus').innerText = `LOADED_${Object.keys(switchDB).length}_HOSTS`; }
@@ -1871,6 +1937,7 @@
             let gridHTML = "";
             validAccessPortsForGrid.forEach(p => {
                 let safeName = p.name.replace(/[^a-zA-Z0-9]/g, '_');
+                
                 let curSec = p.isRaw ? "UNKNOWN" : (p.hasStickyMac && p.hasDot1xPae ? "DUAL" : p.hasStickyMac ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE");
                 let statusDot = p.isRaw ? '<span style="color:#8b949e">● RAW</span>' : (p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>');
                 
@@ -1953,9 +2020,6 @@
         }
     }
 
-    // --- SCRIPT COMPILER LOGIC ---
-    let primaryCompiledPorts = 0;
-    
     function generateScript() {
         let configText = document.getElementById('configInput').value;
         configText = configText.replace(/\r\n/g, '\n');
@@ -2112,7 +2176,7 @@
                     if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
                     if (iface.hasPortSec) cmds.push("no switchport port-security");
                 }
-                cmds.push("shut");
+                if (!iface.isShutdown && !cmds.includes("shut")) cmds.push("shut");
                 if (!iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
                 if (!iface.hasAuthPortControl) cmds.push("authentication port-control auto");
             } else if (actualSecurityMode === 'sticky' && secChanged) {
@@ -2120,20 +2184,20 @@
                     if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
                     if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
                 }
-                cmds.push("shut");
+                if (!iface.isShutdown && !cmds.includes("shut")) cmds.push("shut");
                 if (!iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
                 if (!iface.hasPortSec) cmds.push("switchport port-security");
             } else if (actualSecurityMode === 'reset' && secChanged) {
                 if (isCurrentlySticky) {
                     if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
                     if (iface.hasPortSec) cmds.push("no switchport port-security");
-                    cmds.push("shut");
+                    if (!iface.isShutdown && !cmds.includes("shut")) cmds.push("shut");
                     cmds.push("switchport port-security mac-address sticky", "switchport port-security");
                 } else if (isCurrentlyDot1x || iface.isRaw) {
                     if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
                     if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
                     if (iface.isRaw) cmds.push("no switchport port-security mac-address sticky", "no switchport port-security"); 
-                    cmds.push("shut");
+                    if (!iface.isShutdown && !cmds.includes("shut")) cmds.push("shut");
                     cmds.push("dot1x pae authenticator", "authentication port-control auto");
                 }
             } else if (actualSecurityMode === 'remove' && secChanged) {
@@ -2141,7 +2205,7 @@
                 if (iface.hasPortSec || iface.isRaw) cmds.push("no switchport port-security");
                 if (iface.hasDot1xPae || iface.isRaw) cmds.push("no dot1x pae authenticator");
                 if (iface.hasAuthPortControl || iface.isRaw) cmds.push("no authentication port-control auto");
-                cmds.push("shut");
+                if (!iface.isShutdown && !cmds.includes("shut")) cmds.push("shut");
             } 
             
             if (needsBounce && !cmds.includes("shut") && !iface.isShutdown) {
@@ -2239,7 +2303,7 @@
                     if (!iface.hasPortSec) cmds.push("no switchport port-security");
                 }
                 
-                cmds.push("shut");
+                if (!iface.isShutdown && !cmds.includes("shut")) cmds.push("shut");
                 
                 if (actualSecurityMode === 'dot1x' && isCurrentlySticky) {
                     if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
