@@ -111,7 +111,7 @@
             border-radius: 4px;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
             backdrop-filter: blur(4px);
-            white-space: nowrap; /* Prevents internal elements from wrapping */
+            white-space: nowrap; 
         }
 
         .live-dot {
@@ -146,7 +146,7 @@
             font-size: 11px;
             outline: none;
             cursor: text;
-            width: 95px; /* Widened to fit 12H AM/PM formatting comfortably */
+            width: 95px; 
             padding: 0;
             text-align: center;
             transition: color 0.2s;
@@ -206,8 +206,8 @@
             transition: 0.2s;
             font-family: "Courier New", Courier, monospace;
             margin-right: 6px;
-            white-space: nowrap; /* Forces text to stay on one line */
-            flex-shrink: 0; /* Prevents flexbox from squishing the button */
+            white-space: nowrap; 
+            flex-shrink: 0; 
         }
         
         .fmt-toggle:hover {
@@ -314,6 +314,8 @@
             font-size: 11.5px;
             line-height: 1.4;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            display: flex;
+            gap: 20px;
         }
 
         /* --- CLEAN NATIVE TEXTAREA & DRAG DROP --- */
@@ -827,7 +829,7 @@
     <div class="top-bar">
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v8.1 Omni-Format Update</span>
+            <span class="version-tag">// Configuration Automation Tool // v8.2 Omni-Parse Update</span>
         </h2>
         
         <div class="tz-widget">
@@ -877,21 +879,30 @@
                 <h3>> Config Input (01)</h3>
                 <p>To provide the engine with the current interface states, paste the raw terminal output of the <code>show running-config interface</code> command from your access switch. <strong>You can also drag and drop a .txt log file directly into the input box.</strong></p>
                 
-                <p><strong>REQUIRED SAMPLE FORMAT:</strong></p>
-                <div class="sample-code"><span style="color: #ff9d00;">PH-NOC-ACC0101#</span>sh running-config interface Gi1/0/1
-Building configuration...
-
-Current configuration : 157 bytes
-!
-interface GigabitEthernet1/0/1
-description : Sample
-switchport access vlan <span style="color: #00ffff; font-weight: bold;">100</span>
-<span style="color: #ffff00;">switchport mode access</span>
-<span style="color: #ff00ff;">spanning-tree bpduguard enable</span>
-end</div>
-
-                <h3>> Safety Failsafe & Notices</h3>
-                <p>The real-time engine continuously scans your input. It will warn you of disabled links, un-secured ports, and fragmented security configurations. <strong>Trunk/Uplink ports are completely hard-locked by the engine for safety.</strong></p>
+                <div class="sample-code" style="margin-bottom: 5px;">
+                    <div style="flex:1;">
+                        <strong>STANDARD PARSE:</strong><br>
+                        <span style="color: #ff9d00;">PH-NOC-ACC0101#</span>sh running-config interface Gi1/0/1<br>
+                        Building configuration...<br><br>
+                        Current configuration : 157 bytes<br>
+                        !<br>
+                        interface GigabitEthernet1/0/1<br>
+                        description : Sample<br>
+                        switchport access vlan <span style="color: #00ffff; font-weight: bold;">100</span><br>
+                        <span style="color: #ffff00;">switchport mode access</span><br>
+                        <span style="color: #ff00ff;">spanning-tree bpduguard enable</span><br>
+                        end
+                    </div>
+                    <div style="width: 1px; background: var(--border-color); margin: 0 10px;"></div>
+                    <div style="flex:1;">
+                        <strong style="color:var(--hl-yellow)">RAW OMNI-PARSE (BLIND MODE):</strong><br>
+                        <span style="color: #8b949e;">You can paste a flat list of ports. The engine will detect this and bypass idempotency to blindly force the requested parameters.</span><br><br>
+                        Gi1/0/1<br>
+                        Gi1/0/2<br>
+                        Fa0/1<br>
+                        Te2/1/1
+                    </div>
+                </div>
 
                 <h3>> Target Parameters (02 - 07)</h3>
                 <p>Set your desired Global parameters. The engine will evaluate the pasted logs and output the exact CLI commands needed to reach your target state. You can override the Global VLAN and Security Protocols on a per-port basis using the dynamic Advanced Options Matrix (07).</p>
@@ -908,8 +919,8 @@ end</div>
             </div>
         </div>
         <div style="position: relative;">
-            <textarea id="configInput" placeholder="Paste logs or Drag & Drop text / .txt files here..." spellcheck="false" oninput="checkDynamicWarnings()"></textarea>
-            <div class="drag-overlay-text">DROP CONTENT TO PARSE</div>
+            <textarea id="configInput" placeholder="Paste config logs or a raw list of ports here..." spellcheck="false" oninput="checkDynamicWarnings()"></textarea>
+            <div class="drag-overlay-text">DROP CONFIG OR PORT LIST</div>
         </div>
     </div>
 
@@ -1058,15 +1069,17 @@ end</div>
         <div class="readme-content manifest-box">
             <h3 style="margin-top: 0;">🧠 1. The Core Idempotent Engine</h3>
             <ul>
-                <li><strong>Smart State Parsing:</strong> Reads current running-config, compares to target settings, and <em>only</em> generates commands for exact missing or differing lines. Resilient against terminal emulator copy/paste spacing quirks.</li>
-                <li><strong>Automated Rollback Generation:</strong> Builds a reverse script to perfectly undo changes and return ports to their original state.</li>
+                <li><strong>Omni-Parse Technology:</strong> The engine automatically detects whether you have pasted standard configuration blocks or a raw list of interface names.</li>
+                <li><strong>Smart State Parsing (Config Mode):</strong> Reads current running-config, compares to target settings, and <em>only</em> generates commands for exact missing or differing lines. Resilient against terminal emulator copy/paste spacing quirks.</li>
+                <li><strong>Blind Force Processing (Raw Mode):</strong> If raw ports are detected, idempotency is dynamically disabled. The engine will forcefully apply your selected parameters without evaluating current states.</li>
+                <li><strong>Automated Rollback Generation:</strong> Builds a reverse script to perfectly undo changes and return ports to their original state (or applies best-effort defaults for raw ports).</li>
                 <li><strong>Dynamic Interface Chunking:</strong> The Omni-Matrix engine evaluates every single port individually. It then smartly groups ports that share the exact same resulting commands into <code>interface range</code> chunks to keep scripts impeccably clean. Reduces chunk size automatically if Slow Paste is enabled.</li>
                 <li><strong>Surgical Command Stripping:</strong> Automatically injects exact <code>no</code> commands to scrub old protocols before applying new ones.</li>
             </ul>
 
             <h3>🛡️ 2. Advanced Security & Protocol Management</h3>
             <ul>
-                <li><strong>Trunk Port Hard-Stop:</strong> Actively locks out ports detected as uplinks or trunks to prevent catastrophic network outages.</li>
+                <li><strong>Trunk Port Hard-Stop:</strong> Actively locks out ports detected as uplinks or trunks to prevent catastrophic network outages (Automatically bypassed for Raw Ports).</li>
                 <li><strong>Omni-Matrix Assignment:</strong> Updates configurations dynamically. Set Global Master parameters to apply to all ports simultaneously, or use the Per-Port Override Grid (07) to surgically assign different VLANs and Security Protocols to specific interfaces within the same execution batch.</li>
                 <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates (<code>dot1x pae authenticator</code> & <code>authentication port-control auto</code>).</li>
                 <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates (<code>switchport port-security</code> & <code>...mac-address sticky</code>).</li>
@@ -1077,6 +1090,7 @@ end</div>
 
             <h3>🚨 3. Real-Time Dynamic Warning Scanner</h3>
             <ul>
+                <li><strong style="color: var(--hl-yellow);">Raw Port List Notice (Yellow):</strong> Alerts the engineer when Blind Override Mode is actively engaged.</li>
                 <li><strong style="color: var(--accent-red);">Critical Warning (Red):</strong> Detects Trunk/Uplink ports (missing <code>switchport mode access</code>) and executes a complete script lockout for those specific ports.</li>
                 <li><strong style="color: var(--hl-magenta);">Dual-Security Conflict (Magenta):</strong> Detects ports infected with both 802.1X and Sticky MAC. Blocks "RESET" to force explicit protocol cleanup.</li>
                 <li><strong style="color: var(--hl-yellow);">Fragmented Config (Yellow):</strong> Detects partial security templates (e.g., missing base commands) and prompts for repair.</li>
@@ -1245,6 +1259,10 @@ end</div>
             dot.classList.remove('pulse');
             dot.classList.add('paused');
             dot.setAttribute('title', 'PLANNING MODE: Click to resume live clock');
+            
+            const timeInput = document.getElementById('localTimeInput');
+            // Select all text for easy overwrite
+            timeInput.select();
         }
     }
     
@@ -1664,7 +1682,10 @@ end</div>
 
     // --- REAL-TIME WARNING, HUD, OVERRIDE GRID & BUTTON VALIDATION ---
     function checkDynamicWarnings() {
-        const configText = document.getElementById('configInput').value;
+        let configText = document.getElementById('configInput').value;
+        // Normalize newlines for strict regex parsing
+        configText = configText.replace(/\r\n/g, '\n');
+        
         const warningBox = document.getElementById('warningBox');
         const deviceHud = document.getElementById('deviceHud');
         const execBtn = document.getElementById('executeBtn');
@@ -1689,7 +1710,29 @@ end</div>
         const bounceRadio = document.querySelector('input[name="adminState"][value="bounce"]');
         const leaveAdminRadio = document.querySelector('input[name="adminState"][value="leave"]');
         
-        const hasValidInterface = /^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
+        // --- OMNI-PARSE PRE-PROCESSOR ---
+        let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
+        let textBlocks = [];
+        let hasRawPorts = false;
+
+        if (isRawModeGlobal && configText.trim() !== "") {
+            let lines = configText.split('\n');
+            lines.forEach(line => {
+                let clean = line.trim();
+                // Matches formats like Gi1/0/1, Fa0/1, Eth1/1.10
+                let match = clean.match(/^([A-Za-z]{2,}\s*\d+(?:\/\d+)*(?:\.\d+)?)$/i);
+                if (match) {
+                    textBlocks.push(`interface ${match[1]}\n! RAW_MODE_FLAG`);
+                }
+            });
+            if (textBlocks.length > 0) hasRawPorts = true;
+        } else {
+            textBlocks = configText.split(/(?=^[ \t]*interface\s|^[ \t]*int\s)/im);
+            if (textBlocks.length > 0 && !/^[ \t]*(?:interface|int)\s/im.test(textBlocks[0])) textBlocks.shift();
+        }
+
+        const hasValidInterface = textBlocks.length > 0;
+        
         if (hasValidInterface) {
             execBtn.disabled = false;
             execBtn.classList.add('ready');
@@ -1698,7 +1741,8 @@ end</div>
             execBtn.classList.remove('ready');
         }
 
-        if (!configText.trim()) {
+        // Failsafe: Re-lock everything if input is empty
+        if (!configText.trim() || !hasValidInterface) {
             warningBox.style.display = 'none';
             deviceHud.classList.remove('visible');
             overrideSection.style.display = 'none';
@@ -1760,11 +1804,13 @@ end</div>
             deviceHud.classList.add('visible');
         } else {
             deviceHud.classList.remove('visible');
-            detectedGlobalHostname = "N0CAT_Script";
+            detectedGlobalHostname = hasRawPorts ? "N0CAT_RawList" : "N0CAT_Script";
+            
+            if (hasRawPorts) {
+                deviceHud.innerHTML = `<span style="opacity: 0.7; margin-right: 5px;">Target:</span><span class="host-tag"><strong style="color:var(--hl-yellow)">UNKNOWN (RAW OVERRIDE)</strong></span>`;
+                deviceHud.classList.add('visible');
+            }
         }
-
-        let textBlocks = configText.split(/(?=^[ \t]*interface\s|^[ \t]*int\s)/im);
-        if (textBlocks.length > 0 && !/^[ \t]*(?:interface|int)\s/im.test(textBlocks[0])) textBlocks.shift();
 
         let totalParsedPorts = 0;
         let portsWithFullDot1x = 0;
@@ -1787,9 +1833,11 @@ end</div>
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
             if (ifMatch) {
                 totalParsedPorts++;
-                let normalizedIf = ifMatch[1].replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te');
+                let normalizedIf = ifMatch[1].replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te').replace(/\s+/g, '');
                 
-                let isAccessMode = /switchport\s+mode\s+access/i.test(block);
+                let isRaw = /! RAW_MODE_FLAG/.test(block);
+                let isAccessMode = isRaw ? true : /switchport\s+mode\s+access/i.test(block);
+                
                 if (!isAccessMode && !unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
 
                 let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
@@ -1811,7 +1859,7 @@ end</div>
                 let isAnySticky = hasStickyMac || hasPortSec;
                 let isAnyDot1x = hasDot1xPae || hasAuthPortControl;
 
-                if (isAnySticky || isAnyDot1x) {
+                if (isAnySticky || isAnyDot1x || isRaw) {
                     hasAnySecurity = true;
                 }
 
@@ -1824,9 +1872,9 @@ end</div>
 
                 if (isAnySticky && isAnyDot1x && !conflictedPorts.includes(normalizedIf)) {
                     conflictedPorts.push(normalizedIf);
-                } else if (((hasStickyMac && !hasPortSec) || (!hasStickyMac && hasPortSec) || (hasDot1xPae && !hasAuthPortControl) || (!hasDot1xPae && hasAuthPortControl)) && !fragmentPorts.includes(normalizedIf)) {
+                } else if (((hasStickyMac && !hasPortSec) || (!hasStickyMac && hasPortSec) || (hasDot1xPae && !hasAuthPortControl) || (!hasDot1xPae && hasAuthPortControl)) && !fragmentPorts.includes(normalizedIf) && !isRaw) {
                     fragmentPorts.push(normalizedIf);
-                } else if (!isAnySticky && !isAnyDot1x && !noSecPorts.includes(normalizedIf) && !suppressSecWarn) {
+                } else if (!isAnySticky && !isAnyDot1x && !noSecPorts.includes(normalizedIf) && !suppressSecWarn && !isRaw) {
                     noSecPorts.push(normalizedIf);
                 }
                 
@@ -1834,8 +1882,9 @@ end</div>
                     let vlanMatch = block.match(/switchport\s+access\s+vlan\s+(\d+)/i);
                     validAccessPortsForGrid.push({
                         name: normalizedIf,
-                        origVlan: vlanMatch ? vlanMatch[1] : '1 (Default)',
+                        origVlan: isRaw ? 'UNKNOWN' : (vlanMatch ? vlanMatch[1] : '1 (Default)'),
                         isDown: isShutdown,
+                        isRaw: isRaw,
                         hasStickyMac, hasDot1xPae
                     });
                 }
@@ -1846,21 +1895,21 @@ end</div>
         const isSecurityModifying = selectedSecurityMode !== 'leave';
 
         if (totalParsedPorts > 0) {
-            if (portsWithFullDot1x === totalParsedPorts) {
+            if (portsWithFullDot1x === totalParsedPorts && !hasRawPorts) {
                 dot1xRadio.disabled = true; dot1xRadio.closest('label').classList.add('disabled');
                 if (dot1xRadio.checked) leaveSecRadio.checked = true;
             } else {
                 dot1xRadio.disabled = false; dot1xRadio.closest('label').classList.remove('disabled');
             }
 
-            if (portsWithFullSticky === totalParsedPorts) {
+            if (portsWithFullSticky === totalParsedPorts && !hasRawPorts) {
                 stickyRadio.disabled = true; stickyRadio.closest('label').classList.add('disabled');
                 if (stickyRadio.checked) leaveSecRadio.checked = true;
             } else {
                 stickyRadio.disabled = false; stickyRadio.closest('label').classList.remove('disabled');
             }
 
-            if (hasAnySecurity) {
+            if (hasAnySecurity || hasRawPorts) {
                 removeRadio.disabled = false; removeRadio.closest('label').classList.remove('disabled');
                 resetRadio.disabled = false; resetRadio.closest('label').classList.remove('disabled');
             } else {
@@ -1869,28 +1918,28 @@ end</div>
                 if (removeRadio.checked || resetRadio.checked) leaveSecRadio.checked = true;
             }
 
-            if (portsWithFullEdge === totalParsedPorts) {
+            if (portsWithFullEdge === totalParsedPorts && !hasRawPorts) {
                 edgeCheckbox.disabled = true; edgeCheckbox.closest('label').classList.add('disabled');
                 edgeCheckbox.checked = false;
             } else {
                 edgeCheckbox.disabled = false; edgeCheckbox.closest('label').classList.remove('disabled');
             }
 
-            if (portsWithNoShut === totalParsedPorts) {
+            if (portsWithNoShut === totalParsedPorts && !hasRawPorts) {
                 upRadio.disabled = true; upRadio.closest('label').classList.add('disabled');
                 if (upRadio.checked) leaveAdminRadio.checked = true;
             } else {
                 upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled');
             }
 
-            if (portsWithShutdown === totalParsedPorts) {
+            if (portsWithShutdown === totalParsedPorts && !hasRawPorts) {
                 downRadio.disabled = true; downRadio.closest('label').classList.add('disabled');
                 if (downRadio.checked) leaveAdminRadio.checked = true;
             } else {
                 downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled');
             }
             
-            if (portsWithShutdown === totalParsedPorts || isSecurityModifying) {
+            if ((portsWithShutdown === totalParsedPorts && !hasRawPorts) || isSecurityModifying) {
                 bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled');
                 if (bounceRadio.checked) leaveAdminRadio.checked = true;
             } else {
@@ -1910,8 +1959,8 @@ end</div>
             validAccessPortsForGrid.forEach(p => {
                 let safeName = p.name.replace(/[^a-zA-Z0-9]/g, '_');
                 
-                let curSec = p.hasStickyMac && p.hasDot1xPae ? "DUAL" : p.hasStickyMac ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE";
-                let statusDot = p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>';
+                let curSec = p.isRaw ? "UNKNOWN" : (p.hasStickyMac && p.hasDot1xPae ? "DUAL" : p.hasStickyMac ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE");
+                let statusDot = p.isRaw ? '<span style="color:#8b949e">● RAW</span>' : (p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>');
                 
                 gridHTML += `<tr>
                     <td><strong>${p.name}</strong></td>
@@ -1948,9 +1997,14 @@ end</div>
 
         let warningHTML = "";
         let baseHasContent = false;
+        
+        if (hasRawPorts) {
+            warningHTML += `<div style="margin-bottom: ${(unsafePorts.length > 0 || shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// ⚠️ BLIND OVERRIDE MODE (RAW PORTS) ⚠️ //////</strong><br><em style="color: var(--hl-yellow);">Idempotency disabled. The engine will forcefully apply your settings without evaluating current states. Rollback scripts will be best-effort.</em></div>`;
+            baseHasContent = true;
+        }
 
         if (unsafePorts.length > 0) {
-            warningHTML += `<div style="margin-bottom: ${(shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// 🛑 CRITICAL SAFETY LOCK 🛑 //////</strong><br>Trunk/Uplink ports detected: <span style="color: #fff; font-weight: bold;">${unsafePorts.join(', ')}</span><br><em style="color: var(--accent-red);">SAFETY LOCK ENGAGED: The engine has completely locked out these ports and will refuse to generate scripts for them.</em></div>`;
+            warningHTML += `<div class="${baseHasContent ? 'notice-section' : ''}" style="border-top-color: rgba(248, 81, 73, 0.4); margin-bottom: ${(shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// 🛑 CRITICAL SAFETY LOCK 🛑 //////</strong><br>Trunk/Uplink ports detected: <span style="color: #fff; font-weight: bold;">${unsafePorts.join(', ')}</span><br><em style="color: var(--accent-red);">SAFETY LOCK ENGAGED: The engine has completely locked out these ports and will refuse to generate scripts for them.</em></div>`;
             baseHasContent = true;
         }
 
@@ -1977,6 +2031,7 @@ end</div>
             warningBox.style.display = 'block';
             warningBox.innerHTML = warningHTML;
             if (unsafePorts.length > 0) warningBox.style.borderColor = 'var(--accent-red)';
+            else if (hasRawPorts) warningBox.style.borderColor = 'var(--hl-yellow)';
             else if (conflictedPorts.length > 0) warningBox.style.borderColor = 'var(--hl-magenta)';
             else if (fragmentPorts.length > 0) warningBox.style.borderColor = 'var(--hl-yellow)';
             else if (noSecPorts.length > 0) warningBox.style.borderColor = 'var(--hl-cyan)';
@@ -1988,7 +2043,9 @@ end</div>
 
     // --- GENERATOR LOGIC ---
     function generateScript() {
-        const configText = document.getElementById('configInput').value;
+        let configText = document.getElementById('configInput').value;
+        configText = configText.replace(/\r\n/g, '\n');
+        
         const globalTargetVlan = document.getElementById('vlanInput').value;
         const globalSecurityMode = document.querySelector('input[name="securityMode"]:checked').value;
         const applyStp = document.getElementById('stpCheckbox').checked;
@@ -1997,8 +2054,23 @@ end</div>
 
         if (!configText.trim()) return;
 
-        let textBlocks = configText.split(/(?=^[ \t]*interface\s|^[ \t]*int\s)/im);
-        if (textBlocks.length > 0 && !/^[ \t]*(?:interface|int)\s/im.test(textBlocks[0])) textBlocks.shift();
+        // --- OMNI-PARSE PRE-PROCESSOR ---
+        let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
+        let textBlocks = [];
+
+        if (isRawModeGlobal) {
+            let lines = configText.split('\n');
+            lines.forEach(line => {
+                let clean = line.trim();
+                let match = clean.match(/^([A-Za-z]{2,}\s*\d+(?:\/\d+)*(?:\.\d+)?)$/i);
+                if (match) {
+                    textBlocks.push(`interface ${match[1]}\n! RAW_MODE_FLAG`);
+                }
+            });
+        } else {
+            textBlocks = configText.split(/(?=^[ \t]*interface\s|^[ \t]*int\s)/im);
+            if (textBlocks.length > 0 && !/^[ \t]*(?:interface|int)\s/im.test(textBlocks[0])) textBlocks.shift();
+        }
 
         const interfacesDataMap = {}; 
         let globalAdds = 0;
@@ -2009,30 +2081,34 @@ end</div>
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
             if (ifMatch) {
                 let rawIf = ifMatch[1];
-                let normalizedIf = rawIf.replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te');
+                let normalizedIf = rawIf.replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te').replace(/\s+/g, '');
                 
-                let isAccessMode = /switchport\s+mode\s+access/i.test(block);
+                let isRaw = /! RAW_MODE_FLAG/.test(block);
+                let isAccessMode = isRaw ? true : /switchport\s+mode\s+access/i.test(block);
+                
                 let vlanMatch = block.match(/switchport\s+access\s+vlan\s+(\d+)/i);
                 
-                let hasStickyMac = /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasPortSec = /(?:^|\n)[ \t]*switchport\s+port-security[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x\s+pae\s+authenticator[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication\s+port-control\s+auto[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasStickyMac = isRaw ? false : /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasPortSec = isRaw ? false : /(?:^|\n)[ \t]*switchport\s+port-security[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasDot1xPae = isRaw ? false : /(?:^|\n)[ \t]*dot1x\s+pae\s+authenticator[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasAuthPortControl = isRaw ? false : /(?:^|\n)[ \t]*authentication\s+port-control\s+auto[ \t]*\r?(?:\n|$)/i.test(block);
 
-                let hasPortfast = /spanning-tree\s+portfast/i.test(block);
-                let hasBpduguard = /spanning-tree\s+bpduguard/i.test(block);
-                let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasPortfast = isRaw ? false : /spanning-tree\s+portfast/i.test(block);
+                let hasBpduguard = isRaw ? false : /spanning-tree\s+bpduguard/i.test(block);
+                let isShutdown = isRaw ? false : /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
 
                 if (!interfacesDataMap[normalizedIf]) {
                     interfacesDataMap[normalizedIf] = { 
                         name: normalizedIf, 
-                        isTrunk: !isAccessMode,
+                        isTrunk: isRaw ? false : !isAccessMode,
+                        isRaw: isRaw,
                         origVlan: vlanMatch ? vlanMatch[1] : null, 
                         hasStickyMac, hasPortSec, hasDot1xPae, hasAuthPortControl,
                         hasPortfast, hasBpduguard, isShutdown
                     };
                 } else {
-                    if (!isAccessMode) interfacesDataMap[normalizedIf].isTrunk = true;
+                    if (!isAccessMode && !isRaw) interfacesDataMap[normalizedIf].isTrunk = true;
+                    if (isRaw) interfacesDataMap[normalizedIf].isRaw = true;
                     if (vlanMatch) interfacesDataMap[normalizedIf].origVlan = vlanMatch[1];
                     if (hasStickyMac) interfacesDataMap[normalizedIf].hasStickyMac = true;
                     if (hasPortSec) interfacesDataMap[normalizedIf].hasPortSec = true;
@@ -2096,10 +2172,19 @@ end</div>
             } else if (actualSecurityMode === 'remove') {
                 if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
             }
+            
+            // OMNI-PARSE BYPASS
+            if (iface.isRaw) {
+                if (actualSecurityMode === 'remove') secChanged = true;
+                if (actualSecurityMode === 'reset') secChanged = true;
+            }
 
             let needsBounce = vlanChanged || stpChanged || secChanged || forceBounce;
 
-            if (!needsBounce && !stateChanged) return null;
+            if (!needsBounce && !stateChanged && !iface.isRaw) return null;
+            
+            // Raw mode requires explicit instruction generation if ANY parameters are set
+            if (iface.isRaw && !vlanChanged && !stpChanged && !secChanged && adminState === 'leave') return null;
 
             if (vlanChanged) cmds.push(`switchport access vlan ${actualTargetVlan}`);
             if (applyStp) {
@@ -2129,17 +2214,18 @@ end</div>
                     if (iface.hasPortSec) cmds.push("no switchport port-security");
                     cmds.push("shut");
                     cmds.push("switchport port-security mac-address sticky", "switchport port-security");
-                } else if (isCurrentlyDot1x) {
+                } else if (isCurrentlyDot1x || iface.isRaw) {
                     if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
                     if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
+                    if (iface.isRaw) cmds.push("no switchport port-security mac-address sticky", "no switchport port-security"); // Wipe everything to be safe on raw reset
                     cmds.push("shut");
                     cmds.push("dot1x pae authenticator", "authentication port-control auto");
                 }
             } else if (actualSecurityMode === 'remove' && secChanged) {
-                if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
-                if (iface.hasPortSec) cmds.push("no switchport port-security");
-                if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
-                if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
+                if (iface.hasStickyMac || iface.isRaw) cmds.push("no switchport port-security mac-address sticky");
+                if (iface.hasPortSec || iface.isRaw) cmds.push("no switchport port-security");
+                if (iface.hasDot1xPae || iface.isRaw) cmds.push("no dot1x pae authenticator");
+                if (iface.hasAuthPortControl || iface.isRaw) cmds.push("no authentication port-control auto");
                 cmds.push("shut");
             } 
             
@@ -2209,10 +2295,16 @@ end</div>
             } else if (actualSecurityMode === 'reset') {
                 secChanged = false; 
             }
+            
+            // Raw rollback failsafe
+            if (iface.isRaw && (actualSecurityMode === 'remove' || actualSecurityMode === 'reset')) {
+                secChanged = false; // Cannot rollback a wipe on a raw port
+            }
 
             let needsBounce = vlanChanged || stpChanged || secChanged;
 
-            if (!needsBounce && !stateChanged) return null;
+            if (!needsBounce && !stateChanged && !iface.isRaw) return null;
+            if (iface.isRaw && !vlanChanged && !stpChanged && !secChanged && adminState === 'leave') return null;
 
             if (vlanChanged) cmds.push(iface.origVlan ? `switchport access vlan ${iface.origVlan}` : "no switchport access vlan");
             if (applyStp) {
@@ -2237,7 +2329,7 @@ end</div>
                 } else if (actualSecurityMode === 'sticky' && isCurrentlyDot1x) {
                     if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
                     if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
-                } else if (actualSecurityMode === 'remove') {
+                } else if (actualSecurityMode === 'remove' && !iface.isRaw) {
                     if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
                     if (iface.hasPortSec) cmds.push("switchport port-security");
                     if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
@@ -2269,12 +2361,15 @@ end</div>
             let groups = {};
             let skippedPorts = [];
             let trunkPorts = [];
+            let hasRaw = false;
             
             interfacesData.forEach(d => { 
                 if (d.isTrunk) {
                     trunkPorts.push(d.name);
                     return;
                 }
+                if (d.isRaw) hasRaw = true;
+                
                 let c = fn(d); 
                 if (c) { 
                     let k = c.join('\n'); 
@@ -2290,6 +2385,7 @@ end</div>
             
             if (trunkPorts.length > 0) lines.unshift(`! SAFETY LOCK: Ignored ${trunkPorts.length} Trunk/Uplink port(s).`);
             if (skippedPorts.length > 0) lines.unshift(`! NOTE: Skipped ${skippedPorts.length} valid port(s) that already match the target config.`);
+            if (hasRaw && fn === getRollback) lines.unshift(`! WARNING: Rollback for RAW ports is best-effort (defaults applied) as original state was unknown.`);
             
             keys.forEach((k, idx) => {
                 let ifaces = groups[k];
