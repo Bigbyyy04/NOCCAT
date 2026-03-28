@@ -847,7 +847,7 @@
     <div class="top-bar">
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v8.4 Omni-Persistence</span>
+            <span class="version-tag">// Configuration Automation Tool // v8.5 Range Matrix</span>
         </h2>
         
         <div class="tz-widget">
@@ -1088,10 +1088,10 @@
             <h3 style="margin-top: 0;">🧠 1. The Core Idempotent Engine</h3>
             <ul>
                 <li><strong>Omni-Parse Technology:</strong> The engine automatically detects whether you have pasted standard configuration blocks or a raw list of interface names.</li>
-                <li><strong>Smart State Parsing (Config Mode):</strong> Reads current running-config, compares to target settings, and <em>only</em> generates commands for exact missing or differing lines. Resilient against terminal emulator copy/paste spacing quirks.</li>
+                <li><strong>Smart Range Aggregation:</strong> To prevent console buffer overrun and reduce script size, the engine automatically detects consecutive targeted ports (e.g. <code>Gi1/0/1, Gi1/0/2</code>) and natively compresses them into perfectly formatted <code>interface range</code> commands.</li>
+                <li><strong>Smart State Parsing (Config Mode):</strong> Reads current running-config, compares to target settings, and <em>only</em> generates commands for exact missing or differing lines.</li>
                 <li><strong>Blind Force Processing (Raw Mode):</strong> If raw ports are detected, idempotency is dynamically disabled. The engine will forcefully apply your selected parameters without evaluating current states.</li>
                 <li><strong>Automated Rollback Generation:</strong> Builds a reverse script to perfectly undo changes and return ports to their original state (or applies best-effort defaults for raw ports).</li>
-                <li><strong>Dynamic Interface Chunking:</strong> The Omni-Matrix engine evaluates every single port individually. It then smartly groups ports that share the exact same resulting commands into <code>interface range</code> chunks to keep scripts impeccably clean. Reduces chunk size automatically if Slow Paste is enabled.</li>
                 <li><strong>Surgical Command Stripping:</strong> Automatically injects exact <code>no</code> commands to scrub old protocols before applying new ones.</li>
             </ul>
 
@@ -1099,11 +1099,10 @@
             <ul>
                 <li><strong>Trunk Port Hard-Stop:</strong> Actively locks out ports detected as uplinks or trunks to prevent catastrophic network outages (Automatically bypassed for Raw Ports).</li>
                 <li><strong>Omni-Matrix Assignment:</strong> Updates configurations dynamically. Set Global Master parameters to apply to all ports simultaneously, or use the Per-Port Override Grid (07) to surgically assign different VLANs and Security Protocols to specific interfaces within the same execution batch.</li>
-                <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates (<code>dot1x pae authenticator</code> & <code>authentication port-control auto</code>).</li>
-                <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates (<code>switchport port-security</code> & <code>...mac-address sticky</code>).</li>
-                <li><strong>REMOVE Mode:</strong> Triggers Critical Danger Glitch. Explicitly strips existing configurations. Requires a mandatory compliance confirmation prompt. Rollback intelligently restores the deleted security.</li>
-                <li><strong>Universal RESET:</strong> Automatically disabled unless port security is actually present. Wipes existing security clean. Security resets intentionally omit rollback commands, but if paired with a VLAN change, the engine will still independently roll back the VLAN.</li>
-                <li><strong>Smart Port Bouncing:</strong> Calculates if a change requires <code>shut</code> / <code>no shut</code> to clear violation states, handling it in both scripts.</li>
+                <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates.</li>
+                <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates.</li>
+                <li><strong>REMOVE Mode:</strong> Triggers Critical Danger Glitch. Explicitly strips existing configurations. Requires a mandatory compliance confirmation prompt.</li>
+                <li><strong>Universal RESET:</strong> Wipes existing security clean. Security resets intentionally omit rollback commands.</li>
             </ul>
 
             <h3>🚨 3. Real-Time Dynamic Warning Scanner</h3>
@@ -1111,26 +1110,21 @@
                 <li><strong style="color: var(--hl-yellow);">Raw Port List Notice (Yellow):</strong> Alerts the engineer when Blind Override Mode is actively engaged. Includes a quick-toggle to force <code>switchport mode access</code> onto unknown blind targets.</li>
                 <li><strong style="color: var(--accent-red);">Critical Warning (Red):</strong> Detects Trunk/Uplink ports (missing <code>switchport mode access</code>) and executes a complete script lockout for those specific ports.</li>
                 <li><strong style="color: var(--hl-magenta);">Dual-Security Conflict (Magenta):</strong> Detects ports infected with both 802.1X and Sticky MAC. Blocks "RESET" to force explicit protocol cleanup.</li>
-                <li><strong style="color: var(--hl-yellow);">Fragmented Config (Yellow):</strong> Detects partial security templates (e.g., missing base commands) and prompts for repair.</li>
                 <li><strong style="color: var(--hl-cyan);">Unsecured Port Notice (Cyan):</strong> Flags naked ports with zero port security configured.</li>
-                <li><strong style="color: var(--hl-orange);">Shutdown Notice (Orange):</strong> Lists currently <code>shutdown</code> ports to prevent troubleshooting confusion.</li>
             </ul>
 
             <h3>⚡ 4. Edge, State, & Output Controls</h3>
             <ul>
-                <li><strong>Independent EDGE Evaluation:</strong> Checks <code>portfast</code> and <code>bpduguard enable</code> separately. Only pushes missing lines.</li>
-                <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
+                <li><strong>Admin State Override:</strong> Includes UP, DWN, BNC, and LEAVE toggles. Rollback intelligently reverses any forced state changes.</li>
                 <li><strong>Cross-Panel Locking & Smart Idempotency:</strong> Modifying security automatically locks the Bounce button. UI buttons gray out if the engine detects the config already meets targeted conditions natively.</li>
-                <li><strong>Omni-Drop Zone:</strong> Supports drag-and-drop ingestion of raw text highlights, IDE tabs, or `.txt` log files directly into the UI. Direct `[ DOWNLOAD ]` buttons export scripts named intelligently after the target hostname.</li>
-                <li><strong>Omni-Chronos Persistent Module:</strong> A fully unrestricted, text-parseable dual-world clock that caches your preferred timezone and 12H/24H format to local storage. Type any custom time (e.g. "16:00" or "4pm") to intelligently offset target timezones for rapid NOC planning.</li>
-                <li><strong>Haptic/Audio Engine:</strong> Triggers synthesized Web Audio confirmation on execution. Includes Dry Run Diff visualizer in the terminal output status string. Includes interactive dynamic network canvas background.</li>
+                <li><strong>Omni-Drop Zone:</strong> Supports drag-and-drop ingestion of raw text highlights, IDE tabs, or `.txt` log files directly into the UI. Direct `[ DOWNLOAD ]` buttons export scripts.</li>
+                <li><strong>Omni-Chronos Persistent Module:</strong> A fully unrestricted, text-parseable dual-world clock that caches your preferred timezone and 12H/24H format to local storage.</li>
             </ul>
 
             <h3 style="margin-bottom: 0;">🎨 5. Zero-Trust Local Storage DB</h3>
             <ul style="margin-bottom: 0;">
                 <li><strong>Local Browser Cache:</strong> Safely stores Switch Hostnames and IP addresses strictly in your browser. Data never touches the internet.</li>
                 <li><strong>Auto-Cross Reference:</strong> Automatically extracts hostnames from pasted terminal prompts and projects the target IP into the HUD.</li>
-                <li><strong>Regex Smart Parser:</strong> Allows pasting raw data direct from Excel or IPAM tools regardless of column order.</li>
                 <li><strong>Multi-Tenant HUD:</strong> Dynamically scans logs and generates individual tracking tags for every unique switch detected in the payload.</li>
                 <li><strong>Auto-Merge Capability:</strong> Automatically appends new pastes to your existing master list without deleting your previous hosts.</li>
             </ul>
@@ -1181,14 +1175,13 @@
     // --- REAL-TIME CLOCK LOGIC (OMNI-CHRONOS MODULE) ---
     let isLiveTime = true;
     let is24Hour = true;
-    let forceRawAccess = true; // Raw port mode switchport access toggle
+    let forceRawAccess = true; 
     
     function toggleTimeFormat() {
         is24Hour = !is24Hour;
         document.getElementById('fmtToggleBtn').innerText = is24Hour ? "[ 24H ]" : "[ 12H ]";
-        localStorage.setItem('noccat_tz_24h', is24Hour); // CACHE SAVE
+        localStorage.setItem('noccat_tz_24h', is24Hour); 
         
-        // If in planning mode, smart-convert whatever text is currently in the box to the new format
         if (!isLiveTime) {
             const timeInput = document.getElementById('localTimeInput');
             let t = timeInput.value.trim();
@@ -1225,7 +1218,6 @@
         const srcTz = srcSelector.value;
         const tgtTz = tgtSelector.value;
         
-        // CACHE SAVE
         localStorage.setItem('noccat_tz_src', srcTz);
         localStorage.setItem('noccat_tz_tgt', tgtTz);
         
@@ -1254,7 +1246,6 @@
             
         } else {
             let t = timeInput.value.trim();
-            // Auto format '1600' to '16:00' for the parser
             if (/^\d{3,4}$/.test(t)) {
                 t = t.substring(0, t.length - 2) + ':' + t.substring(t.length - 2);
             }
@@ -1390,7 +1381,6 @@
     let currentMatrixTriggerElem = null; 
 
     window.addEventListener('load', function() {
-        // Load Timezone Caches
         const savedSrcTz = localStorage.getItem('noccat_tz_src');
         if (savedSrcTz) document.getElementById('sourceTzSelector').value = savedSrcTz;
         
@@ -1406,7 +1396,6 @@
         updateClocks();
         setInterval(updateClocks, 1000);
         
-        // Load Switch DB
         const savedDB = localStorage.getItem('noccat_db');
         if (savedDB) {
             parseToDB(savedDB);
@@ -1414,7 +1403,6 @@
             document.getElementById('dbStatus').innerText = `STATUS: LOADED_${Object.keys(switchDB).length}_HOSTS`;
         }
         
-        // Setup Drag and Drop
         const configTextarea = document.getElementById('configInput');
         configTextarea.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -1726,6 +1714,42 @@
         linesElem.innerText = lineNumbers;
     }
 
+    // --- RANGE AGGREGATION ENGINE ---
+    function aggregatePorts(ports) {
+        let parsed = ports.map(p => {
+            let match = p.match(/^(.*?)(\d+)$/);
+            return match ? { original: p, prefix: match[1], port: parseInt(match[2], 10), isMappable: true } : { original: p, isMappable: false };
+        });
+
+        let result = [];
+        let i = 0;
+        while (i < parsed.length) {
+            let current = parsed[i];
+            if (!current.isMappable) {
+                result.push(current.original);
+                i++;
+                continue;
+            }
+
+            let startPort = current.port;
+            let endPort = startPort;
+            let j = i + 1;
+            
+            while (j < parsed.length && parsed[j].isMappable && parsed[j].prefix === current.prefix && parsed[j].port === endPort + 1) {
+                endPort = parsed[j].port;
+                j++;
+            }
+
+            if (startPort === endPort) {
+                result.push(current.original);
+            } else {
+                result.push(`${current.prefix}${startPort}-${endPort}`);
+            }
+            i = j;
+        }
+        return result;
+    }
+
     // --- REAL-TIME WARNING, HUD, OVERRIDE GRID & BUTTON VALIDATION ---
     function checkDynamicWarnings() {
         let configText = document.getElementById('configInput').value;
@@ -1755,7 +1779,6 @@
         const bounceRadio = document.querySelector('input[name="adminState"][value="bounce"]');
         const leaveAdminRadio = document.querySelector('input[name="adminState"][value="leave"]');
         
-        // --- OMNI-PARSE PRE-PROCESSOR ---
         let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         let textBlocks = [];
         let hasRawPorts = false;
@@ -2085,6 +2108,8 @@
     }
 
     // --- GENERATOR LOGIC ---
+    let primaryCompiledPorts = 0; 
+    
     function generateScript() {
         let configText = document.getElementById('configInput').value;
         configText = configText.replace(/\r\n/g, '\n');
@@ -2097,7 +2122,6 @@
 
         if (!configText.trim()) return;
 
-        // --- OMNI-PARSE PRE-PROCESSOR ---
         let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         let textBlocks = [];
 
@@ -2119,6 +2143,7 @@
         let globalAdds = 0;
         let globalRemoves = 0;
         let globalBounces = 0;
+        primaryCompiledPorts = 0; 
 
         textBlocks.forEach(block => {
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
@@ -2261,7 +2286,7 @@
                 } else if (isCurrentlyDot1x || iface.isRaw) {
                     if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
                     if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
-                    if (iface.isRaw) cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
+                    if (iface.isRaw) cmds.push("no switchport port-security mac-address sticky", "no switchport port-security"); 
                     cmds.push("shut");
                     cmds.push("dot1x pae authenticator", "authentication port-control auto");
                 }
@@ -2292,17 +2317,21 @@
 
             if (cmds.length >= 2 && cmds[cmds.length - 1] === "shut" && cmds[cmds.length - 2] === "shut") cmds.pop();
 
-            let localBounces = 0;
-            cmds.forEach(cmd => {
-                if (cmd.startsWith("no ")) globalRemoves++;
-                else if (cmd === "shut" || cmd === "no shut") {
-                    if (cmd === "shut") localBounces++;
-                }
-                else globalAdds++;
-            });
-            if(localBounces > 0) globalBounces++;
+            if (cmds.length > 0) {
+                primaryCompiledPorts++;
+                let localBounces = 0;
+                cmds.forEach(cmd => {
+                    if (cmd.startsWith("no ")) globalRemoves++;
+                    else if (cmd === "shut" || cmd === "no shut") {
+                        if (cmd === "shut") localBounces++;
+                    }
+                    else globalAdds++;
+                });
+                if(localBounces > 0) globalBounces++;
+                return cmds;
+            }
 
-            return cmds.length ? cmds : null;
+            return null;
         }
 
         function getRollback(iface) {
@@ -2436,12 +2465,51 @@
             
             keys.forEach((k, idx) => {
                 let ifaces = groups[k];
-                for (let i = 0; i < ifaces.length; i += chunkSize) {
-                    let chunk = ifaces.slice(i, i + chunkSize);
-                    lines.push(chunk.length > 1 ? `int range ${chunk.join(', ')}` : `int ${chunk[0]}`);
+                
+                // 1. Natural sort (Gi1/0/2 before Gi1/0/10)
+                ifaces.sort((a, b) => a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'}));
+                
+                // 2. Aggregate into ranges
+                let aggregatedItems = [];
+                let parsed = ifaces.map(p => {
+                    let match = p.match(/^(.*?)(\d+)$/);
+                    return match ? { original: p, prefix: match[1], port: parseInt(match[2], 10), isMappable: true } : { original: p, isMappable: false };
+                });
+
+                let i = 0;
+                while (i < parsed.length) {
+                    let current = parsed[i];
+                    if (!current.isMappable) {
+                        aggregatedItems.push(current.original);
+                        i++;
+                        continue;
+                    }
+
+                    let startPort = current.port;
+                    let endPort = startPort;
+                    let j = i + 1;
+                    
+                    while (j < parsed.length && parsed[j].isMappable && parsed[j].prefix === current.prefix && parsed[j].port === endPort + 1) {
+                        endPort = parsed[j].port;
+                        j++;
+                    }
+
+                    if (startPort === endPort) {
+                        aggregatedItems.push(current.original);
+                    } else {
+                        aggregatedItems.push(`${current.prefix}${startPort}-${endPort}`);
+                    }
+                    i = j;
+                }
+                
+                // 3. Chunk the aggregated items
+                for (let i = 0; i < aggregatedItems.length; i += chunkSize) {
+                    let chunk = aggregatedItems.slice(i, i + chunkSize);
+                    let isRange = chunk.length > 1 || chunk[0].includes('-'); 
+                    lines.push(isRange ? `int range ${chunk.join(', ')}` : `int ${chunk[0]}`);
                     lines.push(k);
                     lines.push("exit");
-                    if (slowPaste && (idx < keys.length - 1 || i + chunkSize < ifaces.length)) {
+                    if (slowPaste && (idx < keys.length - 1 || i + chunkSize < aggregatedItems.length)) {
                         lines.push("! --- buffer wait ---");
                     }
                 }
@@ -2464,22 +2532,10 @@
         document.getElementById('dlPrimaryBtn').disabled = !hasPrimaryChanges;
         document.getElementById('dlRollbackBtn').disabled = !hasPrimaryChanges;
 
-        let compiledPorts = 0;
-        if(hasPrimaryChanges) {
-            let primaryArray = generatedPrimary.split('\n');
-            primaryArray.forEach(l => {
-                if (l.startsWith("int range")) {
-                    compiledPorts += l.replace("int range ", "").split(",").length;
-                } else if (l.startsWith("int ")) {
-                    compiledPorts++;
-                }
-            });
-        }
-
         document.getElementById('statusMsg').style.display = 'flex';
         if (hasPrimaryChanges) {
             document.getElementById('statusMsg').innerHTML = `
-                <span>STATUS: ${compiledPorts} PORTS COMPILED_SUCCESSFULLY</span>
+                <span>STATUS: ${primaryCompiledPorts} PORTS COMPILED_SUCCESSFULLY</span>
                 <span class="diff-stats">
                     [ <span class="diff-add">+${globalAdds}</span> LINES_ADDED | 
                     <span class="diff-rem">-${globalRemoves}</span> LINES_REMOVED | 
