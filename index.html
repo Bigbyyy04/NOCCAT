@@ -26,24 +26,24 @@
             --particle-line: rgba(88, 166, 255, 0.25);
         }
 
-        /* --- THEME: FABULOUS NEKO (Cloud Palette) --- */
+        /* --- THEME: FABULOUS NEKO (Dark Cloud Palette) --- */
         [data-theme="fab-neko"] {
-            --bg-color: #f1f4f8; 
-            --card-bg: #ffffff;
-            --border-color: #c084cf; 
-            --text-main: #512b58; 
-            --btn-text: #512b58;
-            --accent-blue: #a3d9ff; 
-            --accent-green: #ff69b4; 
-            --neon-green: #f062f0; 
-            --accent-purple: #9b5fb5; 
-            --accent-red: #da5560; 
-            --hl-orange: #f8a6c8; 
-            --hl-yellow: #f0a0f0; 
-            --hl-cyan: #d6eaff; 
-            --code-bg: #eef1f8; 
-            --particle-color: rgba(240, 98, 240, 0.4);
-            --particle-line: rgba(240, 98, 240, 0.25);
+            --bg-color: #1e152a; /* Deep violet night sky */
+            --card-bg: #2d203f; /* Lighter purple paneling */
+            --border-color: #8c5b9c; /* Soft lilac border */
+            --text-main: #e6d9e8; /* Soft pink-white text to reduce strain */
+            --btn-text: #ffffff;
+            --accent-blue: #8bc8f7; /* Sky blue */
+            --accent-green: #c45b9a; /* Deep magenta/pink */
+            --neon-green: #f062f0; /* Vibrant fuchsia */
+            --accent-purple: #c084cf; /* Bright lilac */
+            --accent-red: #da5560; /* Rose Red */
+            --hl-orange: #f8a6c8; /* Light Rose */
+            --hl-yellow: #e6a0e6; /* Soft Fuchsia */
+            --hl-cyan: #a3d9ff; /* Bright sky blue */
+            --code-bg: #120c1a; /* Pure deep shadow for contrast */
+            --particle-color: rgba(192, 132, 207, 0.3);
+            --particle-line: rgba(192, 132, 207, 0.2);
         }
 
         body {
@@ -56,7 +56,7 @@
             justify-content: center;
             overflow-x: hidden;
             overflow-y: scroll; /* Permanently reserves scrollbar space to prevent UI shifting */
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         /* --- DYNAMIC BACKGROUND CANVAS --- */
@@ -98,7 +98,7 @@
             flex-grow: 1;
         }
         
-        [data-theme="fab-neko"] h2 { color: var(--accent-purple); }
+        [data-theme="fab-neko"] h2 { color: var(--text-main); }
 
         .logo-text {
             letter-spacing: 1px;
@@ -135,30 +135,36 @@
         .qol-menu {
             position: relative;
             display: inline-block;
-            align-self: flex-start;
+            align-self: center; /* Aligns smoothly with the title */
+            padding-bottom: 10px; /* Invisible bridge to prevent hover loss */
+            margin-bottom: -10px;
         }
         
         .qol-menu-btn {
             background: transparent;
             color: var(--text-main);
             border: 1px solid var(--border-color);
-            padding: 10px 14px;
-            font-size: 20px;
+            padding: 4px 8px; /* Shrunk padding */
+            font-size: 14px; /* Shrunk icon */
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: 0.3s ease;
             box-sizing: border-box;
             line-height: 1;
+            opacity: 0.5; /* Made it less dominant */
         }
         
         .qol-menu-btn:hover {
+            opacity: 1;
             border-color: var(--accent-purple);
             background: rgba(188, 140, 255, 0.1);
-            box-shadow: 0 0 12px rgba(188, 140, 255, 0.4);
+            box-shadow: 0 0 8px rgba(188, 140, 255, 0.4);
         }
         
         [data-theme="fab-neko"] .qol-menu-btn:hover {
-            box-shadow: 0 0 12px rgba(240, 98, 240, 0.6);
+            box-shadow: 0 0 8px rgba(240, 98, 240, 0.5);
+            border-color: var(--accent-purple);
+            background: rgba(192, 132, 207, 0.15);
         }
 
         .qol-dropdown-content {
@@ -166,11 +172,11 @@
             position: absolute;
             top: 100%;
             left: 0;
-            margin-top: 8px;
+            margin-top: 0; /* Removed the gap that broke hover */
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            min-width: 200px;
+            min-width: 180px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.6);
             z-index: 100;
             overflow: hidden;
@@ -185,25 +191,27 @@
             padding: 12px 16px;
             border: none;
             text-align: left;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             transition: 0.2s;
             font-family: "Segoe UI", Roboto, monospace;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
+        .qol-dropdown-content button:last-child { border-bottom: none; }
         
         .qol-dropdown-content button:hover {
             background: rgba(188, 140, 255, 0.1);
-            color: var(--accent-purple);
+            color: var(--accent-blue);
         }
         
         .qol-dropdown-content button.active {
             font-weight: bold;
-            color: var(--accent-green);
+            color: var(--neon-green);
         }
         
         [data-theme="fab-neko"] .qol-dropdown-content button:hover {
             background: rgba(240, 98, 240, 0.15);
-            color: var(--neon-green);
+            color: var(--accent-blue);
         }
         
         .qol-menu:hover .qol-dropdown-content { display: block; }
@@ -226,8 +234,8 @@
         }
         
         [data-theme="fab-neko"] .tz-widget {
-            background: rgba(255, 255, 255, 0.85);
-            box-shadow: none;
+            background: rgba(45, 32, 63, 0.85);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
         }
 
         .live-dot {
@@ -273,7 +281,6 @@
             border-bottom: 1px solid var(--accent-blue); 
             margin-bottom: -1px;
         }
-        [data-theme="fab-neko"] .tz-time-input:focus { color: var(--text-main); }
 
         .tz-select {
             background: transparent;
@@ -291,7 +298,7 @@
         }
         
         [data-theme="fab-neko"] .tz-select {
-            text-shadow: 0 0 5px rgba(240, 98, 240, 0.6);
+            text-shadow: 0 0 5px rgba(240, 98, 240, 0.5);
         }
 
         .tz-select.source-tz {
@@ -332,7 +339,7 @@
         }
         
         .fmt-toggle:hover { background: rgba(57, 255, 20, 0.1); }
-        [data-theme="fab-neko"] .fmt-toggle:hover { background: rgba(240, 98, 240, 0.2); }
+        [data-theme="fab-neko"] .fmt-toggle:hover { background: rgba(240, 98, 240, 0.15); }
 
         /* --- PANELS & FORMS --- */
         .form-group {
@@ -343,7 +350,7 @@
             border-radius: 8px;
             transition: background-color 0.3s;
         }
-        [data-theme="fab-neko"] .form-group { background: rgba(255, 255, 255, 0.85); }
+        [data-theme="fab-neko"] .form-group { background: rgba(45, 32, 63, 0.85); }
 
         .input-section { margin-bottom: 15px; position: relative; }
 
@@ -387,8 +394,8 @@
             color: #fff;
         }
         [data-theme="fab-neko"] .expand-btn:hover {
-            box-shadow: 0 0 12px rgba(155, 95, 181, 0.6);
-            color: var(--accent-purple);
+            box-shadow: 0 0 10px rgba(192, 132, 207, 0.5);
+            color: #fff;
         }
 
         /* --- COLLAPSIBLE WRAPPERS --- */
@@ -446,7 +453,7 @@
         }
         [data-theme="fab-neko"] .sample-code {
             color: var(--text-main);
-            box-shadow: none;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
         }
 
         /* --- CLEAN NATIVE TEXTAREA & DRAG DROP --- */
@@ -469,9 +476,9 @@
             scrollbar-color: var(--border-color) var(--code-bg);
         }
         [data-theme="fab-neko"] textarea {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(18, 12, 26, 0.9);
             color: var(--text-main);
-            scrollbar-color: var(--border-color) #f1f4f8;
+            scrollbar-color: var(--border-color) var(--code-bg);
         }
 
         textarea:focus { border-color: var(--accent-blue); }
@@ -483,7 +490,8 @@
             background: #091a0f;
         }
         [data-theme="fab-neko"] textarea.drag-active {
-            box-shadow: 0 0 15px rgba(240, 98, 240, 0.2) inset;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(240, 98, 240, 0.3) inset;
             background: rgba(240, 98, 240, 0.1);
         }
         
@@ -491,6 +499,7 @@
         textarea::-webkit-scrollbar-track { background: var(--code-bg); }
         textarea::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
         textarea::selection { background: rgba(88, 166, 255, 0.3); }
+        [data-theme="fab-neko"] textarea::selection { background: rgba(192, 132, 207, 0.3); }
 
         .drag-overlay-text {
             position: absolute;
@@ -533,7 +542,7 @@
             align-items: center;
         }
         .host-tag strong { color: #fff; margin-right: 5px; }
-        [data-theme="fab-neko"] .host-tag strong { color: var(--text-main); }
+        [data-theme="fab-neko"] .host-tag { background: rgba(192, 132, 207, 0.15); border-color: rgba(192, 132, 207, 0.3); }
         
         .ip-highlight { font-weight: bold; text-shadow: 0 0 5px rgba(57, 255, 20, 0.4); }
         [data-theme="fab-neko"] .ip-highlight { text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
@@ -572,7 +581,7 @@
             box-sizing: border-box;
         }
         [data-theme="fab-neko"] .radio-group label, [data-theme="fab-neko"] .checkbox-group label {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(28, 18, 38, 0.8);
         }
 
         .radio-group input, .checkbox-group input { display: none; }
@@ -585,7 +594,7 @@
             border-color: var(--accent-green);
             color: var(--btn-text);
             background-color: var(--accent-green);
-            box-shadow: 0 0 12px rgba(240, 98, 240, 0.6);
+            box-shadow: 0 0 12px rgba(209, 98, 164, 0.6);
         }
         [data-theme="fab-neko"] .radio-group label:has(input:checked) span, [data-theme="fab-neko"] .checkbox-group label:has(input:checked) span {
             color: #fff;
@@ -600,9 +609,9 @@
             box-shadow: none !important;
         }
         [data-theme="fab-neko"] .radio-group label.disabled, [data-theme="fab-neko"] .checkbox-group label.disabled {
-            background: #eef1f8 !important;
-            border-color: #c084cf !important;
-            color: #8b6b8b !important;
+            background: #1a1224 !important;
+            border-color: #4a3461 !important;
+            color: #8c5b9c !important;
         }
 
         /* --- DANGEROUS ACTION (GLITCH) CSS --- */
@@ -626,7 +635,7 @@
         }
         [data-theme="fab-neko"] .radio-group label:has(input[value="remove"]:checked) {
             color: #fff !important;
-            background: rgba(248, 81, 73, 1) !important;
+            background: rgba(218, 85, 96, 0.9) !important;
         }
 
         input[type="number"] {
@@ -643,8 +652,8 @@
             height: 31px; 
         }
         [data-theme="fab-neko"] input[type="number"] {
-            background: rgba(255, 255, 255, 0.8);
-            color: var(--accent-purple);
+            background: rgba(18, 12, 26, 0.8);
+            color: var(--hl-yellow);
         }
 
         /* --- PER-PORT OVERRIDE TABLE CSS --- */
@@ -677,7 +686,7 @@
             top: 0;
             z-index: 10;
         }
-        [data-theme="fab-neko"] .override-table th { background: rgba(255, 255, 255, 0.95); }
+        [data-theme="fab-neko"] .override-table th { background: rgba(28, 18, 38, 0.95); }
 
         .override-table td {
             padding: 6px 12px;
@@ -686,11 +695,11 @@
             vertical-align: middle;
             background: rgba(22, 27, 34, 0.6);
         }
-        [data-theme="fab-neko"] .override-table td { background: rgba(255, 255, 255, 0.6); border-bottom: 1px solid #eef1f8; }
+        [data-theme="fab-neko"] .override-table td { background: rgba(45, 32, 63, 0.6); border-bottom: 1px solid #3a284d; }
 
         .override-table tr:last-child td { border-bottom: none; }
         .override-table tr:hover td { background: rgba(88, 166, 255, 0.1); }
-        [data-theme="fab-neko"] .override-table tr:hover td { background: rgba(155, 95, 181, 0.1); }
+        [data-theme="fab-neko"] .override-table tr:hover td { background: rgba(192, 132, 207, 0.15); }
         
         .override-input {
             background: rgba(1, 4, 9, 0.8);
@@ -704,9 +713,12 @@
             transition: 0.2s;
             height: auto;
         }
-        [data-theme="fab-neko"] .override-input { background: rgba(255, 255, 255, 0.8); color: var(--text-main); border: 1px solid var(--border-color); }
+        [data-theme="fab-neko"] .override-input { background: rgba(18, 12, 26, 0.8); color: var(--hl-yellow); border-color: var(--border-color); }
         .override-input:focus { border-color: var(--neon-green); border-style: solid; box-shadow: 0 0 5px rgba(57,255,20,0.3); }
+        [data-theme="fab-neko"] .override-input:focus { border-color: var(--hl-yellow); box-shadow: 0 0 5px rgba(240,160,240,0.3); }
+
         .override-input::placeholder { color: #484f58; font-style: italic; }
+        [data-theme="fab-neko"] .override-input::placeholder { color: #8c5b9c; }
         
         .override-select {
             background: rgba(1, 4, 9, 0.8);
@@ -721,15 +733,17 @@
             transition: 0.2s;
             width: 100px;
         }
-        [data-theme="fab-neko"] .override-select { background: rgba(255, 255, 255, 0.8); border: 1px solid var(--border-color); }
+        [data-theme="fab-neko"] .override-select { background: rgba(18, 12, 26, 0.8); border-color: var(--border-color); }
         .override-select:focus { border-color: var(--neon-green); border-style: solid; box-shadow: 0 0 5px rgba(57,255,20,0.3); }
+        [data-theme="fab-neko"] .override-select:focus { border-color: var(--hl-yellow); box-shadow: 0 0 5px rgba(240,160,240,0.3); }
+
         .override-select.danger-mode {
             border-color: var(--accent-red) !important;
             color: #ff7b72 !important;
             background: rgba(248, 81, 73, 0.3) !important;
             animation: danger-glitch 3s infinite !important;
         }
-        [data-theme="fab-neko"] .override-select.danger-mode { color: #fff !important; background: rgba(248, 81, 73, 1) !important; }
+        [data-theme="fab-neko"] .override-select.danger-mode { color: #fff !important; background: rgba(218, 85, 96, 0.8) !important; }
 
         /* --- TOOLTIP CSS --- */
         .tooltip-icon {
@@ -747,6 +761,8 @@
             cursor: help;
             position: relative;
         }
+        [data-theme="fab-neko"] .tooltip-icon { color: var(--hl-cyan); border-color: var(--hl-cyan); background: rgba(163, 217, 255, 0.1); }
+
         .tooltip-icon::after {
             content: attr(data-tooltip);
             position: absolute;
@@ -773,6 +789,8 @@
             line-height: 1.4;
             font-weight: normal;
         }
+        [data-theme="fab-neko"] .tooltip-icon::after { border-color: var(--hl-cyan); box-shadow: 0 0 15px rgba(163, 217, 255, 0.2); }
+
         .tooltip-icon:hover::after { opacity: 1; visibility: visible; }
 
         /* --- ACTION BAR (CENTERED BUTTONS) --- */
@@ -785,7 +803,7 @@
             padding-top: 25px;
             border-top: 1px dashed rgba(88, 166, 255, 0.2);
         }
-        [data-theme="fab-neko"] .action-row { border-top-color: rgba(155, 95, 181, 0.3); }
+        [data-theme="fab-neko"] .action-row { border-top-color: rgba(192, 132, 207, 0.3); }
 
         @keyframes pulse-ready {
             0% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.3); }
@@ -811,7 +829,7 @@
 
         .cyber-btn.ready { animation: pulse-ready 2s infinite; }
         [data-theme="fab-neko"] .cyber-btn.ready {
-            box-shadow: 0 0 12px rgba(240, 98, 240, 0.6);
+            box-shadow: 0 0 15px rgba(240, 98, 240, 0.5);
             animation: none; 
         }
 
@@ -820,8 +838,8 @@
             box-shadow: 0 0 25px rgba(57, 255, 20, 0.9); 
         }
         [data-theme="fab-neko"] .cyber-btn:not(:disabled):hover {
-            background: var(--text-main);
-            color: #fff;
+            background: #b04987;
+            box-shadow: 0 0 25px rgba(240, 98, 240, 0.8);
         }
 
         .cyber-btn:disabled {
@@ -833,9 +851,9 @@
             animation: none;
         }
         [data-theme="fab-neko"] .cyber-btn:disabled {
-            background: rgba(238, 241, 248, 0.8);
-            color: #8b6b8b;
-            border-color: #c084cf;
+            background: rgba(45, 32, 63, 0.8);
+            color: #8c5b9c;
+            border-color: #4a3461;
         }
 
         .clear-btn {
@@ -851,7 +869,7 @@
             opacity: 0.8;
             letter-spacing: 1px;
         }
-        [data-theme="fab-neko"] .clear-btn { background: rgba(255, 255, 255, 0.6); }
+        [data-theme="fab-neko"] .clear-btn { background: rgba(26, 18, 36, 0.6); }
 
         .clear-btn:hover {
             opacity: 1;
@@ -861,8 +879,8 @@
             box-shadow: 0 0 10px rgba(188, 140, 255, 0.2);
         }
         [data-theme="fab-neko"] .clear-btn:hover {
-            background: rgba(155, 95, 181, 0.15);
-            box-shadow: 0 0 12px rgba(155, 95, 181, 0.6);
+            background: rgba(192, 132, 207, 0.15);
+            box-shadow: 0 0 12px rgba(192, 132, 207, 0.4);
         }
 
         /* --- WARNING BOX --- */
@@ -934,7 +952,7 @@
             border: 1px solid #8957e5;
             color: #8957e5;
         }
-        [data-theme="fab-neko"] .dl-btn { background: rgba(255, 255, 255, 0.6); }
+        [data-theme="fab-neko"] .dl-btn { background: rgba(45, 32, 63, 0.6); }
 
         .dl-btn.rollback { border-color: var(--accent-red); color: var(--accent-red); }
         .dl-btn:hover:not(:disabled) { background: rgba(137, 87, 229, 0.2); }
@@ -948,9 +966,9 @@
             opacity: 0.6;
         }
         [data-theme="fab-neko"] .copy-btn:disabled, [data-theme="fab-neko"] .dl-btn:disabled {
-            background: rgba(238, 241, 248, 0.8);
-            color: #8b6b8b;
-            border-color: #c084cf;
+            background: rgba(45, 32, 63, 0.5);
+            color: #8c5b9c;
+            border-color: #4a3461;
         }
 
         .code-window {
@@ -963,7 +981,7 @@
             line-height: 1.5;
             backdrop-filter: blur(2px);
         }
-        [data-theme="fab-neko"] .code-window { background: rgba(255, 255, 255, 0.85); }
+        [data-theme="fab-neko"] .code-window { background: rgba(18, 12, 26, 0.85); }
 
         .line-numbers {
             padding: 10px 8px;
@@ -974,14 +992,14 @@
             user-select: none;
             min-width: 25px;
         }
-        [data-theme="fab-neko"] .line-numbers { background: rgba(238, 241, 248, 0.5); }
+        [data-theme="fab-neko"] .line-numbers { background: rgba(45, 32, 63, 0.5); color: #8c5b9c; }
 
         .code-content { padding: 10px; color: #79c0ff; white-space: pre; overflow-x: auto; flex-grow: 1; }
         [data-theme="fab-neko"] .code-content { color: var(--text-main); }
         
         .status-container { display: flex; justify-content: space-between; align-items: baseline; margin-top: 5px; }
         #statusMsg { font-size: 11px; color: var(--accent-blue); display: none; background: rgba(13, 17, 23, 0.6); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(88, 166, 255, 0.2); }
-        [data-theme="fab-neko"] #statusMsg { background: rgba(255, 255, 255, 0.6); border-color: rgba(155, 95, 181, 0.3); color: var(--accent-purple); }
+        [data-theme="fab-neko"] #statusMsg { background: rgba(45, 32, 63, 0.6); border-color: rgba(192, 132, 207, 0.3); color: var(--accent-purple); }
 
         .diff-stats { font-family: monospace; font-size: 10.5px; opacity: 0.8; }
         .diff-add { color: var(--neon-green); }
@@ -992,15 +1010,18 @@
         .bottom-actions { text-align: center; margin-top: 30px; margin-bottom: 20px; display: flex; justify-content: center; gap: 15px; }
         
         .manifest-box { background: rgba(1, 4, 9, 0.8); border: 1px dashed var(--border-color); padding: 20px; border-radius: 8px; text-align: left; }
-        [data-theme="fab-neko"] .manifest-box { background: rgba(255, 255, 255, 0.8); }
+        [data-theme="fab-neko"] .manifest-box { background: rgba(28, 18, 38, 0.8); }
 
         .db-box { background: rgba(1, 4, 9, 0.8); border: 1px solid var(--accent-green); padding: 15px; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
-        [data-theme="fab-neko"] .db-box { background: rgba(255, 255, 255, 0.8); box-shadow: none; }
+        [data-theme="fab-neko"] .db-box { background: rgba(28, 18, 38, 0.8); box-shadow: inset 0 0 10px rgba(0,0,0,0.8); border-color: var(--accent-purple); }
 
         .db-security-note { background: rgba(35, 134, 54, 0.1); border-left: 3px solid var(--accent-green); padding: 8px 12px; margin-bottom: 12px; font-size: 11px; color: var(--text-main); line-height: 1.4; border-radius: 0 4px 4px 0; }
+        [data-theme="fab-neko"] .db-security-note { background: rgba(192, 132, 207, 0.1); border-left-color: var(--accent-purple); }
+        
         .db-box textarea { height: 150px; margin-bottom: 10px; }
         .db-controls { display: flex; justify-content: space-between; align-items: center; }
         .db-status { font-size: 11px; color: var(--accent-green); font-family: monospace; }
+        [data-theme="fab-neko"] .db-status { color: var(--accent-purple); }
 
         /* --- CUSTOM MODAL --- */
         .modal-overlay {
@@ -1055,7 +1076,7 @@
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v8.6 Omni-Format Update</span>
+            <span class="version-tag">// Configuration Automation Tool // v8.7 Dark Neko</span>
         </h2>
         
         <div class="tz-widget">
@@ -1108,15 +1129,15 @@
                 <div class="sample-code" style="margin-bottom: 5px;">
                     <div style="flex:1;">
                         <strong>STANDARD PARSE:</strong><br>
-                        <span style="color: #ff9d00;">PH-NOC-ACC0101#</span>sh running-config interface Gi1/0/1<br>
+                        <span style="color: var(--hl-orange);">PH-NOC-ACC0101#</span>sh running-config interface Gi1/0/1<br>
                         Building configuration...<br><br>
                         Current configuration : 157 bytes<br>
                         !<br>
                         interface GigabitEthernet1/0/1<br>
                         description : Sample<br>
-                        switchport access vlan <span style="color: #00ffff; font-weight: bold;">100</span><br>
-                        <span style="color: #ffff00;">switchport mode access</span><br>
-                        <span style="color: #ff00ff;">spanning-tree bpduguard enable</span><br>
+                        switchport access vlan <span style="color: var(--hl-cyan); font-weight: bold;">100</span><br>
+                        <span style="color: var(--hl-yellow);">switchport mode access</span><br>
+                        <span style="color: var(--accent-purple);">spanning-tree bpduguard enable</span><br>
                         end
                     </div>
                     <div style="width: 1px; background: var(--border-color); margin: 0 10px;"></div>
@@ -1559,8 +1580,6 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                
-                // Read current theme particle color
                 const rootStyles = getComputedStyle(document.documentElement);
                 const pColor = rootStyles.getPropertyValue('--particle-color').trim();
                 ctx.fillStyle = pColor || 'rgba(88, 166, 255, 0.4)';
@@ -1573,8 +1592,6 @@
             
             const rootStyles = getComputedStyle(document.documentElement);
             const lColor = rootStyles.getPropertyValue('--particle-line').trim() || 'rgba(88, 166, 255, 0.25)';
-            
-            // Extract rgb to inject opacity dynamically
             const rgbMatch = lColor.match(/rgba?\((\d+,\s*\d+,\s*\d+)/);
             const rgbBase = rgbMatch ? rgbMatch[1] : '88, 166, 255';
             
@@ -1641,7 +1658,6 @@
             document.getElementById('dbStatus').innerText = `STATUS: LOADED_${Object.keys(switchDB).length}_HOSTS`;
         }
         
-        // Setup Drag and Drop
         const configTextarea = document.getElementById('configInput');
         configTextarea.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -2493,7 +2509,7 @@
                 } else if (isCurrentlyDot1x || iface.isRaw) {
                     if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
                     if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
-                    if (iface.isRaw) cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
+                    if (iface.isRaw) cmds.push("no switchport port-security mac-address sticky", "no switchport port-security"); 
                     cmds.push("shut");
                     cmds.push("dot1x pae authenticator", "authentication port-control auto");
                 }
@@ -2707,6 +2723,22 @@
                     let chunk = aggregatedItems.slice(i, i + chunkSize);
                     let isRange = chunk.length > 1 || chunk[0].includes('-'); 
                     lines.push(isRange ? `int range ${chunk.join(', ')}` : `int ${chunk[0]}`);
+                    
+                    if (fn === getPrimary) {
+                        let totalPortsInChunk = 0;
+                        chunk.forEach(p => {
+                            if (p.includes('-')) {
+                                let parts = p.split('-');
+                                let start = parseInt(parts[0].match(/\d+$/)[0], 10);
+                                let end = parseInt(parts[1], 10);
+                                totalPortsInChunk += (end - start + 1);
+                            } else {
+                                totalPortsInChunk++;
+                            }
+                        });
+                        primaryCompiledPorts += totalPortsInChunk;
+                    }
+                    
                     lines.push(k);
                     lines.push("exit");
                     if (slowPaste && (idx < keys.length - 1 || i + chunkSize < aggregatedItems.length)) {
