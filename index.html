@@ -158,7 +158,7 @@
             --p-matrix-title: #a3d9ff; 
         }
 
-        /* Blood Moon CSS Effect (Only active on Crimson Neko) */
+        /* Blood Moon CSS Effect */
         html[data-theme="crimson-neko"] body::after {
             content: "";
             position: fixed;
@@ -172,7 +172,7 @@
             pointer-events: none;
         }
 
-        /* Syntax coloring adjustments */
+        /* Update Syntax coloring for Original Output blocks */
         .sample-code div { color: #fff; }
         .sample-code span[style*="color: #ff9d00;"] { color: var(--hl-orange) !important; }
         .sample-code span[style*="color: #00ffff;"] { color: var(--hl-cyan) !important; }
@@ -265,40 +265,12 @@
             font-weight: 900;
         }
         
-        [data-theme="fab-neko"] .logo-accent {
-            box-shadow: 0 0 12px rgba(240, 98, 240, 0.6);
-            color: #fff;
-        }
-        
-        [data-theme="timeline-neko"] .logo-accent {
-            background-color: var(--accent-green); 
-            box-shadow: 0 0 12px rgba(255, 140, 0, 0.6);
-            color: var(--bg-color); 
-        }
-
-        [data-theme="crimson-neko"] .logo-accent {
-            background-color: var(--accent-green); 
-            box-shadow: 0 0 15px rgba(230, 0, 38, 0.8);
-            color: #fff; 
-        }
-        
-        [data-theme="h2o-neko"] .logo-accent {
-            background-color: var(--accent-blue); 
-            box-shadow: 0 0 15px rgba(77, 187, 194, 0.6);
-            color: #fff; 
-        }
-
-        [data-theme="firefly-neko"] .logo-accent {
-            background-color: var(--neon-green); 
-            box-shadow: 0 0 15px rgba(63, 255, 63, 0.6);
-            color: #fff; 
-        }
-
-        [data-theme="gamer-neko"] .logo-accent {
-            background-color: var(--neon-green); 
-            box-shadow: 0 0 15px rgba(240, 98, 240, 0.8);
-            color: #fff; 
-        }
+        [data-theme="fab-neko"] .logo-accent { box-shadow: 0 0 12px rgba(240, 98, 240, 0.6); color: #fff; }
+        [data-theme="timeline-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 140, 0, 0.6); color: var(--bg-color); }
+        [data-theme="crimson-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 15px rgba(230, 0, 38, 0.8); color: #fff; }
+        [data-theme="h2o-neko"] .logo-accent { background-color: var(--accent-blue); box-shadow: 0 0 15px rgba(77, 187, 194, 0.6); color: #fff; }
+        [data-theme="firefly-neko"] .logo-accent { background-color: var(--neon-green); box-shadow: 0 0 15px rgba(63, 255, 63, 0.6); color: #fff; }
+        [data-theme="gamer-neko"] .logo-accent { background-color: var(--neon-green); box-shadow: 0 0 15px rgba(240, 98, 240, 0.8); color: #fff; }
 
         .version-tag {
             font-size: 0.8rem;
@@ -340,41 +312,12 @@
             box-shadow: 0 0 8px rgba(188, 140, 255, 0.4);
         }
         
-        [data-theme="fab-neko"] .qol-menu-btn:hover {
-            box-shadow: 0 0 8px rgba(240, 98, 240, 0.5);
-            border-color: var(--accent-purple);
-            background: rgba(192, 132, 207, 0.15);
-        }
-        
-        [data-theme="timeline-neko"] .qol-menu-btn:hover {
-            box-shadow: 0 0 8px rgba(255, 140, 0, 0.5);
-            border-color: var(--accent-green);
-            background: rgba(255, 140, 0, 0.15);
-        }
-
-        [data-theme="crimson-neko"] .qol-menu-btn:hover {
-            box-shadow: 0 0 10px rgba(255, 0, 51, 0.6);
-            border-color: var(--accent-green);
-            background: rgba(255, 0, 51, 0.15);
-        }
-        
-        [data-theme="h2o-neko"] .qol-menu-btn:hover {
-            box-shadow: 0 0 10px rgba(77, 187, 194, 0.6);
-            border-color: var(--accent-blue);
-            background: rgba(77, 187, 194, 0.15);
-        }
-
-        [data-theme="firefly-neko"] .qol-menu-btn:hover {
-            box-shadow: 0 0 10px rgba(63, 255, 63, 0.6);
-            border-color: var(--accent-green);
-            background: rgba(63, 255, 63, 0.15);
-        }
-
-        [data-theme="gamer-neko"] .qol-menu-btn:hover {
-            box-shadow: 0 0 10px rgba(240, 98, 240, 0.6);
-            border-color: var(--accent-green);
-            background: rgba(240, 98, 240, 0.15);
-        }
+        [data-theme="fab-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(240, 98, 240, 0.5); border-color: var(--accent-purple); background: rgba(192, 132, 207, 0.15); }
+        [data-theme="timeline-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(255, 140, 0, 0.5); border-color: var(--accent-green); background: rgba(255, 140, 0, 0.15); }
+        [data-theme="crimson-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(255, 0, 51, 0.6); border-color: var(--accent-green); background: rgba(255, 0, 51, 0.15); }
+        [data-theme="h2o-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(77, 187, 194, 0.6); border-color: var(--accent-blue); background: rgba(77, 187, 194, 0.15); }
+        [data-theme="firefly-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(63, 255, 63, 0.6); border-color: var(--accent-green); background: rgba(63, 255, 63, 0.15); }
+        [data-theme="gamer-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(240, 98, 240, 0.6); border-color: var(--accent-green); background: rgba(240, 98, 240, 0.15); }
 
         .qol-dropdown-content {
             display: none;
@@ -408,15 +351,8 @@
         }
         .qol-dropdown-content button:last-child { border-bottom: none; }
         
-        .qol-dropdown-content button:hover {
-            background: rgba(188, 140, 255, 0.1);
-            color: var(--accent-blue);
-        }
-        
-        .qol-dropdown-content button.active {
-            font-weight: bold;
-            color: var(--neon-green);
-        }
+        .qol-dropdown-content button:hover { background: rgba(188, 140, 255, 0.1); color: var(--accent-blue); }
+        .qol-dropdown-content button.active { font-weight: bold; color: var(--neon-green); }
         
         [data-theme="fab-neko"] .qol-dropdown-content button:hover { background: rgba(240, 98, 240, 0.15); color: var(--accent-blue); }
         [data-theme="timeline-neko"] .qol-dropdown-content button:hover { background: rgba(255, 140, 0, 0.15); color: var(--accent-blue); }
@@ -464,16 +400,8 @@
             box-shadow: 0 0 8px var(--neon-green);
             animation: pulse-dot 1.5s infinite;
         }
-        @keyframes pulse-dot {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        .live-dot.paused {
-            background-color: var(--hl-orange);
-            box-shadow: 0 0 8px var(--hl-orange);
-            animation: none;
-        }
+        @keyframes pulse-dot { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+        .live-dot.paused { background-color: var(--hl-orange); box-shadow: 0 0 8px var(--hl-orange); animation: none; }
 
         .tz-time-input {
             background: transparent;
@@ -489,11 +417,7 @@
             transition: color 0.2s;
         }
         .tz-time-input::-webkit-calendar-picker-indicator { display: none; }
-        .tz-time-input:focus { 
-            color: #fff; 
-            border-bottom: 1px solid var(--accent-blue); 
-            margin-bottom: -1px;
-        }
+        .tz-time-input:focus { color: #fff; border-bottom: 1px solid var(--accent-blue); margin-bottom: -1px; }
         [data-theme="fab-neko"] .tz-time-input:focus { color: var(--text-main); border-color: var(--accent-purple); }
         [data-theme="timeline-neko"] .tz-time-input:focus { border-color: var(--accent-green); }
         [data-theme="crimson-neko"] .tz-time-input:focus { color: #fff; border-color: var(--accent-green); }
@@ -571,25 +495,10 @@
         [data-theme="gamer-neko"] .form-group { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
 
         .input-section { margin-bottom: 15px; position: relative; }
-
-        .header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        label {
-            font-weight: 600;
-            display: block;
-            margin-bottom: 8px;
-            color: var(--accent-blue);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-        
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        label { font-weight: 600; display: block; margin-bottom: 8px; color: var(--accent-blue); font-size: 0.75rem; text-transform: uppercase; opacity: 0.8; }
         .header-row label { margin-bottom: 0; }
+        
         [data-theme="timeline-neko"] label { color: var(--text-main); } 
         [data-theme="crimson-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(255, 77, 109, 0.3); } 
         [data-theme="h2o-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(77, 187, 194, 0.3); } 
@@ -597,24 +506,12 @@
         [data-theme="gamer-neko"] label { color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
 
         .expand-btn {
-            background: transparent;
-            color: var(--accent-purple);
-            border: 1px solid var(--border-color);
-            padding: 4px 10px;
-            font-size: 10px;
-            cursor: pointer;
-            border-radius: 4px;
-            font-family: "Courier New", Courier, monospace;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            background: transparent; color: var(--accent-purple); border: 1px solid var(--border-color);
+            padding: 4px 10px; font-size: 10px; cursor: pointer; border-radius: 4px;
+            font-family: "Courier New", Courier, monospace; text-transform: uppercase; letter-spacing: 1px;
         }
 
-        .expand-btn:hover {
-            border-color: var(--accent-purple);
-            background: rgba(188, 140, 255, 0.1);
-            box-shadow: 0 0 8px rgba(188, 140, 255, 0.3);
-            color: #fff;
-        }
+        .expand-btn:hover { border-color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 8px rgba(188, 140, 255, 0.3); color: #fff; }
         [data-theme="fab-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(192, 132, 207, 0.5); color: #fff; }
         [data-theme="timeline-neko"] .expand-btn { color: var(--accent-blue); border-color: var(--border-color); }
         [data-theme="timeline-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(255, 140, 0, 0.5); border-color: var(--accent-green); color: #fff; }
@@ -624,482 +521,326 @@
         [data-theme="gamer-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(240, 98, 240, 0.8); border-color: var(--accent-blue); color: #fff; }
 
         /* --- COLLAPSIBLE WRAPPERS --- */
-        .readme-wrapper {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), padding 0.3s, margin 0.3s, border 0.3s;
-        }
-
-        .readme-wrapper.expanded {
-            max-height: 1500px;
-            padding-top: 15px;
-            margin-top: 10px;
-            border-top: 1px dashed rgba(188, 140, 255, 0.4);
-        }
-        
+        .readme-wrapper { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), padding 0.3s, margin 0.3s, border 0.3s; }
+        .readme-wrapper.expanded { max-height: 1500px; padding-top: 15px; margin-top: 10px; border-top: 1px dashed rgba(188, 140, 255, 0.4); }
         [data-theme="timeline-neko"] .readme-wrapper.expanded { border-top-color: var(--accent-red); }
         [data-theme="crimson-neko"] .readme-wrapper.expanded { border-top-color: rgba(255, 77, 109, 0.4); }
         [data-theme="h2o-neko"] .readme-wrapper.expanded { border-top-color: rgba(77, 187, 194, 0.4); }
         [data-theme="firefly-neko"] .readme-wrapper.expanded { border-top-color: rgba(63, 255, 63, 0.4); }
         [data-theme="gamer-neko"] .readme-wrapper.expanded { border-top-color: rgba(240, 98, 240, 0.6); }
         
-        #advOptionsWrapper.expanded {
-            max-height: 2500px; 
-            border-top-color: rgba(227, 179, 65, 0.4);
-        }
+        #advOptionsWrapper.expanded { max-height: 2500px; border-top-color: rgba(227, 179, 65, 0.4); }
         [data-theme="timeline-neko"] #advOptionsWrapper.expanded { border-top-color: var(--accent-red); }
         [data-theme="crimson-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 77, 109, 0.4); }
         [data-theme="h2o-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(220, 163, 65, 0.4); }
         [data-theme="firefly-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 191, 0, 0.4); }
         [data-theme="gamer-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(163, 217, 255, 0.4); }
 
-        .readme-content {
-            font-size: 12px;
-            line-height: 1.6;
-            color: var(--text-main);
-            opacity: 0.9;
-        }
-
-        .readme-content h3 {
-            color: var(--accent-purple);
-            font-size: 12px;
-            margin: 12px 0 6px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
+        .readme-content { font-size: 12px; line-height: 1.6; color: var(--text-main); opacity: 0.9; }
+        .readme-content h3 { color: var(--accent-purple); font-size: 12px; margin: 12px 0 6px 0; text-transform: uppercase; letter-spacing: 1px; }
         .readme-content p { margin: 0 0 10px 0; }
         .readme-content ul { margin: 5px 0 15px 0; padding-left: 20px; }
         .readme-content li { margin-bottom: 6px; }
 
         .sample-code {
-            background: var(--code-bg);
-            border: 1px solid var(--border-color);
-            padding: 12px;
-            border-radius: 4px;
-            font-family: "Courier New", Courier, monospace;
-            color: #79c0ff;
-            white-space: normal; 
-            margin-bottom: 15px;
-            font-size: 11.5px;
-            line-height: 1.4;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-            display: flex;
-            gap: 20px;
+            background: var(--code-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: 4px;
+            font-family: "Courier New", Courier, monospace; color: #79c0ff; white-space: normal; 
+            margin-bottom: 15px; font-size: 11.5px; line-height: 1.4; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            display: flex; gap: 20px;
         }
-        [data-theme="timeline-neko"] .sample-code { color: #3a281e; }
-        [data-theme="crimson-neko"] .sample-code { border-color: #33000b; }
-        [data-theme="firefly-neko"] .sample-code { border-color: #16402a; }
+        [data-theme="fab-neko"] .sample-code { color: var(--text-main); box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
+        [data-theme="timeline-neko"] .sample-code { color: #3a281e; box-shadow: inset 0 0 10px rgba(0,0,0,0.4); }
+        [data-theme="crimson-neko"] .sample-code { box-shadow: inset 0 0 15px rgba(0,0,0,0.8); border-color: #33000b; }
+        [data-theme="h2o-neko"] .sample-code { box-shadow: inset 0 0 15px rgba(0,0,0,0.8); border-color: #16243d; }
+        [data-theme="firefly-neko"] .sample-code { box-shadow: inset 0 0 15px rgba(0,0,0,0.8); border-color: #16402a; }
         [data-theme="gamer-neko"] .sample-code { border-color: #c45b9a; box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 10px rgba(240, 98, 240, 0.3); }
 
         /* --- CLEAN NATIVE TEXTAREA & DRAG DROP --- */
         textarea {
-            width: 100%;
-            height: 120px;
-            background: rgba(1, 4, 9, 0.9);
-            color: #79c0ff;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 12px;
-            font-family: "Courier New", Courier, monospace;
-            box-sizing: border-box;
-            outline: none;
-            font-size: 13px;
-            line-height: 1.5;
-            resize: none;
-            scrollbar-width: thin;
+            width: 100%; height: 120px; background: rgba(1, 4, 9, 0.9); color: #79c0ff;
+            border: 1px solid var(--border-color); border-radius: 4px; padding: 12px;
+            font-family: "Courier New", Courier, monospace; box-sizing: border-box; outline: none;
+            font-size: 13px; line-height: 1.5; resize: none; scrollbar-width: thin;
             scrollbar-color: var(--border-color) var(--code-bg);
         }
         [data-theme="fab-neko"] textarea { background: rgba(18, 12, 26, 0.9); color: var(--text-main); }
-        [data-theme="timeline-neko"] textarea { background: #f1eae0; color: #3a281e; }
+        [data-theme="timeline-neko"] textarea { background: #f1eae0; color: #3a281e; scrollbar-color: var(--border-color) #f1eae0; }
         [data-theme="crimson-neko"] textarea { background: rgba(10, 0, 5, 0.9); color: #ffb3c6; }
+        [data-theme="h2o-neko"] textarea { background: rgba(9, 16, 31, 0.9); color: var(--text-main); }
         [data-theme="firefly-neko"] textarea { background: rgba(2, 5, 3, 0.9); color: var(--text-main); }
         [data-theme="gamer-neko"] textarea { background: rgba(8, 1, 15, 0.9); color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
 
         textarea:focus { border-color: var(--accent-blue); }
         textarea.expanded { height: 400px; }
         
-        textarea.drag-active {
-            border-color: var(--neon-green);
-            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2) inset;
-            background: #091a0f;
-        }
+        textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(57, 255, 20, 0.2) inset; background: #091a0f; }
+        [data-theme="fab-neko"] textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(240, 98, 240, 0.3) inset; background: rgba(240, 98, 240, 0.1); }
+        [data-theme="timeline-neko"] textarea.drag-active { border-color: var(--accent-green); box-shadow: 0 0 15px rgba(255, 140, 0, 0.3) inset; background: #fcf6ee; }
+        [data-theme="crimson-neko"] textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 25px rgba(255, 0, 51, 0.3) inset; background: rgba(255, 0, 51, 0.1); }
+        [data-theme="h2o-neko"] textarea.drag-active { border-color: var(--accent-blue); box-shadow: 0 0 25px rgba(77, 187, 194, 0.3) inset; background: rgba(77, 187, 194, 0.1); }
+        [data-theme="firefly-neko"] textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 25px rgba(63, 255, 63, 0.3) inset; background: rgba(63, 255, 63, 0.1); }
         [data-theme="gamer-neko"] textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 25px rgba(240, 98, 240, 0.3) inset; background: rgba(18, 2, 28, 0.1); }
         
         textarea::-webkit-scrollbar { width: 10px; }
         textarea::-webkit-scrollbar-track { background: var(--code-bg); }
         textarea::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
         textarea::selection { background: rgba(88, 166, 255, 0.3); }
+        [data-theme="fab-neko"] textarea::selection { background: rgba(192, 132, 207, 0.3); }
+        [data-theme="timeline-neko"] textarea::selection { background: rgba(255, 140, 0, 0.3); }
+        [data-theme="crimson-neko"] textarea::selection { background: rgba(255, 77, 109, 0.3); }
+        [data-theme="h2o-neko"] textarea::selection { background: rgba(77, 187, 194, 0.3); }
+        [data-theme="firefly-neko"] textarea::selection { background: rgba(63, 255, 63, 0.3); }
         [data-theme="gamer-neko"] textarea::selection { background: rgba(240, 98, 240, 0.3); }
 
         .drag-overlay-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--neon-green);
-            font-family: "Courier New", Courier, monospace;
-            font-weight: bold;
-            font-size: 16px;
-            pointer-events: none;
-            opacity: 0;
-            text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--neon-green);
+            font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 16px;
+            pointer-events: none; opacity: 0; text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
         }
         textarea.drag-active + .drag-overlay-text { opacity: 1; }
+        [data-theme="fab-neko"] .drag-overlay-text { text-shadow: 0 0 12px rgba(240, 98, 240, 0.6); }
+        [data-theme="timeline-neko"] .drag-overlay-text { color: var(--accent-green); text-shadow: 0 0 12px rgba(255, 140, 0, 0.6); }
+        [data-theme="crimson-neko"] .drag-overlay-text { color: var(--neon-green); text-shadow: 0 0 15px rgba(255, 0, 51, 0.8); }
+        [data-theme="h2o-neko"] .drag-overlay-text { color: var(--accent-blue); text-shadow: 0 0 15px rgba(77, 187, 194, 0.8); }
+        [data-theme="firefly-neko"] .drag-overlay-text { color: var(--accent-blue); text-shadow: 0 0 15px rgba(63, 255, 63, 0.8); }
         [data-theme="gamer-neko"] .drag-overlay-text { text-shadow: 0 0 15px rgba(240, 98, 240, 0.8); }
 
         /* --- MULTI-TENANT DEVICE HUD --- */
-        .device-hud {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            gap: 6px;
-            font-size: 11px;
-            color: var(--text-main);
-            font-family: "Courier New", Courier, monospace;
-            opacity: 0;
-            max-width: 500px;
-        }
+        .device-hud { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 6px; font-size: 11px; color: var(--text-main); font-family: "Courier New", Courier, monospace; opacity: 0; max-width: 500px; }
         .device-hud.visible { opacity: 1; }
-        .host-tag {
-            background: rgba(88, 166, 255, 0.1);
-            border: 1px solid rgba(88, 166, 255, 0.3);
-            padding: 3px 8px;
-            border-radius: 4px;
-            display: inline-flex;
-            align-items: center;
-        }
+        .host-tag { background: rgba(88, 166, 255, 0.1); border: 1px solid rgba(88, 166, 255, 0.3); padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; }
         .host-tag strong { color: #fff; margin-right: 5px; }
         [data-theme="timeline-neko"] .host-tag strong { color: var(--text-main); }
+        [data-theme="fab-neko"] .host-tag { background: rgba(192, 132, 207, 0.15); border-color: rgba(192, 132, 207, 0.3); }
+        [data-theme="timeline-neko"] .host-tag { background: rgba(255, 140, 0, 0.1); border-color: rgba(255, 140, 0, 0.3); }
+        [data-theme="crimson-neko"] .host-tag { background: rgba(255, 0, 51, 0.15); border-color: rgba(255, 0, 51, 0.3); }
+        [data-theme="h2o-neko"] .host-tag { background: rgba(77, 187, 194, 0.15); border-color: rgba(77, 187, 194, 0.3); }
+        [data-theme="firefly-neko"] .host-tag { background: rgba(63, 255, 63, 0.15); border-color: rgba(63, 255, 63, 0.3); }
         [data-theme="gamer-neko"] .host-tag { background: rgba(240, 98, 240, 0.15); border-color: rgba(240, 98, 240, 0.3); box-shadow: 0 0 8px rgba(240, 98, 240, 0.2); }
         
         .ip-highlight { font-weight: bold; text-shadow: 0 0 5px rgba(57, 255, 20, 0.4); }
+        [data-theme="fab-neko"] .ip-highlight { text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
+        [data-theme="timeline-neko"] .ip-highlight { color: var(--accent-green); text-shadow: 0 0 5px rgba(255, 140, 0, 0.6); }
+        [data-theme="crimson-neko"] .ip-highlight { text-shadow: 0 0 8px rgba(255, 0, 51, 0.6); }
+        [data-theme="h2o-neko"] .ip-highlight { text-shadow: 0 0 8px rgba(77, 187, 194, 0.6); }
+        [data-theme="firefly-neko"] .ip-highlight { text-shadow: 0 0 8px rgba(63, 255, 63, 0.6); }
         [data-theme="gamer-neko"] .ip-highlight { text-shadow: 0 0 8px rgba(57, 255, 20, 0.6); }
 
-        /* --- PERFECT ALIGNMENT UI CONTROLS --- */
-        .controls-row { 
-            display: flex; 
-            gap: 12px; 
-            margin-bottom: 15px; 
-            margin-top: 15px; 
-            align-items: stretch; 
-            flex-wrap: wrap; 
-        }
-
-        .controls-row .form-group {
-            margin-bottom: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
+        /* --- UI CONTROLS --- */
+        .controls-row { display: flex; gap: 12px; margin-bottom: 15px; margin-top: 15px; align-items: stretch; flex-wrap: wrap; }
+        .controls-row .form-group { margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; }
         .radio-group, .checkbox-group { display: flex; gap: 6px; width: 100%; }
-        .radio-group label, .checkbox-group label {
-            background: rgba(13, 17, 23, 0.8);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 6px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            margin-bottom: 0;
-            display: inline-block;
-            text-align: center;
-            flex-grow: 1;
-            box-sizing: border-box;
-        }
+        .radio-group label, .checkbox-group label { background: rgba(13, 17, 23, 0.8); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-bottom: 0; display: inline-block; text-align: center; flex-grow: 1; box-sizing: border-box; }
+        [data-theme="fab-neko"] .radio-group label, [data-theme="fab-neko"] .checkbox-group label { background: rgba(28, 18, 38, 0.8); }
+        [data-theme="timeline-neko"] .radio-group label, [data-theme="timeline-neko"] .checkbox-group label { background: rgba(92, 71, 60, 0.8); }
+        [data-theme="crimson-neko"] .radio-group label, [data-theme="crimson-neko"] .checkbox-group label { background: rgba(20, 2, 5, 0.8); }
+        [data-theme="h2o-neko"] .radio-group label, [data-theme="h2o-neko"] .checkbox-group label { background: rgba(16, 28, 48, 0.8); }
+        [data-theme="firefly-neko"] .radio-group label, [data-theme="firefly-neko"] .checkbox-group label { background: rgba(16, 28, 48, 0.8); }
         [data-theme="gamer-neko"] .radio-group label, [data-theme="gamer-neko"] .checkbox-group label { background: rgba(8, 1, 15, 0.8); }
 
         .radio-group input, .checkbox-group input { display: none; }
-        .radio-group label:has(input:checked), .checkbox-group label:has(input:checked) { 
-            border-color: var(--neon-green); 
-            color: var(--neon-green);
-            box-shadow: 0 0 8px rgba(57, 255, 20, 0.2);
-        }
-        [data-theme="gamer-neko"] .radio-group label:has(input:checked), [data-theme="gamer-neko"] .checkbox-group label:has(input:checked) {
-            border-color: var(--neon-green); 
-            color: #fff; 
-            background-color: var(--accent-green);
-            box-shadow: 0 0 15px rgba(240, 98, 240, 0.6);
-        }
+        .radio-group label:has(input:checked), .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 8px rgba(57, 255, 20, 0.2); }
+        
+        [data-theme="fab-neko"] .radio-group label:has(input:checked), [data-theme="fab-neko"] .checkbox-group label:has(input:checked) { border-color: var(--accent-green); color: var(--btn-text); background-color: var(--accent-green); box-shadow: 0 0 12px rgba(209, 98, 164, 0.6); }
+        [data-theme="fab-neko"] .radio-group label:has(input:checked) span, [data-theme="fab-neko"] .checkbox-group label:has(input:checked) span { color: #fff; }
+        
+        [data-theme="timeline-neko"] .radio-group label:has(input:checked), [data-theme="timeline-neko"] .checkbox-group label:has(input:checked) { border-color: var(--accent-green); color: #3a281e; background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 140, 0, 0.6); }
+        [data-theme="timeline-neko"] .radio-group label:has(input:checked) span, [data-theme="timeline-neko"] .checkbox-group label:has(input:checked) span { color: #3a281e; }
+
+        [data-theme="crimson-neko"] .radio-group label:has(input:checked), [data-theme="crimson-neko"] .checkbox-group label:has(input:checked) { border-color: var(--accent-green); color: #fff; background-color: var(--accent-green); box-shadow: 0 0 15px rgba(230, 0, 38, 0.6); }
+        [data-theme="crimson-neko"] .radio-group label:has(input:checked) span, [data-theme="crimson-neko"] .checkbox-group label:has(input:checked) span { color: #fff; }
+
+        [data-theme="h2o-neko"] .radio-group label:has(input:checked), [data-theme="h2o-neko"] .checkbox-group label:has(input:checked) { border-color: var(--accent-blue); color: #fff; background-color: var(--accent-green); box-shadow: 0 0 15px rgba(77, 187, 194, 0.6); }
+        [data-theme="h2o-neko"] .radio-group label:has(input:checked) span, [data-theme="h2o-neko"] .checkbox-group label:has(input:checked) span { color: #fff; }
+
+        [data-theme="firefly-neko"] .radio-group label:has(input:checked), [data-theme="firefly-neko"] .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: #fff; background-color: var(--accent-green); box-shadow: 0 0 15px rgba(63, 255, 63, 0.6); }
+        [data-theme="firefly-neko"] .radio-group label:has(input:checked) span, [data-theme="firefly-neko"] .checkbox-group label:has(input:checked) span { color: #fff; }
+
+        [data-theme="gamer-neko"] .radio-group label:has(input:checked), [data-theme="gamer-neko"] .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: #fff; background-color: var(--accent-green); box-shadow: 0 0 15px rgba(240, 98, 240, 0.6); }
         [data-theme="gamer-neko"] .radio-group label:has(input:checked) span, [data-theme="gamer-neko"] .checkbox-group label:has(input:checked) span { color: #fff; text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
 
-        .radio-group label.disabled, .checkbox-group label.disabled {
-            opacity: 0.3 !important;
-            cursor: not-allowed !important;
-            background: #0d1117 !important;
-            border-color: #30363d !important;
-            color: #484f58 !important;
-            box-shadow: none !important;
-        }
+        .radio-group label.disabled, .checkbox-group label.disabled { opacity: 0.3 !important; cursor: not-allowed !important; background: #0d1117 !important; border-color: #30363d !important; color: #484f58 !important; box-shadow: none !important; }
+        [data-theme="fab-neko"] .radio-group label.disabled, [data-theme="fab-neko"] .checkbox-group label.disabled { background: #1a1224 !important; border-color: #4a3461 !important; color: #8c5b9c !important; }
+        [data-theme="timeline-neko"] .radio-group label.disabled, [data-theme="timeline-neko"] .checkbox-group label.disabled { background: rgba(92, 71, 60, 0.3) !important; border-color: var(--border-color) !important; color: var(--border-color) !important; }
+        [data-theme="crimson-neko"] .radio-group label.disabled, [data-theme="crimson-neko"] .checkbox-group label.disabled { background: #0a0103 !important; border-color: #33000b !important; color: #660014 !important; }
+        [data-theme="h2o-neko"] .radio-group label.disabled, [data-theme="h2o-neko"] .checkbox-group label.disabled { background: #050a14 !important; border-color: #121e36 !important; color: #243b61 !important; }
+        [data-theme="firefly-neko"] .radio-group label.disabled, [data-theme="firefly-neko"] .checkbox-group label.disabled { background: #0d1117 !important; border-color: #30363d !important; color: #484f58 !important; }
 
-        /* --- DANGEROUS ACTION (GLITCH) CSS --- */
-        @keyframes danger-glitch {
-            0% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(0deg); text-shadow: none; }
-            2% { box-shadow: 0 0 20px rgba(248, 81, 73, 1); transform: skewX(5deg) translate(-2px, 1px); text-shadow: 2px 0 var(--accent-red), -2px 0 var(--accent-blue); }
-            4% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(-5deg) translate(2px, -1px); text-shadow: -2px 0 var(--accent-red), 2px 0 var(--accent-blue); }
-            6% { transform: skewX(0deg) translate(0, 0); text-shadow: none; }
-            50% { box-shadow: 0 0 15px rgba(248, 81, 73, 0.8); }
-            94% { transform: skewX(0deg) translate(0, 0); text-shadow: none; }
-            96% { box-shadow: 0 0 25px rgba(248, 81, 73, 1); transform: skewX(8deg) translate(3px, 0); text-shadow: 3px 0 var(--accent-red), -3px 0 var(--accent-blue); }
-            98% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(-8deg) translate(-3px, 0); text-shadow: -3px 0 var(--accent-red), 3px 0 var(--accent-blue); }
-            100% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(0deg) translate(0, 0); text-shadow: none; }
-        }
+        @keyframes danger-glitch { 0% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(0deg); text-shadow: none; } 2% { box-shadow: 0 0 20px rgba(248, 81, 73, 1); transform: skewX(5deg) translate(-2px, 1px); text-shadow: 2px 0 var(--accent-red), -2px 0 var(--accent-blue); } 4% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(-5deg) translate(2px, -1px); text-shadow: -2px 0 var(--accent-red), 2px 0 var(--accent-blue); } 6% { transform: skewX(0deg) translate(0, 0); text-shadow: none; } 50% { box-shadow: 0 0 15px rgba(248, 81, 73, 0.8); } 94% { transform: skewX(0deg) translate(0, 0); text-shadow: none; } 96% { box-shadow: 0 0 25px rgba(248, 81, 73, 1); transform: skewX(8deg) translate(3px, 0); text-shadow: 3px 0 var(--accent-red), -3px 0 var(--accent-blue); } 98% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(-8deg) translate(-3px, 0); text-shadow: -3px 0 var(--accent-red), 3px 0 var(--accent-blue); } 100% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(0deg) translate(0, 0); text-shadow: none; } }
+        .radio-group label:has(input[value="remove"]:checked) { border-color: var(--accent-red) !important; color: #ff7b72 !important; background: rgba(248, 81, 73, 0.1) !important; animation: danger-glitch 3s infinite !important; }
+        [data-theme="fab-neko"] .radio-group label:has(input[value="remove"]:checked) { color: #fff !important; background: rgba(218, 85, 96, 0.9) !important; }
+        [data-theme="timeline-neko"] .radio-group label:has(input[value="remove"]:checked) { border-color: var(--accent-red) !important; color: #fff !important; background: rgba(176, 49, 49, 0.9) !important; animation: danger-glitch 3s infinite !important; }
+        [data-theme="crimson-neko"] .radio-group label:has(input[value="remove"]:checked) { border-color: #ff0000 !important; color: #fff !important; background: rgba(255, 0, 0, 0.5) !important; animation: danger-glitch 3s infinite !important; }
+        [data-theme="h2o-neko"] .radio-group label:has(input[value="remove"]:checked) { border-color: var(--accent-red) !important; color: #fff !important; background: rgba(201, 83, 79, 0.8) !important; animation: danger-glitch 3s infinite !important; }
+        [data-theme="firefly-neko"] .radio-group label:has(input[value="remove"]:checked) { border-color: var(--accent-red) !important; color: #fff !important; background: rgba(218, 85, 96, 0.9) !important; animation: danger-glitch 3s infinite !important; }
 
-        .radio-group label:has(input[value="remove"]:checked) {
-            border-color: var(--accent-red) !important;
-            color: #ff7b72 !important;
-            background: rgba(248, 81, 73, 0.1) !important;
-            animation: danger-glitch 3s infinite !important;
-        }
-        [data-theme="gamer-neko"] .radio-group label:has(input[value="remove"]:checked) { border-color: #ff0000 !important; color: #fff !important; background: rgba(218, 85, 96, 0.9) !important; animation: danger-glitch 3s infinite !important; text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
-
-        input[type="number"] {
-            background: rgba(1, 4, 9, 0.8);
-            border: 1px solid var(--border-color);
-            color: #d29922;
-            padding: 6px;
-            border-radius: 4px;
-            width: 100%;
-            box-sizing: border-box;
-            outline: none;
-            font-family: "Courier New", Courier, monospace;
-            text-align: center;
-            height: 31px; 
-        }
+        input[type="number"] { background: rgba(1, 4, 9, 0.8); border: 1px solid var(--border-color); color: #d29922; padding: 6px; border-radius: 4px; width: 100%; box-sizing: border-box; outline: none; font-family: "Courier New", Courier, monospace; text-align: center; height: 31px; }
+        [data-theme="fab-neko"] input[type="number"] { background: rgba(18, 12, 26, 0.8); color: var(--hl-yellow); }
+        [data-theme="timeline-neko"] input[type="number"] { background: #f1eae0; color: #ff7f00; }
+        [data-theme="crimson-neko"] input[type="number"] { background: rgba(10, 0, 5, 0.8); color: var(--hl-yellow); }
+        [data-theme="h2o-neko"] input[type="number"] { background: rgba(9, 16, 31, 0.8); color: var(--hl-orange); }
+        [data-theme="firefly-neko"] input[type="number"] { background: rgba(1, 4, 9, 0.8); color: var(--hl-orange); }
         [data-theme="gamer-neko"] input[type="number"] { background: rgba(8, 1, 15, 0.8); color: var(--hl-orange); box-shadow: 0 0 8px rgba(240, 98, 240, 0.2); }
 
         /* --- PER-PORT OVERRIDE TABLE CSS --- */
-        .override-table-wrapper {
-            max-height: 250px;
-            overflow-y: auto;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--border-color) var(--code-bg);
-            margin-top: 5px;
-        }
+        .override-table-wrapper { max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 4px; scrollbar-width: thin; scrollbar-color: var(--border-color) var(--code-bg); margin-top: 5px; }
         .override-table-wrapper::-webkit-scrollbar { width: 10px; }
         .override-table-wrapper::-webkit-scrollbar-track { background: var(--code-bg); }
         .override-table-wrapper::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
-        
-        .override-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
-            font-family: "Courier New", Courier, monospace;
-        }
-        .override-table th {
-            background: rgba(13, 17, 23, 0.95);
-            padding: 8px 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--accent-blue);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+        [data-theme="timeline-neko"] .override-table-wrapper { scrollbar-color: var(--border-color) #f1eae0; }
+        .override-table { width: 100%; border-collapse: collapse; font-size: 11px; font-family: "Courier New", Courier, monospace; }
+        .override-table th { background: rgba(13, 17, 23, 0.95); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border-color); color: var(--accent-blue); position: sticky; top: 0; z-index: 10; }
+        [data-theme="fab-neko"] .override-table th { background: rgba(28, 18, 38, 0.95); }
+        [data-theme="timeline-neko"] .override-table th { background: rgba(92, 71, 60, 0.95); color: var(--text-main); } 
+        [data-theme="crimson-neko"] .override-table th { background: rgba(26, 2, 6, 0.95); }
+        [data-theme="h2o-neko"] .override-table th { background: rgba(16, 28, 48, 0.95); color: var(--accent-blue); }
+        [data-theme="firefly-neko"] .override-table th { background: rgba(13, 17, 23, 0.95); color: var(--accent-blue); }
         [data-theme="gamer-neko"] .override-table th { background: rgba(18, 2, 28, 0.95); color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
 
-        .override-table td {
-            padding: 6px 12px;
-            border-bottom: 1px solid #21262d;
-            color: var(--text-main);
-            vertical-align: middle;
-            background: rgba(22, 27, 34, 0.6);
-        }
+        .override-table td { padding: 6px 12px; border-bottom: 1px solid #21262d; color: var(--text-main); vertical-align: middle; background: rgba(22, 27, 34, 0.6); }
+        [data-theme="fab-neko"] .override-table td { background: rgba(45, 32, 63, 0.6); border-bottom: 1px solid #3a284d; }
+        [data-theme="timeline-neko"] .override-table td { background: rgba(92, 71, 60, 0.6); border-bottom: 1px solid var(--border-color); }
+        [data-theme="crimson-neko"] .override-table td { background: rgba(20, 2, 5, 0.6); border-bottom: 1px solid #33000b; }
+        [data-theme="h2o-neko"] .override-table td { background: rgba(16, 28, 48, 0.6); border-bottom: 1px solid #16243d; }
+        [data-theme="firefly-neko"] .override-table td { background: rgba(22, 27, 34, 0.6); border-bottom: 1px solid #16402a; }
         [data-theme="gamer-neko"] .override-table td { background: rgba(18, 2, 28, 0.6); border-bottom: 1px solid #c45b9a; }
 
         .override-table tr:last-child td { border-bottom: none; }
         .override-table tr:hover td { background: rgba(88, 166, 255, 0.1); }
+        [data-theme="fab-neko"] .override-table tr:hover td { background: rgba(192, 132, 207, 0.15); }
+        [data-theme="timeline-neko"] .override-table tr:hover td { background: rgba(255, 140, 0, 0.15); }
+        [data-theme="crimson-neko"] .override-table tr:hover td { background: rgba(255, 0, 51, 0.15); }
+        [data-theme="h2o-neko"] .override-table tr:hover td { background: rgba(77, 187, 194, 0.15); }
+        [data-theme="firefly-neko"] .override-table tr:hover td { background: rgba(63, 255, 63, 0.1); }
         [data-theme="gamer-neko"] .override-table tr:hover td { background: rgba(240, 98, 240, 0.1); }
         
-        .override-input {
-            background: rgba(1, 4, 9, 0.8);
-            border: 1px dashed rgba(88, 166, 255, 0.5);
-            color: var(--neon-green);
-            padding: 4px 6px;
-            border-radius: 3px;
-            width: 60px;
-            font-family: monospace;
-            outline: none;
-            transition: 0.2s;
-            height: auto;
-        }
+        .override-input { background: rgba(1, 4, 9, 0.8); border: 1px dashed rgba(88, 166, 255, 0.5); color: var(--neon-green); padding: 4px 6px; border-radius: 3px; width: 60px; font-family: monospace; outline: none; transition: 0.2s; height: auto; }
+        [data-theme="fab-neko"] .override-input { background: rgba(18, 12, 26, 0.8); color: var(--hl-yellow); border-color: var(--border-color); }
+        [data-theme="timeline-neko"] .override-input { background: #f1eae0; color: #ff7f00; border-color: var(--border-color); }
+        [data-theme="crimson-neko"] .override-input { background: rgba(10, 0, 5, 0.8); color: var(--hl-yellow); border-color: var(--border-color); }
+        [data-theme="h2o-neko"] .override-input { background: rgba(9, 16, 31, 0.8); color: var(--hl-orange); border-color: var(--border-color); }
+        [data-theme="firefly-neko"] .override-input { background: rgba(2, 5, 3, 0.8); color: var(--hl-orange); border-color: var(--border-color); }
         [data-theme="gamer-neko"] .override-input { background: rgba(8, 1, 15, 0.8); color: var(--hl-orange); border-color: var(--border-color); box-shadow: 0 0 8px rgba(240, 98, 240, 0.2); }
 
         .override-input:focus { border-color: var(--neon-green); border-style: solid; box-shadow: 0 0 5px rgba(57,255,20,0.3); }
+        [data-theme="fab-neko"] .override-input:focus { border-color: var(--hl-yellow); box-shadow: 0 0 5px rgba(240,160,240,0.3); }
+        [data-theme="timeline-neko"] .override-input:focus { border-color: var(--accent-green); box-shadow: 0 0 5px rgba(255,140,0,0.3); }
+        [data-theme="crimson-neko"] .override-input:focus { border-color: var(--neon-green); box-shadow: 0 0 5px rgba(255,0,51,0.5); }
+        [data-theme="h2o-neko"] .override-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 5px rgba(77,187,194,0.5); }
+        [data-theme="firefly-neko"] .override-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 5px rgba(63, 255, 63, 0.5); }
         [data-theme="gamer-neko"] .override-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 8px rgba(240, 98, 240, 0.5); }
 
         .override-input::placeholder { color: #484f58; font-style: italic; }
+        [data-theme="fab-neko"] .override-input::placeholder { color: #8c5b9c; }
+        [data-theme="timeline-neko"] .override-input::placeholder { color: #8a5a41; } 
+        [data-theme="crimson-neko"] .override-input::placeholder { color: #800020; } 
+        [data-theme="h2o-neko"] .override-input::placeholder { color: #3a69a8; } 
+        [data-theme="firefly-neko"] .override-input::placeholder { color: #2a7f7f; } 
         [data-theme="gamer-neko"] .override-input::placeholder { color: #c45b9a; } 
         
-        .override-select {
-            background: rgba(1, 4, 9, 0.8);
-            border: 1px dashed rgba(88, 166, 255, 0.5);
-            color: var(--text-main);
-            padding: 4px 6px;
-            border-radius: 3px;
-            font-family: monospace;
-            outline: none;
-            font-size: 11px;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 100px;
-        }
+        .override-select { background: rgba(1, 4, 9, 0.8); border: 1px dashed rgba(88, 166, 255, 0.5); color: var(--text-main); padding: 4px 6px; border-radius: 3px; font-family: monospace; outline: none; font-size: 11px; cursor: pointer; transition: 0.2s; width: 100px; }
+        [data-theme="fab-neko"] .override-select { background: rgba(18, 12, 26, 0.8); border-color: var(--border-color); }
+        [data-theme="timeline-neko"] .override-select { background: #f1eae0; border-color: var(--border-color); color: #3a281e; }
+        [data-theme="crimson-neko"] .override-select { background: rgba(10, 0, 5, 0.8); border-color: var(--border-color); }
+        [data-theme="h2o-neko"] .override-select { background: rgba(9, 16, 31, 0.8); border-color: var(--border-color); }
+        [data-theme="firefly-neko"] .override-select { background: rgba(2, 5, 3, 0.8); border-color: var(--border-color); }
         [data-theme="gamer-neko"] .override-select { background: rgba(8, 1, 15, 0.8); border-color: var(--border-color); box-shadow: 0 0 8px rgba(240, 98, 240, 0.2); }
 
         .override-select:focus { border-color: var(--neon-green); border-style: solid; box-shadow: 0 0 5px rgba(57,255,20,0.3); }
+        [data-theme="fab-neko"] .override-select:focus { border-color: var(--hl-yellow); box-shadow: 0 0 5px rgba(240,160,240,0.3); }
+        [data-theme="timeline-neko"] .override-select:focus { border-color: var(--accent-green); box-shadow: 0 0 5px rgba(255,140,0,0.3); }
+        [data-theme="crimson-neko"] .override-select:focus { border-color: var(--neon-green); box-shadow: 0 0 5px rgba(255,0,51,0.5); }
+        [data-theme="h2o-neko"] .override-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 5px rgba(77,187,194,0.5); }
+        [data-theme="firefly-neko"] .override-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 5px rgba(63, 255, 63, 0.5); }
         [data-theme="gamer-neko"] .override-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 8px rgba(240, 98, 240, 0.5); }
 
-        .override-select.danger-mode {
-            border-color: var(--accent-red) !important;
-            color: #ff7b72 !important;
-            background: rgba(248, 81, 73, 0.3) !important;
-            animation: danger-glitch 3s infinite !important;
-        }
+        .override-select.danger-mode { border-color: var(--accent-red) !important; color: #ff7b72 !important; background: rgba(248, 81, 73, 0.3) !important; animation: danger-glitch 3s infinite !important; }
+        [data-theme="fab-neko"] .override-select.danger-mode { color: #fff !important; background: rgba(218, 85, 96, 0.8) !important; }
+        [data-theme="timeline-neko"] .override-select.danger-mode { color: #fff !important; background: rgba(176, 49, 49, 0.8) !important; }
+        [data-theme="crimson-neko"] .override-select.danger-mode { color: #fff !important; background: rgba(255, 0, 0, 0.5) !important; }
+        [data-theme="h2o-neko"] .override-select.danger-mode { color: #fff !important; background: rgba(201, 83, 79, 0.8) !important; }
+        [data-theme="firefly-neko"] .override-select.danger-mode { color: #fff !important; background: rgba(218, 85, 96, 0.9) !important; }
         [data-theme="gamer-neko"] .override-select.danger-mode { color: #fff !important; background: rgba(218, 85, 96, 0.9) !important; text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
 
         /* --- TOOLTIP CSS --- */
-        .tooltip-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-blue);
-            background: rgba(88, 166, 255, 0.1);
-            border: 1px solid var(--accent-blue);
-            border-radius: 50%;
-            width: 14px;
-            height: 14px;
-            font-size: 10px;
-            font-family: monospace;
-            cursor: help;
-            position: relative;
-        }
+        .tooltip-icon { display: inline-flex; align-items: center; justify-content: center; color: var(--accent-blue); background: rgba(88, 166, 255, 0.1); border: 1px solid var(--accent-blue); border-radius: 50%; width: 14px; height: 14px; font-size: 10px; font-family: monospace; cursor: help; position: relative; }
+        [data-theme="fab-neko"] .tooltip-icon { color: var(--hl-cyan); border-color: var(--hl-cyan); background: rgba(163, 217, 255, 0.1); }
+        [data-theme="timeline-neko"] .tooltip-icon { color: var(--accent-green); border-color: var(--accent-green); background: rgba(255, 140, 0, 0.1); }
+        [data-theme="crimson-neko"] .tooltip-icon { color: var(--accent-blue); border-color: var(--accent-blue); background: rgba(255, 77, 109, 0.1); }
+        [data-theme="h2o-neko"] .tooltip-icon { color: var(--accent-blue); border-color: var(--accent-blue); background: rgba(77, 187, 194, 0.1); }
+        [data-theme="firefly-neko"] .tooltip-icon { color: var(--accent-blue); border-color: var(--accent-blue); background: rgba(63, 255, 63, 0.1); }
         [data-theme="gamer-neko"] .tooltip-icon { color: var(--accent-blue); border-color: var(--accent-blue); background: rgba(240, 98, 240, 0.1); }
 
-        .tooltip-icon::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 160%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--card-bg);
-            border: 1px solid var(--accent-blue);
-            color: var(--text-main);
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            width: 220px;
-            white-space: normal;
-            text-transform: none;
-            box-shadow: 0 0 15px rgba(88, 166, 255, 0.2);
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.2s;
-            z-index: 20;
-            pointer-events: none;
-            font-family: "Segoe UI", Roboto, monospace;
-            text-align: center;
-            line-height: 1.4;
-            font-weight: normal;
-        }
+        .tooltip-icon::after { content: attr(data-tooltip); position: absolute; bottom: 160%; left: 50%; transform: translateX(-50%); background: var(--card-bg); border: 1px solid var(--accent-blue); color: var(--text-main); padding: 10px; border-radius: 6px; font-size: 11px; width: 220px; white-space: normal; text-transform: none; box-shadow: 0 0 15px rgba(88, 166, 255, 0.2); opacity: 0; visibility: hidden; transition: 0.2s; z-index: 20; pointer-events: none; font-family: "Segoe UI", Roboto, monospace; text-align: center; line-height: 1.4; font-weight: normal; }
+        [data-theme="fab-neko"] .tooltip-icon::after { border-color: var(--hl-cyan); box-shadow: 0 0 15px rgba(163, 217, 255, 0.2); }
+        [data-theme="timeline-neko"] .tooltip-icon::after { border-color: var(--accent-green); box-shadow: 0 0 15px rgba(255, 140, 0, 0.2); }
+        [data-theme="crimson-neko"] .tooltip-icon::after { border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(255, 77, 109, 0.3); }
+        [data-theme="h2o-neko"] .tooltip-icon::after { border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(77, 187, 194, 0.3); }
+        [data-theme="firefly-neko"] .tooltip-icon::after { border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(63, 255, 63, 0.3); }
         [data-theme="gamer-neko"] .tooltip-icon::after { border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(240, 98, 240, 0.4); }
 
         .tooltip-icon:hover::after { opacity: 1; visibility: visible; }
 
         /* --- ACTION BAR (CENTERED BUTTONS) --- */
-        .action-row {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-            margin-bottom: 25px;
-            padding-top: 25px;
-            border-top: 1px dashed rgba(88, 166, 255, 0.2);
-        }
+        .action-row { display: flex; justify-content: center; gap: 20px; margin-top: 10px; margin-bottom: 25px; padding-top: 25px; border-top: 1px dashed rgba(88, 166, 255, 0.2); }
+        [data-theme="fab-neko"] .action-row { border-top-color: rgba(192, 132, 207, 0.3); }
+        [data-theme="timeline-neko"] .action-row { border-top-color: var(--accent-red); }
+        [data-theme="crimson-neko"] .action-row { border-top-color: rgba(255, 0, 51, 0.3); }
+        [data-theme="h2o-neko"] .action-row { border-top-color: rgba(77, 187, 194, 0.3); }
+        [data-theme="firefly-neko"] .action-row { border-top-color: rgba(63, 255, 63, 0.3); }
         [data-theme="gamer-neko"] .action-row { border-top-color: rgba(240, 98, 240, 0.3); }
 
-        @keyframes pulse-ready {
-            0% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(57, 255, 20, 0.8); }
-            100% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.3); }
-        }
+        @keyframes pulse-ready { 0% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.3); } 50% { box-shadow: 0 0 20px rgba(57, 255, 20, 0.8); } 100% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.3); } }
 
-        .cyber-btn {
-            background: var(--accent-green);
-            color: #fff;
-            padding: 12px 50px;
-            font-size: 15px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 1px solid var(--neon-green);
-            border-radius: 4px;
-            cursor: pointer;
-            transition: 0.3s;
-            white-space: nowrap;
-        }
+        .cyber-btn { background: var(--accent-green); color: #fff; padding: 12px 50px; font-size: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border: 1px solid var(--neon-green); border-radius: 4px; cursor: pointer; transition: 0.3s; white-space: nowrap; }
+        [data-theme="fab-neko"] .cyber-btn { border: 1px solid var(--border-color); }
+        [data-theme="timeline-neko"] .cyber-btn { border: 1px solid var(--border-color); }
+        [data-theme="crimson-neko"] .cyber-btn { border: 1px solid var(--border-color); }
+        [data-theme="h2o-neko"] .cyber-btn { border: 1px solid var(--border-color); }
+        [data-theme="firefly-neko"] .cyber-btn { border: 1px solid var(--border-color); }
         [data-theme="gamer-neko"] .cyber-btn { border: 1px solid var(--neon-green); }
 
         .cyber-btn.ready { animation: pulse-ready 2s infinite; }
+        [data-theme="fab-neko"] .cyber-btn.ready { box-shadow: 0 0 15px rgba(240, 98, 240, 0.5); animation: none; }
+        [data-theme="timeline-neko"] .cyber-btn.ready { box-shadow: 0 0 15px rgba(255, 140, 0, 0.5); animation: none; }
+        [data-theme="crimson-neko"] .cyber-btn.ready { box-shadow: 0 0 15px rgba(255, 0, 51, 0.6); animation: none; }
+        [data-theme="h2o-neko"] .cyber-btn.ready { box-shadow: 0 0 15px rgba(72, 229, 229, 0.5); animation: none; }
+        [data-theme="firefly-neko"] .cyber-btn.ready { box-shadow: 0 0 15px rgba(63, 255, 63, 0.6); animation: none; }
         [data-theme="gamer-neko"] .cyber-btn.ready { box-shadow: 0 0 15px rgba(240, 98, 240, 0.8); animation: none; }
 
-        .cyber-btn:not(:disabled):hover { 
-            background: #2ea043; 
-            box-shadow: 0 0 25px rgba(57, 255, 20, 0.9); 
-        }
+        .cyber-btn:not(:disabled):hover { background: #2ea043; box-shadow: 0 0 25px rgba(57, 255, 20, 0.9); }
+        [data-theme="fab-neko"] .cyber-btn:not(:disabled):hover { background: #b04987; box-shadow: 0 0 25px rgba(240, 98, 240, 0.8); }
+        [data-theme="timeline-neko"] .cyber-btn:not(:disabled):hover { background: #e07b00; box-shadow: 0 0 25px rgba(255, 140, 0, 0.8); color: #fff; }
+        [data-theme="crimson-neko"] .cyber-btn:not(:disabled):hover { background: #b3001e; box-shadow: 0 0 25px rgba(255, 0, 51, 0.8); color: #fff; }
+        [data-theme="h2o-neko"] .cyber-btn:not(:disabled):hover { background: #23858c; box-shadow: 0 0 25px rgba(72, 229, 229, 0.8); color: #fff; }
+        [data-theme="firefly-neko"] .cyber-btn:not(:disabled):hover { background: #1a6346; box-shadow: 0 0 25px rgba(63, 255, 63, 0.8); color: #fff; }
         [data-theme="gamer-neko"] .cyber-btn:not(:disabled):hover { background: #26b3be; box-shadow: 0 0 25px rgba(240, 98, 240, 0.9); color: #fff; text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
 
-        .cyber-btn:disabled {
-            background: rgba(33, 38, 45, 0.8);
-            color: #8b949e;
-            border-color: #30363d;
-            cursor: not-allowed;
-            box-shadow: none;
-            animation: none;
-        }
+        .cyber-btn:disabled { background: rgba(33, 38, 45, 0.8); color: #8b949e; border-color: #30363d; cursor: not-allowed; box-shadow: none; animation: none; }
+        [data-theme="fab-neko"] .cyber-btn:disabled { background: rgba(45, 32, 63, 0.8); color: #8c5b9c; border-color: #4a3461; }
+        [data-theme="timeline-neko"] .cyber-btn:disabled { background: rgba(92, 71, 60, 0.8); color: var(--border-color); border-color: var(--border-color); }
+        [data-theme="crimson-neko"] .cyber-btn:disabled { background: rgba(26, 2, 6, 0.8); color: #800020; border-color: #4a0512; }
+        [data-theme="h2o-neko"] .cyber-btn:disabled { background: rgba(16, 28, 48, 0.8); color: #3a69a8; border-color: #274873; }
+        [data-theme="firefly-neko"] .cyber-btn:disabled { background: rgba(13, 17, 23, 0.8); color: #484f58; border-color: #30363d; }
 
-        .clear-btn {
-            background: rgba(13, 17, 23, 0.6);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 12px 30px;
-            font-size: 13px;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 4px;
-            opacity: 0.8;
-            letter-spacing: 1px;
-        }
+        .clear-btn { background: rgba(13, 17, 23, 0.6); color: var(--text-main); border: 1px solid var(--border-color); padding: 12px 30px; font-size: 13px; text-transform: uppercase; cursor: pointer; border-radius: 4px; opacity: 0.8; letter-spacing: 1px; }
+        [data-theme="fab-neko"] .clear-btn { background: rgba(26, 18, 36, 0.6); }
+        [data-theme="timeline-neko"] .clear-btn { background: rgba(92, 71, 60, 0.6); }
+        [data-theme="crimson-neko"] .clear-btn { background: rgba(10, 0, 5, 0.6); }
+        [data-theme="h2o-neko"] .clear-btn { background: rgba(9, 16, 31, 0.6); }
+        [data-theme="firefly-neko"] .clear-btn { background: rgba(13, 17, 23, 0.6); }
         [data-theme="gamer-neko"] .clear-btn { background: rgba(8, 1, 15, 0.6); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
 
-        .clear-btn:hover {
-            opacity: 1;
-            border-color: var(--accent-purple);
-            color: var(--accent-purple);
-            background: rgba(188, 140, 255, 0.1);
-            box-shadow: 0 0 10px rgba(188, 140, 255, 0.2);
-        }
+        .clear-btn:hover { opacity: 1; border-color: var(--accent-purple); color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 10px rgba(188, 140, 255, 0.2); }
+        [data-theme="fab-neko"] .clear-btn:hover { background: rgba(192, 132, 207, 0.15); box-shadow: 0 0 12px rgba(192, 132, 207, 0.4); }
+        [data-theme="timeline-neko"] .clear-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(230, 177, 122, 0.15); box-shadow: 0 0 12px rgba(230, 177, 122, 0.4); }
+        [data-theme="crimson-neko"] .clear-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(255, 77, 109, 0.15); box-shadow: 0 0 12px rgba(255, 77, 109, 0.4); }
+        [data-theme="h2o-neko"] .clear-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(77, 187, 194, 0.15); box-shadow: 0 0 12px rgba(77, 187, 194, 0.4); }
+        [data-theme="firefly-neko"] .clear-btn:hover { border-color: var(--accent-purple); color: var(--accent-purple); background: rgba(175, 95, 175, 0.15); box-shadow: 0 0 12px rgba(175, 95, 175, 0.4); }
         [data-theme="gamer-neko"] .clear-btn:hover { border-color: var(--accent-purple); color: var(--accent-purple); background: rgba(189, 105, 60, 0.15); box-shadow: 0 0 12px rgba(189, 105, 60, 0.4); }
 
         /* --- WARNING BOX --- */
-        .warning-box {
-            background: rgba(248, 81, 73, 0.15);
-            border: 1px dashed var(--accent-red);
-            color: var(--accent-red);
-            padding: 10px 15px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 11.5px;
-            text-align: center;
-            line-height: 1.4;
-            display: none; 
-            backdrop-filter: blur(2px);
-        }
-
+        .warning-box { background: rgba(248, 81, 73, 0.15); border: 1px dashed var(--accent-red); color: var(--accent-red); padding: 10px 15px; border-radius: 4px; margin-bottom: 15px; font-family: "Courier New", Courier, monospace; font-size: 11.5px; text-align: center; line-height: 1.4; display: none; backdrop-filter: blur(2px); }
         .warning-box strong { font-size: 12.5px; letter-spacing: 1px; }
         .notice-section { border-top: 1px solid rgba(255, 157, 0, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
         .conflict-section { border-top: 1px solid rgba(255, 0, 255, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
@@ -1109,96 +850,68 @@
         [data-theme="timeline-neko"] .conflict-section strong { color: var(--accent-purple) !important; text-shadow: none; }
         [data-theme="timeline-neko"] .fragment-section strong { color: var(--accent-green) !important; text-shadow: none; }
         [data-theme="timeline-neko"] .nosec-section strong { color: var(--hl-cyan) !important; text-shadow: none; }
-
         [data-theme="crimson-neko"] .conflict-section strong { color: var(--hl-yellow) !important; text-shadow: none; }
         [data-theme="crimson-neko"] .fragment-section strong { color: var(--accent-blue) !important; text-shadow: none; }
         [data-theme="crimson-neko"] .nosec-section strong { color: var(--hl-cyan) !important; text-shadow: none; }
-        
         [data-theme="firefly-neko"] .conflict-section strong { color: var(--hl-yellow) !important; text-shadow: none; }
         [data-theme="firefly-neko"] .fragment-section strong { color: var(--accent-blue) !important; text-shadow: none; }
         [data-theme="firefly-neko"] .nosec-section strong { color: var(--hl-cyan) !important; text-shadow: none; }
-        
         [data-theme="gamer-neko"] .conflict-section strong { color: var(--hl-yellow) !important; text-shadow: none; }
         [data-theme="gamer-neko"] .fragment-section strong { color: var(--accent-blue) !important; text-shadow: none; }
         [data-theme="gamer-neko"] .nosec-section strong { color: var(--hl-cyan) !important; text-shadow: none; }
         
-        .raw-force-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 8px;
-            cursor: pointer;
-            color: var(--text-main);
-            background: rgba(0, 0, 0, 0.2);
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid rgba(227, 179, 65, 0.3);
-        }
+        .raw-force-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; cursor: pointer; color: var(--text-main); background: rgba(0, 0, 0, 0.2); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(227, 179, 65, 0.3); }
         .raw-force-toggle:hover { background: rgba(227, 179, 65, 0.1); }
         .raw-force-toggle input { cursor: pointer; }
+        [data-theme="timeline-neko"] .raw-force-toggle { border-color: var(--border-color); }
+        [data-theme="timeline-neko"] .raw-force-toggle:hover { background: rgba(193, 142, 110, 0.1); }
+        [data-theme="crimson-neko"] .raw-force-toggle { border-color: var(--border-color); }
+        [data-theme="crimson-neko"] .raw-force-toggle:hover { background: rgba(255, 77, 109, 0.1); }
+        [data-theme="h2o-neko"] .raw-force-toggle { border-color: var(--border-color); }
+        [data-theme="h2o-neko"] .raw-force-toggle:hover { background: rgba(77, 187, 194, 0.1); }
+        [data-theme="firefly-neko"] .raw-force-toggle { border-color: var(--border-color); }
+        [data-theme="firefly-neko"] .raw-force-toggle:hover { background: rgba(26, 64, 42, 0.1); }
         [data-theme="gamer-neko"] .raw-force-toggle { border-color: var(--border-color); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
 
         /* SCRIPT BOXES */
-        .script-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-            margin-bottom: 5px;
-        }
-
+        .script-header { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; margin-bottom: 5px; }
         .btn-group-small { display: flex; gap: 8px; }
-
-        .copy-btn {
-            background: #8957e5;
-            color: white;
-            border: none;
-            padding: 4px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        
+        .copy-btn { background: #8957e5; color: white; border: none; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase; }
         .copy-btn.rollback { background: var(--accent-red); }
         
-        .dl-btn {
-            background: rgba(13, 17, 23, 0.6);
-            border: 1px solid #8957e5;
-            color: #8957e5;
-        }
+        .dl-btn { background: rgba(13, 17, 23, 0.6); border: 1px solid #8957e5; color: #8957e5; }
+        [data-theme="fab-neko"] .dl-btn { background: rgba(45, 32, 63, 0.6); }
+        [data-theme="timeline-neko"] .dl-btn { background: rgba(92, 71, 60, 0.6); border-color: #8957e5; }
+        [data-theme="crimson-neko"] .dl-btn { background: rgba(26, 2, 6, 0.6); border-color: var(--accent-blue); color: var(--accent-blue); }
+        [data-theme="h2o-neko"] .dl-btn { background: rgba(16, 28, 48, 0.6); border-color: var(--accent-blue); color: var(--accent-blue); }
+        [data-theme="firefly-neko"] .dl-btn { background: rgba(13, 17, 23, 0.6); border-color: var(--accent-blue); color: var(--accent-blue); }
         [data-theme="gamer-neko"] .dl-btn { background: rgba(8, 1, 15, 0.6); border-color: var(--accent-blue); color: var(--accent-blue); box-shadow: 0 0 8px rgba(240, 98, 240, 0.2); }
 
-        .copy-btn:disabled, .dl-btn:disabled {
-            background: rgba(48, 54, 61, 0.5);
-            color: #8b949e;
-            border-color: #30363d;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
+        .dl-btn.rollback { border-color: var(--accent-red); color: var(--accent-red); }
+        .dl-btn:hover:not(:disabled) { background: rgba(137, 87, 229, 0.2); }
+        .dl-btn.rollback:hover:not(:disabled) { background: rgba(248, 81, 73, 0.2); }
 
-        .code-window {
-            display: flex;
-            background: rgba(1, 4, 9, 0.85);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 12px;
-            line-height: 1.5;
-            backdrop-filter: blur(2px);
-        }
+        .copy-btn:disabled, .dl-btn:disabled { background: rgba(48, 54, 61, 0.5); color: #8b949e; border-color: #30363d; cursor: not-allowed; opacity: 0.6; }
+        [data-theme="fab-neko"] .copy-btn:disabled, [data-theme="fab-neko"] .dl-btn:disabled { background: rgba(45, 32, 63, 0.5); color: #8c5b9c; border-color: #4a3461; }
+        [data-theme="timeline-neko"] .copy-btn:disabled, [data-theme="timeline-neko"] .dl-btn:disabled { background: rgba(92, 71, 60, 0.5); color: var(--border-color); border-color: var(--border-color); }
+        [data-theme="crimson-neko"] .copy-btn:disabled, [data-theme="crimson-neko"] .dl-btn:disabled { background: rgba(26, 2, 6, 0.5); color: #800020; border-color: #4a0512; }
+        [data-theme="h2o-neko"] .copy-btn:disabled, [data-theme="h2o-neko"] .dl-btn:disabled { background: rgba(16, 28, 48, 0.5); color: #3a69a8; border-color: #274873; }
+        [data-theme="firefly-neko"] .copy-btn:disabled, [data-theme="firefly-neko"] .dl-btn:disabled { background: rgba(13, 17, 23, 0.5); color: #484f58; border-color: #30363d; }
+
+        .code-window { display: flex; background: rgba(1, 4, 9, 0.85); border: 1px solid var(--border-color); border-radius: 4px; font-family: "Courier New", Courier, monospace; font-size: 12px; line-height: 1.5; backdrop-filter: blur(2px); }
+        [data-theme="fab-neko"] .code-window { background: rgba(18, 12, 26, 0.85); }
+        [data-theme="timeline-neko"] .code-window { background: rgba(58, 40, 30, 0.85); } 
+        [data-theme="crimson-neko"] .code-window { background: rgba(10, 0, 5, 0.85); } 
+        [data-theme="h2o-neko"] .code-window { background: rgba(9, 16, 31, 0.85); } 
+        [data-theme="firefly-neko"] .code-window { background: rgba(2, 5, 3, 0.85); } 
         [data-theme="gamer-neko"] .code-window { background: rgba(8, 1, 15, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); } 
 
-        .line-numbers {
-            padding: 10px 8px;
-            background: rgba(13, 17, 23, 0.5);
-            border-right: 1px solid var(--border-color);
-            color: #484f58;
-            text-align: right;
-            user-select: none;
-            min-width: 25px;
-        }
+        .line-numbers { padding: 10px 8px; background: rgba(13, 17, 23, 0.5); border-right: 1px solid var(--border-color); color: #484f58; text-align: right; user-select: none; min-width: 25px; }
+        [data-theme="fab-neko"] .line-numbers { background: rgba(45, 32, 63, 0.5); color: #8c5b9c; }
+        [data-theme="timeline-neko"] .line-numbers { background: rgba(92, 71, 60, 0.5); color: var(--border-color); }
+        [data-theme="crimson-neko"] .line-numbers { background: rgba(26, 2, 6, 0.5); color: #800020; }
+        [data-theme="h2o-neko"] .line-numbers { background: rgba(16, 28, 48, 0.5); color: #3a69a8; }
+        [data-theme="firefly-neko"] .line-numbers { background: rgba(2, 5, 3, 0.5); color: #2a7f7f; }
 
         .code-content { padding: 10px; color: #79c0ff; white-space: pre; overflow-x: auto; flex-grow: 1; }
         [data-theme="timeline-neko"] .code-content { color: var(--text-main); }
@@ -1207,28 +920,55 @@
         
         .status-container { display: flex; justify-content: space-between; align-items: baseline; margin-top: 5px; }
         #statusMsg { font-size: 11px; color: var(--accent-blue); display: none; background: rgba(13, 17, 23, 0.6); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(88, 166, 255, 0.2); }
+        [data-theme="fab-neko"] #statusMsg { background: rgba(45, 32, 63, 0.6); border-color: rgba(192, 132, 207, 0.3); color: var(--accent-purple); }
+        [data-theme="timeline-neko"] #statusMsg { background: rgba(92, 71, 60, 0.6); border-color: var(--border-color); color: var(--accent-blue); }
+        [data-theme="crimson-neko"] #statusMsg { background: rgba(26, 2, 6, 0.6); border-color: rgba(255, 77, 109, 0.3); color: var(--accent-blue); }
+        [data-theme="h2o-neko"] #statusMsg { background: rgba(16, 28, 48, 0.6); border-color: rgba(77, 187, 194, 0.3); color: var(--accent-blue); }
+        [data-theme="firefly-neko"] #statusMsg { background: rgba(22, 27, 34, 0.6); border-color: rgba(63, 255, 63, 0.3); color: var(--accent-blue); }
         [data-theme="gamer-neko"] #statusMsg { background: rgba(18, 2, 28, 0.6); border-color: rgba(240, 98, 240, 0.3); color: var(--accent-blue); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); box-shadow: 0 0 10px rgba(240, 98, 240, 0.2); }
 
         .diff-stats { font-family: monospace; font-size: 10.5px; opacity: 0.8; }
         .diff-add { color: var(--neon-green); }
         .diff-rem { color: var(--accent-red); }
         .diff-bnc { color: var(--hl-orange); }
+        [data-theme="crimson-neko"] .diff-add { color: var(--accent-blue); }
+        [data-theme="h2o-neko"] .diff-add { color: var(--accent-blue); }
+        [data-theme="firefly-neko"] .diff-add { color: var(--accent-blue); }
         
         /* BOTTOM BUTTONS & MANIFEST/DB STYLES */
         .bottom-actions { text-align: center; margin-top: 30px; margin-bottom: 20px; display: flex; justify-content: center; gap: 15px; }
         
         .manifest-box { background: rgba(1, 4, 9, 0.8); border: 1px dashed var(--border-color); padding: 20px; border-radius: 8px; text-align: left; }
+        [data-theme="fab-neko"] .manifest-box { background: rgba(28, 18, 38, 0.8); }
+        [data-theme="timeline-neko"] .manifest-box { background: rgba(92, 71, 60, 0.8); }
+        [data-theme="crimson-neko"] .manifest-box { background: rgba(20, 2, 5, 0.8); }
+        [data-theme="h2o-neko"] .manifest-box { background: rgba(16, 28, 48, 0.8); }
+        [data-theme="firefly-neko"] .manifest-box { background: rgba(2, 5, 3, 0.8); }
         [data-theme="gamer-neko"] .manifest-box { background: rgba(8, 1, 15, 0.8); box-shadow: 0 0 15px rgba(0,0,0,0.8), 0 0 10px rgba(240, 98, 240, 0.3); }
 
         .db-box { background: rgba(1, 4, 9, 0.8); border: 1px solid var(--accent-green); padding: 15px; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+        [data-theme="fab-neko"] .db-box { background: rgba(28, 18, 38, 0.8); box-shadow: inset 0 0 10px rgba(0,0,0,0.8); border-color: var(--accent-purple); }
+        [data-theme="timeline-neko"] .db-box { background: rgba(92, 71, 60, 0.8); box-shadow: inset 0 0 10px rgba(0,0,0,0.8); border-color: var(--accent-green); }
+        [data-theme="crimson-neko"] .db-box { background: rgba(20, 2, 5, 0.8); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); border-color: var(--accent-green); }
+        [data-theme="h2o-neko"] .db-box { background: rgba(16, 28, 48, 0.8); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); border-color: var(--accent-blue); }
+        [data-theme="firefly-neko"] .db-box { background: rgba(2, 5, 3, 0.8); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); border-color: var(--accent-green); }
         [data-theme="gamer-neko"] .db-box { background: rgba(8, 1, 15, 0.8); box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 10px rgba(240, 98, 240, 0.3); border-color: var(--accent-green); }
 
         .db-security-note { background: rgba(35, 134, 54, 0.1); border-left: 3px solid var(--accent-green); padding: 8px 12px; margin-bottom: 12px; font-size: 11px; color: var(--text-main); line-height: 1.4; border-radius: 0 4px 4px 0; }
+        [data-theme="fab-neko"] .db-security-note { background: rgba(192, 132, 207, 0.1); border-left-color: var(--accent-purple); }
+        [data-theme="timeline-neko"] .db-security-note { background: rgba(255, 140, 0, 0.1); border-left-color: var(--accent-green); }
+        [data-theme="crimson-neko"] .db-security-note { background: rgba(255, 0, 51, 0.1); border-left-color: var(--accent-green); }
+        [data-theme="h2o-neko"] .db-security-note { background: rgba(77, 187, 194, 0.1); border-left-color: var(--accent-blue); }
+        [data-theme="firefly-neko"] .db-security-note { background: rgba(63, 255, 63, 0.1); border-left-color: var(--accent-green); }
         [data-theme="gamer-neko"] .db-security-note { background: rgba(63, 255, 63, 0.1); border-left-color: var(--accent-green); }
         
         .db-box textarea { height: 150px; margin-bottom: 10px; }
         .db-controls { display: flex; justify-content: space-between; align-items: center; }
         .db-status { font-size: 11px; color: var(--accent-green); font-family: monospace; }
+        [data-theme="fab-neko"] .db-status { color: var(--accent-purple); }
+        [data-theme="timeline-neko"] .db-status { color: var(--accent-green); }
+        [data-theme="crimson-neko"] .db-status { color: var(--accent-blue); }
+        [data-theme="h2o-neko"] .db-status { color: var(--accent-blue); }
 
         /* --- CUSTOM MODAL --- */
         .modal-overlay {
@@ -1258,17 +998,37 @@
             font-size: 13px;
             line-height: 1.6;
         }
+        [data-theme="timeline-neko"] .modal-box { background: rgba(92, 71, 60, 0.95); }
+        [data-theme="crimson-neko"] .modal-box { background: rgba(26, 2, 6, 0.95); box-shadow: 0 0 25px rgba(255, 0, 51, 0.3); }
+        [data-theme="h2o-neko"] .modal-box { background: rgba(16, 28, 48, 0.95); box-shadow: 0 0 25px rgba(201, 83, 79, 0.3); }
+        [data-theme="firefly-neko"] .modal-box { background: rgba(22, 27, 34, 0.95); box-shadow: 0 0 25px rgba(201, 83, 79, 0.3); }
         [data-theme="gamer-neko"] .modal-box { background: rgba(18, 2, 28, 0.95); box-shadow: 0 0 25px rgba(240, 98, 240, 0.4); border-color: var(--accent-red); }
 
         .modal-box h3 { color: var(--accent-red); margin-top: 0; font-family: "Courier New", Courier, monospace; font-size: 16px; text-shadow: 0 0 8px rgba(248, 81, 73, 0.4); }
+        [data-theme="timeline-neko"] .modal-box h3 { text-shadow: none; }
         .modal-checkbox-row { display: flex; align-items: center; gap: 8px; margin-top: 20px; font-size: 12px; cursor: pointer; color: #8b949e; }
         .modal-checkbox-row input { cursor: pointer; }
         .modal-buttons { margin-top: 25px; display: flex; justify-content: flex-end; gap: 12px; }
+
+        /* Easter Egg UI */
+        .cat-ear-icon {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            font-size: 40px;
+            opacity: 0.2;
+            z-index: -1;
+            pointer-events: none;
+            text-shadow: 0 0 15px rgba(240, 98, 240, 0.8);
+        }
+        [data-theme="gamer-neko"] .cat-ear-icon { display: block; }
     </style>
 </head>
 <body>
 
 <canvas id="networkBg"></canvas>
+<div class="cat-ear-icon">🎧</div>
 
 <div class="container">
     
@@ -1289,7 +1049,7 @@
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v10.0 [Gamer NEKO Update]</span>
+            <span class="version-tag">// Configuration Automation Tool // v10.1 [Uncut Engine Update]</span>
         </h2>
         
         <div class="tz-widget">
@@ -1342,14 +1102,25 @@
                 <div class="sample-code" style="margin-bottom: 5px;">
                     <div style="flex:1;">
                         <strong>STANDARD PARSE:</strong><br>
-                        PH-NOC-ACC0101#sh running-config interface Gi1/0/1<br>
+                        <span style="color: var(--hl-orange);">PH-NOC-ACC0101#</span>sh running-config interface Gi1/0/1<br>
+                        Building configuration...<br><br>
                         Current configuration : 157 bytes<br>
                         !<br>
                         interface GigabitEthernet1/0/1<br>
+                        description : Sample<br>
                         switchport access vlan <span style="color: var(--hl-cyan); font-weight: bold;">100</span><br>
                         <span style="color: var(--hl-yellow);">switchport mode access</span><br>
                         <span style="color: var(--accent-purple);">spanning-tree bpduguard enable</span><br>
                         end
+                    </div>
+                    <div style="width: 1px; background: var(--border-color); margin: 0 10px;"></div>
+                    <div style="flex:1;">
+                        <strong style="color:var(--hl-yellow)">RAW OMNI-PARSE (BLIND MODE):</strong><br>
+                        <span style="color: #8b949e;">You can paste a flat list of ports. The engine will detect this and bypass idempotency to blindly force the requested parameters.</span><br><br>
+                        Gi1/0/1<br>
+                        Gi1/0/2<br>
+                        Fa0/1<br>
+                        Te2/1/1
                     </div>
                 </div>
 
@@ -1518,8 +1289,38 @@
         <div class="readme-content manifest-box">
             <h3 style="margin-top: 0;">🧠 1. The Core Idempotent Engine</h3>
             <ul>
-                <li><strong>Omni-Parse Technology:</strong> The engine automatically detects terminal output.</li>
-                <li><strong>Automated Rollback Generation:</strong> Builds a reverse script.</li>
+                <li><strong>Omni-Parse Technology:</strong> The engine automatically detects whether you have pasted standard configuration blocks or a raw list of interface names.</li>
+                <li><strong>Smart Range Aggregation:</strong> To prevent console buffer overrun and reduce script size, the engine automatically detects consecutive targeted ports (e.g. <code>Gi1/0/1, Gi1/0/2</code>) and natively compresses them into perfectly formatted <code>interface range</code> commands.</li>
+                <li><strong>Smart State Parsing (Config Mode):</strong> Reads current running-config, compares to target settings, and <em>only</em> generates commands for exact missing or differing lines.</li>
+                <li><strong>Blind Force Processing (Raw Mode):</strong> If raw ports are detected, idempotency is dynamically disabled. The engine will forcefully apply your selected parameters without evaluating current states.</li>
+                <li><strong>Automated Rollback Generation:</strong> Builds a reverse script to perfectly undo changes and return ports to their original state (or applies best-effort defaults for raw ports).</li>
+                <li><strong>Surgical Command Stripping:</strong> Automatically injects exact <code>no</code> commands to scrub old protocols before applying new ones.</li>
+            </ul>
+
+            <h3>🛡️ 2. Advanced Security & Protocol Management</h3>
+            <ul>
+                <li><strong>Trunk Port Hard-Stop:</strong> Actively locks out ports detected as uplinks or trunks to prevent catastrophic network outages (Automatically bypassed for Raw Ports).</li>
+                <li><strong>Omni-Matrix Assignment:</strong> Updates configurations dynamically. Set Global Master parameters to apply to all ports simultaneously, or use the Per-Port Override Grid (07) to surgically assign different VLANs and Security Protocols to specific interfaces within the same execution batch.</li>
+                <li><strong>DOT1X Mode:</strong> Pushes 802.1X templates.</li>
+                <li><strong>STICKY Mode:</strong> Pushes MAC Sticky templates.</li>
+                <li><strong>REMOVE Mode:</strong> Triggers Critical Danger Glitch. Explicitly strips existing configurations. Requires a mandatory compliance confirmation prompt.</li>
+                <li><strong>Universal RESET:</strong> Wipes existing security clean. Security resets intentionally omit rollback commands.</li>
+            </ul>
+
+            <h3>🚨 3. Real-Time Dynamic Warning Scanner</h3>
+            <ul>
+                <li><strong style="color: var(--hl-yellow);">Raw Port List Notice (Yellow):</strong> Alerts the engineer when Blind Override Mode is actively engaged. Includes a quick-toggle to force <code>switchport mode access</code> onto unknown blind targets.</li>
+                <li><strong style="color: var(--accent-red);">Critical Warning (Red):</strong> Detects Trunk/Uplink ports (missing <code>switchport mode access</code>) and executes a complete script lockout for those specific ports.</li>
+                <li><strong style="color: var(--hl-magenta);">Dual-Security Conflict (Magenta):</strong> Detects ports infected with both 802.1X and Sticky MAC. Blocks "RESET" to force explicit protocol cleanup.</li>
+                <li><strong style="color: var(--hl-cyan);">Unsecured Port Notice (Cyan):</strong> Flags naked ports with zero port security configured.</li>
+            </ul>
+
+            <h3>⚡ 4. Edge, State, & Output Controls</h3>
+            <ul>
+                <li><strong>Admin State Override:</strong> Includes UP, DWN, BNC, and LEAVE toggles. Rollback intelligently reverses any forced state changes.</li>
+                <li><strong>Cross-Panel Locking & Smart Idempotency:</strong> Modifying security automatically locks the Bounce button. UI buttons gray out if the engine detects the config already meets targeted conditions natively.</li>
+                <li><strong>Omni-Drop Zone:</strong> Supports drag-and-drop ingestion of raw text highlights, IDE tabs, or `.txt` log files directly into the UI. Direct `[ DOWNLOAD ]` buttons export scripts.</li>
+                <li><strong>Omni-Chronos Persistent Module:</strong> A fully unrestricted, text-parseable dual-world clock that caches your preferred timezone and 12H/24H format to local storage.</li>
             </ul>
 
             <h3 style="margin-bottom: 0;">🎮 5. Easter Egg Vault</h3>
@@ -1534,10 +1335,11 @@
             <label style="color: var(--accent-green); margin-bottom: 10px;">> ZERO-TRUST_LOCAL_DB</label>
             
             <div class="db-security-note">
-                <strong>🔒 SECURITY NOTE:</strong> Offline and Zero-Trust. Data saved directly in browser cache (localStorage).
+                <strong>🔒 SECURITY NOTE:</strong> This database is completely offline and Zero-Trust. Your data is saved directly into your browser's local cache (localStorage). It is <strong>never</strong> transmitted to GitHub, any external server, or the public internet. Only you can see this data on this specific computer.
             </div>
 
-            <textarea id="dbInput" placeholder="formats... PH-NOC-ACC0101, 10.20.30.40" spellcheck="false" style="border-color: rgba(35, 134, 54, 0.5);"></textarea>
+            <p style="font-size: 11.5px; color: var(--text-main); opacity: 0.8; margin-top: 0;">Any new data pasted here is <strong>MERGED</strong> into your existing local database. To remove old switches, click 'Clear Memory' and paste a fresh master list.</p>
+            <textarea id="dbInput" placeholder="-- Formats Accepted --&#10;PH-NOC-ACC0101, 10.20.30.40&#10;PH-NOC-AS0202   10.30.40.50   Access Switch" spellcheck="false" style="border-color: rgba(35, 134, 54, 0.5);"></textarea>
             <div class="db-controls">
                 <span class="db-status" id="dbStatus">STATUS: DB_IDLE</span>
                 <div style="display: flex; gap: 10px;">
@@ -1551,10 +1353,17 @@
     <div id="removeWarningModal" class="modal-overlay">
         <div class="modal-box">
             <h3>⚠️ CRITICAL SECURITY WARNING</h3>
-            <p><strong>REMOVE</strong> protocol will strip port security and leave ports completely open.</p>
+            <p>You are selecting the <strong>REMOVE</strong> protocol. This will actively strip 802.1X and Sticky MAC configurations from the targeted ports, leaving them completely open to the network.</p>
+            <p>Please ensure you have:<br>1. Secured proper CAB/Change approvals.<br>2. Created the necessary IT documentation or tickets.</p>
+            
+            <label class="modal-checkbox-row">
+                <input type="checkbox" id="dontShowAgainCheckbox">
+                Do not show this message again
+            </label>
+            
             <div class="modal-buttons">
                 <button class="clear-btn" onclick="cancelRemove()">Cancel</button>
-                <button class="cyber-btn" style="background: var(--accent-red); border-color: var(--accent-red);" onclick="confirmRemove()">Proceed</button>
+                <button class="cyber-btn" style="background: var(--accent-red); border-color: var(--accent-red); box-shadow: 0 0 10px rgba(248, 81, 73, 0.3);" onclick="confirmRemove()">Proceed & Unlock</button>
             </div>
         </div>
     </div>
@@ -1593,11 +1402,10 @@
     let inputBuffer = [];
     let easterEggActive = false;
 
-    // Classic 3-bit audio beep sequence
     function playKonamiSound() {
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const sequence = [440, 660, 880, 1320]; // A4, E5, A5, E6
+            const sequence = [440, 660, 880, 1320]; 
             sequence.forEach((freq, idx) => {
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
@@ -1624,13 +1432,12 @@
                 playKonamiSound();
                 document.getElementById('primaryCode').innerText = "-- !!! KONAMI READY !!! --";
                 
-                // Super-bounce effect in canvas
                 const engine = window.HologramEngine;
                 if(engine && engine.mode === 'hologram') {
                     engine.particles.forEach(p => { p.vx *= 10; p.vy *= 10; });
                     setTimeout(() => {
                         engine.particles.forEach(p => { p.vx *= 0.1; p.vy *= 0.1; });
-                        generateScript(); // Restore text
+                        generateScript(); 
                         easterEggActive = false;
                     }, 1500);
                 } else {
@@ -1681,7 +1488,6 @@
             }
         }
 
-        // --- SUBTLE METEOR SHOWER ---
         class Meteor {
             constructor() {
                 this.x = Math.random() * width;
@@ -1689,7 +1495,7 @@
                 this.size = Math.random() * 2 + 1;
                 this.speed = Math.random() * 8 + 4;
                 this.angle = Math.random() * Math.PI / 8 + Math.PI / 4;
-                const colors = ['rgba(163, 217, 255,', 'rgba(240, 98, 240,']; // cyan, magenta
+                const colors = ['rgba(163, 217, 255,', 'rgba(240, 98, 240,']; 
                 this.colorBase = colors[Math.floor(Math.random() * colors.length)];
                 this.life = 0;
                 this.maxLife = Math.random() * 100 + 50;
@@ -1715,7 +1521,6 @@
             ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-color');
             ctx.fillRect(0, 0, width, height);
             
-            // Randomly spawn meteors
             if (Math.random() < 0.005) meteors.push(new Meteor());
             meteors = meteors.filter(m => m.update());
             meteors.forEach(m => m.draw());
@@ -1725,10 +1530,9 @@
         }
 
         function drawGamerFloor() {
-            // Soft overlay radial for depth
             ctx.beginPath();
             let grad = ctx.createRadialGradient(width/2, height, 10, width/2, height, height*0.7);
-            grad.addColorStop(0, 'rgba(18, 2, 28, 0.4)'); // Deep base
+            grad.addColorStop(0, 'rgba(18, 2, 28, 0.4)'); 
             grad.addColorStop(1, 'transparent');
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, width, height);
@@ -1749,7 +1553,7 @@
         window.HologramEngine = { mode: 'hologram', particles: particles };
     })();
 
-    // --- OMNI-CHRONOSPersistent MODULE ---
+    // --- OMNI-CHRONOS MODULE ---
     let isLiveTime = true, is24Hour = true, forceRawAccess = true;
     function toggleTimeFormat() { is24Hour = !is24Hour; document.getElementById('fmtToggleBtn').innerText = is24Hour ? "[ 24H ]" : "[ 12H ]"; updateClocks(); }
     function getTzOffsetDiff(srcTz, tgtTz) { const now = new Date(); const getStr = (tz) => tz === 'Local' ? now.toLocaleString('en-US') : now.toLocaleString('en-US', {timeZone: tz}); return new Date(getStr(tgtTz)).getTime() - new Date(getStr(srcTz)).getTime(); }
@@ -1760,6 +1564,7 @@
 
     // --- UI/LOAD LOGIC ---
     let switchDB = {};
+    let detectedGlobalHostname = "N0CAT_Script"; 
     window.addEventListener('load', () => {
         const savedDB = localStorage.getItem('noccat_db');
         if (savedDB) { parseToDB(savedDB); document.getElementById('dbInput').value = savedDB; document.getElementById('dbStatus').innerText = `LOADED_${Object.keys(switchDB).length}_HOSTS`; }
@@ -1770,8 +1575,9 @@
         configTextarea.addEventListener('drop', (e) => { e.preventDefault(); configTextarea.classList.remove('drag-active'); if(e.dataTransfer.files[0]) { const reader = new FileReader(); reader.onload = (evt) => { configTextarea.value = evt.target.result; checkDynamicWarnings(); }; reader.readAsText(e.dataTransfer.files[0]); } else { const text = e.dataTransfer.getData('text/plain'); if(text) { configTextarea.value = text; checkDynamicWarnings(); } } });
         
         const savedTheme = localStorage.getItem('noccat_theme');
-        if (savedTheme) { updateFavicon(savedTheme); updateActiveThemeInMenu(savedTheme); }
+        if (savedTheme) { updateFavicon(savedTheme); updateActiveThemeInMenu(savedTheme); document.documentElement.setAttribute('data-theme', savedTheme); }
     });
+
     function parseToDB(text) { const ipRegex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/; text.split('\n').forEach(line => { const match = line.match(ipRegex); if (match) { const host = line.split(/[,\t\s]+/)[0].toLowerCase(); switchDB[host] = match[0]; } }); }
     function generateDBString() { return Object.keys(switchDB).map(host => `${host.toUpperCase()}, ${switchDB[host]}`).join('\n'); }
     function saveDB() { const dbText = document.getElementById('dbInput').value; parseToDB(dbText); localStorage.setItem('noccat_db', dbText); const status = document.getElementById('dbStatus'); status.innerText = `MERGED_&_SAVED_${Object.keys(switchDB).length}_HOSTS`; status.style.color = 'var(--neon-green)'; setTimeout(() => status.style.color = 'var(--accent-green)', 2000); checkDynamicWarnings(); }
@@ -1781,18 +1587,819 @@
     function toggleWrapper(wId, bId, name) { document.querySelectorAll('.readme-wrapper').forEach(w => { if(w.id !== wId) {w.classList.remove('expanded'); document.querySelector(`button[id$="${w.id.replace('Wrapper','Btn')}"]`).innerText = `[ VIEW_${w.id.replace('Wrapper','').toUpperCase()} ]`; } }); const w = document.getElementById(wId); w.classList.toggle('expanded'); document.getElementById(bId).innerText = w.classList.contains('expanded') ? `[ CLOSE_${name} ]` : `[ VIEW_${name} ]`; }
     function toggleAdvOptions() { document.getElementById('advOptionsWrapper').classList.toggle('expanded'); }
     function handleRemoveClick(elem) { if(elem.checked) { if(localStorage.getItem('noccat_suppress_remove_warning') !== 'true') document.getElementById('removeWarningModal').classList.add('visible'); checkDynamicWarnings(); } }
+    function handleMatrixSecChange(elem) { if(elem.value==='remove') { elem.classList.add('danger-mode'); if(localStorage.getItem('noccat_suppress_remove_warning') !== 'true') { currentMatrixTriggerElem=elem; document.getElementById('removeWarningModal').classList.add('visible'); } } else { elem.classList.remove('danger-mode'); } }
     function confirmRemove() { localStorage.setItem('noccat_suppress_remove_warning', 'true'); document.getElementById('removeWarningModal').classList.remove('visible'); checkDynamicWarnings(); }
-    function cancelRemove() { document.getElementById('removeWarningModal').classList.remove('visible'); document.querySelector('input[name="securityMode"][value="leave"]').checked = true; checkDynamicWarnings(); }
-    function clearAll() { configTextarea.value = ""; location.reload(); }
+    function cancelRemove() { document.getElementById('removeWarningModal').classList.remove('visible'); if(currentMatrixTriggerElem){ currentMatrixTriggerElem.value='global'; currentMatrixTriggerElem.classList.remove('danger-mode'); currentMatrixTriggerElem=null; } else { document.querySelector('input[name="securityMode"][value="leave"]').checked = true; checkDynamicWarnings(); } }
+    function clearAll() { document.getElementById('configInput').value = ""; location.reload(); }
     function copyCode(id) { const text = document.getElementById(id).innerText; if(text.startsWith("-- system_idle")) return; navigator.clipboard.writeText(text); const btn = event.target; btn.innerText = "DONE"; setTimeout(() => btn.innerText = "COPY", 1000); }
     function downloadCode(id, suffix) { const text = document.getElementById(id).innerText; if(text.startsWith("-- system_idle")) return; const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type: "text/plain" })); a.download = `${detectedGlobalHostname}_${suffix}.txt`; a.click(); }
     function playCyberBeep() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(), gain = ctx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(880, ctx.currentTime); gain.gain.setValueAtTime(0.05, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1); osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.1); } catch(e) {} }
     function executeWithSound() { playCyberBeep(); generateScript(); }
     function updateCodeDisplay(id, linesId, content) { document.getElementById(id).innerText = content; let lineNumbers = ""; const count = content.split('\n').length; for (let i = 1; i <= count; i++) lineNumbers += i + "\n"; document.getElementById(linesId).innerText = lineNumbers; }
 
-    // --- REAL-TIME WARNING & GENERATOR ---
-    function checkDynamicWarnings() { let text = configTextarea.value.trim(); const allToggles = [document.querySelector('input[name="securityMode"][value="dot1x"]'),document.querySelector('input[name="securityMode"][value="sticky"]'),document.querySelector('input[name="securityMode"][value="remove"]'),document.querySelector('input[name="securityMode"][value="reset"]'),document.getElementById('stpCheckbox'),document.querySelector('input[name="adminState"][value="up"]'),document.querySelector('input[name="adminState"][value="down"]'),document.querySelector('input[name="adminState"][value="bounce"]')]; if(!text) { document.getElementById('executeBtn').disabled = true; document.getElementById('deviceHud').classList.remove('visible'); allToggles.forEach(t => { t.disabled=true; t.closest('label').classList.add('disabled'); }); return; } document.getElementById('executeBtn').disabled = false; allToggles.forEach(t => { t.disabled=false; t.closest('label').classList.remove('disabled'); }); let trunkPorts=[], conflictingSec=[], noSecPorts=[]; let currentHost="Unknown_Switch"; text.split(/(?=^[ \t]*interface\s)/im).forEach(block => { const hMatch=block.match(/^([A-Za-z0-9\-]+)#/im); if(hMatch) currentHost=hMatch[1]; const ifMatch=block.match(/interface\s+([A-Za-z0-9\/\.\-]+)/i); if(ifMatch) { const pName=ifMatch[1], isRaw=/! RAW_MODE_FLAG/.test(block); if (!isRaw && !/switchport\s+mode\s+access/i.test(block)) trunkPorts.push(pName); else if(/switchport\s+port-security/i.test(block) && /dot1x/i.test(block)) conflictingSec.push(pName); else if(!isRaw && !/port-security/i.test(block) && !/dot1x/i.test(block)) noSecPorts.push(pName); } }); detectedGlobalHostname=currentHost; let wHTML=""; if(trunkPorts.length) wHTML+=`<div class="error-box">🛑 Trunk/Uplink: ${trunkPorts.join(', ')} (SAFETY LOCK)</div>`; if(conflictingSec.length) wHTML+=`<div class="error-box">🛑 Dual Security: ${conflictingSec.join(', ')} (RESET DISABLED)</div>`; if(noSecPorts.length) wHTML+=`<div class="nosec-box">⚠️ Unsecured: ${noSecPorts.join(', ')}</div>`; if(forceRawAccess && text.includes("RAW_MODE_FLAG")) wHTML+=`<div class="notice-box">⚠️ RAW Mode: Blind Access Force Enabled</div>`; const wBox=document.getElementById('warningBox'); wBox.innerHTML=wHTML; wBox.style.display=wHTML?"block":"none"; }
-    function generateScript() { /* generator logic preserved but truncated */ updateCodeDisplay('primaryCode', 'primaryLines', "conf t\ninterface Gi1/0/1\n switchport access vlan 100\nend"); updateCodeDisplay('rollbackCode', 'rollbackLines', "conf t\ninterface Gi1/0/1\n switchport access vlan 1\nend"); }
+    // --- FULL REAL-TIME WARNING AND COMPILATION ENGINE RESTORED ---
+    function checkDynamicWarnings() {
+        let configText = document.getElementById('configInput').value;
+        configText = configText.replace(/\r\n/g, '\n');
+        
+        const warningBox = document.getElementById('warningBox');
+        const deviceHud = document.getElementById('deviceHud');
+        const execBtn = document.getElementById('executeBtn');
+        const textarea = document.getElementById('configInput');
+        const expandBtn = document.getElementById('expandBtn');
+        const overrideSection = document.getElementById('advancedOptionsContainer');
+        const overrideTableBody = document.getElementById('overrideTableBody');
+        
+        const lineCount = configText.split('\n').length;
+        const suppressSecWarn = document.getElementById('suppressCheckbox').checked;
+        
+        const dot1xRadio = document.querySelector('input[name="securityMode"][value="dot1x"]');
+        const stickyRadio = document.querySelector('input[name="securityMode"][value="sticky"]');
+        const removeRadio = document.querySelector('input[name="securityMode"][value="remove"]');
+        const resetRadio = document.querySelector('input[name="securityMode"][value="reset"]');
+        const leaveSecRadio = document.querySelector('input[name="securityMode"][value="leave"]');
+        
+        const edgeCheckbox = document.getElementById('stpCheckbox');
+        
+        const upRadio = document.querySelector('input[name="adminState"][value="up"]');
+        const downRadio = document.querySelector('input[name="adminState"][value="down"]');
+        const bounceRadio = document.querySelector('input[name="adminState"][value="bounce"]');
+        const leaveAdminRadio = document.querySelector('input[name="adminState"][value="leave"]');
+        
+        let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
+        let textBlocks = [];
+        let hasRawPorts = false;
+
+        if (isRawModeGlobal && configText.trim() !== "") {
+            let lines = configText.split('\n');
+            lines.forEach(line => {
+                let clean = line.trim();
+                let match = clean.match(/^([A-Za-z]{2,}\s*\d+(?:\/\d+)*(?:\.\d+)?)$/i);
+                if (match) {
+                    textBlocks.push(`interface ${match[1]}\n! RAW_MODE_FLAG`);
+                }
+            });
+            if (textBlocks.length > 0) hasRawPorts = true;
+        } else {
+            textBlocks = configText.split(/(?=^[ \t]*interface\s|^[ \t]*int\s)/im);
+            if (textBlocks.length > 0 && !/^[ \t]*(?:interface|int)\s/im.test(textBlocks[0])) textBlocks.shift();
+        }
+
+        const hasValidInterface = textBlocks.length > 0;
+        
+        if (hasValidInterface) {
+            execBtn.disabled = false;
+            execBtn.classList.add('ready');
+        } else {
+            execBtn.disabled = true;
+            execBtn.classList.remove('ready');
+        }
+
+        if (!configText.trim() || !hasValidInterface) {
+            warningBox.style.display = 'none';
+            deviceHud.classList.remove('visible');
+            overrideSection.style.display = 'none';
+            textarea.dataset.manualCollapse = ""; 
+            if (textarea.classList.contains('expanded')) {
+                textarea.classList.remove('expanded');
+                expandBtn.innerText = "[ EXPAND ]";
+            }
+            
+            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceRadio];
+            allToggles.forEach(t => {
+                t.disabled = true;
+                t.closest('label').classList.add('disabled');
+            });
+            
+            leaveSecRadio.checked = true;
+            leaveAdminRadio.checked = true;
+            edgeCheckbox.checked = false;
+            detectedGlobalHostname = "N0CAT_Script";
+            return;
+        }
+
+        if (lineCount > 8) {
+            if (!textarea.classList.contains('expanded') && !textarea.dataset.manualCollapse) {
+                textarea.classList.add('expanded');
+                expandBtn.innerText = "[ COLLAPSE ]";
+            }
+        } else {
+            textarea.dataset.manualCollapse = ""; 
+            if (textarea.classList.contains('expanded')) {
+                textarea.classList.remove('expanded');
+                expandBtn.innerText = "[ EXPAND ]";
+            }
+        }
+
+        const hostMatches = [...configText.matchAll(/^([A-Za-z0-9\-\_]+)#/gm)];
+        let uniqueHosts = [];
+        
+        hostMatches.forEach(match => {
+            let host = match[1];
+            if (!uniqueHosts.includes(host)) {
+                uniqueHosts.push(host);
+            }
+        });
+
+        if (uniqueHosts.length > 0) {
+            detectedGlobalHostname = uniqueHosts[0]; 
+            let hudHTML = `<span style="opacity: 0.7; margin-right: 5px;">Target${uniqueHosts.length > 1 ? 's' : ''}:</span>`;
+            
+            let hostTags = uniqueHosts.map(hostName => {
+                const lowerHost = hostName.toLowerCase();
+                let targetIp = switchDB[lowerHost] ? switchDB[lowerHost] : "NOT_IN_DB";
+                let ipColor = targetIp === 'NOT_IN_DB' ? 'var(--hl-orange)' : 'var(--neon-green)';
+                
+                return `<span class="host-tag"><strong>${hostName}</strong> <span class="ip-highlight" style="color: ${ipColor}">${targetIp}</span></span>`;
+            });
+            
+            deviceHud.innerHTML = hudHTML + hostTags.join(' ');
+            deviceHud.classList.add('visible');
+        } else {
+            deviceHud.classList.remove('visible');
+            detectedGlobalHostname = hasRawPorts ? "N0CAT_RawList" : "N0CAT_Script";
+            
+            if (hasRawPorts) {
+                deviceHud.innerHTML = `<span style="opacity: 0.7; margin-right: 5px;">Target:</span><span class="host-tag"><strong style="color:var(--hl-yellow)">UNKNOWN (RAW OVERRIDE)</strong></span>`;
+                deviceHud.classList.add('visible');
+            }
+        }
+
+        let totalParsedPorts = 0;
+        let portsWithFullDot1x = 0;
+        let portsWithFullSticky = 0;
+        let portsWithFullEdge = 0;
+        let portsWithShutdown = 0;
+        let portsWithNoShut = 0;
+        let hasAnySecurity = false;
+        let hasActivePorts = false;
+
+        let unsafePorts = [];
+        let shutdownPorts = [];
+        let conflictedPorts = [];
+        let fragmentPorts = [];
+        let noSecPorts = [];
+        
+        let validAccessPortsForGrid = [];
+
+        textBlocks.forEach(block => {
+            const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
+            if (ifMatch) {
+                totalParsedPorts++;
+                let normalizedIf = ifMatch[1].replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te').replace(/\s+/g, '');
+                
+                let isRaw = /! RAW_MODE_FLAG/.test(block);
+                let isAccessMode = isRaw ? true : /switchport\s+mode\s+access/i.test(block);
+                
+                if (!isAccessMode && !unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
+
+                let isShutdown = /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
+                if (isShutdown) {
+                    portsWithShutdown++;
+                    if (!shutdownPorts.includes(normalizedIf)) {
+                        shutdownPorts.push(normalizedIf);
+                    }
+                } else {
+                    portsWithNoShut++;
+                    hasActivePorts = true;
+                }
+
+                let hasStickyMac = /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasPortSec = /(?:^|\n)[ \t]*switchport\s+port-security[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x\s+pae\s+authenticator[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication\s+port-control\s+auto[ \t]*\r?(?:\n|$)/i.test(block);
+
+                let isAnySticky = hasStickyMac || hasPortSec;
+                let isAnyDot1x = hasDot1xPae || hasAuthPortControl;
+
+                if (isAnySticky || isAnyDot1x) {
+                    hasAnySecurity = true;
+                }
+
+                if (hasStickyMac && hasPortSec) portsWithFullSticky++;
+                if (hasDot1xPae && hasAuthPortControl) portsWithFullDot1x++;
+                
+                let hasPortfast = /spanning-tree\s+portfast/i.test(block);
+                let hasBpduguard = /spanning-tree\s+bpduguard/i.test(block);
+                if (hasPortfast && hasBpduguard) portsWithFullEdge++;
+
+                if (isAnySticky && isAnyDot1x && !conflictedPorts.includes(normalizedIf)) {
+                    conflictedPorts.push(normalizedIf);
+                } else if (((hasStickyMac && !hasPortSec) || (!hasStickyMac && hasPortSec) || (hasDot1xPae && !hasAuthPortControl) || (!hasDot1xPae && hasAuthPortControl)) && !fragmentPorts.includes(normalizedIf) && !isRaw) {
+                    fragmentPorts.push(normalizedIf);
+                } else if (!isAnySticky && !isAnyDot1x && !noSecPorts.includes(normalizedIf) && !suppressSecWarn && !isRaw) {
+                    noSecPorts.push(normalizedIf);
+                }
+                
+                if (isAccessMode) {
+                    let vlanMatch = block.match(/switchport\s+access\s+vlan\s+(\d+)/i);
+                    validAccessPortsForGrid.push({
+                        name: normalizedIf,
+                        origVlan: isRaw ? 'UNKNOWN' : (vlanMatch ? vlanMatch[1] : '1 (Default)'),
+                        isDown: isShutdown,
+                        isRaw: isRaw,
+                        hasStickyMac, hasDot1xPae
+                    });
+                }
+            }
+        });
+
+        const selectedSecurityMode = document.querySelector('input[name="securityMode"]:checked').value;
+        const isSecurityModifying = selectedSecurityMode !== 'leave';
+
+        if (totalParsedPorts > 0) {
+            if (portsWithFullDot1x === totalParsedPorts && !hasRawPorts) {
+                dot1xRadio.disabled = true; dot1xRadio.closest('label').classList.add('disabled');
+                if (dot1xRadio.checked) leaveSecRadio.checked = true;
+            } else {
+                dot1xRadio.disabled = false; dot1xRadio.closest('label').classList.remove('disabled');
+            }
+
+            if (portsWithFullSticky === totalParsedPorts && !hasRawPorts) {
+                stickyRadio.disabled = true; stickyRadio.closest('label').classList.add('disabled');
+                if (stickyRadio.checked) leaveSecRadio.checked = true;
+            } else {
+                stickyRadio.disabled = false; stickyRadio.closest('label').classList.remove('disabled');
+            }
+
+            if (hasAnySecurity || hasRawPorts) {
+                removeRadio.disabled = false; removeRadio.closest('label').classList.remove('disabled');
+                resetRadio.disabled = false; resetRadio.closest('label').classList.remove('disabled');
+            } else {
+                removeRadio.disabled = true; removeRadio.closest('label').classList.add('disabled');
+                resetRadio.disabled = true; resetRadio.closest('label').classList.add('disabled');
+                if (removeRadio.checked || resetRadio.checked) leaveSecRadio.checked = true;
+            }
+
+            if (portsWithFullEdge === totalParsedPorts && !hasRawPorts) {
+                edgeCheckbox.disabled = true; edgeCheckbox.closest('label').classList.add('disabled');
+                edgeCheckbox.checked = false;
+            } else {
+                edgeCheckbox.disabled = false; edgeCheckbox.closest('label').classList.remove('disabled');
+            }
+
+            if (portsWithNoShut === totalParsedPorts && !hasRawPorts) {
+                upRadio.disabled = true; upRadio.closest('label').classList.add('disabled');
+                if (upRadio.checked) leaveAdminRadio.checked = true;
+            } else {
+                upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled');
+            }
+
+            if (portsWithShutdown === totalParsedPorts && !hasRawPorts) {
+                downRadio.disabled = true; downRadio.closest('label').classList.add('disabled');
+                if (downRadio.checked) leaveAdminRadio.checked = true;
+            } else {
+                downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled');
+            }
+            
+            if ((portsWithShutdown === totalParsedPorts && !hasRawPorts) || isSecurityModifying) {
+                bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled');
+                if (bounceRadio.checked) leaveAdminRadio.checked = true;
+            } else {
+                bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled');
+            }
+        }
+        
+        if (validAccessPortsForGrid.length > 0) {
+            const currentOverrides = {};
+            document.querySelectorAll('.override-input, .override-select').forEach(inp => {
+                if (inp.value && inp.value !== 'global') {
+                    currentOverrides[inp.id] = inp.value;
+                }
+            });
+            
+            let gridHTML = "";
+            validAccessPortsForGrid.forEach(p => {
+                let safeName = p.name.replace(/[^a-zA-Z0-9]/g, '_');
+                let curSec = p.isRaw ? "UNKNOWN" : (p.hasStickyMac && p.hasDot1xPae ? "DUAL" : p.hasStickyMac ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE");
+                let statusDot = p.isRaw ? '<span style="color:#8b949e">● RAW</span>' : (p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>');
+                
+                gridHTML += `<tr>
+                    <td><strong>${p.name}</strong></td>
+                    <td style="opacity: 0.8; font-size: 10px;">${statusDot} | VLAN: ${p.origVlan} | SEC: ${curSec}</td>
+                    <td><input type="number" id="ovr_vlan_${safeName}" class="override-input" placeholder="Global" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094;"></td>
+                    <td>
+                        <select id="ovr_sec_${safeName}" class="override-select" onchange="handleMatrixSecChange(this)">
+                            <option value="global">Global</option>
+                            <option value="leave">-- (Leave)</option>
+                            <option value="dot1x">DOT1X</option>
+                            <option value="sticky">STICKY</option>
+                            <option value="remove">REMOVE</option>
+                            <option value="reset">RESET</option>
+                        </select>
+                    </td>
+                </tr>`;
+            });
+            overrideTableBody.innerHTML = gridHTML;
+            overrideSection.style.display = 'block';
+            
+            for (let id in currentOverrides) {
+                let el = document.getElementById(id);
+                if (el) {
+                    el.value = currentOverrides[id];
+                    if (el.classList.contains('override-select') && el.value === 'remove') {
+                        el.classList.add('danger-mode');
+                    }
+                }
+            }
+        } else {
+            overrideSection.style.display = 'none';
+            overrideTableBody.innerHTML = "";
+        }
+
+        let warningHTML = "";
+        let baseHasContent = false;
+        
+        if (hasRawPorts) {
+            warningHTML += `<div style="margin-bottom: ${(unsafePorts.length > 0 || shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// ⚠️ BLIND OVERRIDE MODE (RAW PORTS) ⚠️ //////</strong><br><em style="color: var(--hl-yellow);">Idempotency disabled. The engine will forcefully apply your settings without evaluating current states. Rollback scripts will be best-effort.</em><br><label class="raw-force-toggle"><input type="checkbox" ${forceRawAccess ? 'checked' : ''} onchange="updateForceAccess(this.checked)"> Force 'switchport mode access'</label></div>`;
+            baseHasContent = true;
+        }
+
+        if (unsafePorts.length > 0) {
+            warningHTML += `<div class="${baseHasContent ? 'notice-section' : ''}" style="border-top-color: rgba(248, 81, 73, 0.4); margin-bottom: ${(shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// 🛑 CRITICAL SAFETY LOCK 🛑 //////</strong><br>Trunk/Uplink ports detected: <span style="color: #fff; font-weight: bold;">${unsafePorts.join(', ')}</span><br><em style="color: var(--accent-red);">SAFETY LOCK ENGAGED: The engine has completely locked out these ports and will refuse to generate scripts for them.</em></div>`;
+            baseHasContent = true;
+        }
+
+        if (conflictedPorts.length > 0) {
+            warningHTML += `<div class="${baseHasContent ? 'conflict-section' : ''}"><strong style="color: var(--hl-magenta); text-shadow: 0 0 5px rgba(255, 0, 255, 0.4);">////// CONFLICT: DUAL SECURITY DETECTED //////</strong><br>Sticky MAC & 802.1X found on: <span style="color: #fff; font-weight: bold;">${conflictedPorts.join(', ')}</span><br><em style="color: var(--text-main);">Note: Combining 802.1X and Sticky MAC causes severe race conditions. <strong>RESET is disabled for these ports.</strong> Select DOT1X, STICKY, or REMOVE to explicitly overwrite and clean them up.</em></div>`;
+            baseHasContent = true;
+        }
+
+        if (fragmentPorts.length > 0) {
+            warningHTML += `<div class="${baseHasContent ? 'fragment-section' : ''}"><strong style="color: var(--hl-yellow); text-shadow: 0 0 5px rgba(227, 179, 65, 0.4);">////// FRAGMENTED SECURITY CONFIG //////</strong><br>Incomplete security setup on: <span style="color: #fff; font-weight: bold;">${fragmentPorts.join(', ')}</span><br><em style="color: var(--text-main);">Select a Protocol Mode (03) to automatically repair and complete these configurations.</em></div>`;
+            baseHasContent = true;
+        }
+        
+        if (noSecPorts.length > 0) {
+            warningHTML += `<div class="${baseHasContent ? 'nosec-section' : ''}"><strong style="color: var(--hl-cyan); text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);">⚠️ NOTICE: NO PORT SECURITY DETECTED</strong><br>Unsecured ports: <span style="color: #fff; font-weight: bold;">${noSecPorts.join(', ')}</span><br><em style="color: var(--text-main);">Port security is a mandatory config for most ports specially in production use. Proceed with caution.</em></div>`;
+            baseHasContent = true;
+        }
+
+        if (shutdownPorts.length > 0) {
+            warningHTML += `<div class="${baseHasContent ? 'notice-section' : ''}"><strong style="color: var(--hl-orange); text-shadow: 0 0 5px rgba(255, 157, 0, 0.4);">////// NOTICE: SHUTDOWN PORTS DETECTED //////</strong><br>Administratively down: <span style="color: #fff; font-weight: bold;">${shutdownPorts.join(', ')}</span><br><em style="color: var(--text-main);">Set '05 // ADMIN STATE' to UP to explicitly bring them online.</em></div>`;
+        }
+
+        if (warningHTML !== "") {
+            warningBox.style.display = 'block';
+            warningBox.innerHTML = warningHTML;
+            if (unsafePorts.length > 0) warningBox.style.borderColor = 'var(--accent-red)';
+            else if (hasRawPorts) warningBox.style.borderColor = 'var(--hl-yellow)';
+            else if (conflictedPorts.length > 0) warningBox.style.borderColor = 'var(--hl-magenta)';
+            else if (fragmentPorts.length > 0) warningBox.style.borderColor = 'var(--hl-yellow)';
+            else if (noSecPorts.length > 0) warningBox.style.borderColor = 'var(--hl-cyan)';
+            else warningBox.style.borderColor = 'var(--hl-orange)';
+        } else {
+            warningBox.style.display = 'none';
+        }
+    }
+
+    // --- SCRIPT COMPILER LOGIC ---
+    let primaryCompiledPorts = 0;
+    
+    function generateScript() {
+        let configText = document.getElementById('configInput').value;
+        configText = configText.replace(/\r\n/g, '\n');
+        
+        const globalTargetVlan = document.getElementById('vlanInput').value;
+        const globalSecurityMode = document.querySelector('input[name="securityMode"]:checked').value;
+        const applyStp = document.getElementById('stpCheckbox').checked;
+        const adminState = document.querySelector('input[name="adminState"]:checked').value;
+        const slowPaste = document.getElementById('slowPasteCheckbox').checked;
+
+        if (!configText.trim()) return;
+
+        let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
+        let textBlocks = [];
+
+        if (isRawModeGlobal) {
+            let lines = configText.split('\n');
+            lines.forEach(line => {
+                let clean = line.trim();
+                let match = clean.match(/^([A-Za-z]{2,}\s*\d+(?:\/\d+)*(?:\.\d+)?)$/i);
+                if (match) {
+                    textBlocks.push(`interface ${match[1]}\n! RAW_MODE_FLAG`);
+                }
+            });
+        } else {
+            textBlocks = configText.split(/(?=^[ \t]*interface\s|^[ \t]*int\s)/im);
+            if (textBlocks.length > 0 && !/^[ \t]*(?:interface|int)\s/im.test(textBlocks[0])) textBlocks.shift();
+        }
+
+        const interfacesDataMap = {}; 
+        let globalAdds = 0;
+        let globalRemoves = 0;
+        let globalBounces = 0;
+        primaryCompiledPorts = 0;
+
+        textBlocks.forEach(block => {
+            const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
+            if (ifMatch) {
+                let rawIf = ifMatch[1];
+                let normalizedIf = rawIf.replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te').replace(/\s+/g, '');
+                
+                let isRaw = /! RAW_MODE_FLAG/.test(block);
+                let isAccessMode = isRaw ? true : /switchport\s+mode\s+access/i.test(block);
+                
+                let vlanMatch = block.match(/switchport\s+access\s+vlan\s+(\d+)/i);
+                
+                let hasStickyMac = isRaw ? false : /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasPortSec = isRaw ? false : /(?:^|\n)[ \t]*switchport\s+port-security[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasDot1xPae = isRaw ? false : /(?:^|\n)[ \t]*dot1x\s+pae\s+authenticator[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasAuthPortControl = isRaw ? false : /(?:^|\n)[ \t]*authentication\s+port-control\s+auto[ \t]*\r?(?:\n|$)/i.test(block);
+
+                let hasPortfast = isRaw ? false : /spanning-tree\s+portfast/i.test(block);
+                let hasBpduguard = isRaw ? false : /spanning-tree\s+bpduguard/i.test(block);
+                let isShutdown = isRaw ? false : /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
+
+                if (!interfacesDataMap[normalizedIf]) {
+                    interfacesDataMap[normalizedIf] = { 
+                        name: normalizedIf, 
+                        isTrunk: isRaw ? false : !isAccessMode,
+                        isRaw: isRaw,
+                        origVlan: vlanMatch ? vlanMatch[1] : null, 
+                        hasStickyMac, hasPortSec, hasDot1xPae, hasAuthPortControl,
+                        hasPortfast, hasBpduguard, isShutdown
+                    };
+                } else {
+                    if (!isAccessMode && !isRaw) interfacesDataMap[normalizedIf].isTrunk = true;
+                    if (isRaw) interfacesDataMap[normalizedIf].isRaw = true;
+                    if (vlanMatch) interfacesDataMap[normalizedIf].origVlan = vlanMatch[1];
+                    if (hasStickyMac) interfacesDataMap[normalizedIf].hasStickyMac = true;
+                    if (hasPortSec) interfacesDataMap[normalizedIf].hasPortSec = true;
+                    if (hasDot1xPae) interfacesDataMap[normalizedIf].hasDot1xPae = true;
+                    if (hasAuthPortControl) interfacesDataMap[normalizedIf].hasAuthPortControl = true;
+                    if (hasPortfast) interfacesDataMap[normalizedIf].hasPortfast = true;
+                    if (hasBpduguard) interfacesDataMap[normalizedIf].hasBpduguard = true;
+                    if (isShutdown) interfacesDataMap[normalizedIf].isShutdown = true;
+                }
+            }
+        });
+        
+        const interfacesData = Object.values(interfacesDataMap);
+        if (interfacesData.length === 0) {
+            updateCodeDisplay('primaryCode', 'primaryLines', "-- system_idle --");
+            updateCodeDisplay('rollbackCode', 'rollbackLines', "-- system_idle --");
+            
+            document.getElementById('copyPrimaryBtn').disabled = true;
+            document.getElementById('copyRollbackBtn').disabled = true;
+            document.getElementById('dlPrimaryBtn').disabled = true;
+            document.getElementById('dlRollbackBtn').disabled = true;
+            
+            document.getElementById('statusMsg').innerHTML = `STATUS: 0 ELIGIBLE PORTS_PARSED`;
+            return;
+        }
+        
+        const chunkSize = slowPaste ? 2 : 5;
+
+        function getPrimary(iface) {
+            if (iface.isTrunk) return null; 
+
+            let cmds = [];
+            let safeName = iface.name.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            let overrideVlanEl = document.getElementById('ovr_vlan_' + safeName);
+            let actualTargetVlan = (overrideVlanEl && overrideVlanEl.value) ? overrideVlanEl.value : globalTargetVlan;
+            
+            let overrideSecEl = document.getElementById('ovr_sec_' + safeName);
+            let actualSecurityMode = (overrideSecEl && overrideSecEl.value && overrideSecEl.value !== 'global') ? overrideSecEl.value : globalSecurityMode;
+
+            let vlanChanged = actualTargetVlan && actualTargetVlan !== iface.origVlan;
+            let stpChanged = applyStp && (!iface.hasPortfast || !iface.hasBpduguard);
+            
+            let forceUp = adminState === 'up';
+            let forceDown = adminState === 'down';
+            let forceBounce = adminState === 'bounce';
+            let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown) || forceBounce;
+            
+            let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
+            let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
+            let isDual = isCurrentlyDot1x && isCurrentlySticky;
+            
+            let secChanged = false;
+            
+            if (actualSecurityMode === 'dot1x') {
+                if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true;
+            } else if (actualSecurityMode === 'sticky') {
+                if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true;
+            } else if (actualSecurityMode === 'reset') {
+                if ((isCurrentlySticky || isCurrentlyDot1x) && !isDual) secChanged = true;
+            } else if (actualSecurityMode === 'remove') {
+                if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
+            }
+            
+            let rawModeAccessApplies = iface.isRaw && forceRawAccess;
+            
+            if (iface.isRaw) {
+                if (actualSecurityMode === 'remove') secChanged = true;
+                if (actualSecurityMode === 'reset') secChanged = true;
+            }
+
+            let needsBounce = vlanChanged || stpChanged || secChanged || forceBounce;
+
+            if (!needsBounce && !stateChanged && !iface.isRaw) return null;
+            if (iface.isRaw && !vlanChanged && !stpChanged && !secChanged && adminState === 'leave' && !rawModeAccessApplies) return null;
+
+            if (rawModeAccessApplies) cmds.push("switchport mode access");
+
+            if (vlanChanged) cmds.push(`switchport access vlan ${actualTargetVlan}`);
+            if (applyStp) {
+                if (!iface.hasPortfast) cmds.push("spanning-tree portfast");
+                if (!iface.hasBpduguard) cmds.push("spanning-tree bpduguard enable");
+            }
+
+            if (actualSecurityMode === 'dot1x' && secChanged) {
+                if (isCurrentlySticky) {
+                    if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
+                    if (iface.hasPortSec) cmds.push("no switchport port-security");
+                }
+                cmds.push("shut");
+                if (!iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
+                if (!iface.hasAuthPortControl) cmds.push("authentication port-control auto");
+            } else if (actualSecurityMode === 'sticky' && secChanged) {
+                if (isCurrentlyDot1x) {
+                    if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
+                    if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
+                }
+                cmds.push("shut");
+                if (!iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
+                if (!iface.hasPortSec) cmds.push("switchport port-security");
+            } else if (actualSecurityMode === 'reset' && secChanged) {
+                if (isCurrentlySticky) {
+                    if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
+                    if (iface.hasPortSec) cmds.push("no switchport port-security");
+                    cmds.push("shut");
+                    cmds.push("switchport port-security mac-address sticky", "switchport port-security");
+                } else if (isCurrentlyDot1x || iface.isRaw) {
+                    if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
+                    if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
+                    if (iface.isRaw) cmds.push("no switchport port-security mac-address sticky", "no switchport port-security"); 
+                    cmds.push("shut");
+                    cmds.push("dot1x pae authenticator", "authentication port-control auto");
+                }
+            } else if (actualSecurityMode === 'remove' && secChanged) {
+                if (iface.hasStickyMac || iface.isRaw) cmds.push("no switchport port-security mac-address sticky");
+                if (iface.hasPortSec || iface.isRaw) cmds.push("no switchport port-security");
+                if (iface.hasDot1xPae || iface.isRaw) cmds.push("no dot1x pae authenticator");
+                if (iface.hasAuthPortControl || iface.isRaw) cmds.push("no authentication port-control auto");
+                cmds.push("shut");
+            } 
+            
+            if (needsBounce && !cmds.includes("shut") && !iface.isShutdown) {
+                cmds.push("shut");
+            }
+
+            let isShutNow = iface.isShutdown || cmds.includes("shut");
+
+            if (forceDown) {
+                if (!isShutNow) cmds.push("shut");
+            } else if (forceUp) {
+                if (isShutNow) cmds.push("no shut");
+            } else if (forceBounce) {
+                if (!isShutNow) cmds.push("shut");
+                if (cmds[cmds.length - 1] !== "no shut") cmds.push("no shut");
+            } else { 
+                if (!iface.isShutdown && isShutNow) cmds.push("no shut");
+            }
+
+            if (cmds.length >= 2 && cmds[cmds.length - 1] === "shut" && cmds[cmds.length - 2] === "shut") cmds.pop();
+
+            let localBounces = 0;
+            cmds.forEach(cmd => {
+                if (cmd.startsWith("no ")) globalRemoves++;
+                else if (cmd === "shut" || cmd === "no shut") {
+                    if (cmd === "shut") localBounces++;
+                }
+                else globalAdds++;
+            });
+            if(localBounces > 0) globalBounces++;
+
+            return cmds.length ? cmds : null;
+        }
+
+        function getRollback(iface) {
+            if (iface.isTrunk) return null; 
+
+            let cmds = [];
+            let safeName = iface.name.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            let overrideVlanEl = document.getElementById('ovr_vlan_' + safeName);
+            let actualTargetVlan = (overrideVlanEl && overrideVlanEl.value) ? overrideVlanEl.value : globalTargetVlan;
+            
+            let overrideSecEl = document.getElementById('ovr_sec_' + safeName);
+            let actualSecurityMode = (overrideSecEl && overrideSecEl.value && overrideSecEl.value !== 'global') ? overrideSecEl.value : globalSecurityMode;
+
+            let vlanChanged = actualTargetVlan && actualTargetVlan !== iface.origVlan;
+            let stpChanged = applyStp && (!iface.hasPortfast || !iface.hasBpduguard);
+            
+            let forceUp = adminState === 'up';
+            let forceDown = adminState === 'down';
+            let forceBounce = adminState === 'bounce';
+            let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown) || (forceBounce && iface.isShutdown);
+            
+            let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
+            let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
+            
+            let secChanged = false;
+            
+            if (actualSecurityMode === 'dot1x') {
+                if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true;
+            } else if (actualSecurityMode === 'sticky') {
+                if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true;
+            } else if (actualSecurityMode === 'remove') {
+                if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
+            } else if (actualSecurityMode === 'reset') {
+                secChanged = false; 
+            }
+            
+            if (iface.isRaw && (actualSecurityMode === 'remove' || actualSecurityMode === 'reset')) {
+                secChanged = false; 
+            }
+            
+            let rawModeAccessApplies = iface.isRaw && forceRawAccess;
+
+            let needsBounce = vlanChanged || stpChanged || secChanged;
+
+            if (!needsBounce && !stateChanged && !iface.isRaw) return null;
+            if (iface.isRaw && !vlanChanged && !stpChanged && !secChanged && adminState === 'leave' && !rawModeAccessApplies) return null;
+
+            if (rawModeAccessApplies) cmds.push("no switchport mode access");
+
+            if (vlanChanged) cmds.push(iface.origVlan && !iface.isRaw ? `switchport access vlan ${iface.origVlan}` : "no switchport access vlan");
+            if (applyStp) {
+                if (!iface.hasPortfast) cmds.push("no spanning-tree portfast");
+                if (!iface.hasBpduguard) cmds.push("no spanning-tree bpduguard enable");
+            }
+            
+            if (secChanged) {
+                if (actualSecurityMode === 'dot1x') {
+                    if (!iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
+                    if (!iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
+                } else if (actualSecurityMode === 'sticky') {
+                    if (!iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
+                    if (!iface.hasPortSec) cmds.push("no switchport port-security");
+                }
+                
+                cmds.push("shut");
+                
+                if (actualSecurityMode === 'dot1x' && isCurrentlySticky) {
+                    if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
+                    if (iface.hasPortSec) cmds.push("switchport port-security");
+                } else if (actualSecurityMode === 'sticky' && isCurrentlyDot1x) {
+                    if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
+                    if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
+                } else if (actualSecurityMode === 'remove' && !iface.isRaw) {
+                    if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
+                    if (iface.hasPortSec) cmds.push("switchport port-security");
+                    if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
+                    if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
+                }
+            } 
+            
+            let portStateBeforeRollback = forceDown ? "shut" : ((forceUp || forceBounce) ? "no shut" : (iface.isShutdown ? "shut" : "no shut"));
+            
+            if (needsBounce && !cmds.includes("shut") && portStateBeforeRollback !== "shut") {
+                cmds.push("shut");
+            }
+            
+            let isShutNow = (portStateBeforeRollback === "shut") || cmds.includes("shut");
+
+            if (iface.isShutdown) {
+                if (!isShutNow) cmds.push("shut");
+            } else {
+                if (isShutNow) cmds.push("no shut");
+            }
+
+            if (cmds.length >= 2 && cmds[cmds.length - 1] === "shut" && cmds[cmds.length - 2] === "shut") cmds.pop();
+
+            return cmds.length ? cmds : null;
+        }
+
+        function build(fn) {
+            let lines = ["conf t"];
+            let groups = {};
+            let skippedPorts = [];
+            let trunkPorts = [];
+            let hasRaw = false;
+            
+            interfacesData.forEach(d => { 
+                if (d.isTrunk) {
+                    trunkPorts.push(d.name);
+                    return;
+                }
+                if (d.isRaw) hasRaw = true;
+                
+                let c = fn(d); 
+                if (c) { 
+                    let k = c.join('\n'); 
+                    if (!groups[k]) groups[k] = []; 
+                    groups[k].push(d.name); 
+                } else {
+                    skippedPorts.push(d.name);
+                }
+            });
+            let keys = Object.keys(groups);
+            
+            if (!keys.length) return "! NO_CHANGES_REQUIRED\n! All valid pasted ports already match the targeted configuration.";
+            
+            if (trunkPorts.length > 0) lines.unshift(`! SAFETY LOCK: Ignored ${trunkPorts.length} Trunk/Uplink port(s).`);
+            if (skippedPorts.length > 0) lines.unshift(`! NOTE: Skipped ${skippedPorts.length} valid port(s) that already match the target config.`);
+            if (hasRaw && fn === getRollback) lines.unshift(`! WARNING: Rollback for RAW ports is best-effort (defaults applied) as original state was unknown.`);
+            
+            keys.forEach((k, idx) => {
+                let ifaces = groups[k];
+                
+                ifaces.sort((a, b) => a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'}));
+                
+                let aggregatedItems = [];
+                let parsed = ifaces.map(p => {
+                    let match = p.match(/^(.*?)(\d+)$/);
+                    return match ? { original: p, prefix: match[1], port: parseInt(match[2], 10), isMappable: true } : { original: p, isMappable: false };
+                });
+
+                let i = 0;
+                while (i < parsed.length) {
+                    let current = parsed[i];
+                    if (!current.isMappable) {
+                        aggregatedItems.push(current.original);
+                        i++;
+                        continue;
+                    }
+
+                    let startPort = current.port;
+                    let endPort = startPort;
+                    let j = i + 1;
+                    
+                    while (j < parsed.length && parsed[j].isMappable && parsed[j].prefix === current.prefix && parsed[j].port === endPort + 1) {
+                        endPort = parsed[j].port;
+                        j++;
+                    }
+
+                    if (startPort === endPort) {
+                        aggregatedItems.push(current.original);
+                    } else {
+                        aggregatedItems.push(`${current.prefix}${startPort}-${endPort}`);
+                    }
+                    i = j;
+                }
+                
+                for (let i = 0; i < aggregatedItems.length; i += chunkSize) {
+                    let chunk = aggregatedItems.slice(i, i + chunkSize);
+                    let isRange = chunk.length > 1 || chunk[0].includes('-'); 
+                    lines.push(isRange ? `int range ${chunk.join(', ')}` : `int ${chunk[0]}`);
+                    
+                    if (fn === getPrimary) {
+                        let totalPortsInChunk = 0;
+                        chunk.forEach(p => {
+                            if (p.includes('-')) {
+                                let parts = p.split('-');
+                                let start = parseInt(parts[0].match(/\d+$/)[0], 10);
+                                let end = parseInt(parts[1], 10);
+                                totalPortsInChunk += (end - start + 1);
+                            } else {
+                                totalPortsInChunk++;
+                            }
+                        });
+                        primaryCompiledPorts += totalPortsInChunk;
+                    }
+                    
+                    lines.push(k);
+                    lines.push("exit");
+                    if (slowPaste && (idx < keys.length - 1 || i + chunkSize < aggregatedItems.length)) {
+                        lines.push("! --- buffer wait ---");
+                    }
+                }
+            });
+            lines.push("end", "wr", "!");
+            return lines.join('\n');
+        }
+
+        let generatedPrimary = build(getPrimary);
+        let generatedRollback = build(getRollback);
+        
+        updateCodeDisplay('primaryCode', 'primaryLines', generatedPrimary);
+        updateCodeDisplay('rollbackCode', 'rollbackLines', generatedRollback);
+        
+        let hasPrimaryChanges = !generatedPrimary.includes("NO_CHANGES_REQUIRED");
+        
+        document.getElementById('copyPrimaryBtn').disabled = !hasPrimaryChanges;
+        document.getElementById('copyRollbackBtn').disabled = !hasPrimaryChanges;
+        document.getElementById('dlPrimaryBtn').disabled = !hasPrimaryChanges;
+        document.getElementById('dlRollbackBtn').disabled = !hasPrimaryChanges;
+
+        document.getElementById('statusMsg').style.display = 'flex';
+        if (hasPrimaryChanges) {
+            document.getElementById('statusMsg').innerHTML = `
+                <span>STATUS: ${primaryCompiledPorts} PORTS COMPILED_SUCCESSFULLY</span>
+                <span class="diff-stats">
+                    [ <span class="diff-add">+${globalAdds}</span> LINES_ADDED | 
+                    <span class="diff-rem">-${globalRemoves}</span> LINES_REMOVED | 
+                    <span class="diff-bnc">${globalBounces}</span> PORTS_BOUNCED ]
+                </span>
+            `;
+        } else {
+            document.getElementById('statusMsg').innerHTML = `<span>STATUS: 0 ELIGIBLE PORTS_COMPILED</span><span></span>`;
+        }
+    }
 </script>
 </body>
 </html>
