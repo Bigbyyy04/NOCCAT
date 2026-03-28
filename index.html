@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>N0<AT - Config Automation Tool</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏳</text></svg>">
+    <link id="dynamicFavicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐈‍⬛</text></svg>">
     <style>
         /* --- CORE CSS VARIABLES (Dark Mode Default) --- */
         :root {
@@ -24,49 +24,49 @@
             --code-bg: #010409;
             --particle-color: rgba(88, 166, 255, 0.4);
             --particle-line: rgba(88, 166, 255, 0.25);
-            --p-matrix-title: #e3b341; /* Orange/Gold */
+            --p-matrix-title: #e3b341; 
         }
 
         /* --- THEME: FABULOUS NEKO (Dark Cloud Inverse) --- */
         [data-theme="fab-neko"] {
-            --bg-color: #120c1a; /* Pure deep violet void */
-            --card-bg: #2d203f; /* Lighter purple paneling */
-            --border-color: #8c5b9c; /* Soft lilac border */
-            --text-main: #e6d9e8; /* Soft pink-white text to reduce strain */
+            --bg-color: #120c1a; 
+            --card-bg: #2d203f; 
+            --border-color: #8c5b9c; 
+            --text-main: #e6d9e8; 
             --btn-text: #ffffff;
-            --accent-blue: #8bc8f7; /* Sky blue */
-            --accent-green: #c45b9a; /* Deep magenta/pink */
-            --neon-green: #f062f0; /* Vibrant fuchsia */
-            --accent-purple: #c084cf; /* Bright lilac */
-            --accent-red: #da5560; /* Rose Red */
-            --hl-orange: #f8a6c8; /* Light Rose */
-            --hl-yellow: #e6a0e6; /* Soft Fuchsia */
-            --hl-cyan: #a3d9ff; /* Bright sky blue */
-            --code-bg: #1e152a; /* Deep violet code background */
+            --accent-blue: #8bc8f7; 
+            --accent-green: #c45b9a; 
+            --neon-green: #f062f0; 
+            --accent-purple: #c084cf; 
+            --accent-red: #da5560; 
+            --hl-orange: #f8a6c8; 
+            --hl-yellow: #e6a0e6; 
+            --hl-cyan: #a3d9ff; 
+            --code-bg: #1e152a; 
             --particle-color: rgba(192, 132, 207, 0.3);
             --particle-line: rgba(192, 132, 207, 0.2);
-            --p-matrix-title: #f8a6c8; /* Light Rose */
+            --p-matrix-title: #f8a6c8; 
         }
 
         /* --- THEME: TIMELINE NEKO (Retro TVA) --- */
         [data-theme="timeline-neko"] {
-            --bg-color: #3a281e; /* Deep retro brown night sky */
-            --card-bg: #5c473c; /* Slightly lighter retro brown paneling */
-            --border-color: #c18e6e; /* Warm copper/soft orange border */
-            --text-main: #fdfaf4; /* Cream/aged paper text (No pure white!) */
-            --btn-text: #fdfaf4; /* Cream for deep buttons */
-            --accent-blue: #e6b17a; /* Soft amber/gold */
-            --accent-green: #ff8c00; /* Bright retro orange/amber for active states */
-            --neon-green: #ffaa33; /* Richer retro amber glow */
-            --accent-purple: #bd693c; /* Burnt Sienna */
-            --accent-red: #b03131; /* Deep Crimson Sienna Red */
-            --hl-orange: #ff7f00; /* Pure orange syntax */
-            --hl-yellow: #daa520; /* Gold syntax */
-            --hl-cyan: #1e605e; /* Deep retro teal syntax */
-            --code-bg: #f1eae0; /* Aged paper code background */
+            --bg-color: #3a281e; 
+            --card-bg: #5c473c; 
+            --border-color: #c18e6e; 
+            --text-main: #fdfaf4; 
+            --btn-text: #fdfaf4; 
+            --accent-blue: #e6b17a; 
+            --accent-green: #ff8c00; 
+            --neon-green: #ffaa33; 
+            --accent-purple: #bd693c; 
+            --accent-red: #b03131; 
+            --hl-orange: #ff7f00; 
+            --hl-yellow: #daa520; 
+            --hl-cyan: #1e605e; 
+            --code-bg: #f1eae0; 
             --particle-color: rgba(255, 170, 51, 0.2);
             --particle-line: rgba(255, 170, 51, 0.15);
-            --p-matrix-title: #ff7f00; /* Burnt Sienna from palette */
+            --p-matrix-title: #ff7f00; 
         }
 
         /* Update Syntax coloring for Original Output blocks */
@@ -86,11 +86,11 @@
         [data-theme="fab-neko"] .sample-code strong { color: var(--text-main); }
         [data-theme="fab-neko"] .sample-code code { color: var(--text-main); }
         
-        [data-theme="timeline-neko"] .sample-code div { color: #3a281e; } /* Dark brown */
-        [data-theme="timeline-neko"] .sample-code span[style*="color: #ff9d00;"] { color: #ff7f00 !important; } /* Burnt Orange */
-        [data-theme="timeline-neko"] .sample-code span[style*="color: #00ffff;"] { color: #1e605e !important; } /* Retro Teal */
-        [data-theme="timeline-neko"] .sample-code span[style*="color: #ffff00;"] { color: #ffaa33 !important; } /* Retro Amber */
-        [data-theme="timeline-neko"] .sample-code span[style*="color: #ff00ff;"] { color: #e6b17a !important; } /* Burnt Sienna */
+        [data-theme="timeline-neko"] .sample-code div { color: #3a281e; } 
+        [data-theme="timeline-neko"] .sample-code span[style*="color: #ff9d00;"] { color: #ff7f00 !important; } 
+        [data-theme="timeline-neko"] .sample-code span[style*="color: #00ffff;"] { color: #1e605e !important; } 
+        [data-theme="timeline-neko"] .sample-code span[style*="color: #ffff00;"] { color: #ffaa33 !important; } 
+        [data-theme="timeline-neko"] .sample-code span[style*="color: #ff00ff;"] { color: #e6b17a !important; } 
         [data-theme="timeline-neko"] .sample-code strong { color: #3a281e; }
         [data-theme="timeline-neko"] .sample-code code { color: #3a281e; }
 
@@ -103,7 +103,7 @@
             display: flex;
             justify-content: center;
             overflow-x: hidden;
-            overflow-y: scroll; /* Permanently reserves scrollbar space to prevent UI shifting */
+            overflow-y: scroll; 
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
@@ -147,7 +147,7 @@
         }
         
         [data-theme="fab-neko"] h2 { color: var(--text-main); }
-        [data-theme="timeline-neko"] h2 { color: var(--accent-blue); } /* Retro Gold */
+        [data-theme="timeline-neko"] h2 { color: var(--accent-blue); } 
 
         .logo-text {
             letter-spacing: 1px;
@@ -171,9 +171,9 @@
         }
         
         [data-theme="timeline-neko"] .logo-accent {
-            background-color: var(--accent-green); /* Retro Orange */
+            background-color: var(--accent-green); 
             box-shadow: 0 0 12px rgba(255, 140, 0, 0.6);
-            color: var(--bg-color); /* Deep Brown */
+            color: var(--bg-color); 
         }
 
         .version-tag {
@@ -190,8 +190,8 @@
         .qol-menu {
             position: relative;
             display: inline-block;
-            align-self: center; /* Aligns smoothly with the title */
-            padding-bottom: 10px; /* Invisible bridge to prevent hover loss */
+            align-self: center; 
+            padding-bottom: 10px; 
             margin-bottom: -10px;
         }
         
@@ -199,14 +199,14 @@
             background: transparent;
             color: var(--text-main);
             border: 1px solid var(--border-color);
-            padding: 4px 8px; /* Shrunk padding */
-            font-size: 14px; /* Shrunk icon */
+            padding: 4px 8px; 
+            font-size: 14px; 
             cursor: pointer;
             border-radius: 4px;
             transition: 0.3s ease;
             box-sizing: border-box;
             line-height: 1;
-            opacity: 0.5; /* Made it less dominant */
+            opacity: 0.5; 
         }
         
         .qol-menu-btn:hover {
@@ -233,7 +233,7 @@
             position: absolute;
             top: 100%;
             left: 0;
-            margin-top: 0; /* Removed the gap that broke hover */
+            margin-top: 0; 
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
@@ -305,7 +305,7 @@
         }
         
         [data-theme="timeline-neko"] .tz-widget {
-            background: rgba(92, 71, 60, 0.85); /* Card BG */
+            background: rgba(92, 71, 60, 0.85); 
             box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
         }
 
@@ -352,6 +352,7 @@
             border-bottom: 1px solid var(--accent-blue); 
             margin-bottom: -1px;
         }
+        [data-theme="fab-neko"] .tz-time-input:focus { color: var(--text-main); }
 
         .tz-select {
             background: transparent;
@@ -373,7 +374,7 @@
         }
         
         [data-theme="timeline-neko"] .tz-select {
-            color: var(--accent-green); /* Retro Orange */
+            color: var(--accent-green); 
             text-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
         }
 
@@ -429,7 +430,7 @@
             transition: background-color 0.3s;
         }
         [data-theme="fab-neko"] .form-group { background: rgba(45, 32, 63, 0.85); }
-        [data-theme="timeline-neko"] .form-group { background: rgba(92, 71, 60, 0.85); } /* Card BG */
+        [data-theme="timeline-neko"] .form-group { background: rgba(92, 71, 60, 0.85); } 
 
         .input-section { margin-bottom: 15px; position: relative; }
 
@@ -451,7 +452,7 @@
         }
         
         .header-row label { margin-bottom: 0; }
-        [data-theme="timeline-neko"] label { color: var(--text-main); } /* Cream */
+        [data-theme="timeline-neko"] label { color: var(--text-main); } 
 
         .expand-btn {
             background: transparent;
@@ -547,7 +548,7 @@
             box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
         }
         [data-theme="timeline-neko"] .sample-code {
-            color: #3a281e; /* Deep Brown */
+            color: #3a281e; 
             box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
         }
 
@@ -576,8 +577,8 @@
             scrollbar-color: var(--border-color) var(--code-bg);
         }
         [data-theme="timeline-neko"] textarea {
-            background: #f1eae0; /* Aged Paper */
-            color: #3a281e; /* Deep Brown */
+            background: #f1eae0; 
+            color: #3a281e; 
             scrollbar-color: var(--border-color) #f1eae0;
         }
 
@@ -714,8 +715,8 @@
         }
         
         [data-theme="timeline-neko"] .radio-group label:has(input:checked), [data-theme="timeline-neko"] .checkbox-group label:has(input:checked) {
-            border-color: var(--accent-green); /* Retro Orange */
-            color: #3a281e; /* Deep Brown */
+            border-color: var(--accent-green); 
+            color: #3a281e; 
             background-color: var(--accent-green);
             box-shadow: 0 0 12px rgba(255, 140, 0, 0.6);
         }
@@ -790,8 +791,8 @@
             color: var(--hl-yellow);
         }
         [data-theme="timeline-neko"] input[type="number"] {
-            background: #f1eae0; /* Aged Paper */
-            color: #ff7f00; /* Burnt Orange */
+            background: #f1eae0; 
+            color: #ff7f00; 
         }
 
         /* --- PER-PORT OVERRIDE TABLE CSS --- */
@@ -826,7 +827,7 @@
             z-index: 10;
         }
         [data-theme="fab-neko"] .override-table th { background: rgba(28, 18, 38, 0.95); }
-        [data-theme="timeline-neko"] .override-table th { background: rgba(92, 71, 60, 0.95); color: var(--text-main); } /* Cream */
+        [data-theme="timeline-neko"] .override-table th { background: rgba(92, 71, 60, 0.95); color: var(--text-main); } 
 
         .override-table td {
             padding: 6px 12px;
@@ -864,7 +865,7 @@
 
         .override-input::placeholder { color: #484f58; font-style: italic; }
         [data-theme="fab-neko"] .override-input::placeholder { color: #8c5b9c; }
-        [data-theme="timeline-neko"] .override-input::placeholder { color: #8a5a41; } /* Burnt Sienna */
+        [data-theme="timeline-neko"] .override-input::placeholder { color: #8a5a41; } 
         
         .override-select {
             background: rgba(1, 4, 9, 0.8);
@@ -1174,7 +1175,7 @@
             backdrop-filter: blur(2px);
         }
         [data-theme="fab-neko"] .code-window { background: rgba(18, 12, 26, 0.85); }
-        [data-theme="timeline-neko"] .code-window { background: rgba(58, 40, 30, 0.85); } /* Deep Brown */
+        [data-theme="timeline-neko"] .code-window { background: rgba(58, 40, 30, 0.85); } 
 
         .line-numbers {
             padding: 10px 8px;
@@ -1272,14 +1273,14 @@
             <button class="qol-menu-btn" title="Quality of Life Settings">⚙️</button>
             <div class="qol-dropdown-content" id="qolDropdown">
                 <button onclick="changeTheme('dark')" id="theme-dark" class="active">Theme: Dark (Default)</button>
-                <button onclick="changeTheme('fab-neko')" id="theme-fab-neko">Theme: Fabulous Neko 🐈‍⬛</button>
+                <button onclick="changeTheme('fab-neko')" id="theme-fab-neko">Theme: Fabulous Neko 🐈</button>
                 <button onclick="changeTheme('timeline-neko')" id="theme-timeline-neko">Theme: Timeline NEKO ⏳</button>
             </div>
         </div>
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v8.8 Timeline Neko Fixes</span>
+            <span class="version-tag">// Configuration Automation Tool // v8.9 Omni-Timeline Update</span>
         </h2>
         
         <div class="tz-widget">
@@ -1604,11 +1605,21 @@
 </div>
 
 <script>
-    // --- THEME ENGINE ---
+    // --- THEME ENGINE & FAVICON UPDATE ---
+    function updateFavicon(theme) {
+        const favicon = document.getElementById('dynamicFavicon');
+        let iconChar = '🐈‍⬛'; 
+        if (theme === 'fab-neko') iconChar = '🐈';
+        if (theme === 'timeline-neko') iconChar = '⏳';
+        
+        favicon.href = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${iconChar}</text></svg>`;
+    }
+
     function changeTheme(themeName) {
         document.documentElement.setAttribute('data-theme', themeName);
         localStorage.setItem('noccat_theme', themeName);
         updateActiveThemeInMenu(themeName);
+        updateFavicon(themeName);
     }
     
     function updateActiveThemeInMenu(themeName) {
@@ -1744,21 +1755,27 @@
         generateScript();
     }
 
-    // --- NETWORK BACKGROUND CANVAS ENGINE ---
+    // --- DUAL-CORE HOLOGRAM ENGINE (Network + Timeline) ---
     (function() {
         const canvas = document.getElementById('networkBg');
         const ctx = canvas.getContext('2d');
         let width, height;
-        let particles = [];
         
+        // Network Mode Variables
+        let particles = [];
         const connectionDistance = 140;
         const particleCount = 80;
         const speed = 0.3;
+
+        // Timeline Mode Variables
+        let timelineBranches = [];
+        let timelineTime = 0;
 
         function initCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             particles = [];
+            timelineBranches = [];
             for (let i = 0; i < particleCount; i++) {
                 particles.push(new Particle());
             }
@@ -1775,7 +1792,6 @@
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
-                
                 if (this.x < 0) this.x = width;
                 if (this.x > width) this.x = 0;
                 if (this.y < 0) this.y = height;
@@ -1791,9 +1807,7 @@
             }
         }
 
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            
+        function drawNetwork() {
             const rootStyles = getComputedStyle(document.documentElement);
             const lColor = rootStyles.getPropertyValue('--particle-line').trim() || 'rgba(88, 166, 255, 0.25)';
             const rgbMatch = lColor.match(/rgba?\((\d+,\s*\d+,\s*\d+)/);
@@ -1821,6 +1835,116 @@
                     }
                 }
             }
+        }
+
+        function drawTimeline() {
+            timelineTime += 0.02;
+            let centerY = height / 2;
+            
+            // 1. Draw Sacred Timeline Bundle
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = "rgba(255, 170, 51, 0.3)";
+            
+            for (let i = 0; i < 10; i++) {
+                ctx.beginPath();
+                let phase = timelineTime * (1 + i * 0.1);
+                let yOffset = Math.sin(phase) * (8 + i * 1.5);
+                ctx.moveTo(0, centerY + yOffset);
+                
+                for (let x = 0; x <= width; x += 50) {
+                    let y = centerY + yOffset + Math.sin(x * 0.005 + phase) * 15;
+                    ctx.lineTo(x, y);
+                }
+                
+                ctx.strokeStyle = `rgba(255, ${180 + i*5}, ${50 + i*10}, 0.2)`;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
+            ctx.shadowBlur = 0;
+
+            // 2. Spawn and Draw Branches
+            if (Math.random() < 0.02 && timelineBranches.length < 12) {
+                timelineBranches.push({
+                    x: width * 0.2 + Math.random() * width * 0.5, 
+                    y: centerY,
+                    dir: Math.random() > 0.5 ? 1 : -1,
+                    spread: 60 + Math.random() * 120, 
+                    progress: 0,
+                    maxProgress: width,
+                    speed: 4 + Math.random() * 4,
+                    life: 1.0,
+                    color: Math.random() > 0.85 ? 'rgba(218, 85, 96, ' : 'rgba(255, 140, 0, ' // Occasional redline
+                });
+            }
+
+            for (let i = timelineBranches.length - 1; i >= 0; i--) {
+                let b = timelineBranches[i];
+                b.progress += b.speed;
+                
+                if (b.progress > b.maxProgress) {
+                    b.life -= 0.015; 
+                }
+                
+                if (b.life <= 0) {
+                    timelineBranches.splice(i, 1);
+                    continue;
+                }
+
+                ctx.beginPath();
+                ctx.moveTo(b.x, b.y);
+                
+                let cp1x = b.x + 100;
+                let cp1y = b.y;
+                let cp2x = b.x + 150;
+                let cp2y = b.y + b.spread * b.dir;
+                let endX = b.x + 250;
+                let endY = b.y + b.spread * b.dir;
+                
+                let drawLength = Math.min(b.progress, width - b.x);
+                let currentX = b.x;
+                
+                for (let step = 0; step <= drawLength; step += 15) {
+                    let pct = step / 250; 
+                    let px, py;
+                    if (step <= 250) {
+                        let inv = 1 - pct;
+                        px = inv*inv*inv*b.x + 3*inv*inv*pct*cp1x + 3*inv*pct*pct*cp2x + pct*pct*pct*endX;
+                        py = inv*inv*inv*b.y + 3*inv*inv*pct*cp1y + 3*inv*pct*pct*cp2y + pct*pct*pct*endY;
+                    } else {
+                        px = b.x + step;
+                        py = endY + Math.sin((px * 0.01) + timelineTime) * 10;
+                    }
+                    ctx.lineTo(px, py);
+                }
+
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = b.color + (b.life * 0.5) + ')';
+                ctx.strokeStyle = b.color + b.life + ')';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        let currentMode = 'dark';
+        
+        function animate() {
+            const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+            
+            // Re-init canvas elements slightly if theme forcefully jumps
+            if (theme !== currentMode) {
+                if (theme === 'timeline-neko') timelineBranches = [];
+                currentMode = theme;
+            }
+            
+            ctx.clearRect(0, 0, width, height);
+
+            if (theme === 'timeline-neko') {
+                drawTimeline();
+            } else {
+                drawNetwork();
+            }
+            
             requestAnimationFrame(animate);
         }
         
@@ -1954,8 +2078,9 @@
             localStorage.removeItem('noccat_tz_24h');
             localStorage.removeItem('noccat_theme');
             
-            document.documentElement.setAttribute('data-theme', 'dark');
+            document.documentElement.removeAttribute('data-theme');
             updateActiveThemeInMenu('dark');
+            updateFavicon('dark');
             
             document.getElementById('dbInput').value = "";
             switchDB = {};
