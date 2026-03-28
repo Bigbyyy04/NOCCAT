@@ -309,7 +309,7 @@
             border-radius: 4px;
             font-family: "Courier New", Courier, monospace;
             color: #79c0ff;
-            white-space: normal; /* Fixed: Ignoring code indentations */
+            white-space: normal; 
             margin-bottom: 15px;
             font-size: 11.5px;
             line-height: 1.4;
@@ -701,6 +701,24 @@
         .conflict-section { border-top: 1px solid rgba(255, 0, 255, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
         .fragment-section { border-top: 1px solid rgba(227, 179, 65, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
         .nosec-section { border-top: 1px solid rgba(0, 255, 255, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
+        
+        .raw-force-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            cursor: pointer;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(227, 179, 65, 0.3);
+            transition: 0.2s;
+        }
+        .raw-force-toggle:hover {
+            background: rgba(227, 179, 65, 0.1);
+        }
+        .raw-force-toggle input { cursor: pointer; }
 
         /* SCRIPT BOXES */
         .script-header {
@@ -829,7 +847,7 @@
     <div class="top-bar">
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v8.3 Omni-Format Update</span>
+            <span class="version-tag">// Configuration Automation Tool // v8.4 Omni-Persistence</span>
         </h2>
         
         <div class="tz-widget">
@@ -837,7 +855,7 @@
             <div id="liveIndicator" class="live-dot pulse" onclick="resetToLiveTime()" title="LIVE CLOCK (Click to resume)"></div>
             
             <select id="sourceTzSelector" class="tz-select source-tz" onchange="updateClocks()">
-                <option value="Local" selected>LOCAL</option>
+                <option value="Local">LOCAL</option>
                 <option value="UTC">UTC</option>
                 <option value="America/New_York">EST</option>
                 <option value="America/Los_Angeles">PST</option>
@@ -853,7 +871,7 @@
             <span style="opacity: 0.3; margin: 0 4px;">|</span>
             
             <select id="tzSelector" class="tz-select" onchange="updateClocks()">
-                <option value="UTC" selected>UTC</option>
+                <option value="UTC">UTC</option>
                 <option value="Local">LOCAL</option>
                 <option value="America/New_York">EST</option>
                 <option value="America/Los_Angeles">PST</option>
@@ -1090,7 +1108,7 @@
 
             <h3>🚨 3. Real-Time Dynamic Warning Scanner</h3>
             <ul>
-                <li><strong style="color: var(--hl-yellow);">Raw Port List Notice (Yellow):</strong> Alerts the engineer when Blind Override Mode is actively engaged.</li>
+                <li><strong style="color: var(--hl-yellow);">Raw Port List Notice (Yellow):</strong> Alerts the engineer when Blind Override Mode is actively engaged. Includes a quick-toggle to force <code>switchport mode access</code> onto unknown blind targets.</li>
                 <li><strong style="color: var(--accent-red);">Critical Warning (Red):</strong> Detects Trunk/Uplink ports (missing <code>switchport mode access</code>) and executes a complete script lockout for those specific ports.</li>
                 <li><strong style="color: var(--hl-magenta);">Dual-Security Conflict (Magenta):</strong> Detects ports infected with both 802.1X and Sticky MAC. Blocks "RESET" to force explicit protocol cleanup.</li>
                 <li><strong style="color: var(--hl-yellow);">Fragmented Config (Yellow):</strong> Detects partial security templates (e.g., missing base commands) and prompts for repair.</li>
@@ -1104,7 +1122,7 @@
                 <li><strong>Admin State Override:</strong> Includes UP (<code>no shut</code>), DWN (<code>shut</code>), BNC (explicit <code>shut</code>/<code>no shut</code> bounce), and LEAVE (preserve) toggles. Rollback intelligently reverses any forced state changes.</li>
                 <li><strong>Cross-Panel Locking & Smart Idempotency:</strong> Modifying security automatically locks the Bounce button. UI buttons gray out if the engine detects the config already meets targeted conditions natively.</li>
                 <li><strong>Omni-Drop Zone:</strong> Supports drag-and-drop ingestion of raw text highlights, IDE tabs, or `.txt` log files directly into the UI. Direct `[ DOWNLOAD ]` buttons export scripts named intelligently after the target hostname.</li>
-                <li><strong>Omni-Chronos Module:</strong> A fully unrestricted, text-parseable dual-world clock. Click the `[ 24H ]` toggle to force 12/24 hour display regardless of OS formatting rules. Type any custom time (e.g. "16:00" or "4pm") to intelligently offset target timezones for rapid NOC planning.</li>
+                <li><strong>Omni-Chronos Persistent Module:</strong> A fully unrestricted, text-parseable dual-world clock that caches your preferred timezone and 12H/24H format to local storage. Type any custom time (e.g. "16:00" or "4pm") to intelligently offset target timezones for rapid NOC planning.</li>
                 <li><strong>Haptic/Audio Engine:</strong> Triggers synthesized Web Audio confirmation on execution. Includes Dry Run Diff visualizer in the terminal output status string. Includes interactive dynamic network canvas background.</li>
             </ul>
 
@@ -1163,10 +1181,12 @@
     // --- REAL-TIME CLOCK LOGIC (OMNI-CHRONOS MODULE) ---
     let isLiveTime = true;
     let is24Hour = true;
+    let forceRawAccess = true; // Raw port mode switchport access toggle
     
     function toggleTimeFormat() {
         is24Hour = !is24Hour;
         document.getElementById('fmtToggleBtn').innerText = is24Hour ? "[ 24H ]" : "[ 12H ]";
+        localStorage.setItem('noccat_tz_24h', is24Hour); // CACHE SAVE
         
         // If in planning mode, smart-convert whatever text is currently in the box to the new format
         if (!isLiveTime) {
@@ -1199,8 +1219,15 @@
     
     function updateClocks() {
         const timeInput = document.getElementById('localTimeInput');
-        const srcTz = document.getElementById('sourceTzSelector').value;
-        const tgtTz = document.getElementById('tzSelector').value;
+        const srcSelector = document.getElementById('sourceTzSelector');
+        const tgtSelector = document.getElementById('tzSelector');
+        
+        const srcTz = srcSelector.value;
+        const tgtTz = tgtSelector.value;
+        
+        // CACHE SAVE
+        localStorage.setItem('noccat_tz_src', srcTz);
+        localStorage.setItem('noccat_tz_tgt', tgtTz);
         
         const formatOpts = { 
             hour12: !is24Hour, 
@@ -1261,7 +1288,6 @@
             dot.setAttribute('title', 'PLANNING MODE: Click to resume live clock');
             
             const timeInput = document.getElementById('localTimeInput');
-            // Select all text for easy overwrite
             timeInput.select();
         }
     }
@@ -1275,8 +1301,10 @@
         updateClocks();
     }
     
-    updateClocks();
-    setInterval(updateClocks, 1000);
+    function updateForceAccess(isChecked) {
+        forceRawAccess = isChecked;
+        generateScript();
+    }
 
     // --- NETWORK BACKGROUND CANVAS ENGINE ---
     (function() {
@@ -1285,7 +1313,6 @@
         let width, height;
         let particles = [];
         
-        // Settings
         const connectionDistance = 140;
         const particleCount = 80;
         const speed = 0.3;
@@ -1357,12 +1384,29 @@
         animate();
     })();
 
-    // --- LOCAL DATABASE LOGIC ---
+    // --- LOCAL DATABASE & CACHE INIT LOGIC ---
     let switchDB = {};
     let detectedGlobalHostname = "N0CAT_Script"; 
     let currentMatrixTriggerElem = null; 
 
     window.addEventListener('load', function() {
+        // Load Timezone Caches
+        const savedSrcTz = localStorage.getItem('noccat_tz_src');
+        if (savedSrcTz) document.getElementById('sourceTzSelector').value = savedSrcTz;
+        
+        const savedTgtTz = localStorage.getItem('noccat_tz_tgt');
+        if (savedTgtTz) document.getElementById('tzSelector').value = savedTgtTz;
+
+        const saved24h = localStorage.getItem('noccat_tz_24h');
+        if (saved24h !== null) {
+            is24Hour = saved24h === 'true';
+            document.getElementById('fmtToggleBtn').innerText = is24Hour ? "[ 24H ]" : "[ 12H ]";
+        }
+        
+        updateClocks();
+        setInterval(updateClocks, 1000);
+        
+        // Load Switch DB
         const savedDB = localStorage.getItem('noccat_db');
         if (savedDB) {
             parseToDB(savedDB);
@@ -1370,7 +1414,7 @@
             document.getElementById('dbStatus').innerText = `STATUS: LOADED_${Object.keys(switchDB).length}_HOSTS`;
         }
         
-        // Setup Universal Drag and Drop for Files & Raw Text
+        // Setup Drag and Drop
         const configTextarea = document.getElementById('configInput');
         configTextarea.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -1458,6 +1502,9 @@
         if(confirm("Are you sure you want to wipe the Local Browser Database AND all saved preferences?")) {
             localStorage.removeItem('noccat_db');
             localStorage.removeItem('noccat_suppress_remove_warning'); 
+            localStorage.removeItem('noccat_tz_src');
+            localStorage.removeItem('noccat_tz_tgt');
+            localStorage.removeItem('noccat_tz_24h');
             document.getElementById('dbInput').value = "";
             switchDB = {};
             document.getElementById('dbStatus').innerText = "STATUS: MEMORY_WIPED";
@@ -1479,7 +1526,6 @@
         textarea.classList.toggle('expanded');
         btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]";
         
-        // Remember if user manually collapsed a long log so we don't fight them later
         if (!textarea.classList.contains('expanded') && textarea.value.split('\n').length > 8) {
             textarea.dataset.manualCollapse = "true";
         } else {
@@ -1683,7 +1729,6 @@
     // --- REAL-TIME WARNING, HUD, OVERRIDE GRID & BUTTON VALIDATION ---
     function checkDynamicWarnings() {
         let configText = document.getElementById('configInput').value;
-        // Normalize newlines for strict regex parsing
         configText = configText.replace(/\r\n/g, '\n');
         
         const warningBox = document.getElementById('warningBox');
@@ -1719,7 +1764,6 @@
             let lines = configText.split('\n');
             lines.forEach(line => {
                 let clean = line.trim();
-                // Matches formats like Gi1/0/1, Fa0/1, Eth1/1.10
                 let match = clean.match(/^([A-Za-z]{2,}\s*\d+(?:\/\d+)*(?:\.\d+)?)$/i);
                 if (match) {
                     textBlocks.push(`interface ${match[1]}\n! RAW_MODE_FLAG`);
@@ -1741,7 +1785,6 @@
             execBtn.classList.remove('ready');
         }
 
-        // Failsafe: Re-lock everything if input is empty
         if (!configText.trim() || !hasValidInterface) {
             warningBox.style.display = 'none';
             deviceHud.classList.remove('visible');
@@ -1859,7 +1902,7 @@
                 let isAnySticky = hasStickyMac || hasPortSec;
                 let isAnyDot1x = hasDot1xPae || hasAuthPortControl;
 
-                if (isAnySticky || isAnyDot1x || isRaw) {
+                if (isAnySticky || isAnyDot1x) {
                     hasAnySecurity = true;
                 }
 
@@ -1985,7 +2028,6 @@
                 let el = document.getElementById(id);
                 if (el) {
                     el.value = currentOverrides[id];
-                    // Re-apply glitch style if remove was previously selected
                     if (el.classList.contains('override-select') && el.value === 'remove') {
                         el.classList.add('danger-mode');
                     }
@@ -2000,7 +2042,7 @@
         let baseHasContent = false;
         
         if (hasRawPorts) {
-            warningHTML += `<div style="margin-bottom: ${(unsafePorts.length > 0 || shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// ⚠️ BLIND OVERRIDE MODE (RAW PORTS) ⚠️ //////</strong><br><em style="color: var(--hl-yellow);">Idempotency disabled. The engine will forcefully apply your settings without evaluating current states. Rollback scripts will be best-effort.</em></div>`;
+            warningHTML += `<div style="margin-bottom: ${(unsafePorts.length > 0 || shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// ⚠️ BLIND OVERRIDE MODE (RAW PORTS) ⚠️ //////</strong><br><em style="color: var(--hl-yellow);">Idempotency disabled. The engine will forcefully apply your settings without evaluating current states. Rollback scripts will be best-effort.</em><br><label class="raw-force-toggle"><input type="checkbox" ${forceRawAccess ? 'checked' : ''} onchange="updateForceAccess(this.checked)"> Force 'switchport mode access'</label></div>`;
             baseHasContent = true;
         }
 
@@ -2174,7 +2216,8 @@
                 if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
             }
             
-            // OMNI-PARSE BYPASS
+            let rawModeAccessApplies = iface.isRaw && forceRawAccess;
+            
             if (iface.isRaw) {
                 if (actualSecurityMode === 'remove') secChanged = true;
                 if (actualSecurityMode === 'reset') secChanged = true;
@@ -2183,9 +2226,9 @@
             let needsBounce = vlanChanged || stpChanged || secChanged || forceBounce;
 
             if (!needsBounce && !stateChanged && !iface.isRaw) return null;
-            
-            // Raw mode requires explicit instruction generation if ANY parameters are set
-            if (iface.isRaw && !vlanChanged && !stpChanged && !secChanged && adminState === 'leave') return null;
+            if (iface.isRaw && !vlanChanged && !stpChanged && !secChanged && adminState === 'leave' && !rawModeAccessApplies) return null;
+
+            if (rawModeAccessApplies) cmds.push("switchport mode access");
 
             if (vlanChanged) cmds.push(`switchport access vlan ${actualTargetVlan}`);
             if (applyStp) {
@@ -2218,7 +2261,7 @@
                 } else if (isCurrentlyDot1x || iface.isRaw) {
                     if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
                     if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
-                    if (iface.isRaw) cmds.push("no switchport port-security mac-address sticky", "no switchport port-security"); // Wipe everything to be safe on raw reset
+                    if (iface.isRaw) cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
                     cmds.push("shut");
                     cmds.push("dot1x pae authenticator", "authentication port-control auto");
                 }
@@ -2297,17 +2340,20 @@
                 secChanged = false; 
             }
             
-            // Raw rollback failsafe
             if (iface.isRaw && (actualSecurityMode === 'remove' || actualSecurityMode === 'reset')) {
-                secChanged = false; // Cannot rollback a wipe on a raw port
+                secChanged = false; 
             }
+            
+            let rawModeAccessApplies = iface.isRaw && forceRawAccess;
 
             let needsBounce = vlanChanged || stpChanged || secChanged;
 
             if (!needsBounce && !stateChanged && !iface.isRaw) return null;
-            if (iface.isRaw && !vlanChanged && !stpChanged && !secChanged && adminState === 'leave') return null;
+            if (iface.isRaw && !vlanChanged && !stpChanged && !secChanged && adminState === 'leave' && !rawModeAccessApplies) return null;
 
-            if (vlanChanged) cmds.push(iface.origVlan ? `switchport access vlan ${iface.origVlan}` : "no switchport access vlan");
+            if (rawModeAccessApplies) cmds.push("no switchport mode access");
+
+            if (vlanChanged) cmds.push(iface.origVlan && !iface.isRaw ? `switchport access vlan ${iface.origVlan}` : "no switchport access vlan");
             if (applyStp) {
                 if (!iface.hasPortfast) cmds.push("no spanning-tree portfast");
                 if (!iface.hasBpduguard) cmds.push("no spanning-tree bpduguard enable");
