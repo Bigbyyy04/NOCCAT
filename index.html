@@ -34,7 +34,6 @@
 
         /* --- THEMES --- */
         
-        /* FABULOUS NEKO - RETRO 90s VAPORWAVE / GIRLY (EYE-SAFE DARK BASE) */
         [data-theme="fab-neko"] {
             --bg-color: #1a1525;          
             --card-bg: #272036;           
@@ -53,7 +52,9 @@
             --particle-color: rgba(255, 71, 133, 0.3); 
             --particle-line: rgba(11, 203, 212, 0.2);  
             --p-matrix-title: #ff9f43;    
-        }[data-theme="timeline-neko"] {
+        }
+        
+        [data-theme="timeline-neko"] {
             --bg-color: #3a281e; 
             --card-bg: #5c473c; 
             --border-color: #c18e6e; 
@@ -91,7 +92,9 @@
             --particle-color: rgba(200, 20, 40, 0.3); 
             --particle-line: rgba(255, 0, 51, 0.1); 
             --p-matrix-title: #ff4d6d; 
-        }[data-theme="h2o-neko"] {
+        }
+        
+        [data-theme="h2o-neko"] {
             --bg-color: #050a14; 
             --card-bg: #121e36; 
             --border-color: #243b61; 
@@ -111,7 +114,7 @@
             --p-matrix-title: #dcb04d; 
         }
         
-        /* FIREFLY NEKO - MAGICAL FOREST (MALEFICENT THEME) */[data-theme="firefly-neko"] {
+        [data-theme="firefly-neko"] {
             --bg-color: #030d14; 
             --card-bg: #051621; 
             --border-color: rgba(0, 225, 255, 0.3); 
@@ -129,7 +132,9 @@
             --particle-color: rgba(0, 225, 255, 0.3); 
             --particle-line: rgba(0, 225, 255, 0.15); 
             --p-matrix-title: #00ffaa; 
-        }[data-theme="gamer-neko"] {
+        }
+        
+        [data-theme="gamer-neko"] {
             --bg-color: #08010f; 
             --card-bg: #12021c; 
             --border-color: #c45b9a; 
@@ -149,14 +154,12 @@
             --p-matrix-title: #a3d9ff; 
         }
 
-        /* Blood Moon CSS Effect */
         html[data-theme="crimson-neko"] body::after {
             content: ""; position: fixed; top: -10%; right: -5%; width: 70vh; height: 70vh;
             border-radius: 50%; z-index: -2; background: radial-gradient(circle at center, #5c0a1a 0%, transparent 60%);
             box-shadow: 0 0 120px 60px rgba(255, 0, 51, 0.15); opacity: 0.7; pointer-events: none;
         }
 
-        /* Syntax coloring adjustments */
         .sample-code div { color: #fff; }
         .sample-code span[style*="color: #ff9d00;"] { color: var(--hl-orange) !important; }
         .sample-code span[style*="color: #00ffff;"] { color: var(--hl-cyan) !important; }
@@ -165,13 +168,19 @@
         .sample-code strong { color: #fff; }
         .sample-code code { color: #fff; }
         
-        /* Theme Specific Syntax Colors */[data-theme="fab-neko"] .sample-code div { color: var(--text-main); }[data-theme="fab-neko"] .sample-code span[style*="color: #ff00ff;"] { color: var(--neon-green) !important; }[data-theme="timeline-neko"] .sample-code div,
+        [data-theme="fab-neko"] .sample-code div { color: var(--text-main); }
+        [data-theme="fab-neko"] .sample-code span[style*="color: #ff00ff;"] { color: var(--neon-green) !important; }
+        [data-theme="timeline-neko"] .sample-code div,
         [data-theme="timeline-neko"] .sample-code strong { color: #3a281e; }
-        [data-theme="timeline-neko"] .override-table td strong { color: var(--text-main) !important; }[data-theme="crimson-neko"] .sample-code div { color: #ffd1dc; }[data-theme="crimson-neko"] code { color: #ffb3c6; }[data-theme="firefly-neko"] .sample-code div { color: var(--text-main); }
+        [data-theme="timeline-neko"] .override-table td strong { color: var(--text-main) !important; }
+        [data-theme="crimson-neko"] .sample-code div { color: #ffd1dc; }
+        [data-theme="crimson-neko"] code { color: #ffb3c6; }
+        [data-theme="firefly-neko"] .sample-code div { color: var(--text-main); }
         [data-theme="firefly-neko"] .sample-code strong { color: var(--accent-green); }
         [data-theme="firefly-neko"] code { color: var(--text-main); }
-        
-        [data-theme="gamer-neko"] .sample-code div { color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }[data-theme="gamer-neko"] .sample-code strong { color: #fff; text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }[data-theme="gamer-neko"] code { color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
+        [data-theme="gamer-neko"] .sample-code div { color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
+        [data-theme="gamer-neko"] .sample-code strong { color: #fff; text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
+        [data-theme="gamer-neko"] code { color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
 
         body {
             font-family: "Segoe UI", Roboto, monospace; margin: 0; padding: 20px;
@@ -179,7 +188,6 @@
             display: flex; justify-content: center; overflow-x: hidden; overflow-y: scroll; 
         }
 
-        /* --- DYNAMIC BACKGROUND CANVAS --- */
         #networkBg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1; pointer-events: none; transition: opacity 0.5s ease-in-out;
@@ -187,14 +195,15 @@
 
         .container { max-width: 1050px; width: 100%; position: relative; z-index: 1; }
 
-        /* --- HEADER ROW --- */
         .top-bar { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; gap: 20px; }
         h2 {
             color: #ffffff; font-size: 1.7rem; margin: 0; display: flex; align-items: baseline;
             gap: 12px; font-family: "Courier New", Courier, monospace; font-weight: bold; flex-grow: 1;
         }
         
-        [data-theme="fab-neko"] h2 { color: var(--text-main); }[data-theme="timeline-neko"] h2 { color: var(--accent-blue); }[data-theme="crimson-neko"] h2 { color: var(--text-main); text-shadow: 0 0 10px rgba(255,0,51,0.5); }
+        [data-theme="fab-neko"] h2 { color: var(--text-main); }
+        [data-theme="timeline-neko"] h2 { color: var(--accent-blue); }
+        [data-theme="crimson-neko"] h2 { color: var(--text-main); text-shadow: 0 0 10px rgba(255,0,51,0.5); }
         [data-theme="firefly-neko"] h2 { color: var(--text-main); text-shadow: 0 0 10px rgba(0,225,255,0.4); }
         [data-theme="gamer-neko"] h2 { color: var(--text-main); text-shadow: 0 0 10px rgba(240, 98, 240, 0.6); } 
 
@@ -202,21 +211,28 @@
         .logo-accent {
             background-color: var(--neon-green); color: var(--code-bg); padding: 0px 6px;
             margin: 0 6px; box-shadow: 0 0 12px rgba(57, 255, 20, 0.4); display: inline-block; font-weight: 900;
-        }[data-theme="fab-neko"] .logo-accent { box-shadow: 0 0 12px rgba(255, 71, 133, 0.6); background-color: var(--neon-green); color: #fff; }
-        [data-theme="timeline-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 140, 0, 0.6); color: var(--bg-color); }[data-theme="crimson-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 15px rgba(230, 0, 38, 0.8); color: #fff; }[data-theme="h2o-neko"] .logo-accent { background-color: var(--accent-blue); box-shadow: 0 0 15px rgba(77, 187, 194, 0.6); color: #fff; }[data-theme="firefly-neko"] .logo-accent { background-color: var(--accent-purple); box-shadow: 0 0 15px rgba(240, 0, 255, 0.6); color: #fff; }[data-theme="gamer-neko"] .logo-accent { background-color: var(--neon-green); box-shadow: 0 0 15px rgba(240, 98, 240, 0.8); color: #fff; }
+        }
+        [data-theme="fab-neko"] .logo-accent { box-shadow: 0 0 12px rgba(255, 71, 133, 0.6); background-color: var(--neon-green); color: #fff; }
+        [data-theme="timeline-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 140, 0, 0.6); color: var(--bg-color); }
+        [data-theme="crimson-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 15px rgba(230, 0, 38, 0.8); color: #fff; }
+        [data-theme="h2o-neko"] .logo-accent { background-color: var(--accent-blue); box-shadow: 0 0 15px rgba(77, 187, 194, 0.6); color: #fff; }
+        [data-theme="firefly-neko"] .logo-accent { background-color: var(--accent-purple); box-shadow: 0 0 15px rgba(240, 0, 255, 0.6); color: #fff; }
+        [data-theme="gamer-neko"] .logo-accent { background-color: var(--neon-green); box-shadow: 0 0 15px rgba(240, 98, 240, 0.8); color: #fff; }
 
         .version-tag { font-size: 0.8rem; color: var(--accent-blue); opacity: 0.6; text-transform: uppercase; letter-spacing: 2px; font-weight: normal; font-family: "Segoe UI", Roboto, monospace; }
         
-        /* --- QUALITY_OF_LIFE MENU --- */
         .qol-menu { position: relative; display: inline-block; align-self: center; padding-bottom: 10px; margin-bottom: -10px; }
         .qol-menu-btn {
             background: transparent; color: var(--text-main); border: 1px solid var(--border-color);
             padding: 4px 8px; font-size: 14px; cursor: pointer; border-radius: 4px;
             transition: 0.3s ease; box-sizing: border-box; line-height: 1; opacity: 0.5; 
         }
-        .qol-menu-btn:hover { opacity: 1; border-color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 8px rgba(188, 140, 255, 0.4); }[data-theme="fab-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(255, 71, 133, 0.5); border-color: var(--neon-green); background: rgba(255, 71, 133, 0.15); }
-        [data-theme="timeline-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(255, 140, 0, 0.5); border-color: var(--accent-green); background: rgba(255, 140, 0, 0.15); }[data-theme="crimson-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(255, 0, 51, 0.6); border-color: var(--accent-green); background: rgba(255, 0, 51, 0.15); }
-        [data-theme="h2o-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(77, 187, 194, 0.6); border-color: var(--accent-blue); background: rgba(77, 187, 194, 0.15); }[data-theme="firefly-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(240, 0, 255, 0.6); border-color: var(--accent-purple); background: rgba(240, 0, 255, 0.15); }
+        .qol-menu-btn:hover { opacity: 1; border-color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 8px rgba(188, 140, 255, 0.4); }
+        [data-theme="fab-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(255, 71, 133, 0.5); border-color: var(--neon-green); background: rgba(255, 71, 133, 0.15); }
+        [data-theme="timeline-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(255, 140, 0, 0.5); border-color: var(--accent-green); background: rgba(255, 140, 0, 0.15); }
+        [data-theme="crimson-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(255, 0, 51, 0.6); border-color: var(--accent-green); background: rgba(255, 0, 51, 0.15); }
+        [data-theme="h2o-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(77, 187, 194, 0.6); border-color: var(--accent-blue); background: rgba(77, 187, 194, 0.15); }
+        [data-theme="firefly-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(240, 0, 255, 0.6); border-color: var(--accent-purple); background: rgba(240, 0, 255, 0.15); }
         [data-theme="gamer-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(240, 98, 240, 0.6); border-color: var(--accent-green); background: rgba(240, 98, 240, 0.15); }
 
         .qol-dropdown-content {
@@ -237,16 +253,26 @@
         }
         .qol-dropdown-content button:last-child { border-bottom: none; }
         .qol-dropdown-content button:hover { background: rgba(188, 140, 255, 0.1); color: var(--accent-blue); }
-        .qol-dropdown-content button.active { font-weight: bold; color: var(--neon-green); }[data-theme="fab-neko"] .qol-dropdown-content button:hover { background: rgba(11, 203, 212, 0.15); color: var(--accent-blue); }[data-theme="timeline-neko"] .qol-dropdown-content button:hover { background: rgba(255, 140, 0, 0.15); color: var(--accent-blue); }
-        [data-theme="crimson-neko"] .qol-dropdown-content button:hover { background: rgba(255, 0, 51, 0.15); color: var(--accent-blue); }[data-theme="h2o-neko"] .qol-dropdown-content button:hover { background: rgba(77, 187, 194, 0.15); color: var(--accent-blue); }[data-theme="firefly-neko"] .qol-dropdown-content button:hover { background: rgba(0, 225, 255, 0.15); color: var(--accent-blue); }[data-theme="gamer-neko"] .qol-dropdown-content button:hover { background: rgba(240, 98, 240, 0.15); color: var(--accent-blue); }
+        .qol-dropdown-content button.active { font-weight: bold; color: var(--neon-green); }
+        [data-theme="fab-neko"] .qol-dropdown-content button:hover { background: rgba(11, 203, 212, 0.15); color: var(--accent-blue); }
+        [data-theme="timeline-neko"] .qol-dropdown-content button:hover { background: rgba(255, 140, 0, 0.15); color: var(--accent-blue); }
+        [data-theme="crimson-neko"] .qol-dropdown-content button:hover { background: rgba(255, 0, 51, 0.15); color: var(--accent-blue); }
+        [data-theme="h2o-neko"] .qol-dropdown-content button:hover { background: rgba(77, 187, 194, 0.15); color: var(--accent-blue); }
+        [data-theme="firefly-neko"] .qol-dropdown-content button:hover { background: rgba(0, 225, 255, 0.15); color: var(--accent-blue); }
+        [data-theme="gamer-neko"] .qol-dropdown-content button:hover { background: rgba(240, 98, 240, 0.15); color: var(--accent-blue); }
         
-        /* --- TIMEZONE WIDGET --- */
         .tz-widget {
             display: flex; align-items: center; gap: 8px; font-family: "Courier New", Courier, monospace;
             font-size: 11px; color: var(--text-main); background: rgba(13, 17, 23, 0.85);
             border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 4px;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.5); backdrop-filter: blur(4px); white-space: nowrap; 
-        }[data-theme="fab-neko"] .tz-widget { background: rgba(39, 32, 54, 0.85); box-shadow: inset 0 0 10px rgba(0,0,0,0.4); }[data-theme="timeline-neko"] .tz-widget { background: rgba(92, 71, 60, 0.85); box-shadow: inset 0 0 10px rgba(0,0,0,0.4); }[data-theme="crimson-neko"] .tz-widget { background: rgba(26, 2, 6, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }[data-theme="h2o-neko"] .tz-widget { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.6); }[data-theme="firefly-neko"] .tz-widget { background: rgba(3, 14, 23, 0.75); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }[data-theme="gamer-neko"] .tz-widget { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        }
+        [data-theme="fab-neko"] .tz-widget { background: rgba(39, 32, 54, 0.85); box-shadow: inset 0 0 10px rgba(0,0,0,0.4); }
+        [data-theme="timeline-neko"] .tz-widget { background: rgba(92, 71, 60, 0.85); box-shadow: inset 0 0 10px rgba(0,0,0,0.4); }
+        [data-theme="crimson-neko"] .tz-widget { background: rgba(26, 2, 6, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        [data-theme="h2o-neko"] .tz-widget { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.6); }
+        [data-theme="firefly-neko"] .tz-widget { background: rgba(3, 14, 23, 0.75); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        [data-theme="gamer-neko"] .tz-widget { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
 
         .live-dot { width: 8px; height: 8px; background-color: var(--neon-green); border-radius: 50%; cursor: pointer; transition: 0.3s; flex-shrink: 0; }
         .live-dot.pulse { box-shadow: 0 0 8px var(--neon-green); animation: pulse-dot 1.5s infinite; }
@@ -258,15 +284,17 @@
             font-size: 11px; outline: none; cursor: text; width: 95px; padding: 0; text-align: center; transition: color 0.2s;
         }
         .tz-time-input::-webkit-calendar-picker-indicator { display: none; }
-        .tz-time-input:focus { color: #fff; border-bottom: 1px solid var(--accent-blue); margin-bottom: -1px; }[data-theme="fab-neko"] .tz-time-input:focus { color: var(--text-main); border-color: var(--neon-green); }[data-theme="firefly-neko"] .tz-time-input:focus { color: var(--text-main); border-color: var(--accent-purple); box-shadow: 0 5px 5px -5px rgba(240, 0, 255, 0.5); }
+        .tz-time-input:focus { color: #fff; border-bottom: 1px solid var(--accent-blue); margin-bottom: -1px; }
+        [data-theme="fab-neko"] .tz-time-input:focus { color: var(--text-main); border-color: var(--neon-green); }
+        [data-theme="firefly-neko"] .tz-time-input:focus { color: var(--text-main); border-color: var(--accent-purple); box-shadow: 0 5px 5px -5px rgba(240, 0, 255, 0.5); }
         
         .tz-select {
             background: transparent; color: var(--neon-green); border: none; font-family: "Courier New", Courier, monospace;
             font-size: 11px; cursor: pointer; outline: none; font-weight: bold; appearance: none; -webkit-appearance: none;
             padding-right: 4px; text-shadow: 0 0 5px rgba(57, 255, 20, 0.4);
         }
-        
-        [data-theme="fab-neko"] .tz-select { text-shadow: 0 0 5px rgba(255, 71, 133, 0.5); color: var(--neon-green); }[data-theme="firefly-neko"] .tz-select { text-shadow: 0 0 8px rgba(0, 240, 255, 0.6); color: var(--neon-green); }
+        [data-theme="fab-neko"] .tz-select { text-shadow: 0 0 5px rgba(255, 71, 133, 0.5); color: var(--neon-green); }
+        [data-theme="firefly-neko"] .tz-select { text-shadow: 0 0 8px rgba(0, 240, 255, 0.6); color: var(--neon-green); }
         
         .tz-select.source-tz { color: var(--text-main); text-shadow: none; }
         .tz-select option { background: var(--card-bg); color: var(--neon-green); text-shadow: none; }
@@ -280,19 +308,31 @@
             font-family: "Courier New", Courier, monospace; margin-right: 6px; white-space: nowrap; flex-shrink: 0; 
         }
         .fmt-toggle:hover { background: rgba(57, 255, 20, 0.1); }
-        
-        [data-theme="fab-neko"] .fmt-toggle:hover { background: rgba(255, 71, 133, 0.15); }[data-theme="firefly-neko"] .fmt-toggle { color: var(--accent-purple); border-color: var(--accent-purple); }[data-theme="firefly-neko"] .fmt-toggle:hover { background: rgba(240, 0, 255, 0.15); box-shadow: 0 0 8px rgba(240, 0, 255, 0.4); }
+        [data-theme="fab-neko"] .fmt-toggle:hover { background: rgba(255, 71, 133, 0.15); }
+        [data-theme="firefly-neko"] .fmt-toggle { color: var(--accent-purple); border-color: var(--accent-purple); }
+        [data-theme="firefly-neko"] .fmt-toggle:hover { background: rgba(240, 0, 255, 0.15); box-shadow: 0 0 8px rgba(240, 0, 255, 0.4); }
 
         /* --- PANELS & FORMS --- */
         .form-group {
             background: rgba(22, 27, 34, 0.85); backdrop-filter: blur(4px); 
             padding: 15px; border: 1px solid var(--border-color); border-radius: 8px;
-        }[data-theme="fab-neko"] .form-group { background: rgba(39, 32, 54, 0.85); }[data-theme="timeline-neko"] .form-group { background: rgba(92, 71, 60, 0.85); }[data-theme="crimson-neko"] .form-group { background: rgba(26, 2, 6, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }[data-theme="h2o-neko"] .form-group { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }[data-theme="firefly-neko"] .form-group { background: rgba(3, 14, 23, 0.75); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }[data-theme="gamer-neko"] .form-group { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
+        }
+        [data-theme="fab-neko"] .form-group { background: rgba(39, 32, 54, 0.85); }
+        [data-theme="timeline-neko"] .form-group { background: rgba(92, 71, 60, 0.85); }
+        [data-theme="crimson-neko"] .form-group { background: rgba(26, 2, 6, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+        [data-theme="h2o-neko"] .form-group { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+        [data-theme="firefly-neko"] .form-group { background: rgba(3, 14, 23, 0.75); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
+        [data-theme="gamer-neko"] .form-group { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
 
         .input-section { margin-bottom: 15px; position: relative; }
         .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; position: relative; z-index: 10; }
         label { font-weight: 600; display: block; margin-bottom: 8px; color: var(--accent-blue); font-size: 0.75rem; text-transform: uppercase; opacity: 0.8; }
-        .header-row label { margin-bottom: 0; }[data-theme="timeline-neko"] label { color: var(--text-main); }[data-theme="crimson-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(255, 77, 109, 0.3); }[data-theme="h2o-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(77, 187, 194, 0.3); }[data-theme="firefly-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(0, 225, 255, 0.4); }
+        .header-row label { margin-bottom: 0; }
+        
+        [data-theme="timeline-neko"] label { color: var(--text-main); }
+        [data-theme="crimson-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(255, 77, 109, 0.3); }
+        [data-theme="h2o-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(77, 187, 194, 0.3); }
+        [data-theme="firefly-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(0, 225, 255, 0.4); }
         [data-theme="gamer-neko"] label { color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
 
         .expand-btn {
@@ -303,8 +343,10 @@
         }
         .expand-btn:hover { border-color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 8px rgba(188, 140, 255, 0.3); color: #fff; }
         
-        [data-theme="fab-neko"] .expand-btn { color: var(--accent-blue); border-color: var(--border-color); }[data-theme="fab-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(11, 203, 212, 0.5); border-color: var(--accent-blue); color: #fff; }
-        [data-theme="firefly-neko"] .expand-btn { color: var(--accent-purple); border-color: var(--border-color); }[data-theme="firefly-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(240, 0, 255, 0.5); border-color: var(--accent-purple); color: #fff; }
+        [data-theme="fab-neko"] .expand-btn { color: var(--accent-blue); border-color: var(--border-color); }
+        [data-theme="fab-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(11, 203, 212, 0.5); border-color: var(--accent-blue); color: #fff; }
+        [data-theme="firefly-neko"] .expand-btn { color: var(--accent-purple); border-color: var(--border-color); }
+        [data-theme="firefly-neko"] .expand-btn:hover { box-shadow: 0 0 10px rgba(240, 0, 255, 0.5); border-color: var(--accent-purple); color: #fff; }
         
         /* --- COLLAPSIBLE WRAPPERS --- */
         .readme-wrapper { 
@@ -317,12 +359,21 @@
         .readme-wrapper.expanded { 
             grid-template-rows: 1fr; 
             padding-top: 15px; margin-top: 10px; border-top-color: rgba(188, 140, 255, 0.4); 
-        }[data-theme="fab-neko"] .readme-wrapper.expanded { border-top-color: rgba(255, 71, 133, 0.4); }
+        }
+        [data-theme="fab-neko"] .readme-wrapper.expanded { border-top-color: rgba(255, 71, 133, 0.4); }
         [data-theme="fab-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 159, 67, 0.4); }
-        [data-theme="timeline-neko"] .readme-wrapper.expanded { border-top-color: var(--accent-red); }[data-theme="crimson-neko"] .readme-wrapper.expanded { border-top-color: rgba(255, 77, 109, 0.4); }[data-theme="h2o-neko"] .readme-wrapper.expanded { border-top-color: rgba(77, 187, 194, 0.4); }[data-theme="firefly-neko"] .readme-wrapper.expanded { border-top-color: rgba(240, 0, 255, 0.4); }
+        [data-theme="timeline-neko"] .readme-wrapper.expanded { border-top-color: var(--accent-red); }
+        [data-theme="crimson-neko"] .readme-wrapper.expanded { border-top-color: rgba(255, 77, 109, 0.4); }
+        [data-theme="h2o-neko"] .readme-wrapper.expanded { border-top-color: rgba(77, 187, 194, 0.4); }
+        [data-theme="firefly-neko"] .readme-wrapper.expanded { border-top-color: rgba(240, 0, 255, 0.4); }
         [data-theme="gamer-neko"] .readme-wrapper.expanded { border-top-color: rgba(240, 98, 240, 0.6); }
         
-        #advOptionsWrapper.expanded { border-top-color: rgba(227, 179, 65, 0.4); }[data-theme="timeline-neko"] #advOptionsWrapper.expanded { border-top-color: var(--accent-red); }[data-theme="crimson-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 77, 109, 0.4); }[data-theme="h2o-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(220, 163, 65, 0.4); }[data-theme="firefly-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(0, 255, 170, 0.4); }[data-theme="gamer-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(163, 217, 255, 0.4); }
+        #advOptionsWrapper.expanded { border-top-color: rgba(227, 179, 65, 0.4); }
+        [data-theme="timeline-neko"] #advOptionsWrapper.expanded { border-top-color: var(--accent-red); }
+        [data-theme="crimson-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 77, 109, 0.4); }
+        [data-theme="h2o-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(220, 163, 65, 0.4); }
+        [data-theme="firefly-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(0, 255, 170, 0.4); }
+        [data-theme="gamer-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(163, 217, 255, 0.4); }
 
         .readme-content { font-size: 12px; line-height: 1.6; color: var(--text-main); opacity: 0.9; }
         .readme-content h3 { color: var(--accent-purple); font-size: 12px; margin: 12px 0 6px 0; text-transform: uppercase; letter-spacing: 1px; }
@@ -335,7 +386,9 @@
             font-family: "Courier New", Courier, monospace; color: #79c0ff; white-space: normal; 
             margin-bottom: 15px; font-size: 11.5px; line-height: 1.4; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
             display: flex; gap: 20px;
-        }[data-theme="fab-neko"] .sample-code { color: var(--text-main); box-shadow: inset 0 0 10px rgba(0,0,0,0.8); border-color: var(--border-color); }[data-theme="firefly-neko"] .sample-code { background: rgba(1, 6, 10, 0.85); border-color: var(--border-color); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        }
+        [data-theme="fab-neko"] .sample-code { color: var(--text-main); box-shadow: inset 0 0 10px rgba(0,0,0,0.8); border-color: var(--border-color); }
+        [data-theme="firefly-neko"] .sample-code { background: rgba(1, 6, 10, 0.85); border-color: var(--border-color); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
 
         /* --- CLEAN NATIVE TEXTAREA & DRAG DROP --- */
         textarea {
@@ -347,15 +400,24 @@
             transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.5s ease-in-out, border-color 0.5s ease-in-out, color 0.5s ease-in-out, box-shadow 0.5s ease-in-out, text-shadow 0.5s ease-in-out !important;
         }
         
-        [data-theme="fab-neko"] textarea { background: rgba(20, 16, 29, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }[data-theme="timeline-neko"] textarea { background: #f1eae0; color: #3a281e; scrollbar-color: var(--border-color) #f1eae0; }[data-theme="crimson-neko"] textarea { background: rgba(10, 0, 5, 0.9); color: #ffb3c6; scrollbar-color: var(--border-color) var(--code-bg); }[data-theme="h2o-neko"] textarea { background: rgba(9, 16, 31, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }[data-theme="firefly-neko"] textarea { background: rgba(1, 6, 10, 0.85); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }[data-theme="gamer-neko"] textarea { background: rgba(8, 1, 15, 0.9); color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        [data-theme="fab-neko"] textarea { background: rgba(20, 16, 29, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }
+        [data-theme="timeline-neko"] textarea { background: #f1eae0; color: #3a281e; scrollbar-color: var(--border-color) #f1eae0; }
+        [data-theme="crimson-neko"] textarea { background: rgba(10, 0, 5, 0.9); color: #ffb3c6; scrollbar-color: var(--border-color) var(--code-bg); }
+        [data-theme="h2o-neko"] textarea { background: rgba(9, 16, 31, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }
+        [data-theme="firefly-neko"] textarea { background: rgba(1, 6, 10, 0.85); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); }
+        [data-theme="gamer-neko"] textarea { background: rgba(8, 1, 15, 0.9); color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
 
-        textarea:focus { border-color: var(--accent-blue); }[data-theme="firefly-neko"] textarea:focus { border-color: var(--accent-purple); box-shadow: 0 0 10px rgba(240, 0, 255, 0.3); }
+        textarea:focus { border-color: var(--accent-blue); }
+        [data-theme="firefly-neko"] textarea:focus { border-color: var(--accent-purple); box-shadow: 0 0 10px rgba(240, 0, 255, 0.3); }
         
         textarea.expanded { height: 400px; }
         
         textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(57, 255, 20, 0.2) inset; background: #091a0f; }
         
-        [data-theme="fab-neko"] textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(255, 71, 133, 0.3) inset; background: rgba(255, 71, 133, 0.05); }[data-theme="fab-neko"] textarea::selection { background: rgba(255, 71, 133, 0.3); }[data-theme="firefly-neko"] textarea.drag-active { border-color: var(--accent-green); box-shadow: 0 0 15px rgba(0, 255, 170, 0.3) inset; background: rgba(0, 255, 170, 0.05); }[data-theme="firefly-neko"] textarea::selection { background: rgba(240, 0, 255, 0.3); }
+        [data-theme="fab-neko"] textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(255, 71, 133, 0.3) inset; background: rgba(255, 71, 133, 0.05); }
+        [data-theme="fab-neko"] textarea::selection { background: rgba(255, 71, 133, 0.3); }
+        [data-theme="firefly-neko"] textarea.drag-active { border-color: var(--accent-green); box-shadow: 0 0 15px rgba(0, 255, 170, 0.3) inset; background: rgba(0, 255, 170, 0.05); }
+        [data-theme="firefly-neko"] textarea::selection { background: rgba(240, 0, 255, 0.3); }
 
         textarea::-webkit-scrollbar { width: 10px; }
         textarea::-webkit-scrollbar-track { background: var(--code-bg); }
@@ -377,26 +439,38 @@
         .device-hud.visible { opacity: 1; }
         .host-tag { background: rgba(88, 166, 255, 0.1); border: 1px solid rgba(88, 166, 255, 0.3); padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; }
         .host-tag strong { color: #fff; margin-right: 5px; }
-        .ip-highlight { font-weight: bold; text-shadow: 0 0 5px rgba(57, 255, 20, 0.4); }[data-theme="fab-neko"] .host-tag { background: rgba(11, 203, 212, 0.15); border-color: rgba(11, 203, 212, 0.3); }[data-theme="fab-neko"] .ip-highlight { text-shadow: 0 0 5px rgba(11, 203, 212, 0.6); color: var(--accent-blue); }[data-theme="firefly-neko"] .host-tag { background: rgba(0, 225, 255, 0.15); border-color: rgba(0, 225, 255, 0.3); }
+        .ip-highlight { font-weight: bold; text-shadow: 0 0 5px rgba(57, 255, 20, 0.4); }
+        
+        [data-theme="fab-neko"] .host-tag { background: rgba(11, 203, 212, 0.15); border-color: rgba(11, 203, 212, 0.3); }
+        [data-theme="fab-neko"] .ip-highlight { text-shadow: 0 0 5px rgba(11, 203, 212, 0.6); color: var(--accent-blue); }
+        [data-theme="firefly-neko"] .host-tag { background: rgba(0, 225, 255, 0.15); border-color: rgba(0, 225, 255, 0.3); }
         [data-theme="firefly-neko"] .ip-highlight { text-shadow: 0 0 5px rgba(0, 225, 255, 0.6); color: var(--accent-blue); }
 
         /* --- UI CONTROLS --- */
         .controls-row { display: flex; gap: 12px; margin-bottom: 15px; margin-top: 15px; align-items: stretch; flex-wrap: wrap; }
         .controls-row .form-group { margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; }
         .radio-group, .checkbox-group { display: flex; gap: 6px; width: 100%; }
-        .radio-group label, .checkbox-group label { background: rgba(13, 17, 23, 0.8); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-bottom: 0; display: inline-block; text-align: center; flex-grow: 1; box-sizing: border-box; }[data-theme="fab-neko"] .radio-group label,[data-theme="fab-neko"] .checkbox-group label { background: rgba(26, 21, 37, 0.8); }[data-theme="fab-neko"] .radio-group label:has(input:checked),[data-theme="fab-neko"] .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: var(--btn-text); background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 71, 133, 0.5); }
+        .radio-group label, .checkbox-group label { background: rgba(13, 17, 23, 0.8); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-bottom: 0; display: inline-block; text-align: center; flex-grow: 1; box-sizing: border-box; }
+        
+        [data-theme="fab-neko"] .radio-group label,[data-theme="fab-neko"] .checkbox-group label { background: rgba(26, 21, 37, 0.8); }
+        [data-theme="fab-neko"] .radio-group label:has(input:checked),[data-theme="fab-neko"] .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: var(--btn-text); background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 71, 133, 0.5); }
         [data-theme="fab-neko"] .radio-group label.disabled,[data-theme="fab-neko"] .checkbox-group label.disabled { background: #16121d !important; border-color: #312540 !important; color: #554166 !important; }
-        [data-theme="fab-neko"] .radio-group label:has(input[value="remove"]:checked) { color: #fff !important; background: rgba(255, 107, 129, 0.9) !important; border-color: var(--accent-red) !important; }[data-theme="firefly-neko"] .radio-group label,[data-theme="firefly-neko"] .checkbox-group label { background: rgba(3, 14, 23, 0.8); }[data-theme="firefly-neko"] .radio-group label:has(input:checked),[data-theme="firefly-neko"] .checkbox-group label:has(input:checked) { border-color: var(--accent-blue); color: var(--btn-text); background-color: rgba(0, 225, 255, 0.2); box-shadow: 0 0 12px rgba(0, 225, 255, 0.5); }[data-theme="firefly-neko"] .radio-group label.disabled,[data-theme="firefly-neko"] .checkbox-group label.disabled { background: #01060a !important; border-color: #051621 !important; color: #0b384d !important; }
+        [data-theme="fab-neko"] .radio-group label:has(input[value="remove"]:checked) { color: #fff !important; background: rgba(255, 107, 129, 0.9) !important; border-color: var(--accent-red) !important; }
+        
+        [data-theme="firefly-neko"] .radio-group label,[data-theme="firefly-neko"] .checkbox-group label { background: rgba(3, 14, 23, 0.8); }
+        [data-theme="firefly-neko"] .radio-group label:has(input:checked),[data-theme="firefly-neko"] .checkbox-group label:has(input:checked) { border-color: var(--accent-blue); color: var(--btn-text); background-color: rgba(0, 225, 255, 0.2); box-shadow: 0 0 12px rgba(0, 225, 255, 0.5); }
+        [data-theme="firefly-neko"] .radio-group label.disabled,[data-theme="firefly-neko"] .checkbox-group label.disabled { background: #01060a !important; border-color: #051621 !important; color: #0b384d !important; }
         
         .radio-group input, .checkbox-group input { display: none; }
         .radio-group label:has(input:checked), .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 8px rgba(57, 255, 20, 0.2); }
-        
         .radio-group label.disabled, .checkbox-group label.disabled { opacity: 0.3 !important; cursor: not-allowed !important; background: #0d1117 !important; border-color: #30363d !important; color: #484f58 !important; box-shadow: none !important; }
 
         @keyframes danger-glitch { 0% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(0deg); text-shadow: none; } 2% { box-shadow: 0 0 20px rgba(248, 81, 73, 1); transform: skewX(5deg) translate(-2px, 1px); text-shadow: 2px 0 var(--accent-red), -2px 0 var(--accent-blue); } 4% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(-5deg) translate(2px, -1px); text-shadow: -2px 0 var(--accent-red), 2px 0 var(--accent-blue); } 6% { transform: skewX(0deg) translate(0, 0); text-shadow: none; } 50% { box-shadow: 0 0 15px rgba(248, 81, 73, 0.8); } 94% { transform: skewX(0deg) translate(0, 0); text-shadow: none; } 96% { box-shadow: 0 0 25px rgba(248, 81, 73, 1); transform: skewX(8deg) translate(3px, 0); text-shadow: 3px 0 var(--accent-red), -3px 0 var(--accent-blue); } 98% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(-8deg) translate(-3px, 0); text-shadow: -3px 0 var(--accent-red), 3px 0 var(--accent-blue); } 100% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(0deg) translate(0, 0); text-shadow: none; } }
         .radio-group label:has(input[value="remove"]:checked) { border-color: var(--accent-red) !important; color: #ff7b72 !important; background: rgba(248, 81, 73, 0.1) !important; animation: danger-glitch 3s infinite !important; }
 
-        input[type="number"] { background: rgba(1, 4, 9, 0.8); border: 1px solid var(--border-color); color: #d29922; padding: 6px; border-radius: 4px; width: 100%; box-sizing: border-box; outline: none; font-family: "Courier New", Courier, monospace; text-align: center; height: 31px; }[data-theme="fab-neko"] input[type="number"] { background: rgba(20, 16, 29, 0.8); color: var(--hl-yellow); }[data-theme="firefly-neko"] input[type="number"] { background: rgba(1, 6, 10, 0.8); color: var(--hl-orange); }
+        input[type="number"] { background: rgba(1, 4, 9, 0.8); border: 1px solid var(--border-color); color: #d29922; padding: 6px; border-radius: 4px; width: 100%; box-sizing: border-box; outline: none; font-family: "Courier New", Courier, monospace; text-align: center; height: 31px; }
+        [data-theme="fab-neko"] input[type="number"] { background: rgba(20, 16, 29, 0.8); color: var(--hl-yellow); }
+        [data-theme="firefly-neko"] input[type="number"] { background: rgba(1, 6, 10, 0.8); color: var(--hl-orange); }
 
         /* --- PER-PORT OVERRIDE TABLE CSS --- */
         .override-table-wrapper { max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 4px; scrollbar-width: thin; scrollbar-color: var(--border-color) var(--code-bg); margin-top: 5px; }
@@ -407,7 +481,15 @@
         .override-table th { background: rgba(13, 17, 23, 0.95); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border-color); color: var(--accent-blue); position: sticky; top: 0; z-index: 10; }
         .override-table td { padding: 6px 12px; border-bottom: 1px solid #21262d; color: var(--text-main); vertical-align: middle; background: rgba(22, 27, 34, 0.6); }
         .override-table tr:last-child td { border-bottom: none; }
-        .override-table tr:hover td { background: rgba(88, 166, 255, 0.1); }[data-theme="fab-neko"] .override-table th { background: rgba(26, 21, 37, 0.95); color: var(--accent-blue); }[data-theme="fab-neko"] .override-table td { background: rgba(39, 32, 54, 0.6); border-bottom: 1px solid #312540; }[data-theme="fab-neko"] .override-table tr:hover td { background: rgba(11, 203, 212, 0.15); }[data-theme="firefly-neko"] .override-table th { background: rgba(3, 14, 23, 0.95); color: var(--accent-blue); }[data-theme="firefly-neko"] .override-table td { background: rgba(1, 6, 10, 0.6); border-bottom: 1px solid #0b384d; }[data-theme="firefly-neko"] .override-table tr:hover td { background: rgba(0, 225, 255, 0.15); }
+        .override-table tr:hover td { background: rgba(88, 166, 255, 0.1); }
+        
+        [data-theme="fab-neko"] .override-table th { background: rgba(26, 21, 37, 0.95); color: var(--accent-blue); }
+        [data-theme="fab-neko"] .override-table td { background: rgba(39, 32, 54, 0.6); border-bottom: 1px solid #312540; }
+        [data-theme="fab-neko"] .override-table tr:hover td { background: rgba(11, 203, 212, 0.15); }
+        
+        [data-theme="firefly-neko"] .override-table th { background: rgba(3, 14, 23, 0.95); color: var(--accent-blue); }
+        [data-theme="firefly-neko"] .override-table td { background: rgba(1, 6, 10, 0.6); border-bottom: 1px solid #0b384d; }
+        [data-theme="firefly-neko"] .override-table tr:hover td { background: rgba(0, 225, 255, 0.15); }
         
         .override-input { background: rgba(1, 4, 9, 0.8); border: 1px dashed rgba(88, 166, 255, 0.5); color: var(--neon-green); padding: 4px 6px; border-radius: 3px; width: 60px; font-family: monospace; outline: none; transition: 0.2s; height: auto; }
         .override-input:focus { border-color: var(--neon-green); border-style: solid; box-shadow: 0 0 5px rgba(57,255,20,0.3); }
@@ -418,34 +500,53 @@
         .override-select.danger-mode { border-color: var(--accent-red) !important; color: #ff7b72 !important; background: rgba(248, 81, 73, 0.3) !important; animation: danger-glitch 3s infinite !important; }
         
         [data-theme="fab-neko"] .override-input,[data-theme="fab-neko"] .override-select { background: rgba(20, 16, 29, 0.8); border-color: var(--border-color); color: var(--text-main); }
-        [data-theme="fab-neko"] .override-input:focus,[data-theme="fab-neko"] .override-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 5px rgba(11, 203, 212, 0.4); border-style: solid; }[data-theme="fab-neko"] .override-input::placeholder { color: #6e5585; }[data-theme="firefly-neko"] .override-input,[data-theme="firefly-neko"] .override-select { background: rgba(1, 6, 10, 0.8); border-color: var(--border-color); color: var(--text-main); }[data-theme="firefly-neko"] .override-input:focus,[data-theme="firefly-neko"] .override-select:focus { border-color: var(--accent-purple); box-shadow: 0 0 8px rgba(240, 0, 255, 0.5); border-style: solid; }
+        [data-theme="fab-neko"] .override-input:focus,[data-theme="fab-neko"] .override-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 5px rgba(11, 203, 212, 0.4); border-style: solid; }
+        [data-theme="fab-neko"] .override-input::placeholder { color: #6e5585; }
+        
+        [data-theme="firefly-neko"] .override-input,[data-theme="firefly-neko"] .override-select { background: rgba(1, 6, 10, 0.8); border-color: var(--border-color); color: var(--text-main); }
+        [data-theme="firefly-neko"] .override-input:focus,[data-theme="firefly-neko"] .override-select:focus { border-color: var(--accent-purple); box-shadow: 0 0 8px rgba(240, 0, 255, 0.5); border-style: solid; }
 
         /* --- TOOLTIP CSS --- */
         .tooltip-icon { display: inline-flex; align-items: center; justify-content: center; color: var(--accent-blue); background: rgba(88, 166, 255, 0.1); border: 1px solid var(--accent-blue); border-radius: 50%; width: 14px; height: 14px; font-size: 10px; font-family: monospace; cursor: help; position: relative; }
         .tooltip-icon::after { content: attr(data-tooltip); position: absolute; bottom: 160%; left: 50%; transform: translateX(-50%); background: var(--card-bg); border: 1px solid var(--accent-blue); color: var(--text-main); padding: 10px; border-radius: 6px; font-size: 11px; width: 220px; white-space: normal; text-transform: none; box-shadow: 0 0 15px rgba(88, 166, 255, 0.2); opacity: 0; visibility: hidden; transition: 0.2s; z-index: 20; pointer-events: none; font-family: "Segoe UI", Roboto, monospace; text-align: center; line-height: 1.4; font-weight: normal; }
-        .tooltip-icon:hover::after { opacity: 1; visibility: visible; }[data-theme="fab-neko"] .tooltip-icon { color: var(--accent-blue); border-color: var(--accent-blue); background: rgba(11, 203, 212, 0.1); }[data-theme="fab-neko"] .tooltip-icon::after { border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(11, 203, 212, 0.2); }[data-theme="firefly-neko"] .tooltip-icon { color: var(--accent-blue); border-color: var(--accent-blue); background: rgba(0, 225, 255, 0.1); }[data-theme="firefly-neko"] .tooltip-icon::after { border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(0, 225, 255, 0.3); }
+        .tooltip-icon:hover::after { opacity: 1; visibility: visible; }
+        [data-theme="fab-neko"] .tooltip-icon { color: var(--accent-blue); border-color: var(--accent-blue); background: rgba(11, 203, 212, 0.1); }
+        [data-theme="fab-neko"] .tooltip-icon::after { border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(11, 203, 212, 0.2); }
+        [data-theme="firefly-neko"] .tooltip-icon { color: var(--accent-blue); border-color: var(--accent-blue); background: rgba(0, 225, 255, 0.1); }
+        [data-theme="firefly-neko"] .tooltip-icon::after { border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(0, 225, 255, 0.3); }
 
         /* --- ACTION BAR --- */
-        .action-row { display: flex; justify-content: center; gap: 20px; margin-top: 10px; margin-bottom: 25px; padding-top: 25px; border-top: 1px dashed rgba(88, 166, 255, 0.2); }[data-theme="fab-neko"] .action-row { border-top-color: rgba(255, 71, 133, 0.3); }[data-theme="firefly-neko"] .action-row { border-top-color: rgba(0, 225, 255, 0.3); }
+        .action-row { display: flex; justify-content: center; gap: 20px; margin-top: 10px; margin-bottom: 25px; padding-top: 25px; border-top: 1px dashed rgba(88, 166, 255, 0.2); }
+        [data-theme="fab-neko"] .action-row { border-top-color: rgba(255, 71, 133, 0.3); }
+        [data-theme="firefly-neko"] .action-row { border-top-color: rgba(0, 225, 255, 0.3); }
 
         @keyframes pulse-ready { 0% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.3); } 50% { box-shadow: 0 0 20px rgba(57, 255, 20, 0.8); } 100% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.3); } }
 
         .cyber-btn { background: var(--accent-green); color: #fff; padding: 12px 50px; font-size: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border: 1px solid var(--neon-green); border-radius: 4px; cursor: pointer; transition: 0.3s; white-space: nowrap; }
         .cyber-btn.ready { animation: pulse-ready 2s infinite; }
         .cyber-btn:not(:disabled):hover { background: #2ea043; box-shadow: 0 0 25px rgba(57, 255, 20, 0.9); }
-        .cyber-btn:disabled { background: rgba(33, 38, 45, 0.8); color: #8b949e; border-color: #30363d; cursor: not-allowed; box-shadow: none; animation: none; }[data-theme="fab-neko"] .cyber-btn { border: 1px solid var(--neon-green); background: var(--accent-green); }[data-theme="fab-neko"] .cyber-btn.ready { box-shadow: 0 0 15px rgba(255, 71, 133, 0.5); animation: none; }
-        [data-theme="fab-neko"] .cyber-btn:not(:disabled):hover { background: #ff4785; box-shadow: 0 0 25px rgba(255, 71, 133, 0.8); }[data-theme="fab-neko"] .cyber-btn:disabled { background: rgba(39, 32, 54, 0.8); color: #6e5585; border-color: #4a365c; }[data-theme="firefly-neko"] .cyber-btn { border: 1px solid var(--accent-blue); background: rgba(0, 255, 170, 0.2); color: var(--accent-green); }[data-theme="firefly-neko"] .cyber-btn.ready { box-shadow: 0 0 15px rgba(0, 255, 170, 0.5); animation: none; }[data-theme="firefly-neko"] .cyber-btn:not(:disabled):hover { background: var(--accent-green); box-shadow: 0 0 25px rgba(0, 255, 170, 0.8); color: #000; }[data-theme="firefly-neko"] .cyber-btn:disabled { background: rgba(3, 14, 23, 0.8); color: #0b384d; border-color: #0b384d; }
+        .cyber-btn:disabled { background: rgba(33, 38, 45, 0.8); color: #8b949e; border-color: #30363d; cursor: not-allowed; box-shadow: none; animation: none; }
+        
+        [data-theme="fab-neko"] .cyber-btn { border: 1px solid var(--neon-green); background: var(--accent-green); }
+        [data-theme="fab-neko"] .cyber-btn.ready { box-shadow: 0 0 15px rgba(255, 71, 133, 0.5); animation: none; }
+        [data-theme="fab-neko"] .cyber-btn:not(:disabled):hover { background: #ff4785; box-shadow: 0 0 25px rgba(255, 71, 133, 0.8); }
+        [data-theme="fab-neko"] .cyber-btn:disabled { background: rgba(39, 32, 54, 0.8); color: #6e5585; border-color: #4a365c; }
+        
+        [data-theme="firefly-neko"] .cyber-btn { border: 1px solid var(--accent-blue); background: rgba(0, 255, 170, 0.2); color: var(--accent-green); }
+        [data-theme="firefly-neko"] .cyber-btn.ready { box-shadow: 0 0 15px rgba(0, 255, 170, 0.5); animation: none; }
+        [data-theme="firefly-neko"] .cyber-btn:not(:disabled):hover { background: var(--accent-green); box-shadow: 0 0 25px rgba(0, 255, 170, 0.8); color: #000; }
+        [data-theme="firefly-neko"] .cyber-btn:disabled { background: rgba(3, 14, 23, 0.8); color: #0b384d; border-color: #0b384d; }
 
         .clear-btn { background: rgba(13, 17, 23, 0.6); color: var(--text-main); border: 1px solid var(--border-color); padding: 12px 30px; font-size: 13px; text-transform: uppercase; cursor: pointer; border-radius: 4px; opacity: 0.8; letter-spacing: 1px; }
         .clear-btn:hover { opacity: 1; border-color: var(--accent-purple); color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 10px rgba(188, 140, 255, 0.2); }
         
-        [data-theme="fab-neko"] .clear-btn { background: rgba(26, 21, 37, 0.6); }[data-theme="fab-neko"] .clear-btn:hover { background: rgba(11, 203, 212, 0.15); border-color: var(--accent-blue); color: var(--accent-blue); box-shadow: 0 0 12px rgba(11, 203, 212, 0.4); }[data-theme="firefly-neko"] .clear-btn { background: rgba(3, 14, 23, 0.6); }[data-theme="firefly-neko"] .clear-btn:hover { background: rgba(240, 0, 255, 0.15); border-color: var(--accent-purple); color: var(--accent-purple); box-shadow: 0 0 12px rgba(240, 0, 255, 0.4); }
+        [data-theme="fab-neko"] .clear-btn { background: rgba(26, 21, 37, 0.6); }
+        [data-theme="fab-neko"] .clear-btn:hover { background: rgba(11, 203, 212, 0.15); border-color: var(--accent-blue); color: var(--accent-blue); box-shadow: 0 0 12px rgba(11, 203, 212, 0.4); }
+        [data-theme="firefly-neko"] .clear-btn { background: rgba(3, 14, 23, 0.6); }
+        [data-theme="firefly-neko"] .clear-btn:hover { background: rgba(240, 0, 255, 0.15); border-color: var(--accent-purple); color: var(--accent-purple); box-shadow: 0 0 12px rgba(240, 0, 255, 0.4); }
 
         /* --- WARNING BOX --- */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .warning-box { background: rgba(248, 81, 73, 0.15); border: 1px dashed var(--accent-red); color: var(--accent-red); padding: 10px 15px; border-radius: 4px; margin-bottom: 15px; font-family: "Courier New", Courier, monospace; font-size: 11.5px; text-align: center; line-height: 1.4; display: none; backdrop-filter: blur(2px); animation: fadeInDown 0.3s ease-out; }
         .warning-box strong { font-size: 12.5px; letter-spacing: 1px; }
         .notice-section { border-top: 1px solid rgba(255, 157, 0, 0.2); margin-top: 10px; padding-top: 10px; color: var(--text-main); }
@@ -468,15 +569,24 @@
         .dl-btn.rollback:hover:not(:disabled) { background: rgba(248, 81, 73, 0.2); }
         .copy-btn:disabled, .dl-btn:disabled { background: rgba(48, 54, 61, 0.5); color: #8b949e; border-color: #30363d; cursor: not-allowed; opacity: 0.6; }
         
-        [data-theme="fab-neko"] .dl-btn { background: rgba(39, 32, 54, 0.6); border-color: var(--accent-blue); color: var(--accent-blue); }[data-theme="fab-neko"] .copy-btn:disabled,[data-theme="fab-neko"] .dl-btn:disabled { background: rgba(39, 32, 54, 0.5); color: #6e5585; border-color: #4a365c; }
-        [data-theme="firefly-neko"] .dl-btn { background: rgba(3, 14, 23, 0.6); border-color: var(--accent-blue); color: var(--accent-blue); }[data-theme="firefly-neko"] .copy-btn:disabled,[data-theme="firefly-neko"] .dl-btn:disabled { background: rgba(3, 14, 23, 0.5); color: #0b384d; border-color: #0b384d; }
+        [data-theme="fab-neko"] .dl-btn { background: rgba(39, 32, 54, 0.6); border-color: var(--accent-blue); color: var(--accent-blue); }
+        [data-theme="fab-neko"] .copy-btn:disabled,[data-theme="fab-neko"] .dl-btn:disabled { background: rgba(39, 32, 54, 0.5); color: #6e5585; border-color: #4a365c; }
+        [data-theme="firefly-neko"] .dl-btn { background: rgba(3, 14, 23, 0.6); border-color: var(--accent-blue); color: var(--accent-blue); }
+        [data-theme="firefly-neko"] .copy-btn:disabled,[data-theme="firefly-neko"] .dl-btn:disabled { background: rgba(3, 14, 23, 0.5); color: #0b384d; border-color: #0b384d; }
 
         .code-window { display: flex; background: rgba(1, 4, 9, 0.85); border: 1px solid var(--border-color); border-radius: 4px; font-family: "Courier New", Courier, monospace; font-size: 12px; line-height: 1.5; backdrop-filter: blur(2px); }
         .line-numbers { padding: 10px 8px; background: rgba(13, 17, 23, 0.5); border-right: 1px solid var(--border-color); color: #484f58; text-align: right; user-select: none; min-width: 25px; }
-        .code-content { padding: 10px; color: #79c0ff; white-space: pre; overflow-x: auto; flex-grow: 1; }[data-theme="fab-neko"] .code-window { background: rgba(20, 16, 29, 0.85); border-color: var(--border-color); }[data-theme="fab-neko"] .line-numbers { background: rgba(39, 32, 54, 0.5); color: #6e5585; border-right-color: var(--border-color); }[data-theme="firefly-neko"] .code-window { background: rgba(1, 6, 10, 0.85); border-color: var(--border-color); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }[data-theme="firefly-neko"] .line-numbers { background: rgba(3, 14, 23, 0.5); color: #00e1ff; border-right-color: var(--border-color); }
+        .code-content { padding: 10px; color: #79c0ff; white-space: pre; overflow-x: auto; flex-grow: 1; }
+        
+        [data-theme="fab-neko"] .code-window { background: rgba(20, 16, 29, 0.85); border-color: var(--border-color); }
+        [data-theme="fab-neko"] .line-numbers { background: rgba(39, 32, 54, 0.5); color: #6e5585; border-right-color: var(--border-color); }
+        [data-theme="firefly-neko"] .code-window { background: rgba(1, 6, 10, 0.85); border-color: var(--border-color); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        [data-theme="firefly-neko"] .line-numbers { background: rgba(3, 14, 23, 0.5); color: #00e1ff; border-right-color: var(--border-color); }
         
         .status-container { display: flex; justify-content: space-between; align-items: baseline; margin-top: 5px; }
-        #statusMsg { font-size: 11px; color: var(--accent-blue); display: none; background: rgba(13, 17, 23, 0.6); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(88, 166, 255, 0.2); }[data-theme="fab-neko"] #statusMsg { background: rgba(39, 32, 54, 0.6); border-color: rgba(11, 203, 212, 0.3); color: var(--accent-blue); }[data-theme="firefly-neko"] #statusMsg { background: rgba(3, 14, 23, 0.6); border-color: rgba(0, 225, 255, 0.3); color: var(--accent-blue); }
+        #statusMsg { font-size: 11px; color: var(--accent-blue); display: none; background: rgba(13, 17, 23, 0.6); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(88, 166, 255, 0.2); }
+        [data-theme="fab-neko"] #statusMsg { background: rgba(39, 32, 54, 0.6); border-color: rgba(11, 203, 212, 0.3); color: var(--accent-blue); }
+        [data-theme="firefly-neko"] #statusMsg { background: rgba(3, 14, 23, 0.6); border-color: rgba(0, 225, 255, 0.3); color: var(--accent-blue); }
         
         .diff-stats { font-family: monospace; font-size: 10.5px; opacity: 0.8; }
         .diff-add { color: var(--neon-green); }
@@ -488,13 +598,20 @@
         
         .manifest-box { background: rgba(1, 4, 9, 0.8); border: 1px dashed var(--border-color); padding: 20px; border-radius: 8px; text-align: left; }
         .db-box { background: rgba(1, 4, 9, 0.8); border: 1px solid var(--accent-green); padding: 15px; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
-        .db-security-note { background: rgba(35, 134, 54, 0.1); border-left: 3px solid var(--accent-green); padding: 8px 12px; margin-bottom: 12px; font-size: 11px; color: var(--text-main); line-height: 1.4; border-radius: 0 4px 4px 0; }[data-theme="fab-neko"] .manifest-box { background: rgba(26, 21, 37, 0.8); border-color: var(--border-color); }[data-theme="fab-neko"] .db-box { background: rgba(26, 21, 37, 0.8); box-shadow: inset 0 0 10px rgba(0,0,0,0.8); border-color: var(--accent-blue); }[data-theme="fab-neko"] .db-security-note { background: rgba(11, 203, 212, 0.1); border-left-color: var(--accent-blue); }
+        .db-security-note { background: rgba(35, 134, 54, 0.1); border-left: 3px solid var(--accent-green); padding: 8px 12px; margin-bottom: 12px; font-size: 11px; color: var(--text-main); line-height: 1.4; border-radius: 0 4px 4px 0; }
         
-        [data-theme="firefly-neko"] .manifest-box { background: rgba(3, 14, 23, 0.8); border-color: var(--border-color); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }[data-theme="firefly-neko"] .db-box { background: rgba(3, 14, 23, 0.8); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); border-color: var(--accent-green); }
+        [data-theme="fab-neko"] .manifest-box { background: rgba(26, 21, 37, 0.8); border-color: var(--border-color); }
+        [data-theme="fab-neko"] .db-box { background: rgba(26, 21, 37, 0.8); box-shadow: inset 0 0 10px rgba(0,0,0,0.8); border-color: var(--accent-blue); }
+        [data-theme="fab-neko"] .db-security-note { background: rgba(11, 203, 212, 0.1); border-left-color: var(--accent-blue); }
+        
+        [data-theme="firefly-neko"] .manifest-box { background: rgba(3, 14, 23, 0.8); border-color: var(--border-color); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        [data-theme="firefly-neko"] .db-box { background: rgba(3, 14, 23, 0.8); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); border-color: var(--accent-green); }
 
         .db-box textarea { height: 150px; margin-bottom: 10px; }
         .db-controls { display: flex; justify-content: space-between; align-items: center; }
-        .db-status { font-size: 11px; color: var(--accent-green); font-family: monospace; }[data-theme="fab-neko"] .db-status { color: var(--accent-blue); }[data-theme="firefly-neko"] .db-status { color: var(--accent-blue); }
+        .db-status { font-size: 11px; color: var(--accent-green); font-family: monospace; }
+        [data-theme="fab-neko"] .db-status { color: var(--accent-blue); }
+        [data-theme="firefly-neko"] .db-status { color: var(--accent-blue); }
 
         /* --- CUSTOM MODAL --- */
         .modal-overlay {
@@ -551,7 +668,7 @@
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v10.2[Omni-Canvas Restoration]</span>
+            <span class="version-tag">// Configuration Automation Tool // v10.3 [Fabulous Override Fix]</span>
         </h2>
         
         <div class="tz-widget">
@@ -726,7 +843,7 @@
     <div id="advancedOptionsContainer" class="form-group input-section" style="display: none; border-color: rgba(227, 179, 65, 0.4);">
         <div class="header-row">
             <label style="color: var(--p-matrix-title); text-shadow: 0 0 8px rgba(227, 179, 65, 0.4); display: flex; align-items: center; gap: 6px;">
-                07 // ADVANCED OPTIONS[ PER-PORT MATRIX ]
+                07 // ADVANCED OPTIONS [ PER-PORT MATRIX ]
                 <div class="tooltip-icon" style="color: var(--p-matrix-title); border-color: var(--p-matrix-title);" data-tooltip="Granular control. Inputs here will overwrite the Global selections for specific individual ports. Edits here will NOT auto-execute until you hit Execute_Run.">i</div>
             </label>
             <button class="expand-btn" id="advOptionsBtn" style="color: var(--p-matrix-title); border-color: var(--p-matrix-title);" onclick="toggleAdvOptions()">[ EXPAND ]</button>
@@ -926,14 +1043,14 @@
     }
 
     // --- Konami Code Easter Egg ---
-    const konamiCode =['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-    let inputBuffer =[];
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let inputBuffer = [];
     let easterEggActive = false;
 
     function playKonamiSound() {
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const sequence =[440, 660, 880, 1320]; 
+            const sequence = [440, 660, 880, 1320]; 
             sequence.forEach((freq, idx) => {
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
@@ -971,76 +1088,37 @@
                 } else {
                     setTimeout(() => { generateScript(); easterEggActive = false; }, 1500);
                 }
-                inputBuffer =[];
+                inputBuffer = [];
             }
         } else {
-            inputBuffer =[];
+            inputBuffer = [];
         }
     });
 
-    // --- MULTI-CORE HOLOGRAM ENGINE ---
+    // --- Multi-Core Hologram Engine ---
     (function() {
         const canvas = document.getElementById('networkBg');
         const ctx = canvas.getContext('2d');
         let width, height;
         
-        let particles =[];
+        let particles = [];
         const speed = 0.3;
-        let timelineBranches =[];
+        let timelineBranches = [];
         let timelineTime = 0;
-        let meteors =[];
+        let meteors = [];
         
-        let fireflies =[];
-        let magicalTrees =[];
-        let bokehLights =[];
-        let ships = [];
-        let lasers =[];
-        
+        let fireflies = [];
         const maxFireflies = 150;
-        const fireflyColors =[
-            'rgba(0, 255, 150,', 
-            'rgba(0, 200, 255,', 
-            'rgba(255, 0, 150,', 
-            'rgba(150, 0, 255,', 
-            'rgba(255, 255, 0,'
-        ];
+        const fireflyColors = ['rgba(227, 179, 65,', 'rgba(255, 191, 0,', 'rgba(125, 232, 225,'];
+
+        let fabPolygons = [];
 
         function initCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            particles =[]; timelineBranches = []; meteors =[]; fireflies =[];
+            particles = []; timelineBranches = []; meteors = []; fireflies = []; fabPolygons = [];
             for (let i = 0; i < 80; i++) particles.push(new Particle());
-            
-            magicalTrees =[];
-            for(let i=0; i<30; i++) {
-                magicalTrees.push({
-                    x: Math.random() * (width + 400) - 200,
-                    width: Math.random() * 20 + 10,
-                    layer: Math.random() > 0.4 ? 1 : 2,
-                    swayOffset: Math.random() * Math.PI * 2,
-                    branchDir: Math.random() > 0.5 ? 1 : -1,
-                    branchHeight: Math.random() * 0.3 + 0.2
-                });
-            }
-            
-            bokehLights =[];
-            for(let i=0; i<15; i++) {
-                bokehLights.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    r: Math.random() * 150 + 100,
-                    vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3,
-                    color:['rgba(0,255,200,', 'rgba(0,150,255,', 'rgba(255,0,200,'][Math.floor(Math.random()*3)],
-                    life: Math.random() * 100
-                });
-            }
-            
-            ships = [];
-            lasers =[];
-            for(let i=0; i<10; i++) {
-                ships.push(new Ship());
-            }
+            for (let i = 0; i < 40; i++) fabPolygons.push(new PolygonParticle());
         }
 
         class Particle {
@@ -1062,6 +1140,44 @@
             }
         }
 
+        class PolygonParticle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.radius = Math.random() * 15 + 8; 
+                this.sides = Math.floor(Math.random() * 4) + 3; 
+                this.angle = Math.random() * Math.PI * 2;
+                this.rotSpeed = (Math.random() - 0.5) * 0.02;
+                const colors = ['rgba(165, 119, 196, 0.3)', 'rgba(217, 120, 184, 0.3)', 'rgba(168, 216, 234, 0.3)', 'rgba(244, 163, 184, 0.3)'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                this.angle += this.rotSpeed;
+                if (this.x < -50) this.x = width + 50; if (this.x > width + 50) this.x = -50;
+                if (this.y < -50) this.y = height + 50; if (this.y > height + 50) this.y = -50;
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.beginPath();
+                for (let i = 0; i < this.sides; i++) {
+                    let a = (Math.PI * 2 / this.sides) * i;
+                    ctx.lineTo(Math.cos(a) * this.radius, Math.sin(a) * this.radius);
+                }
+                ctx.closePath();
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.strokeStyle = this.color.replace('0.3', '0.6');
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
         class Meteor {
             constructor() {
                 this.x = Math.random() * width;
@@ -1069,7 +1185,7 @@
                 this.size = Math.random() * 2 + 1;
                 this.speed = Math.random() * 8 + 4;
                 this.angle = Math.random() * Math.PI / 8 + Math.PI / 4;
-                const colors =['rgba(163, 217, 255,', 'rgba(240, 98, 240,']; 
+                const colors = ['rgba(163, 217, 255,', 'rgba(240, 98, 240,']; 
                 this.colorBase = colors[Math.floor(Math.random() * colors.length)];
                 this.life = 0;
                 this.maxLife = Math.random() * 100 + 50;
@@ -1088,110 +1204,6 @@
                 ctx.moveTo(this.x, this.y);
                 ctx.lineTo(this.x - Math.cos(this.angle) * 15, this.y - Math.sin(this.angle) * 15);
                 ctx.stroke();
-            }
-        }
-        
-        class Laser {
-            constructor(x, y, angle, z, color) {
-                this.x = x; 
-                this.y = y; 
-                this.z = z;
-                this.speed = 12 * z;
-                this.vx = Math.cos(angle) * this.speed;
-                this.vy = Math.sin(angle) * this.speed;
-                this.color = color;
-                this.life = 0; 
-                this.maxLife = 30 + Math.random() * 20;
-                this.length = 10 * z;
-            }
-            update() {
-                this.x += this.vx; 
-                this.y += this.vy;
-                this.life++; 
-                return this.life < this.maxLife;
-            }
-            draw() {
-                let opacity = (1 - this.life / this.maxLife) * this.z;
-                ctx.beginPath();
-                ctx.moveTo(this.x, this.y);
-                ctx.lineTo(this.x - this.vx * 0.5, this.y - this.vy * 0.5);
-                ctx.strokeStyle = this.color + opacity + ')';
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
-            }
-        }
-
-        class Ship {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.z = Math.random() * 0.5 + 0.15;
-                this.speed = (Math.random() * 3 + 2) * this.z;
-                this.angle = Math.random() * Math.PI * 2;
-                this.faction = Math.random() > 0.5 ? 1 : 0;
-                this.color = this.faction === 1 ? 'rgba(240, 98, 240,' : 'rgba(125, 232, 225,';
-                this.target = null;
-                this.cooldown = Math.random() * 100;
-                this.turnSpeed = 0.03 + Math.random() * 0.04;
-            }
-            update(ships) {
-                if (!this.target || Math.random() < 0.02) {
-                    let enemies = ships.filter(s => s.faction !== this.faction);
-                    if(enemies.length) this.target = enemies[Math.floor(Math.random() * enemies.length)];
-                }
-                if (this.target) {
-                    let dx = this.target.x - this.x;
-                    let dy = this.target.y - this.y;
-                    
-                    if (dx > width/2) dx -= width; else if (dx < -width/2) dx += width;
-                    if (dy > height/2) dy -= height; else if (dy < -height/2) dy += height;
-
-                    let targetAngle = Math.atan2(dy, dx);
-                    let diff = targetAngle - this.angle;
-                    while (diff > Math.PI) diff -= Math.PI * 2;
-                    while (diff < -Math.PI) diff += Math.PI * 2;
-                    
-                    this.angle += diff * this.turnSpeed;
-
-                    if (this.cooldown <= 0 && Math.abs(diff) < 0.3 && Math.sqrt(dx*dx+dy*dy) < 400 * this.z) {
-                        lasers.push(new Laser(this.x, this.y, this.angle, this.z, this.color));
-                        this.cooldown = 30 + Math.random() * 50;
-                    }
-                }
-                if(this.cooldown > 0) this.cooldown--;
-
-                this.x += Math.cos(this.angle) * this.speed;
-                this.y += Math.sin(this.angle) * this.speed;
-
-                if (this.x < -20) this.x += width + 40;
-                if (this.x > width + 20) this.x -= width + 40;
-                if (this.y < -20) this.y += height + 40;
-                if (this.y > height + 20) this.y -= height + 40;
-            }
-            draw() {
-                let opacity = this.z * 0.9;
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.angle);
-                
-                ctx.beginPath();
-                let s = 4 * this.z + 1;
-                ctx.moveTo(s*1.5, 0);
-                ctx.lineTo(-s, -s*0.8);
-                ctx.lineTo(-s*0.5, 0); 
-                ctx.lineTo(-s, s*0.8);
-                ctx.closePath();
-                ctx.fillStyle = this.color + opacity + ')';
-                ctx.fill();
-                
-                ctx.beginPath();
-                ctx.moveTo(-s*0.6, 0);
-                ctx.lineTo(-s - (Math.random()*8*this.z + 3), 0);
-                ctx.strokeStyle = this.faction === 1 ? `rgba(255,200,255,${opacity})` : `rgba(200,255,255,${opacity})`;
-                ctx.lineWidth = 1;
-                ctx.stroke();
-                
-                ctx.restore();
             }
         }
 
@@ -1404,8 +1416,8 @@
                 }
                 ctx.lineTo(width, height);
                 ctx.closePath();
-                let alphas =[0.1, 0.15, 0.2, 0.3]; 
-                let colors =['18, 30, 54', '34, 153, 168', '45, 156, 166', '77, 194, 186']; 
+                let alphas = [0.1, 0.15, 0.2, 0.3]; 
+                let colors = ['18, 30, 54', '34, 153, 168', '45, 156, 166', '77, 194, 186']; 
                 ctx.fillStyle = `rgba(${colors[i]}, ${alphas[i]})`;
                 ctx.fill();
             }
@@ -1423,98 +1435,23 @@
             });
         }
 
-        function drawTree(t, swayFactor) {
-            let sway = Math.sin(timelineTime * 0.5 + t.swayOffset) * swayFactor;
-            
-            ctx.beginPath();
-            ctx.moveTo(t.x, height);
-            ctx.quadraticCurveTo(t.x + sway/2, height/2, t.x + sway, -50);
-            ctx.lineTo(t.x + sway + t.width, -50);
-            ctx.quadraticCurveTo(t.x + sway/2 + t.width, height/2, t.x + t.width, height);
-            ctx.fill();
-            
-            ctx.beginPath();
-            let bStartY = height * t.branchHeight;
-            let bStartX = t.x + sway * (1 - t.branchHeight) + t.width/2;
-            
-            ctx.moveTo(bStartX, bStartY);
-            let bx = bStartX + (sway * 0.5) + (100 * t.branchDir);
-            let by = bStartY - 100;
-            ctx.quadraticCurveTo(bStartX + (sway * 0.2) + (30 * t.branchDir), bStartY - 30, bx, by);
-            
-            ctx.lineWidth = t.width * 0.35;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-        }
-
         function drawFireflies(delta) {
-            timelineTime += 0.01; 
-            
-            let bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-            bgGrad.addColorStop(0, '#03101c'); 
-            bgGrad.addColorStop(0.5, '#002f42'); 
-            bgGrad.addColorStop(1, '#00141a');
-            ctx.fillStyle = bgGrad;
+            ctx.fillStyle = 'rgba(2, 8, 4, 0.1)'; 
             ctx.fillRect(0, 0, width, height);
             
-            bokehLights.forEach(b => {
-                b.x += b.vx; b.y += b.vy; b.life += 0.01;
-                if(b.x < -b.r) b.x = width + b.r;
-                if(b.x > width + b.r) b.x = -b.r;
-                if(b.y < -b.r) b.y = height + b.r;
-                if(b.y > height + b.r) b.y = -b.r;
-
-                let glow = 0.02 + Math.abs(Math.sin(b.life)) * 0.15; 
-                let grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
-                grad.addColorStop(0, b.color + glow + ')');
-                grad.addColorStop(1, 'transparent');
-                ctx.fillStyle = grad;
-                ctx.fillRect(b.x - b.r, b.y - b.r, b.r*2, b.r*2);
-            });
-
-            ctx.fillStyle = '#01202e'; 
-            ctx.strokeStyle = '#01202e';
-            magicalTrees.forEach(t => {
-                if(t.layer === 1) {
-                    t.x -= 0.1; 
-                    if (t.x < -150) t.x = width + 150;
-                    drawTree(t, 5);
-                }
-            });
-
-            ctx.beginPath();
-            ctx.moveTo(0, height);
-            for(let x=0; x<=width; x+=50) {
-                ctx.lineTo(x, height - 60 + Math.sin(x*0.01 + timelineTime)*20);
-            }
-            ctx.lineTo(width, height);
-            ctx.fillStyle = '#011824';
-            ctx.fill();
-
-            if (fireflies.length < maxFireflies && Math.random() < 0.15) {
+            if (fireflies.length < maxFireflies && Math.random() < 0.1) {
                 fireflies.push(new FireflyParticle());
             }
             fireflies = fireflies.filter(f => f.state !== "dead");
-            fireflies.forEach(f => { f.update(delta); f.draw(); });
-
-            ctx.fillStyle = '#01121a'; 
-            ctx.strokeStyle = '#01121a';
-            magicalTrees.forEach(t => {
-                if(t.layer === 2) {
-                    t.x -= 0.25; 
-                    if (t.x < -150) t.x = width + 150;
-                    drawTree(t, 12);
-                }
-            });
-
+            
             ctx.beginPath();
-            ctx.moveTo(0, height);
-            for(let x=0; x<=width; x+=50) {
-                ctx.lineTo(x, height - 20 + Math.sin(x*0.015 + timelineTime*1.5)*15);
-            }
-            ctx.lineTo(width, height);
-            ctx.fillStyle = '#000b12';
-            ctx.fill();
+            let grad = ctx.createRadialGradient(width/2, height, 10, width/2, height, height);
+            grad.addColorStop(0, 'rgba(26, 64, 42, 0.15)');
+            grad.addColorStop(1, 'transparent');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, width, height);
+
+            fireflies.forEach(f => { f.update(delta); f.draw(); });
         }
 
         function drawGamerFloor() {
@@ -1529,16 +1466,11 @@
             meteors = meteors.filter(m => m.update());
             meteors.forEach(m => m.draw());
 
-            lasers = lasers.filter(l => l.update());
-            lasers.forEach(l => l.draw());
-            
-            ships.sort((a, b) => a.z - b.z);
-            ships.forEach(s => {
-                s.update(ships);
-                s.draw();
-            });
-
             particles.forEach(p => { p.update(); p.draw(); });
+        }
+
+        function drawFabNeko() {
+            fabPolygons.forEach(p => { p.update(); p.draw(); });
         }
 
         let currentMode = 'dark';
@@ -1550,7 +1482,7 @@
             const theme = document.documentElement.getAttribute('data-theme') || 'dark';
             
             if (theme !== currentMode) {
-                if (theme === 'timeline-neko') timelineBranches =[];
+                if (theme === 'timeline-neko') timelineBranches = [];
                 currentMode = theme;
             }
             
@@ -1566,6 +1498,8 @@
                 drawFireflies(delta);
             } else if (theme === 'gamer-neko') {
                 drawGamerFloor();
+            } else if (theme === 'fab-neko') {
+                drawFabNeko();
             } else {
                 drawNetwork();
             }
@@ -1581,7 +1515,7 @@
     })();
 
     // --- OMNI-CHRONOS MODULE ---
-    let isLiveTime = true, is24Hour = true, forceRawAccess = true;
+    let isLiveTime = true, is24Hour = true, forceRawAccess = false; 
     function toggleTimeFormat() { is24Hour = !is24Hour; document.getElementById('fmtToggleBtn').innerText = is24Hour ? "[ 24H ]" : "[ 12H ]"; localStorage.setItem('noccat_tz_24h', is24Hour); updateClocks(); }
     function getTzOffsetDiff(srcTz, tgtTz) { const now = new Date(); const getStr = (tz) => tz === 'Local' ? now.toLocaleString('en-US') : now.toLocaleString('en-US', {timeZone: tz}); return new Date(getStr(tgtTz)).getTime() - new Date(getStr(srcTz)).getTime(); }
     function updateClocks() { const timeInput = document.getElementById('localTimeInput'); const srcTz = document.getElementById('sourceTzSelector').value, tgtTz = document.getElementById('tzSelector').value; localStorage.setItem('noccat_tz_src', srcTz); localStorage.setItem('noccat_tz_tgt', tgtTz); const formatOpts = { hour12: !is24Hour, hour: '2-digit', minute: '2-digit', second: '2-digit' }; if (isLiveTime) { const now = new Date(); let srcStr = now.toLocaleTimeString('en-US', srcTz === 'Local' ? formatOpts : { ...formatOpts, timeZone: srcTz }); if(is24Hour && srcStr.startsWith('24:')) srcStr = srcStr.replace('24:', '00:'); if (document.activeElement !== timeInput) timeInput.value = srcStr; let tgtStr = now.toLocaleTimeString('en-US', tgtTz === 'Local' ? formatOpts : { ...formatOpts, timeZone: tgtTz }); if(is24Hour && tgtStr.startsWith('24:')) tgtStr = tgtStr.replace('24:', '00:'); document.getElementById('convertedTimeDisplay').innerText = tgtStr; } else { let t = timeInput.value.trim(); if (/^\d{3,4}$/.test(t)) t = t.substring(0, t.length - 2) + ':' + t.substring(t.length - 2); let parsedDate = new Date("1/1/2000 " + t); if (!isNaN(parsedDate.getTime())) { let d = new Date(1970, 0, 1, parsedDate.getHours(), parsedDate.getMinutes(), parsedDate.getSeconds()); let tgtStr = new Date(d.getTime() + getTzOffsetDiff(srcTz, tgtTz)).toLocaleTimeString('en-US', formatOpts); if(is24Hour && tgtStr.startsWith('24:')) tgtStr = tgtStr.replace('24:', '00:'); document.getElementById('convertedTimeDisplay').innerText = tgtStr; } else document.getElementById('convertedTimeDisplay').innerText = "--:--:--"; } }
@@ -1747,7 +1681,7 @@
         const leaveAdminRadio = document.querySelector('input[name="adminState"][value="leave"]');
         
         let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
-        let textBlocks =[];
+        let textBlocks = [];
         let hasRawPorts = false;
 
         if (isRawModeGlobal && configText.trim() !== "") {
@@ -1785,7 +1719,7 @@
                 expandBtn.innerText = "[ EXPAND ]";
             }
             
-            const allToggles =[dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceRadio];
+            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceRadio];
             allToggles.forEach(t => {
                 t.disabled = true;
                 t.closest('label').classList.add('disabled');
@@ -1811,8 +1745,8 @@
             }
         }
 
-        const hostMatches =[...configText.matchAll(/^([A-Za-z0-9\-\_]+)#/gm)];
-        let uniqueHosts =[];
+        const hostMatches = [...configText.matchAll(/^([A-Za-z0-9\-\_]+)#/gm)];
+        let uniqueHosts = [];
         
         hostMatches.forEach(match => {
             let host = match[1];
@@ -1847,8 +1781,8 @@
         let totalParsedPorts = 0, portsWithFullDot1x = 0, portsWithFullSticky = 0, portsWithFullEdge = 0, portsWithShutdown = 0, portsWithNoShut = 0;
         let hasAnySecurity = false, hasActivePorts = false;
 
-        let unsafePorts =[], shutdownPorts = [], conflictedPorts =[], fragmentPorts = [], noSecPorts = [];
-        let validAccessPortsForGrid =[];
+        let unsafePorts = [], shutdownPorts = [], conflictedPorts = [], fragmentPorts = [], noSecPorts = [];
+        let validAccessPortsForGrid = [];
 
         textBlocks.forEach(block => {
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
@@ -1878,7 +1812,7 @@
                 let isAnySticky = hasStickyMac || hasPortSec;
                 let isAnyDot1x = hasDot1xPae || hasAuthPortControl;
 
-                if (isAnySticky || isAnyDot1x) hasAnySecurity = true;
+                if (isAnySticky || isAnyDot1x || isRaw) hasAnySecurity = true;
 
                 if (hasStickyMac && hasPortSec) portsWithFullSticky++;
                 if (hasDot1xPae && hasAuthPortControl) portsWithFullDot1x++;
@@ -1928,11 +1862,16 @@
 
             if (hasAnySecurity || hasRawPorts) {
                 removeRadio.disabled = false; removeRadio.closest('label').classList.remove('disabled');
-                resetRadio.disabled = false; resetRadio.closest('label').classList.remove('disabled');
             } else {
                 removeRadio.disabled = true; removeRadio.closest('label').classList.add('disabled');
+                if (removeRadio.checked) leaveSecRadio.checked = true;
+            }
+
+            if (hasAnySecurity && !hasRawPorts) {
+                resetRadio.disabled = false; resetRadio.closest('label').classList.remove('disabled');
+            } else {
                 resetRadio.disabled = true; resetRadio.closest('label').classList.add('disabled');
-                if (removeRadio.checked || resetRadio.checked) leaveSecRadio.checked = true;
+                if (resetRadio.checked) leaveSecRadio.checked = true;
             }
 
             if (portsWithFullEdge === totalParsedPorts && !hasRawPorts) {
@@ -1967,7 +1906,9 @@
         if (validAccessPortsForGrid.length > 0) {
             const currentOverrides = {};
             document.querySelectorAll('.override-input, .override-select').forEach(inp => {
-                if (inp.value && inp.value !== 'global') currentOverrides[inp.id] = inp.value;
+                if (inp.value && inp.value !== 'global') {
+                    currentOverrides[inp.id] = inp.value;
+                }
             });
             
             let gridHTML = "";
@@ -1975,6 +1916,7 @@
                 let safeName = p.name.replace(/[^a-zA-Z0-9]/g, '_');
                 let curSec = p.isRaw ? "UNKNOWN" : (p.hasStickyMac && p.hasDot1xPae ? "DUAL" : p.hasStickyMac ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE");
                 let statusDot = p.isRaw ? '<span style="color:#8b949e">● RAW</span>' : (p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>');
+                let resetOption = p.isRaw ? `<option value="reset" disabled>RESET (N/A)</option>` : `<option value="reset">RESET</option>`;
                 
                 gridHTML += `<tr>
                     <td><strong>${p.name}</strong></td>
@@ -1987,7 +1929,7 @@
                             <option value="dot1x">DOT1X</option>
                             <option value="sticky">STICKY</option>
                             <option value="remove">REMOVE</option>
-                            <option value="reset">RESET</option>
+                            ${resetOption}
                         </select>
                     </td>
                 </tr>`;
@@ -1997,7 +1939,7 @@
             
             for (let id in currentOverrides) {
                 let el = document.getElementById(id);
-                if (el) {
+                if (el && (!el.disabled || el.value !== 'reset')) {
                     el.value = currentOverrides[id];
                     if (el.classList.contains('override-select') && el.value === 'remove') {
                         el.classList.add('danger-mode');
@@ -2013,7 +1955,7 @@
         let baseHasContent = false;
         
         if (hasRawPorts) {
-            warningHTML += `<div style="margin-bottom: ${(unsafePorts.length > 0 || shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// ⚠️ BLIND OVERRIDE MODE (RAW PORTS) ⚠️ //////</strong><br><em style="color: var(--hl-yellow);">Idempotency disabled. The engine will forcefully apply your settings without evaluating current states. Rollback scripts will be best-effort.</em><br><label class="raw-force-toggle"><input type="checkbox" ${forceRawAccess ? 'checked' : ''} onchange="updateForceAccess(this.checked)"> Force 'switchport mode access'</label></div>`;
+            warningHTML += `<div style="margin-bottom: ${(unsafePorts.length > 0 || shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// 🛑 DANGER: BLIND OVERRIDE MODE (RAW PORTS) 🛑 //////</strong><br><em style="color: var(--accent-red);">Idempotency and Trunk protections are DISABLED. You are configuring unknown states. Proceed with extreme caution.</em><br><label class="raw-force-toggle"><input type="checkbox" ${forceRawAccess ? 'checked' : ''} onchange="updateForceAccess(this.checked)"> Force 'switchport mode access' (DANGEROUS)</label></div>`;
             baseHasContent = true;
         }
 
@@ -2045,7 +1987,7 @@
             warningBox.style.display = 'block';
             warningBox.innerHTML = warningHTML;
             if (unsafePorts.length > 0) warningBox.style.borderColor = 'var(--accent-red)';
-            else if (hasRawPorts) warningBox.style.borderColor = 'var(--hl-yellow)';
+            else if (hasRawPorts) warningBox.style.borderColor = 'var(--accent-red)'; // Upgraded to Red Danger
             else if (conflictedPorts.length > 0) warningBox.style.borderColor = 'var(--hl-magenta)';
             else if (fragmentPorts.length > 0) warningBox.style.borderColor = 'var(--hl-yellow)';
             else if (noSecPorts.length > 0) warningBox.style.borderColor = 'var(--hl-cyan)';
@@ -2055,7 +1997,6 @@
         }
     }
 
-    // --- GENERATOR LOGIC ---
     function generateScript() {
         let configText = document.getElementById('configInput').value;
         configText = configText.replace(/\r\n/g, '\n');
@@ -2069,7 +2010,7 @@
         if (!configText.trim()) return;
 
         let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
-        let textBlocks =[];
+        let textBlocks = [];
 
         if (isRawModeGlobal) {
             let lines = configText.split('\n');
@@ -2089,7 +2030,7 @@
         let globalAdds = 0;
         let globalRemoves = 0;
         let globalBounces = 0;
-        let primaryCompiledPorts = 0; 
+        primaryCompiledPorts = 0; 
 
         textBlocks.forEach(block => {
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
@@ -2109,7 +2050,6 @@
 
                 let hasPortfast = isRaw ? false : /spanning-tree\s+portfast/i.test(block);
                 let hasBpduguard = isRaw ? false : /spanning-tree\s+bpduguard/i.test(block);
-                
                 let isShutdown = isRaw ? true : /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
 
                 if (!interfacesDataMap[normalizedIf]) {
@@ -2155,7 +2095,7 @@
         function getPrimary(iface) {
             if (iface.isTrunk) return null; 
 
-            let cmds =[];
+            let cmds = [];
             let safeName = iface.name.replace(/[^a-zA-Z0-9]/g, '_');
             
             let overrideVlanEl = document.getElementById('ovr_vlan_' + safeName);
@@ -2170,8 +2110,7 @@
             let forceUp = adminState === 'up';
             let forceDown = adminState === 'down';
             let forceBounce = adminState === 'bounce';
-            
-            let stateChanged = forceBounce || (forceUp && (iface.isShutdown || iface.isRaw)) || (forceDown && (!iface.isShutdown || iface.isRaw));
+            let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown) || forceBounce;
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
@@ -2184,17 +2123,13 @@
             } else if (actualSecurityMode === 'sticky') {
                 if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true;
             } else if (actualSecurityMode === 'reset') {
-                if ((isCurrentlySticky || isCurrentlyDot1x) && !isDual) secChanged = true;
+                if (iface.isRaw) secChanged = false; // Block raw reset
+                else if ((isCurrentlySticky || isCurrentlyDot1x) && !isDual) secChanged = true;
             } else if (actualSecurityMode === 'remove') {
-                if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
+                if (isCurrentlySticky || isCurrentlyDot1x || iface.isRaw) secChanged = true;
             }
             
             let rawModeAccessApplies = iface.isRaw && forceRawAccess;
-            
-            if (iface.isRaw) {
-                if (actualSecurityMode === 'remove') secChanged = true;
-                if (actualSecurityMode === 'reset') secChanged = true;
-            }
 
             let needsBounce = vlanChanged || stpChanged || secChanged || forceBounce;
 
@@ -2231,10 +2166,9 @@
                     if (iface.hasPortSec) cmds.push("no switchport port-security");
                     if (!iface.isShutdown && !iface.isRaw && !cmds.includes("shut")) cmds.push("shut");
                     cmds.push("switchport port-security mac-address sticky", "switchport port-security");
-                } else if (isCurrentlyDot1x || iface.isRaw) {
+                } else if (isCurrentlyDot1x) {
                     if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
                     if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
-                    if (iface.isRaw) cmds.push("no switchport port-security mac-address sticky", "no switchport port-security"); 
                     if (!iface.isShutdown && !iface.isRaw && !cmds.includes("shut")) cmds.push("shut");
                     cmds.push("dot1x pae authenticator", "authentication port-control auto");
                 }
@@ -2281,7 +2215,7 @@
         function getRollback(iface) {
             if (iface.isTrunk) return null; 
 
-            let cmds =[];
+            let cmds = [];
             let safeName = iface.name.replace(/[^a-zA-Z0-9]/g, '_');
             
             let overrideVlanEl = document.getElementById('ovr_vlan_' + safeName);
@@ -2296,7 +2230,7 @@
             let forceUp = adminState === 'up';
             let forceDown = adminState === 'down';
             let forceBounce = adminState === 'bounce';
-            let stateChanged = forceBounce || (forceUp && (iface.isShutdown || iface.isRaw)) || (forceDown && (!iface.isShutdown || iface.isRaw));
+            let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown) || (forceBounce && iface.isShutdown);
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
@@ -2332,6 +2266,8 @@
                 if (!iface.hasBpduguard) cmds.push("no spanning-tree bpduguard enable");
             }
             
+            let portStateBeforeRollback = forceDown ? "shut" : ((forceUp || forceBounce) ? "no shut" : (iface.isShutdown ? "shut" : "no shut"));
+            
             if (secChanged) {
                 if (actualSecurityMode === 'dot1x') {
                     if (!iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
@@ -2341,7 +2277,7 @@
                     if (!iface.hasPortSec) cmds.push("no switchport port-security");
                 }
                 
-                if (!iface.isShutdown && !iface.isRaw && !cmds.includes("shut")) cmds.push("shut");
+                if (portStateBeforeRollback !== "shut" && !cmds.includes("shut")) cmds.push("shut");
                 
                 if (actualSecurityMode === 'dot1x' && isCurrentlySticky) {
                     if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
@@ -2356,8 +2292,6 @@
                     if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
                 }
             } 
-            
-            let portStateBeforeRollback = forceDown ? "shut" : ((forceUp || forceBounce) ? "no shut" : (iface.isShutdown ? "shut" : "no shut"));
             
             if (needsBounce && !cmds.includes("shut") && portStateBeforeRollback !== "shut" && !iface.isRaw) {
                 cmds.push("shut");
@@ -2382,7 +2316,7 @@
             let lines = ["conf t"];
             let groups = {};
             let skippedPorts = [];
-            let trunkPorts =[];
+            let trunkPorts = [];
             let hasRaw = false;
             
             interfacesData.forEach(d => { 
@@ -2414,7 +2348,7 @@
                 
                 ifaces.sort((a, b) => a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'}));
                 
-                let aggregatedItems =[];
+                let aggregatedItems = [];
                 let parsed = ifaces.map(p => {
                     let match = p.match(/^(.*?)(\d+)$/);
                     return match ? { original: p, prefix: match[1], port: parseInt(match[2], 10), isMappable: true } : { original: p, isMappable: false };
@@ -2494,7 +2428,8 @@
         if (hasPrimaryChanges) {
             document.getElementById('statusMsg').innerHTML = `
                 <span>STATUS: ${primaryCompiledPorts} PORTS COMPILED_SUCCESSFULLY</span>
-                <span class="diff-stats">[ <span class="diff-add">+${globalAdds}</span> LINES_ADDED | 
+                <span class="diff-stats">
+                    [ <span class="diff-add">+${globalAdds}</span> LINES_ADDED | 
                     <span class="diff-rem">-${globalRemoves}</span> LINES_REMOVED | 
                     <span class="diff-bnc">${globalBounces}</span> PORTS_BOUNCED ]
                 </span>
