@@ -93,7 +93,7 @@
             --particle-line: rgba(255, 0, 51, 0.1); 
             --p-matrix-title: #ff4d6d; 
         }
-        
+
         [data-theme="h2o-neko"] {
             --bg-color: #050a14; 
             --card-bg: #121e36; 
@@ -113,7 +113,7 @@
             --particle-line: rgba(125, 232, 225, 0.15); 
             --p-matrix-title: #dcb04d; 
         }
-        
+
         [data-theme="firefly-neko"] {
             --bg-color: #030d14; 
             --card-bg: #051621; 
@@ -133,7 +133,7 @@
             --particle-line: rgba(0, 225, 255, 0.15); 
             --p-matrix-title: #00ffaa; 
         }
-        
+
         [data-theme="gamer-neko"] {
             --bg-color: #08010f; 
             --card-bg: #12021c; 
@@ -154,12 +154,14 @@
             --p-matrix-title: #a3d9ff; 
         }
 
+        /* Blood Moon CSS Effect */
         html[data-theme="crimson-neko"] body::after {
             content: ""; position: fixed; top: -10%; right: -5%; width: 70vh; height: 70vh;
             border-radius: 50%; z-index: -2; background: radial-gradient(circle at center, #5c0a1a 0%, transparent 60%);
             box-shadow: 0 0 120px 60px rgba(255, 0, 51, 0.15); opacity: 0.7; pointer-events: none;
         }
 
+        /* Syntax coloring adjustments */
         .sample-code div { color: #fff; }
         .sample-code span[style*="color: #ff9d00;"] { color: var(--hl-orange) !important; }
         .sample-code span[style*="color: #00ffff;"] { color: var(--hl-cyan) !important; }
@@ -188,6 +190,7 @@
             display: flex; justify-content: center; overflow-x: hidden; overflow-y: scroll; 
         }
 
+        /* --- DYNAMIC BACKGROUND CANVAS --- */
         #networkBg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1; pointer-events: none; transition: opacity 0.5s ease-in-out;
@@ -195,6 +198,7 @@
 
         .container { max-width: 1050px; width: 100%; position: relative; z-index: 1; }
 
+        /* --- HEADER ROW --- */
         .top-bar { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; gap: 20px; }
         h2 {
             color: #ffffff; font-size: 1.7rem; margin: 0; display: flex; align-items: baseline;
@@ -221,6 +225,7 @@
 
         .version-tag { font-size: 0.8rem; color: var(--accent-blue); opacity: 0.6; text-transform: uppercase; letter-spacing: 2px; font-weight: normal; font-family: "Segoe UI", Roboto, monospace; }
         
+        /* --- QUALITY_OF_LIFE MENU --- */
         .qol-menu { position: relative; display: inline-block; align-self: center; padding-bottom: 10px; margin-bottom: -10px; }
         .qol-menu-btn {
             background: transparent; color: var(--text-main); border: 1px solid var(--border-color);
@@ -254,6 +259,7 @@
         .qol-dropdown-content button:last-child { border-bottom: none; }
         .qol-dropdown-content button:hover { background: rgba(188, 140, 255, 0.1); color: var(--accent-blue); }
         .qol-dropdown-content button.active { font-weight: bold; color: var(--neon-green); }
+        
         [data-theme="fab-neko"] .qol-dropdown-content button:hover { background: rgba(11, 203, 212, 0.15); color: var(--accent-blue); }
         [data-theme="timeline-neko"] .qol-dropdown-content button:hover { background: rgba(255, 140, 0, 0.15); color: var(--accent-blue); }
         [data-theme="crimson-neko"] .qol-dropdown-content button:hover { background: rgba(255, 0, 51, 0.15); color: var(--accent-blue); }
@@ -261,6 +267,7 @@
         [data-theme="firefly-neko"] .qol-dropdown-content button:hover { background: rgba(0, 225, 255, 0.15); color: var(--accent-blue); }
         [data-theme="gamer-neko"] .qol-dropdown-content button:hover { background: rgba(240, 98, 240, 0.15); color: var(--accent-blue); }
         
+        /* --- TIMEZONE WIDGET --- */
         .tz-widget {
             display: flex; align-items: center; gap: 8px; font-family: "Courier New", Courier, monospace;
             font-size: 11px; color: var(--text-main); background: rgba(13, 17, 23, 0.85);
@@ -293,6 +300,7 @@
             font-size: 11px; cursor: pointer; outline: none; font-weight: bold; appearance: none; -webkit-appearance: none;
             padding-right: 4px; text-shadow: 0 0 5px rgba(57, 255, 20, 0.4);
         }
+        
         [data-theme="fab-neko"] .tz-select { text-shadow: 0 0 5px rgba(255, 71, 133, 0.5); color: var(--neon-green); }
         [data-theme="firefly-neko"] .tz-select { text-shadow: 0 0 8px rgba(0, 240, 255, 0.6); color: var(--neon-green); }
         
@@ -463,6 +471,7 @@
         
         .radio-group input, .checkbox-group input { display: none; }
         .radio-group label:has(input:checked), .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 8px rgba(57, 255, 20, 0.2); }
+        
         .radio-group label.disabled, .checkbox-group label.disabled { opacity: 0.3 !important; cursor: not-allowed !important; background: #0d1117 !important; border-color: #30363d !important; color: #484f58 !important; box-shadow: none !important; }
 
         @keyframes danger-glitch { 0% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(0deg); text-shadow: none; } 2% { box-shadow: 0 0 20px rgba(248, 81, 73, 1); transform: skewX(5deg) translate(-2px, 1px); text-shadow: 2px 0 var(--accent-red), -2px 0 var(--accent-blue); } 4% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(-5deg) translate(2px, -1px); text-shadow: -2px 0 var(--accent-red), 2px 0 var(--accent-blue); } 6% { transform: skewX(0deg) translate(0, 0); text-shadow: none; } 50% { box-shadow: 0 0 15px rgba(248, 81, 73, 0.8); } 94% { transform: skewX(0deg) translate(0, 0); text-shadow: none; } 96% { box-shadow: 0 0 25px rgba(248, 81, 73, 1); transform: skewX(8deg) translate(3px, 0); text-shadow: 3px 0 var(--accent-red), -3px 0 var(--accent-blue); } 98% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(-8deg) translate(-3px, 0); text-shadow: -3px 0 var(--accent-red), 3px 0 var(--accent-blue); } 100% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: skewX(0deg) translate(0, 0); text-shadow: none; } }
@@ -640,7 +649,6 @@
             display: none; position: fixed; bottom: 20px; right: 30px; font-size: 40px;
             opacity: 0.2; z-index: -1; pointer-events: none; text-shadow: 0 0 15px rgba(240, 98, 240, 0.8);
         }
-        
         [data-theme="gamer-neko"] .cat-ear-icon { display: block; }
     </style>
 </head>
@@ -668,7 +676,7 @@
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v10.3 [Fabulous Override Fix]</span>
+            <span class="version-tag">// Configuration Automation Tool // v10.4 [Blind Override Logic]</span>
         </h2>
         
         <div class="tz-widget">
@@ -708,7 +716,7 @@
 
     <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
         <div class="header-row">
-            <label style="color: var(--accent-purple); text-shadow: 0 0 8px rgba(188, 140, 255, 0.4);">00 // SYSTEM_MANUAL[READ_ME]</label>
+            <label style="color: var(--accent-purple); text-shadow: 0 0 8px rgba(188, 140, 255, 0.4);">00 // SYSTEM_MANUAL [READ_ME]</label>
             <button class="expand-btn" id="readmeBtn" onclick="toggleReadme()">[ EXPAND ]</button>
         </div>
         <div id="readmeWrapper" class="readme-wrapper">
@@ -796,6 +804,14 @@
                 <label class="disabled"><input type="radio" name="securityMode" value="sticky" disabled onchange="checkDynamicWarnings()"><span>STICKY</span></label>
                 <label class="disabled"><input type="radio" name="securityMode" value="remove" onclick="handleRemoveClick(this)" onchange="checkDynamicWarnings()" disabled><span>REMOVE</span></label>
                 <label class="disabled"><input type="radio" name="securityMode" value="reset" disabled onchange="checkDynamicWarnings()"><span>RESET</span></label>
+            </div>
+            
+            <div id="rawResetToggle" style="display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border-color);">
+                <label style="color: var(--hl-yellow); margin-bottom: 6px; font-size: 9px;">BLIND RESET TARGET:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="rawResetType" value="sticky" checked><span>STICKY</span></label>
+                    <label><input type="radio" name="rawResetType" value="dot1x"><span>DOT1X</span></label>
+                </div>
             </div>
         </div>
 
@@ -922,7 +938,7 @@
                 <h3>📡 2. Omni-Parse Input & Drag-and-Drop</h3>
                 <ul>
                     <li><strong>Standard Parsing:</strong> Accepts standard Cisco interface configuration blocks natively (e.g., <code>interface Gi1/0/1...</code>).</li>
-                    <li><strong>Blind Mode (Raw Ports):</strong> Auto-detects flat lists of ports without config data. Disables idempotency, assumes default 'shutdown' states, and allows blind-forcing of parameters. Includes an auto-append toggle for `switchport mode access`.</li>
+                    <li><strong>Blind Mode (Raw Ports):</strong> Auto-detects flat lists of ports without config data. Disables idempotency, allows blind-forcing of parameters, and auto-generates BNC bounce states for unknown ports. Includes an auto-append toggle for `switchport mode access`.</li>
                     <li><strong>Omni-Drop Zone:</strong> Seamlessly drag and drop `.txt` log files or raw text highlights directly into the input box for immediate parsing. Auto-clears cache on reload to prevent accidental execution of old data.</li>
                 </ul>
 
@@ -931,7 +947,7 @@
                     <li><strong>Trunk Port Hard-Stop:</strong> Automatically detects uplinks/trunks (missing `switchport mode access`) and entirely locks them out of the script generation, preventing catastrophic network loops or outages.</li>
                     <li><strong>DOT1X & STICKY Pushing:</strong> Instantly formats ports with 802.1X or Port Security MAC Sticky templates while removing conflicting protocols.</li>
                     <li><strong>REMOVE Protocol:</strong> Systematically strips security to leave the port open. Triggers a mandatory Critical Danger validation modal to enforce IT CAB/Ticket compliance.</li>
-                    <li><strong>Universal RESET:</strong> Wipes existing security and immediately replaces it, actively suppressing specific rollback security commands to prevent re-infection.</li>
+                    <li><strong>Universal RESET:</strong> Wipes existing security and immediately replaces it. During Blind Mode, dynamically reveals a sub-target menu to ensure exact protocol stripping.</li>
                 </ul>
 
                 <h3>🎛️ 4. Multi-Tenant Device HUD & DB</h3>
@@ -952,7 +968,7 @@
                 <h3>⚡ 6. State, Edge & Delay Flow Control</h3>
                 <ul>
                     <li><strong>Per-Port Advanced Matrix:</strong> Fine-tune overrides! Apply a Global Master VLAN/Security setting, then use the dynamic grid (07) to surgically override settings for individual ports in the exact same execution batch.</li>
-                    <li><strong>Admin State Bouncer:</strong> Force ports UP, DWN, or gracefully BNC (bounce). Smart logic inherently avoids writing a `shut` command if the port is already known to be offline.</li>
+                    <li><strong>Admin State Bouncer:</strong> Force ports UP, DWN, or gracefully BNC (bounce). Smart logic inherently avoids writing a redundant `shut` command if the port is already known to be offline.</li>
                     <li><strong>Edge Provisioning:</strong> Quickly injects `spanning-tree portfast` and `bpduguard enable`.</li>
                     <li><strong>Slow Paste Mode:</strong> Reduces compilation chunks from 5 ports to 2, actively injecting `! --- buffer wait ---` markers for older legacy switches that drop characters during large SSH pastes.</li>
                 </ul>
@@ -1725,6 +1741,8 @@
                 t.closest('label').classList.add('disabled');
             });
             
+            document.getElementById('rawResetToggle').style.display = 'none';
+            
             leaveSecRadio.checked = true;
             leaveAdminRadio.checked = true;
             edgeCheckbox.checked = false;
@@ -1794,7 +1812,7 @@
                 
                 if (!isAccessMode && !unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
 
-                let isShutdown = isRaw ? true : /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
+                let isShutdown = isRaw ? false : /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
                 
                 if (isShutdown && !isRaw) {
                     portsWithShutdown++;
@@ -1812,7 +1830,7 @@
                 let isAnySticky = hasStickyMac || hasPortSec;
                 let isAnyDot1x = hasDot1xPae || hasAuthPortControl;
 
-                if (isAnySticky || isAnyDot1x || isRaw) hasAnySecurity = true;
+                if (isAnySticky || isAnyDot1x) hasAnySecurity = true;
 
                 if (hasStickyMac && hasPortSec) portsWithFullSticky++;
                 if (hasDot1xPae && hasAuthPortControl) portsWithFullDot1x++;
@@ -1844,6 +1862,12 @@
 
         const selectedSecurityMode = document.querySelector('input[name="securityMode"]:checked').value;
         const isSecurityModifying = selectedSecurityMode !== 'leave';
+        
+        if (hasRawPorts) {
+            document.getElementById('rawResetToggle').style.display = 'block';
+        } else {
+            document.getElementById('rawResetToggle').style.display = 'none';
+        }
 
         if (totalParsedPorts > 0) {
             if (portsWithFullDot1x === totalParsedPorts && !hasRawPorts) {
@@ -1862,16 +1886,11 @@
 
             if (hasAnySecurity || hasRawPorts) {
                 removeRadio.disabled = false; removeRadio.closest('label').classList.remove('disabled');
-            } else {
-                removeRadio.disabled = true; removeRadio.closest('label').classList.add('disabled');
-                if (removeRadio.checked) leaveSecRadio.checked = true;
-            }
-
-            if (hasAnySecurity && !hasRawPorts) {
                 resetRadio.disabled = false; resetRadio.closest('label').classList.remove('disabled');
             } else {
+                removeRadio.disabled = true; removeRadio.closest('label').classList.add('disabled');
                 resetRadio.disabled = true; resetRadio.closest('label').classList.add('disabled');
-                if (resetRadio.checked) leaveSecRadio.checked = true;
+                if (removeRadio.checked || resetRadio.checked) leaveSecRadio.checked = true;
             }
 
             if (portsWithFullEdge === totalParsedPorts && !hasRawPorts) {
@@ -1916,7 +1935,6 @@
                 let safeName = p.name.replace(/[^a-zA-Z0-9]/g, '_');
                 let curSec = p.isRaw ? "UNKNOWN" : (p.hasStickyMac && p.hasDot1xPae ? "DUAL" : p.hasStickyMac ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE");
                 let statusDot = p.isRaw ? '<span style="color:#8b949e">● RAW</span>' : (p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>');
-                let resetOption = p.isRaw ? `<option value="reset" disabled>RESET (N/A)</option>` : `<option value="reset">RESET</option>`;
                 
                 gridHTML += `<tr>
                     <td><strong>${p.name}</strong></td>
@@ -1929,7 +1947,7 @@
                             <option value="dot1x">DOT1X</option>
                             <option value="sticky">STICKY</option>
                             <option value="remove">REMOVE</option>
-                            ${resetOption}
+                            <option value="reset">RESET</option>
                         </select>
                     </td>
                 </tr>`;
@@ -1939,7 +1957,7 @@
             
             for (let id in currentOverrides) {
                 let el = document.getElementById(id);
-                if (el && (!el.disabled || el.value !== 'reset')) {
+                if (el) {
                     el.value = currentOverrides[id];
                     if (el.classList.contains('override-select') && el.value === 'remove') {
                         el.classList.add('danger-mode');
@@ -1987,7 +2005,7 @@
             warningBox.style.display = 'block';
             warningBox.innerHTML = warningHTML;
             if (unsafePorts.length > 0) warningBox.style.borderColor = 'var(--accent-red)';
-            else if (hasRawPorts) warningBox.style.borderColor = 'var(--accent-red)'; // Upgraded to Red Danger
+            else if (hasRawPorts) warningBox.style.borderColor = 'var(--accent-red)';
             else if (conflictedPorts.length > 0) warningBox.style.borderColor = 'var(--hl-magenta)';
             else if (fragmentPorts.length > 0) warningBox.style.borderColor = 'var(--hl-yellow)';
             else if (noSecPorts.length > 0) warningBox.style.borderColor = 'var(--hl-cyan)';
@@ -2006,6 +2024,10 @@
         const applyStp = document.getElementById('stpCheckbox').checked;
         const adminState = document.querySelector('input[name="adminState"]:checked').value;
         const slowPaste = document.getElementById('slowPasteCheckbox').checked;
+        
+        let rawResetType = 'sticky';
+        const rawResetElem = document.querySelector('input[name="rawResetType"]:checked');
+        if (rawResetElem) rawResetType = rawResetElem.value;
 
         if (!configText.trim()) return;
 
@@ -2050,7 +2072,7 @@
 
                 let hasPortfast = isRaw ? false : /spanning-tree\s+portfast/i.test(block);
                 let hasBpduguard = isRaw ? false : /spanning-tree\s+bpduguard/i.test(block);
-                let isShutdown = isRaw ? true : /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
+                let isShutdown = isRaw ? false : /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
 
                 if (!interfacesDataMap[normalizedIf]) {
                     interfacesDataMap[normalizedIf] = { 
@@ -2110,7 +2132,10 @@
             let forceUp = adminState === 'up';
             let forceDown = adminState === 'down';
             let forceBounce = adminState === 'bounce';
-            let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown) || forceBounce;
+            
+            if (iface.isRaw && adminState === 'bounce') forceBounce = true;
+            
+            let stateChanged = (forceUp && (iface.isShutdown || iface.isRaw)) || (forceDown && (!iface.isShutdown || iface.isRaw)) || forceBounce;
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
@@ -2123,13 +2148,17 @@
             } else if (actualSecurityMode === 'sticky') {
                 if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true;
             } else if (actualSecurityMode === 'reset') {
-                if (iface.isRaw) secChanged = false; // Block raw reset
-                else if ((isCurrentlySticky || isCurrentlyDot1x) && !isDual) secChanged = true;
+                if ((isCurrentlySticky || isCurrentlyDot1x) && !isDual) secChanged = true;
             } else if (actualSecurityMode === 'remove') {
-                if (isCurrentlySticky || isCurrentlyDot1x || iface.isRaw) secChanged = true;
+                if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
             }
             
             let rawModeAccessApplies = iface.isRaw && forceRawAccess;
+            
+            if (iface.isRaw) {
+                if (actualSecurityMode === 'remove') secChanged = true;
+                if (actualSecurityMode === 'reset') secChanged = true;
+            }
 
             let needsBounce = vlanChanged || stpChanged || secChanged || forceBounce;
 
@@ -2145,31 +2174,35 @@
             }
 
             if (actualSecurityMode === 'dot1x' && secChanged) {
-                if (isCurrentlySticky) {
-                    if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
-                    if (iface.hasPortSec) cmds.push("no switchport port-security");
+                if (isCurrentlySticky || (iface.isRaw && rawResetType === 'sticky')) {
+                    if (iface.hasStickyMac || iface.isRaw) cmds.push("no switchport port-security mac-address sticky");
+                    if (iface.hasPortSec || iface.isRaw) cmds.push("no switchport port-security");
                 }
-                if (!iface.isShutdown && !iface.isRaw && !cmds.includes("shut")) cmds.push("shut");
+                let shouldShut = (!iface.isShutdown || iface.isRaw) && !cmds.includes("shut");
+                if (shouldShut) cmds.push("shut");
                 if (!iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
                 if (!iface.hasAuthPortControl) cmds.push("authentication port-control auto");
             } else if (actualSecurityMode === 'sticky' && secChanged) {
-                if (isCurrentlyDot1x) {
-                    if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
-                    if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
+                if (isCurrentlyDot1x || (iface.isRaw && rawResetType === 'dot1x')) {
+                    if (iface.hasDot1xPae || iface.isRaw) cmds.push("no dot1x pae authenticator");
+                    if (iface.hasAuthPortControl || iface.isRaw) cmds.push("no authentication port-control auto");
                 }
-                if (!iface.isShutdown && !iface.isRaw && !cmds.includes("shut")) cmds.push("shut");
+                let shouldShut = (!iface.isShutdown || iface.isRaw) && !cmds.includes("shut");
+                if (shouldShut) cmds.push("shut");
                 if (!iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
                 if (!iface.hasPortSec) cmds.push("switchport port-security");
             } else if (actualSecurityMode === 'reset' && secChanged) {
-                if (isCurrentlySticky) {
-                    if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
-                    if (iface.hasPortSec) cmds.push("no switchport port-security");
-                    if (!iface.isShutdown && !iface.isRaw && !cmds.includes("shut")) cmds.push("shut");
+                if (isCurrentlySticky || (iface.isRaw && rawResetType === 'sticky')) {
+                    if (iface.hasStickyMac || iface.isRaw) cmds.push("no switchport port-security mac-address sticky");
+                    if (iface.hasPortSec || iface.isRaw) cmds.push("no switchport port-security");
+                    let shouldShut = (!iface.isShutdown || iface.isRaw) && !cmds.includes("shut");
+                    if (shouldShut) cmds.push("shut");
                     cmds.push("switchport port-security mac-address sticky", "switchport port-security");
-                } else if (isCurrentlyDot1x) {
-                    if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
-                    if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
-                    if (!iface.isShutdown && !iface.isRaw && !cmds.includes("shut")) cmds.push("shut");
+                } else if (isCurrentlyDot1x || (iface.isRaw && rawResetType === 'dot1x')) {
+                    if (iface.hasDot1xPae || iface.isRaw) cmds.push("no dot1x pae authenticator");
+                    if (iface.hasAuthPortControl || iface.isRaw) cmds.push("no authentication port-control auto");
+                    let shouldShut = (!iface.isShutdown || iface.isRaw) && !cmds.includes("shut");
+                    if (shouldShut) cmds.push("shut");
                     cmds.push("dot1x pae authenticator", "authentication port-control auto");
                 }
             } else if (actualSecurityMode === 'remove' && secChanged) {
@@ -2177,10 +2210,11 @@
                 if (iface.hasPortSec || iface.isRaw) cmds.push("no switchport port-security");
                 if (iface.hasDot1xPae || iface.isRaw) cmds.push("no dot1x pae authenticator");
                 if (iface.hasAuthPortControl || iface.isRaw) cmds.push("no authentication port-control auto");
-                if (!iface.isShutdown && !iface.isRaw && !cmds.includes("shut")) cmds.push("shut");
+                let shouldShut = (!iface.isShutdown || iface.isRaw) && !cmds.includes("shut");
+                if (shouldShut) cmds.push("shut");
             } 
             
-            if (needsBounce && !cmds.includes("shut") && !iface.isShutdown && !iface.isRaw) {
+            if (needsBounce && !cmds.includes("shut") && (!iface.isShutdown || iface.isRaw)) {
                 cmds.push("shut");
             }
 
@@ -2189,12 +2223,12 @@
             if (forceDown) {
                 if (!isShutInCmds && (!iface.isShutdown || iface.isRaw)) cmds.push("shut");
             } else if (forceUp) {
-                if (iface.isShutdown || isShutInCmds) cmds.push("no shut");
+                if (iface.isShutdown || isShutInCmds || iface.isRaw) cmds.push("no shut");
             } else if (forceBounce) {
                 if (!isShutInCmds && (!iface.isShutdown || iface.isRaw)) cmds.push("shut");
                 if (cmds[cmds.length - 1] !== "no shut") cmds.push("no shut");
             } else { 
-                if (!iface.isShutdown && !iface.isRaw && isShutInCmds) cmds.push("no shut");
+                if ((!iface.isShutdown || iface.isRaw) && isShutInCmds) cmds.push("no shut");
             }
 
             if (cmds.length >= 2 && cmds[cmds.length - 1] === "shut" && cmds[cmds.length - 2] === "shut") cmds.pop();
@@ -2230,7 +2264,9 @@
             let forceUp = adminState === 'up';
             let forceDown = adminState === 'down';
             let forceBounce = adminState === 'bounce';
-            let stateChanged = (forceUp && iface.isShutdown) || (forceDown && !iface.isShutdown) || (forceBounce && iface.isShutdown);
+            if (iface.isRaw && adminState === 'bounce') forceBounce = true;
+
+            let stateChanged = forceBounce || (forceUp && (iface.isShutdown || iface.isRaw)) || (forceDown && (!iface.isShutdown || iface.isRaw));
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
@@ -2266,7 +2302,7 @@
                 if (!iface.hasBpduguard) cmds.push("no spanning-tree bpduguard enable");
             }
             
-            let portStateBeforeRollback = forceDown ? "shut" : ((forceUp || forceBounce) ? "no shut" : (iface.isShutdown ? "shut" : "no shut"));
+            let portStateBeforeRollback = forceDown ? "shut" : ((forceUp || forceBounce) ? "no shut" : (iface.isShutdown && !iface.isRaw ? "shut" : "no shut"));
             
             if (secChanged) {
                 if (actualSecurityMode === 'dot1x') {
@@ -2293,18 +2329,16 @@
                 }
             } 
             
-            if (needsBounce && !cmds.includes("shut") && portStateBeforeRollback !== "shut" && !iface.isRaw) {
+            if (needsBounce && !cmds.includes("shut") && portStateBeforeRollback !== "shut") {
                 cmds.push("shut");
             }
-
+            
             let isShutInCmds = cmds.includes("shut");
 
-            if (iface.isShutdown) { 
-                if (portStateBeforeRollback !== "shut" && !isShutInCmds && !iface.isRaw) cmds.push("shut");
+            if (portStateBeforeRollback === "shut") {
+                if (!isShutInCmds && !iface.isRaw) cmds.push("shut");
             } else {
-                if ((portStateBeforeRollback === "shut" || isShutInCmds) && cmds[cmds.length - 1] !== "no shut" && !iface.isRaw) {
-                    cmds.push("no shut");
-                }
+                if (isShutInCmds && cmds[cmds.length - 1] !== "no shut" && !iface.isRaw) cmds.push("no shut");
             }
 
             if (cmds.length >= 2 && cmds[cmds.length - 1] === "shut" && cmds[cmds.length - 2] === "shut") cmds.pop();
