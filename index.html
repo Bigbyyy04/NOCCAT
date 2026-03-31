@@ -363,6 +363,7 @@
 </head>
 <body>
 
+<div id="pulseOverlay"></div>
 <canvas id="networkBg"></canvas>
 <div class="cat-ear-icon">🎧</div>
 
@@ -1707,7 +1708,7 @@
         let baseHasContent = false;
         
         if (hasRawPorts) {
-            warningHTML += `<div style="margin-bottom: ${(unsafePorts.length > 0 || shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// 🛑 DANGER: BLIND OVERRIDE MODE (RAW PORTS) 🛑 //////</strong><br><em style="color: var(--accent-red);">Idempotency and Trunk protections are DISABLED. You are configuring unknown states. Proceed with extreme caution.</em><br><label class="raw-force-toggle"><input type="checkbox" ${forceRawAccess ? 'checked' : ''} onchange="updateForceAccess(this.checked)"> Force 'switchport mode access' (DANGEROUS)</label></div>`;
+            warningHTML += `<div style="margin-bottom: ${(unsafePorts.length > 0 || shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// 🛑 DANGER: BLIND OVERRIDE MODE (RAW PORTS) 🛑 //////</strong><br><em style="color: var(--accent-red);">Idempotency and Trunk protections are DISABLED. You are configuring unknown states. Proceed with extreme caution.</em><br><label class="raw-force-toggle" style="cursor: pointer;"><input type="checkbox" ${forceRawAccess ? 'checked' : ''} onchange="updateForceAccess(this.checked)"> Force 'switchport mode access' <div class="tooltip-icon" style="margin-left: 5px; color: var(--accent-red); border-color: var(--accent-red); background: rgba(248, 81, 73, 0.1);" data-tooltip="DANGER: Forcing access mode bypasses safety locks. Applying this to an Uplink or Trunk port will cause severe network outages.">i</div></label></div>`;
             baseHasContent = true;
         }
 
