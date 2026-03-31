@@ -32,12 +32,6 @@
             --accent-red: #b03131; --hl-orange: #ff7f00; --hl-yellow: #daa520; --hl-cyan: #1e605e; --code-bg: #f1eae0; 
             --particle-color: rgba(255, 170, 51, 0.2); --particle-line: rgba(255, 170, 51, 0.15); --p-matrix-title: #ff7f00; 
         }
-        [data-theme="h2o-neko"] {
-            --bg-color: #050a14; --card-bg: #121e36; --border-color: #243b61; --text-main: #dcf1f9; --btn-text: #ffffff; 
-            --accent-blue: #4dc2ba; --accent-green: #2d9ca6; --neon-green: #26b3be; --accent-purple: #3a69a8; 
-            --accent-red: #c9534f; --hl-orange: #dcb04d; --hl-yellow: #ebc973; --hl-cyan: #7de8e1; --code-bg: #0a1221; 
-            --particle-color: rgba(125, 232, 225, 0.3); --particle-line: rgba(125, 232, 225, 0.15); --p-matrix-title: #dcb04d; 
-        }
         [data-theme="gamer-neko"] {
             --bg-color: #08010f; --card-bg: #12021c; --border-color: #c45b9a; --text-main: #a3d9ff; --btn-text: #fff; 
             --accent-blue: #8bc8f7; --accent-green: #26b3be; --neon-green: #f062f0; --accent-purple: #bd693c; 
@@ -73,7 +67,7 @@
 
         .logo-text { letter-spacing: 1px; display: flex; align-items: center; }
         .logo-accent { background-color: var(--neon-green); color: var(--code-bg); padding: 0px 6px; margin: 0 6px; box-shadow: 0 0 12px rgba(57, 255, 20, 0.4); display: inline-block; font-weight: 900; transition: 0.3s; }
-        [data-theme="fab-neko"] .logo-accent { box-shadow: 0 0 12px rgba(255, 71, 133, 0.6); background-color: var(--neon-green); color: #fff; } [data-theme="timeline-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 140, 0, 0.6); color: var(--bg-color); } [data-theme="h2o-neko"] .logo-accent { background-color: var(--accent-blue); box-shadow: 0 0 15px rgba(77, 187, 194, 0.6); color: #fff; } [data-theme="gamer-neko"] .logo-accent { background-color: var(--neon-green); box-shadow: 0 0 15px rgba(240, 98, 240, 0.8); color: #fff; }
+        [data-theme="fab-neko"] .logo-accent { box-shadow: 0 0 12px rgba(255, 71, 133, 0.6); background-color: var(--neon-green); color: #fff; } [data-theme="timeline-neko"] .logo-accent { background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 140, 0, 0.6); color: var(--bg-color); } [data-theme="gamer-neko"] .logo-accent { background-color: var(--neon-green); box-shadow: 0 0 15px rgba(240, 98, 240, 0.8); color: #fff; }
 
         .version-tag { font-size: 0.8rem; color: var(--accent-blue); opacity: 0.6; text-transform: uppercase; letter-spacing: 2px; font-weight: normal; font-family: "Segoe UI", Roboto, monospace; }
         
@@ -81,17 +75,17 @@
         .qol-menu { position: relative; display: inline-block; align-self: center; padding-bottom: 10px; margin-bottom: -10px; }
         .qol-menu-btn { background: transparent; color: var(--text-main); border: 1px solid var(--border-color); padding: 4px 8px; font-size: 14px; cursor: pointer; border-radius: 4px; transition: 0.3s ease; box-sizing: border-box; line-height: 1; opacity: 0.5; }
         .qol-menu-btn:hover { opacity: 1; border-color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 8px rgba(188, 140, 255, 0.4); }
-        [data-theme="fab-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(255, 71, 133, 0.5); border-color: var(--neon-green); background: rgba(255, 71, 133, 0.15); } [data-theme="timeline-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(255, 140, 0, 0.5); border-color: var(--accent-green); background: rgba(255, 140, 0, 0.15); } [data-theme="h2o-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(77, 187, 194, 0.6); border-color: var(--accent-blue); background: rgba(77, 187, 194, 0.15); } [data-theme="gamer-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(240, 98, 240, 0.6); border-color: var(--accent-green); background: rgba(240, 98, 240, 0.15); }
+        [data-theme="fab-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(255, 71, 133, 0.5); border-color: var(--neon-green); background: rgba(255, 71, 133, 0.15); } [data-theme="timeline-neko"] .qol-menu-btn:hover { box-shadow: 0 0 8px rgba(255, 140, 0, 0.5); border-color: var(--accent-green); background: rgba(255, 140, 0, 0.15); } [data-theme="gamer-neko"] .qol-menu-btn:hover { box-shadow: 0 0 10px rgba(240, 98, 240, 0.6); border-color: var(--accent-green); background: rgba(240, 98, 240, 0.15); }
 
         .qol-dropdown-content { opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; position: absolute; top: 100%; left: 0; margin-top: 0; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; min-width: 190px; box-shadow: 0 8px 16px rgba(0,0,0,0.6); z-index: 100; overflow: hidden; backdrop-filter: blur(4px); }
         .qol-menu:hover .qol-dropdown-content { opacity: 1; visibility: visible; transform: translateY(0); }
         .qol-dropdown-content button { display: block; width: 100%; background: transparent; color: var(--text-main); padding: 12px 16px; border: none; text-align: left; font-size: 12px; cursor: pointer; transition: 0.2s; font-family: "Segoe UI", Roboto, monospace; border-bottom: 1px solid rgba(0,0,0,0.1); }
         .qol-dropdown-content button:last-child { border-bottom: none; } .qol-dropdown-content button:hover { background: rgba(188, 140, 255, 0.1); color: var(--accent-blue); } .qol-dropdown-content button.active { font-weight: bold; color: var(--neon-green); }
-        [data-theme="fab-neko"] .qol-dropdown-content button:hover { background: rgba(11, 203, 212, 0.15); color: var(--accent-blue); } [data-theme="timeline-neko"] .qol-dropdown-content button:hover { background: rgba(255, 140, 0, 0.15); color: var(--accent-blue); } [data-theme="h2o-neko"] .qol-dropdown-content button:hover { background: rgba(77, 187, 194, 0.15); color: var(--accent-blue); } [data-theme="gamer-neko"] .qol-dropdown-content button:hover { background: rgba(240, 98, 240, 0.15); color: var(--accent-blue); }
+        [data-theme="fab-neko"] .qol-dropdown-content button:hover { background: rgba(11, 203, 212, 0.15); color: var(--accent-blue); } [data-theme="timeline-neko"] .qol-dropdown-content button:hover { background: rgba(255, 140, 0, 0.15); color: var(--accent-blue); } [data-theme="gamer-neko"] .qol-dropdown-content button:hover { background: rgba(240, 98, 240, 0.15); color: var(--accent-blue); }
         
         /* --- TIMEZONE WIDGET --- */
         .tz-widget { display: flex; align-items: center; gap: 8px; font-family: "Courier New", Courier, monospace; font-size: 11px; color: var(--text-main); background: rgba(13, 17, 23, 0.85); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 4px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); backdrop-filter: blur(4px); white-space: nowrap; }
-        [data-theme="fab-neko"] .tz-widget { background: rgba(39, 32, 54, 0.85); box-shadow: inset 0 0 10px rgba(0,0,0,0.4); } [data-theme="timeline-neko"] .tz-widget { background: rgba(92, 71, 60, 0.85); box-shadow: inset 0 0 10px rgba(0,0,0,0.4); } [data-theme="h2o-neko"] .tz-widget { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.6); } [data-theme="gamer-neko"] .tz-widget { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        [data-theme="fab-neko"] .tz-widget { background: rgba(39, 32, 54, 0.85); box-shadow: inset 0 0 10px rgba(0,0,0,0.4); } [data-theme="timeline-neko"] .tz-widget { background: rgba(92, 71, 60, 0.85); box-shadow: inset 0 0 10px rgba(0,0,0,0.4); } [data-theme="gamer-neko"] .tz-widget { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
 
         .live-dot { width: 8px; height: 8px; background-color: var(--neon-green); border-radius: 50%; cursor: pointer; transition: 0.3s; flex-shrink: 0; }
         .live-dot.pulse { box-shadow: 0 0 8px var(--neon-green); animation: pulse-dot 1.5s infinite; }
@@ -113,7 +107,7 @@
 
         /* --- PANELS & FORMS --- */
         .form-group { background: rgba(22, 27, 34, 0.85); backdrop-filter: blur(4px); padding: 15px; border: 1px solid var(--border-color); border-radius: 8px; }
-        [data-theme="fab-neko"] .form-group { background: rgba(39, 32, 54, 0.85); } [data-theme="timeline-neko"] .form-group { background: rgba(92, 71, 60, 0.85); } [data-theme="h2o-neko"] .form-group { background: rgba(16, 28, 48, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); } [data-theme="gamer-neko"] .form-group { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
+        [data-theme="fab-neko"] .form-group { background: rgba(39, 32, 54, 0.85); } [data-theme="timeline-neko"] .form-group { background: rgba(92, 71, 60, 0.85); } [data-theme="gamer-neko"] .form-group { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
 
         .disabled-panel { opacity: 0.3; pointer-events: none; filter: grayscale(100%); transition: 0.4s; }
         .input-section { margin-bottom: 15px; position: relative; }
@@ -121,7 +115,7 @@
         label { font-weight: 600; display: block; margin-bottom: 8px; color: var(--accent-blue); font-size: 0.75rem; text-transform: uppercase; opacity: 0.8; }
         .header-row label { margin-bottom: 0; }
         
-        [data-theme="timeline-neko"] label { color: var(--text-main); } [data-theme="h2o-neko"] label { color: var(--accent-blue); text-shadow: 0 0 5px rgba(77, 187, 194, 0.3); } [data-theme="gamer-neko"] label { color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
+        [data-theme="timeline-neko"] label { color: var(--text-main); } [data-theme="gamer-neko"] label { color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
 
         .expand-btn { background: transparent; color: var(--accent-purple); border: 1px solid var(--border-color); padding: 4px 10px; font-size: 10px; cursor: pointer; border-radius: 4px; font-family: "Courier New", Courier, monospace; text-transform: uppercase; letter-spacing: 1px; z-index: 10; transition: all 0.3s ease; }
         .expand-btn:hover { border-color: var(--accent-purple); background: rgba(188, 140, 255, 0.1); box-shadow: 0 0 8px rgba(188, 140, 255, 0.3); color: #fff; }
@@ -130,8 +124,8 @@
         /* --- COLLAPSIBLE WRAPPERS --- */
         .readme-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), padding 0.3s, margin 0.3s, border-color 0.3s; padding-top: 0; margin-top: 0; border-top: 1px dashed transparent; }
         .readme-wrapper.expanded { grid-template-rows: 1fr; padding-top: 15px; margin-top: 10px; border-top-color: rgba(188, 140, 255, 0.4); }
-        [data-theme="fab-neko"] .readme-wrapper.expanded { border-top-color: rgba(255, 71, 133, 0.4); } [data-theme="fab-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 159, 67, 0.4); } [data-theme="timeline-neko"] .readme-wrapper.expanded { border-top-color: var(--accent-red); } [data-theme="h2o-neko"] .readme-wrapper.expanded { border-top-color: rgba(77, 187, 194, 0.4); } [data-theme="gamer-neko"] .readme-wrapper.expanded { border-top-color: rgba(240, 98, 240, 0.6); }
-        #advOptionsWrapper.expanded { border-top-color: rgba(227, 179, 65, 0.4); } [data-theme="timeline-neko"] #advOptionsWrapper.expanded { border-top-color: var(--accent-red); } [data-theme="h2o-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(220, 163, 65, 0.4); } [data-theme="gamer-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(163, 217, 255, 0.4); }
+        [data-theme="fab-neko"] .readme-wrapper.expanded { border-top-color: rgba(255, 71, 133, 0.4); } [data-theme="fab-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(255, 159, 67, 0.4); } [data-theme="timeline-neko"] .readme-wrapper.expanded { border-top-color: var(--accent-red); } [data-theme="gamer-neko"] .readme-wrapper.expanded { border-top-color: rgba(240, 98, 240, 0.6); }
+        #advOptionsWrapper.expanded { border-top-color: rgba(227, 179, 65, 0.4); } [data-theme="timeline-neko"] #advOptionsWrapper.expanded { border-top-color: var(--accent-red); } [data-theme="gamer-neko"] #advOptionsWrapper.expanded { border-top-color: rgba(163, 217, 255, 0.4); }
 
         .readme-content { font-size: 12px; line-height: 1.6; color: var(--text-main); opacity: 0.9; }
         .readme-content h3 { color: var(--accent-purple); font-size: 12px; margin: 12px 0 6px 0; text-transform: uppercase; letter-spacing: 1px; }
@@ -143,19 +137,19 @@
 
         /* --- CLEAN NATIVE TEXTAREA & DRAG DROP --- */
         textarea { width: 100%; height: 120px; background: rgba(1, 4, 9, 0.9); color: #79c0ff; border: 1px solid var(--border-color); border-radius: 4px; padding: 12px; font-family: "Courier New", Courier, monospace; box-sizing: border-box; outline: none; font-size: 13px; line-height: 1.5; resize: none; scrollbar-width: thin; scrollbar-color: var(--border-color) var(--code-bg); transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.5s ease-in-out, border-color 0.5s ease-in-out, color 0.5s ease-in-out, box-shadow 0.5s ease-in-out, text-shadow 0.5s ease-in-out !important; }
-        [data-theme="fab-neko"] textarea { background: rgba(20, 16, 29, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); } [data-theme="timeline-neko"] textarea { background: #f1eae0; color: #3a281e; scrollbar-color: var(--border-color) #f1eae0; } [data-theme="h2o-neko"] textarea { background: rgba(9, 16, 31, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); } [data-theme="gamer-neko"] textarea { background: rgba(8, 1, 15, 0.9); color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        [data-theme="fab-neko"] textarea { background: rgba(20, 16, 29, 0.9); color: var(--text-main); scrollbar-color: var(--border-color) var(--code-bg); } [data-theme="timeline-neko"] textarea { background: #f1eae0; color: #3a281e; scrollbar-color: var(--border-color) #f1eae0; } [data-theme="gamer-neko"] textarea { background: rgba(8, 1, 15, 0.9); color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
 
         textarea:focus { border-color: var(--accent-blue); } 
         textarea.expanded { height: 400px; }
         textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(57, 255, 20, 0.2) inset; background: #091a0f; }
         
-        [data-theme="fab-neko"] textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(255, 71, 133, 0.3) inset; background: rgba(255, 71, 133, 0.05); } [data-theme="fab-neko"] textarea::selection { background: rgba(255, 71, 133, 0.3); } [data-theme="timeline-neko"] textarea.drag-active { border-color: var(--accent-green); box-shadow: 0 0 15px rgba(255, 140, 0, 0.3) inset; background: #fcf6ee; } [data-theme="timeline-neko"] textarea::selection { background: rgba(255, 140, 0, 0.3); } [data-theme="h2o-neko"] textarea.drag-active { border-color: var(--accent-blue); box-shadow: 0 0 25px rgba(77, 187, 194, 0.3) inset; background: rgba(77, 187, 194, 0.1); } [data-theme="h2o-neko"] textarea::selection { background: rgba(77, 187, 194, 0.3); } [data-theme="gamer-neko"] textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 25px rgba(240, 98, 240, 0.3) inset; background: rgba(18, 2, 28, 0.1); } [data-theme="gamer-neko"] textarea::selection { background: rgba(240, 98, 240, 0.3); }
+        [data-theme="fab-neko"] textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(255, 71, 133, 0.3) inset; background: rgba(255, 71, 133, 0.05); } [data-theme="fab-neko"] textarea::selection { background: rgba(255, 71, 133, 0.3); } [data-theme="timeline-neko"] textarea.drag-active { border-color: var(--accent-green); box-shadow: 0 0 15px rgba(255, 140, 0, 0.3) inset; background: #fcf6ee; } [data-theme="timeline-neko"] textarea::selection { background: rgba(255, 140, 0, 0.3); } [data-theme="gamer-neko"] textarea.drag-active { border-color: var(--neon-green); box-shadow: 0 0 25px rgba(240, 98, 240, 0.3) inset; background: rgba(18, 2, 28, 0.1); } [data-theme="gamer-neko"] textarea::selection { background: rgba(240, 98, 240, 0.3); }
         
         textarea::-webkit-scrollbar { width: 10px; } textarea::-webkit-scrollbar-track { background: var(--code-bg); } textarea::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
         
         .drag-overlay-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--neon-green); font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 16px; pointer-events: none; opacity: 0; text-shadow: 0 0 8px rgba(57, 255, 20, 0.5); z-index: 5; }
         textarea.drag-active + .drag-overlay-text { opacity: 1; }
-        [data-theme="fab-neko"] .drag-overlay-text { text-shadow: 0 0 12px rgba(255, 71, 133, 0.6); color: var(--neon-green); } [data-theme="timeline-neko"] .drag-overlay-text { color: var(--accent-green); text-shadow: 0 0 12px rgba(255, 140, 0, 0.6); } [data-theme="h2o-neko"] .drag-overlay-text { color: var(--accent-blue); text-shadow: 0 0 15px rgba(77, 187, 194, 0.8); } [data-theme="gamer-neko"] .drag-overlay-text { text-shadow: 0 0 15px rgba(240, 98, 240, 0.8); }
+        [data-theme="fab-neko"] .drag-overlay-text { text-shadow: 0 0 12px rgba(255, 71, 133, 0.6); color: var(--neon-green); } [data-theme="timeline-neko"] .drag-overlay-text { color: var(--accent-green); text-shadow: 0 0 12px rgba(255, 140, 0, 0.6); } [data-theme="gamer-neko"] .drag-overlay-text { text-shadow: 0 0 15px rgba(240, 98, 240, 0.8); }
 
         /* --- MULTI-TENANT DEVICE HUD --- */
         .device-hud { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 6px; font-size: 11px; color: var(--text-main); font-family: "Courier New", Courier, monospace; opacity: 0; max-width: 500px; }
@@ -163,10 +157,10 @@
         .host-tag { background: rgba(88, 166, 255, 0.1); border: 1px solid rgba(88, 166, 255, 0.3); padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; }
         .host-tag strong { color: #fff; margin-right: 5px; }
         [data-theme="timeline-neko"] .host-tag strong { color: var(--text-main); }
-        [data-theme="fab-neko"] .host-tag { background: rgba(11, 203, 212, 0.15); border-color: rgba(11, 203, 212, 0.3); } [data-theme="timeline-neko"] .host-tag { background: rgba(255, 140, 0, 0.1); border-color: rgba(255, 140, 0, 0.3); } [data-theme="h2o-neko"] .host-tag { background: rgba(77, 187, 194, 0.15); border-color: rgba(77, 187, 194, 0.3); } [data-theme="gamer-neko"] .host-tag { background: rgba(240, 98, 240, 0.15); border-color: rgba(240, 98, 240, 0.3); box-shadow: 0 0 8px rgba(240, 98, 240, 0.2); }
+        [data-theme="fab-neko"] .host-tag { background: rgba(11, 203, 212, 0.15); border-color: rgba(11, 203, 212, 0.3); } [data-theme="timeline-neko"] .host-tag { background: rgba(255, 140, 0, 0.1); border-color: rgba(255, 140, 0, 0.3); } [data-theme="gamer-neko"] .host-tag { background: rgba(240, 98, 240, 0.15); border-color: rgba(240, 98, 240, 0.3); box-shadow: 0 0 8px rgba(240, 98, 240, 0.2); }
         
         .ip-highlight { font-weight: bold; text-shadow: 0 0 5px rgba(57, 255, 20, 0.4); }
-        [data-theme="fab-neko"] .ip-highlight { text-shadow: 0 0 5px rgba(11, 203, 212, 0.6); color: var(--accent-blue); } [data-theme="timeline-neko"] .ip-highlight { color: var(--accent-green); text-shadow: 0 0 5px rgba(255, 140, 0, 0.6); } [data-theme="h2o-neko"] .ip-highlight { text-shadow: 0 0 8px rgba(77, 187, 194, 0.6); } [data-theme="gamer-neko"] .ip-highlight { text-shadow: 0 0 8px rgba(57, 255, 20, 0.6); }
+        [data-theme="fab-neko"] .ip-highlight { text-shadow: 0 0 5px rgba(11, 203, 212, 0.6); color: var(--accent-blue); } [data-theme="timeline-neko"] .ip-highlight { color: var(--accent-green); text-shadow: 0 0 5px rgba(255, 140, 0, 0.6); } [data-theme="gamer-neko"] .ip-highlight { text-shadow: 0 0 8px rgba(57, 255, 20, 0.6); }
 
         /* --- UI CONTROLS --- */
         .controls-row { display: flex; gap: 12px; margin-bottom: 15px; margin-top: 15px; align-items: stretch; flex-wrap: wrap; }
@@ -174,18 +168,17 @@
         .radio-group, .checkbox-group { display: flex; gap: 6px; width: 100%; }
         .radio-group label, .checkbox-group label { background: rgba(13, 17, 23, 0.8); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-bottom: 0; display: inline-block; text-align: center; flex-grow: 1; box-sizing: border-box; }
         
-        [data-theme="fab-neko"] .radio-group label,[data-theme="fab-neko"] .checkbox-group label { background: rgba(26, 21, 37, 0.8); } [data-theme="timeline-neko"] .radio-group label,[data-theme="timeline-neko"] .checkbox-group label { background: rgba(92, 71, 60, 0.8); } [data-theme="h2o-neko"] .radio-group label,[data-theme="h2o-neko"] .checkbox-group label { background: rgba(16, 28, 48, 0.8); } [data-theme="gamer-neko"] .radio-group label,[data-theme="gamer-neko"] .checkbox-group label { background: rgba(8, 1, 15, 0.8); }
+        [data-theme="fab-neko"] .radio-group label,[data-theme="fab-neko"] .checkbox-group label { background: rgba(26, 21, 37, 0.8); } [data-theme="timeline-neko"] .radio-group label,[data-theme="timeline-neko"] .checkbox-group label { background: rgba(92, 71, 60, 0.8); } [data-theme="gamer-neko"] .radio-group label,[data-theme="gamer-neko"] .checkbox-group label { background: rgba(8, 1, 15, 0.8); }
 
         .radio-group input, .checkbox-group input { display: none; }
         .radio-group label:has(input:checked), .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 8px rgba(57, 255, 20, 0.2); }
         
         [data-theme="fab-neko"] .radio-group label:has(input:checked),[data-theme="fab-neko"] .checkbox-group label:has(input:checked) { border-color: var(--accent-green); color: var(--btn-text); background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 71, 133, 0.5); } [data-theme="fab-neko"] .radio-group label:has(input:checked) span,[data-theme="fab-neko"] .checkbox-group label:has(input:checked) span { color: #fff; }
         [data-theme="timeline-neko"] .radio-group label:has(input:checked),[data-theme="timeline-neko"] .checkbox-group label:has(input:checked) { border-color: var(--accent-green); color: #3a281e; background-color: var(--accent-green); box-shadow: 0 0 12px rgba(255, 140, 0, 0.6); } [data-theme="timeline-neko"] .radio-group label:has(input:checked) span,[data-theme="timeline-neko"] .checkbox-group label:has(input:checked) span { color: #3a281e; }
-        [data-theme="h2o-neko"] .radio-group label:has(input:checked),[data-theme="h2o-neko"] .checkbox-group label:has(input:checked) { border-color: var(--accent-blue); color: #fff; background-color: var(--accent-green); box-shadow: 0 0 15px rgba(77, 187, 194, 0.6); } [data-theme="h2o-neko"] .radio-group label:has(input:checked) span,[data-theme="h2o-neko"] .checkbox-group label:has(input:checked) span { color: #fff; }
         [data-theme="gamer-neko"] .radio-group label:has(input:checked),[data-theme="gamer-neko"] .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: #fff; background-color: var(--accent-green); box-shadow: 0 0 15px rgba(240, 98, 240, 0.6); } [data-theme="gamer-neko"] .radio-group label:has(input:checked) span,[data-theme="gamer-neko"] .checkbox-group label:has(input:checked) span { color: #fff; text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); }
 
         .radio-group label.disabled, .checkbox-group label.disabled { opacity: 0.3 !important; cursor: not-allowed !important; background: #0d1117 !important; border-color: #30363d !important; color: #484f58 !important; box-shadow: none !important; }
-        [data-theme="fab-neko"] .radio-group label.disabled,[data-theme="fab-neko"] .checkbox-group label.disabled { background: #16121d !important; border-color: #312540 !important; color: #554166 !important; } [data-theme="timeline-neko"] .radio-group label.disabled,[data-theme="timeline-neko"] .checkbox-group label.disabled { background: rgba(92, 71, 60, 0.3) !important; border-color: var(--border-color) !important; color: var(--border-color) !important; } [data-theme="h2o-neko"] .radio-group label.disabled,[data-theme="h2o-neko"] .checkbox-group label.disabled { background: #050a14 !important; border-color: #121e36 !important; color: #243b61 !important; }
+        [data-theme="fab-neko"] .radio-group label.disabled,[data-theme="fab-neko"] .checkbox-group label.disabled { background: #16121d !important; border-color: #312540 !important; color: #554166 !important; } [data-theme="timeline-neko"] .radio-group label.disabled,[data-theme="timeline-neko"] .checkbox-group label.disabled { background: rgba(92, 71, 60, 0.3) !important; border-color: var(--border-color) !important; color: var(--border-color) !important; } 
 
         @keyframes danger-glitch {
             0%, 100% { box-shadow: 0 0 5px rgba(248, 81, 73, 0.5); transform: translate(0) skewX(0deg); text-shadow: none; }
@@ -201,7 +194,7 @@
         }
         
         .radio-group label:has(input[value="remove"]:checked) { border-color: var(--accent-red) !important; color: #ff7b72 !important; background: rgba(248, 81, 73, 0.1) !important; animation: danger-glitch 2s infinite linear !important; }
-        [data-theme="fab-neko"] .radio-group label:has(input[value="remove"]:checked) { color: #fff !important; background: rgba(255, 107, 129, 0.9) !important; border-color: var(--accent-red) !important; } [data-theme="timeline-neko"] .radio-group label:has(input[value="remove"]:checked) { border-color: var(--accent-red) !important; color: #fff !important; background: rgba(176, 49, 49, 0.9) !important; animation: danger-glitch 2s infinite linear !important; } [data-theme="h2o-neko"] .radio-group label:has(input[value="remove"]:checked) { border-color: var(--accent-red) !important; color: #fff !important; background: rgba(201, 83, 79, 0.8) !important; animation: danger-glitch 2s infinite linear !important; } 
+        [data-theme="fab-neko"] .radio-group label:has(input[value="remove"]:checked) { color: #fff !important; background: rgba(255, 107, 129, 0.9) !important; border-color: var(--accent-red) !important; } [data-theme="timeline-neko"] .radio-group label:has(input[value="remove"]:checked) { border-color: var(--accent-red) !important; color: #fff !important; background: rgba(176, 49, 49, 0.9) !important; animation: danger-glitch 2s infinite linear !important; } 
 
         input[type="number"], input[type="text"].override-input { background: rgba(1, 4, 9, 0.8); border: 1px solid var(--border-color); color: #d29922; padding: 6px; border-radius: 4px; width: 100%; box-sizing: border-box; outline: none; font-family: "Courier New", Courier, monospace; text-align: center; height: 31px; }
         [data-theme="fab-neko"] input[type="number"], [data-theme="fab-neko"] input[type="text"].override-input { background: rgba(20, 16, 29, 0.8); color: var(--hl-yellow); } 
@@ -209,7 +202,7 @@
         /* --- BLIND GROUPING UI --- */
         .groups-grid { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px; }
         .config-group-box { background: rgba(1, 4, 9, 0.8); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; flex: 1 1 calc(50% - 15px); min-width: 300px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
-        [data-theme="fab-neko"] .config-group-box { background: rgba(39, 32, 54, 0.8); } [data-theme="timeline-neko"] .config-group-box { background: rgba(92, 71, 60, 0.4); } [data-theme="h2o-neko"] .config-group-box { background: rgba(16, 28, 48, 0.8); } [data-theme="gamer-neko"] .config-group-box { background: rgba(18, 2, 28, 0.8); }
+        [data-theme="fab-neko"] .config-group-box { background: rgba(39, 32, 54, 0.8); } [data-theme="timeline-neko"] .config-group-box { background: rgba(92, 71, 60, 0.4); } [data-theme="gamer-neko"] .config-group-box { background: rgba(18, 2, 28, 0.8); }
 
         .config-group-box.drag-over { border-color: var(--neon-green); background: rgba(57, 255, 20, 0.1); box-shadow: 0 0 15px rgba(57, 255, 20, 0.3) inset; }
         .group-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; margin-bottom: 8px; }
@@ -239,7 +232,6 @@
 
         [data-theme="fab-neko"] .override-table th { background: rgba(26, 21, 37, 0.95); color: var(--accent-blue); } [data-theme="fab-neko"] .override-table td { background: rgba(39, 32, 54, 0.6); border-bottom: 1px solid #312540; } [data-theme="fab-neko"] .override-table tr:hover td { background: rgba(11, 203, 212, 0.15); } [data-theme="fab-neko"] .override-table tr.selected-row td { background: rgba(11, 203, 212, 0.3); }
         [data-theme="timeline-neko"] .override-table th { background: rgba(92, 71, 60, 0.95); color: var(--text-main); } [data-theme="timeline-neko"] .override-table td { background: rgba(92, 71, 60, 0.6); border-bottom: 1px solid var(--border-color); } [data-theme="timeline-neko"] .override-table tr:hover td { background: rgba(255, 140, 0, 0.15); }
-        [data-theme="h2o-neko"] .override-table th { background: rgba(16, 28, 48, 0.95); color: var(--accent-blue); } [data-theme="h2o-neko"] .override-table td { background: rgba(16, 28, 48, 0.6); border-bottom: 1px solid #16243d; } [data-theme="h2o-neko"] .override-table tr:hover td { background: rgba(77, 187, 194, 0.15); }
         [data-theme="gamer-neko"] .override-table th { background: rgba(18, 2, 28, 0.95); color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); } [data-theme="gamer-neko"] .override-table td { background: rgba(18, 2, 28, 0.6); border-bottom: 1px solid #c45b9a; } [data-theme="gamer-neko"] .override-table tr:hover td { background: rgba(240, 98, 240, 0.1); }
         
         .override-input { background: rgba(1, 4, 9, 0.8); border: 1px dashed rgba(88, 166, 255, 0.5); color: var(--neon-green); padding: 4px 6px; border-radius: 3px; width: 100%; box-sizing: border-box; font-family: monospace; outline: none; transition: 0.2s; height: auto; }
@@ -250,7 +242,6 @@
         
         [data-theme="fab-neko"] .override-input,[data-theme="fab-neko"] .override-select { background: rgba(20, 16, 29, 0.8); border-color: var(--border-color); color: var(--text-main); } [data-theme="fab-neko"] .override-input:focus,[data-theme="fab-neko"] .override-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 5px rgba(11, 203, 212, 0.4); border-style: solid; }[data-theme="fab-neko"] .override-input::placeholder { color: #6e5585; }
         [data-theme="timeline-neko"] .override-input,[data-theme="timeline-neko"] .override-select { background: #f1eae0; color: #ff7f00; border-color: var(--border-color); } [data-theme="timeline-neko"] .override-input:focus,[data-theme="timeline-neko"] .override-select:focus { border-color: var(--accent-green); box-shadow: 0 0 5px rgba(255,140,0,0.3); } [data-theme="timeline-neko"] .override-input::placeholder { color: #8a5a41; } [data-theme="timeline-neko"] .override-select { color: #3a281e; }
-        [data-theme="h2o-neko"] .override-input,[data-theme="h2o-neko"] .override-select { background: rgba(9, 16, 31, 0.8); color: var(--hl-orange); border-color: var(--border-color); } [data-theme="h2o-neko"] .override-input:focus,[data-theme="h2o-neko"] .override-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 5px rgba(77,187,194,0.5); } [data-theme="h2o-neko"] .override-input::placeholder { color: #3a69a8; }
         [data-theme="gamer-neko"] .override-input,[data-theme="gamer-neko"] .override-select { background: rgba(8, 1, 15, 0.8); color: var(--hl-orange); border-color: var(--border-color); box-shadow: 0 0 8px rgba(240, 98, 240, 0.2); } [data-theme="gamer-neko"] .override-input:focus,[data-theme="gamer-neko"] .override-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 8px rgba(240, 98, 240, 0.5); } [data-theme="gamer-neko"] .override-input::placeholder { color: #c45b9a; }
 
         /* --- CONTEXT MENU --- */
@@ -392,7 +383,6 @@
                 <button onclick="changeTheme('dark')" id="theme-dark" class="active">Theme: Dark (Default)</button>
                 <button onclick="changeTheme('fab-neko')" id="theme-fab-neko">Theme: Fabulous Neko 🐈</button>
                 <button onclick="changeTheme('timeline-neko')" id="theme-timeline-neko">Theme: Timeline NEKO ⏳</button>
-                <button onclick="changeTheme('h2o-neko')" id="theme-h2o-neko">Theme: H2O NEKO 💧</button>
                 <button onclick="changeTheme('gamer-neko')" id="theme-gamer-neko">Theme: Gamer NEKO 🎮</button>
             </div>
         </div>
@@ -732,7 +722,6 @@
         let iconChar = '🐈‍⬛'; 
         if (theme === 'fab-neko') iconChar = '🐈';
         if (theme === 'timeline-neko') iconChar = '⏳';
-        if (theme === 'h2o-neko') iconChar = '💧';
         if (theme === 'gamer-neko') iconChar = '🎮';
         favicon.href = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${iconChar}</text></svg>`;
     }
@@ -894,12 +883,11 @@
 
         function drawNetwork() { const rootStyles = getComputedStyle(document.documentElement); const lColor = rootStyles.getPropertyValue('--particle-line').trim() || 'rgba(88, 166, 255, 0.25)'; const rgbMatch = lColor.match(/rgba?\((\d+,\s*\d+,\s*\d+)/); const rgbBase = rgbMatch ? rgbMatch[1] : '88, 166, 255'; particles.forEach(p => { p.update(); p.draw(); }); for (let i = 0; i < particles.length; i++) { for (let j = i + 1; j < particles.length; j++) { let dx = particles[i].x - particles[j].x; let dy = particles[i].y - particles[j].y; let dist = Math.sqrt(dx * dx + dy * dy); if (dist < 140) { ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); let opacity = 1 - (dist / 140); ctx.strokeStyle = `rgba(${rgbBase}, ${opacity * 0.25})`; ctx.lineWidth = 1; ctx.stroke(); } } } }
         function drawTimeline() { timelineTime += 0.02; let centerY = height / 2; ctx.shadowBlur = 12; ctx.shadowColor = "rgba(255, 170, 51, 0.3)"; for (let i = 0; i < 10; i++) { ctx.beginPath(); let phase = timelineTime * (1 + i * 0.1); let yOffset = Math.sin(phase) * (8 + i * 1.5); ctx.moveTo(0, centerY + yOffset); for (let x = 0; x <= width; x += 50) { let y = centerY + yOffset + Math.sin(x * 0.005 + phase) * 15; ctx.lineTo(x, y); } ctx.strokeStyle = `rgba(255, ${180 + i*5}, ${50 + i*10}, 0.2)`; ctx.lineWidth = 1.5; ctx.stroke(); } ctx.shadowBlur = 0; if (Math.random() < 0.02 && timelineBranches.length < 12) { timelineBranches.push({ x: width * 0.2 + Math.random() * width * 0.5, y: centerY, dir: Math.random() > 0.5 ? 1 : -1, spread: 60 + Math.random() * 120, progress: 0, maxProgress: width, speed: 4 + Math.random() * 4, life: 1.0, color: Math.random() > 0.85 ? 'rgba(218, 85, 96, ' : 'rgba(255, 140, 0, ' }); } for (let i = timelineBranches.length - 1; i >= 0; i--) { let b = timelineBranches[i]; b.progress += b.speed; if (b.progress > b.maxProgress) b.life -= 0.015; if (b.life <= 0) { timelineBranches.splice(i, 1); continue; } ctx.beginPath(); ctx.moveTo(b.x, b.y); let cp1x = b.x + 100, cp1y = b.y; let cp2x = b.x + 150, cp2y = b.y + b.spread * b.dir; let endX = b.x + 250, endY = b.y + b.spread * b.dir; let drawLength = Math.min(b.progress, width - b.x); for (let step = 0; step <= drawLength; step += 15) { let pct = step / 250; let px, py; if (step <= 250) { let inv = 1 - pct; px = inv*inv*inv*b.x + 3*inv*inv*pct*cp1x + 3*inv*pct*pct*cp2x + pct*pct*pct*endX; py = inv*inv*inv*b.y + 3*inv*inv*pct*cp1y + 3*inv*pct*pct*cp2y + pct*pct*pct*endY; } else { px = b.x + step; py = endY + Math.sin((px * 0.01) + timelineTime) * 10; } ctx.lineTo(px, py); } ctx.shadowBlur = 10; ctx.shadowColor = b.color + (b.life * 0.5) + ')'; ctx.strokeStyle = b.color + b.life + ')'; ctx.lineWidth = 2; ctx.stroke(); ctx.shadowBlur = 0; } }
-        function drawWater() { timelineTime += 0.01; ctx.fillStyle = 'rgba(5, 10, 20, 0.2)'; ctx.fillRect(0, 0, width, height); for (let i = 0; i < 4; i++) { ctx.beginPath(); let waveHeight = height - 80 + (i * 20) + Math.sin(timelineTime * 0.5 + i) * 10; ctx.moveTo(0, height); ctx.lineTo(0, waveHeight); for (let x = 0; x <= width; x += 40) { let y = waveHeight + Math.sin(x * 0.005 + timelineTime * 0.5 + i * 0.5) * (10 + i * 5); ctx.lineTo(x, y); } ctx.lineTo(width, height); ctx.closePath(); let alphas = [0.1, 0.15, 0.2, 0.3]; let colors = ['18, 30, 54', '34, 153, 168', '45, 156, 166', '77, 194, 186']; ctx.fillStyle = `rgba(${colors[i]}, ${alphas[i]})`; ctx.fill(); } particles.forEach(p => { p.y -= (Math.abs(p.vy) + 0.5); p.x += Math.sin(p.y * 0.02 + p.vx * 10) * 0.3; if (p.y < 0) { p.y = height + 20; p.x = Math.random() * width; } ctx.beginPath(); ctx.arc(p.x, p.y, p.radius * 1.5, 0, Math.PI * 2); ctx.fillStyle = 'rgba(125, 232, 225, 0.15)'; ctx.strokeStyle = 'rgba(125, 232, 225, 0.25)'; ctx.lineWidth = 1; ctx.fill(); ctx.stroke(); }); }
         function drawGamerFloor() { ctx.beginPath(); let grad = ctx.createRadialGradient(width/2, height, 10, width/2, height, height*0.7); grad.addColorStop(0, 'rgba(18, 2, 28, 0.4)'); grad.addColorStop(1, 'transparent'); ctx.fillStyle = grad; ctx.fillRect(0, 0, width, height); if (Math.random() < 0.005) meteors.push(new Meteor()); meteors = meteors.filter(m => m.update()); meteors.forEach(m => m.draw()); lasers = lasers.filter(l => l.update()); lasers.forEach(l => l.draw()); ships.sort((a, b) => a.z - b.z); ships.forEach(s => { s.update(ships); s.draw(); }); particles.forEach(p => { p.update(); p.draw(); }); }
         function drawFabNeko() { fabPolygons.forEach(p => { p.update(); p.draw(); }); }
 
         let currentMode = 'dark'; let lastTime = 0;
-        function animate(timestamp) { const delta = timestamp - lastTime; lastTime = timestamp; const theme = document.documentElement.getAttribute('data-theme') || 'dark'; if (theme !== currentMode) { if (theme === 'timeline-neko') timelineBranches = []; currentMode = theme; } ctx.clearRect(0, 0, width, height); if (theme === 'timeline-neko') { drawTimeline(); } else if (theme === 'h2o-neko') { drawWater(); } else if (theme === 'gamer-neko') { drawGamerFloor(); } else if (theme === 'fab-neko') { drawFabNeko(); } else { drawNetwork(); } requestAnimationFrame(animate); }
+        function animate(timestamp) { const delta = timestamp - lastTime; lastTime = timestamp; const theme = document.documentElement.getAttribute('data-theme') || 'dark'; if (theme !== currentMode) { if (theme === 'timeline-neko') timelineBranches = []; currentMode = theme; } ctx.clearRect(0, 0, width, height); if (theme === 'timeline-neko') { drawTimeline(); } else if (theme === 'gamer-neko') { drawGamerFloor(); } else if (theme === 'fab-neko') { drawFabNeko(); } else { drawNetwork(); } requestAnimationFrame(animate); }
         
         window.addEventListener('resize', initCanvas); initCanvas(); requestAnimationFrame(animate);
         window.HologramEngine = { mode: 'hologram', particles: particles };
@@ -975,6 +963,8 @@
     function toggleWrapper(wrapperId, btnId, name) { const wrapper = document.getElementById(wrapperId); const btn = document.getElementById(btnId); if (wrapperId === 'manifestWrapper') { document.getElementById('dbWrapper').classList.remove('expanded'); document.getElementById('dbBtn').innerText = `[ VIEW_LOCAL_DATABASE ]`; } else { document.getElementById('manifestWrapper').classList.remove('expanded'); document.getElementById('manifestBtn').innerText = `[ VIEW_SYSTEM_MANIFEST ]`; } wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? `[ CLOSE_${name} ]` : `[ VIEW_${name} ]`; }
     function toggleAdvOptions() { const wrapper = document.getElementById('advOptionsWrapper'); const btn = document.getElementById('advOptionsBtn'); wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; }
 
+    function handleRemoveClick(elem) { if(elem.disabled) return; if(elem.checked) { const isSuppressed = localStorage.getItem('noccat_suppress_remove_warning'); if (isSuppressed === 'true') { checkDynamicWarnings(); return; } currentMatrixTriggerElem = null; document.getElementById('dontShowAgainCheckbox').checked = false; document.getElementById('removeWarningModal').classList.add('visible'); checkDynamicWarnings(); } }
+    
     function handleRemoveChange(elem) { 
         if(elem.disabled) return; 
         checkDynamicWarnings();
@@ -1600,7 +1590,7 @@
                 let hasPortSec = /(?:^|\n)[ \t]*switchport\s+port-security[ \t]*\r?(?:\n|$)/i.test(block);
                 let hasDot1xPae = /(?:^|\n)[ \t]*dot1x\s+pae\s+authenticator[ \t]*\r?(?:\n|$)/i.test(block);
                 let hasAuthPortControl = /(?:^|\n)[ \t]*authentication\s+port-control\s+auto[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasLearnedMac = /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky\s+[0-9a-fA-F]{4}\.[0-9a-fA-F]{4}\.[0-9a-fA-F]{4}/i.test(block);
+                let hasLearnedMac = isRaw ? false : /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky\s+[0-9a-fA-F]{4}\.[0-9a-fA-F]{4}\.[0-9a-fA-F]{4}/i.test(block);
 
                 let isAnySticky = hasStickyMac || hasPortSec || hasLearnedMac;
                 let isAnyDot1x = hasDot1xPae || hasAuthPortControl;
@@ -2029,4 +2019,238 @@
                 let oEdge = document.getElementById('ovr_edge_' + safeName);
                 let oAdmin = document.getElementById('ovr_admin_' + safeName);
                 vlanVal = (oVlan && oVlan.value) ? oVlan.value : globalTargetVlan;
-                sec
+                secVal = (oSec && oSec.value !== 'global' && oSec.value !== 'leave') ? oSec.value : globalSecurityMode;
+                edgeVal = (oEdge && oEdge.value !== 'global' && oEdge.value !== 'leave') ? oEdge.value : (applyStp ? 'apply' : 'leave');
+                adminVal = (oAdmin && oAdmin.value !== 'global' && oAdmin.value !== 'leave') ? oAdmin.value : adminState;
+            }
+
+            let vlanChanged = vlanVal && vlanVal !== iface.origVlan;
+            let forceEdgeApply = edgeVal === 'apply'; let forceEdgeRemove = edgeVal === 'remove';
+            let stpChanged = (forceEdgeApply && (!iface.hasPortfast || !iface.hasBpduguard)) || (forceEdgeRemove && (iface.hasPortfast || iface.hasBpduguard));
+            
+            let forceUp = adminVal === 'up'; let forceDown = adminVal === 'down'; let forceBounce = adminVal === 'bounce';
+            let stateChanged = forceBounce || (forceUp && (iface.isShutdown || iface.isRaw)) || (forceDown && (!iface.isShutdown || iface.isRaw));
+            
+            let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
+            let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
+            let secChanged = false;
+            
+            if (iface.isRaw && secVal !== 'leave') {
+                if (secVal.startsWith('reset')) secChanged = false;
+                else secChanged = true;
+            } else if (!iface.isRaw) {
+                if (secVal === 'dot1x') { if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true; } 
+                else if (secVal === 'sticky') { if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec || iface.hasLearnedMac) secChanged = true; } 
+                else if (secVal === 'reset') { if ((isCurrentlySticky || isCurrentlyDot1x) && !isDual) secChanged = true; } 
+                else if (secVal === 'remove') { if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true; }
+            }
+            
+            let rawModeAccessApplies = iface.isRaw && forceRawAccess;
+            let needsBounce = vlanChanged || stpChanged || secChanged;
+
+            if (!needsBounce && !stateChanged && !iface.isRaw) return null;
+            if (iface.isRaw && !vlanChanged && !stpChanged && !secChanged && adminVal === 'leave' && !rawModeAccessApplies) return null;
+
+            if (rawModeAccessApplies) cmds.push("no switchport mode access");
+            
+            if (vlanChanged) {
+                if (iface.isRaw) {
+                    if (iface.origVlan && iface.origVlan !== 'UNKNOWN' && iface.origVlan !== '') {
+                        cmds.push(`switchport access vlan ${iface.origVlan}`);
+                    } else {
+                        cmds.push("no switchport access vlan");
+                    }
+                } else {
+                    cmds.push(iface.origVlan ? `switchport access vlan ${iface.origVlan}` : "no switchport access vlan");
+                }
+            }
+            
+            if (forceEdgeApply) {
+                if (!iface.hasPortfast || iface.isRaw) cmds.push("no spanning-tree portfast");
+                if (!iface.hasBpduguard || iface.isRaw) cmds.push("no spanning-tree bpduguard enable");
+            } else if (forceEdgeRemove) {
+                if (iface.hasPortfast && !iface.isRaw) cmds.push("spanning-tree portfast");
+                if (iface.hasBpduguard && !iface.isRaw) cmds.push("spanning-tree bpduguard enable");
+            }
+            
+            let portStateBeforeRollback = forceDown ? "shut" : ((forceUp || forceBounce) ? "no shut" : (iface.isShutdown && !iface.isRaw ? "shut" : "no shut"));
+            
+            if (secChanged) {
+                if (iface.isRaw) {
+                    if (secVal === 'conv_sticky_to_dot1x') {
+                        cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
+                    } else if (secVal === 'conv_dot1x_to_sticky') {
+                        cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
+                    } else if (secVal === 'dot1x') {
+                        cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
+                    } else if (secVal === 'sticky') {
+                        cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
+                    } else {
+                        cmds.push("no dot1x pae authenticator", "no authentication port-control auto", "no switchport port-security mac-address sticky", "no switchport port-security");
+                    }
+                } else {
+                    if (secVal === 'dot1x') {
+                        if (!iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
+                        if (!iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
+                    } else if (secVal === 'sticky') {
+                        if (!iface.hasStickyMac && !iface.hasLearnedMac) cmds.push("no switchport port-security mac-address sticky");
+                        if (!iface.hasPortSec) cmds.push("no switchport port-security");
+                    } else if (secVal === 'conv_sticky_to_dot1x') {
+                        cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
+                    } else if (secVal === 'conv_dot1x_to_sticky') {
+                        cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
+                    }
+                }
+                
+                if (portStateBeforeRollback !== "shut" && !cmds.includes("shut")) {
+                    if (!iface.isRaw || secVal === 'conv_sticky_to_dot1x' || secVal === 'conv_dot1x_to_sticky') {
+                        cmds.push("shut");
+                    }
+                }
+                
+                if (iface.isRaw) {
+                    if (secVal === 'conv_sticky_to_dot1x') {
+                        cmds.push("switchport port-security mac-address sticky", "switchport port-security");
+                    } else if (secVal === 'conv_dot1x_to_sticky') {
+                        cmds.push("dot1x pae authenticator", "authentication port-control auto");
+                    }
+                } else {
+                    if (secVal === 'dot1x' && isCurrentlySticky) {
+                        if (iface.hasStickyMac || iface.hasLearnedMac) cmds.push("switchport port-security mac-address sticky");
+                        if (iface.hasPortSec) cmds.push("switchport port-security");
+                    } else if (secVal === 'sticky' && isCurrentlyDot1x) {
+                        if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
+                        if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
+                    } else if (secVal === 'sticky' && isCurrentlySticky && iface.hasLearnedMac) {
+                        cmds.push("switchport port-security mac-address sticky", "switchport port-security");
+                    } else if (secVal === 'remove') {
+                        if (iface.hasStickyMac || iface.hasLearnedMac) cmds.push("switchport port-security mac-address sticky");
+                        if (iface.hasPortSec) cmds.push("switchport port-security");
+                        if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
+                        if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
+                    } else if (secVal === 'conv_sticky_to_dot1x') {
+                        cmds.push("switchport port-security mac-address sticky", "switchport port-security");
+                    } else if (secVal === 'conv_dot1x_to_sticky') {
+                        cmds.push("dot1x pae authenticator", "authentication port-control auto");
+                    }
+                }
+            } 
+            
+            if (needsBounce && !cmds.includes("shut") && portStateBeforeRollback !== "shut" && !iface.isRaw) {
+                cmds.push("shut");
+            }
+
+            let isShutInCmds = cmds.includes("shut");
+
+            if (iface.isRaw) {
+                if (needsBounce) {
+                    if (!isShutInCmds) cmds.push("shut");
+                    if (cmds[cmds.length - 1] !== "no shut") cmds.push("no shut");
+                } else {
+                    if (forceDown && !isShutInCmds) cmds.push("shut");
+                    else if (forceUp && !isShutInCmds) cmds.push("no shut");
+                }
+            } else {
+                if (iface.isShutdown) { 
+                    if (portStateBeforeRollback !== "shut" && !isShutInCmds && !iface.isRaw) cmds.push("shut");
+                } else {
+                    if ((portStateBeforeRollback === "shut" || isShutInCmds) && cmds[cmds.length - 1] !== "no shut" && !iface.isRaw) {
+                        cmds.push("no shut");
+                    }
+                }
+            }
+
+            if (cmds.length >= 2 && cmds[cmds.length - 1] === "shut" && cmds[cmds.length - 2] === "shut") cmds.pop();
+
+            return cmds.length ? cmds : null;
+        }
+
+        function build(fn) {
+            let lines = ["conf t"];
+            let groups = {};
+            let skippedPorts = [];
+            let trunkPorts = [];
+            let hasRaw = false;
+            
+            interfacesData.forEach(d => { 
+                if (d.isTrunk) { trunkPorts.push(d.name); return; }
+                if (d.isRaw) hasRaw = true;
+                let c = fn(d); 
+                if (c) { 
+                    let k = c.join('\n'); 
+                    if (!groups[k]) groups[k] = []; 
+                    groups[k].push(d.name); 
+                } else { skippedPorts.push(d.name); }
+            });
+            
+            let keys = Object.keys(groups);
+            
+            if (!keys.length) return "! NO_CHANGES_REQUIRED\n! All valid pasted ports already match the targeted configuration.";
+            if (trunkPorts.length > 0) lines.unshift(`! SAFETY LOCK: Ignored ${trunkPorts.length} Trunk/Uplink port(s).`);
+            if (skippedPorts.length > 0) lines.unshift(`! NOTE: Skipped ${skippedPorts.length} valid port(s) that already match the target config.`);
+            if (hasRaw && fn === getRollback) lines.unshift(`! WARNING: Rollback for RAW ports is best-effort (defaults applied) as original state was unknown.`);
+            
+            keys.forEach((k, idx) => {
+                let ifaces = groups[k];
+                ifaces.sort((a, b) => a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'}));
+                let aggregatedItems = [];
+                let parsed = ifaces.map(p => {
+                    let match = p.match(/^(.*?)(\d+)$/);
+                    return match ? { original: p, prefix: match[1], port: parseInt(match[2], 10), isMappable: true } : { original: p, isMappable: false };
+                });
+
+                let i = 0;
+                while (i < parsed.length) {
+                    let current = parsed[i];
+                    if (!current.isMappable) { aggregatedItems.push(current.original); i++; continue; }
+                    let startPort = current.port, endPort = startPort, j = i + 1;
+                    while (j < parsed.length && parsed[j].isMappable && parsed[j].prefix === current.prefix && parsed[j].port === endPort + 1) { endPort = parsed[j].port; j++; }
+                    if (startPort === endPort) { aggregatedItems.push(current.original); } else { aggregatedItems.push(`${current.prefix}${startPort}-${endPort}`); }
+                    i = j;
+                }
+                
+                for (let i = 0; i < aggregatedItems.length; i += chunkSize) {
+                    let chunk = aggregatedItems.slice(i, i + chunkSize);
+                    let isRange = chunk.length > 1 || chunk[0].includes('-'); 
+                    lines.push(isRange ? `int range ${chunk.join(', ')}` : `int ${chunk[0]}`);
+                    if (fn === getPrimary) {
+                        let totalPortsInChunk = 0;
+                        chunk.forEach(p => {
+                            if (p.includes('-')) { let parts = p.split('-'); totalPortsInChunk += (parseInt(parts[1], 10) - parseInt(parts[0].match(/\d+$/)[0], 10) + 1); } else { totalPortsInChunk++; }
+                        });
+                        primaryCompiledPorts += totalPortsInChunk;
+                    }
+                    lines.push(k); lines.push("exit");
+                    if (slowPaste && (idx < keys.length - 1 || i + chunkSize < aggregatedItems.length)) lines.push("! --- buffer wait ---");
+                }
+            });
+            
+            if (lines.length > 0 && lines[lines.length - 1] === "exit") {
+                lines[lines.length - 1] = "end";
+                lines.push("wr", "!");
+            } else {
+                lines.push("end", "wr", "!");
+            }
+            
+            return lines.join('\n');
+        }
+
+        let generatedPrimary = build(getPrimary);
+        let generatedRollback = build(getRollback);
+        
+        updateCodeDisplay('primaryCode', 'primaryLines', generatedPrimary);
+        updateCodeDisplay('rollbackCode', 'rollbackLines', generatedRollback);
+        
+        let hasPrimaryChanges = !generatedPrimary.includes("NO_CHANGES_REQUIRED");
+        document.getElementById('copyPrimaryBtn').disabled = !hasPrimaryChanges; document.getElementById('copyRollbackBtn').disabled = !hasPrimaryChanges; document.getElementById('dlPrimaryBtn').disabled = !hasPrimaryChanges; document.getElementById('dlRollbackBtn').disabled = !hasPrimaryChanges;
+
+        document.getElementById('statusMsg').style.display = 'flex';
+        if (hasPrimaryChanges) { 
+            document.getElementById('statusMsg').innerHTML = `<span>STATUS: ${primaryCompiledPorts} PORTS COMPILED_SUCCESSFULLY</span><span class="diff-stats">[ <span class="diff-add">+${globalAdds}</span> LINES_ADDED | <span class="diff-rem">-${globalRemoves}</span> LINES_REMOVED | <span class="diff-bnc">${globalBounces}</span> PORTS_BOUNCED ]</span>`; 
+        } else { 
+            document.getElementById('statusMsg').innerHTML = `<span>STATUS: 0 ELIGIBLE PORTS_COMPILED</span><span></span>`; 
+        }
+    }
+</script>
+</body>
+</html>
