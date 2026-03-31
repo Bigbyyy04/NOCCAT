@@ -522,7 +522,7 @@
                 <label><input type="radio" name="securityMode" value="leave" checked onchange="checkDynamicWarnings()"><span>--</span></label>
                 <label class="disabled"><input type="radio" name="securityMode" value="dot1x" disabled onchange="checkDynamicWarnings()"><span>DOT1X</span></label>
                 <label class="disabled"><input type="radio" name="securityMode" value="sticky" disabled onchange="checkDynamicWarnings()"><span>STICKY</span></label>
-                <label class="disabled"><input type="radio" name="securityMode" value="remove" onclick="handleRemoveClick(this)" onchange="checkDynamicWarnings()" disabled><span>REMOVE</span></label>
+                <label class="disabled"><input type="radio" name="securityMode" value="remove" onchange="handleRemoveChange(this)" disabled><span>REMOVE</span></label>
                 <label class="disabled"><input type="radio" name="securityMode" value="reset" disabled onchange="checkDynamicWarnings()"><span>RESET</span></label>
             </div>
         </div>
@@ -975,7 +975,17 @@
     function toggleWrapper(wrapperId, btnId, name) { const wrapper = document.getElementById(wrapperId); const btn = document.getElementById(btnId); if (wrapperId === 'manifestWrapper') { document.getElementById('dbWrapper').classList.remove('expanded'); document.getElementById('dbBtn').innerText = `[ VIEW_LOCAL_DATABASE ]`; } else { document.getElementById('manifestWrapper').classList.remove('expanded'); document.getElementById('manifestBtn').innerText = `[ VIEW_SYSTEM_MANIFEST ]`; } wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? `[ CLOSE_${name} ]` : `[ VIEW_${name} ]`; }
     function toggleAdvOptions() { const wrapper = document.getElementById('advOptionsWrapper'); const btn = document.getElementById('advOptionsBtn'); wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; }
 
-    function handleRemoveClick(elem) { if(elem.disabled) return; if(elem.checked) { const isSuppressed = localStorage.getItem('noccat_suppress_remove_warning'); if (isSuppressed === 'true') { checkDynamicWarnings(); return; } currentMatrixTriggerElem = null; document.getElementById('dontShowAgainCheckbox').checked = false; document.getElementById('removeWarningModal').classList.add('visible'); checkDynamicWarnings(); } }
+    function handleRemoveChange(elem) { 
+        if(elem.disabled) return; 
+        checkDynamicWarnings();
+        if(elem.checked) { 
+            const isSuppressed = localStorage.getItem('noccat_suppress_remove_warning'); 
+            if (isSuppressed === 'true') { generateScript(); return; } 
+            currentMatrixTriggerElem = null; 
+            document.getElementById('dontShowAgainCheckbox').checked = false; 
+            document.getElementById('removeWarningModal').classList.add('visible'); 
+        } 
+    }
     
     function handleMatrixSecChange(elem) { 
         if (elem.value === 'remove') { 
@@ -1590,24 +1600,26 @@
                 let hasPortSec = /(?:^|\n)[ \t]*switchport\s+port-security[ \t]*\r?(?:\n|$)/i.test(block);
                 let hasDot1xPae = /(?:^|\n)[ \t]*dot1x\s+pae\s+authenticator[ \t]*\r?(?:\n|$)/i.test(block);
                 let hasAuthPortControl = /(?:^|\n)[ \t]*authentication\s+port-control\s+auto[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasLearnedMac = /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky\s+[0-9a-fA-F]{4}\.[0-9a-fA-F]{4}\.[0-9a-fA-F]{4}/i.test(block);
 
-                let isAnySticky = hasStickyMac || hasPortSec, isAnyDot1x = hasDot1xPae || hasAuthPortControl;
+                let isAnySticky = hasStickyMac || hasPortSec || hasLearnedMac;
+                let isAnyDot1x = hasDot1xPae || hasAuthPortControl;
                 if (isAnySticky || isAnyDot1x) hasAnySecurity = true;
-                if (hasStickyMac && hasPortSec) portsWithFullSticky++;
+                if ((hasStickyMac || hasLearnedMac) && hasPortSec) portsWithFullSticky++;
                 if (hasDot1xPae && hasAuthPortControl) portsWithFullDot1x++;
                 
                 let hasPortfast = /spanning-tree\s+portfast/i.test(block), hasBpduguard = /spanning-tree\s+bpduguard/i.test(block);
                 if (hasPortfast && hasBpduguard) portsWithFullEdge++;
 
                 if (isAnySticky && isAnyDot1x && !conflictedPorts.includes(normalizedIf)) { conflictedPorts.push(normalizedIf); } 
-                else if (((hasStickyMac && !hasPortSec) || (!hasStickyMac && hasPortSec) || (hasDot1xPae && !hasAuthPortControl) || (!hasDot1xPae && hasAuthPortControl)) && !fragmentPorts.includes(normalizedIf) && !isRaw) { fragmentPorts.push(normalizedIf); } 
+                else if (((hasStickyMac && !hasPortSec) || (!hasStickyMac && hasPortSec && !hasLearnedMac) || (hasDot1xPae && !hasAuthPortControl) || (!hasDot1xPae && hasAuthPortControl)) && !fragmentPorts.includes(normalizedIf) && !isRaw) { fragmentPorts.push(normalizedIf); } 
                 else if (!isAnySticky && !isAnyDot1x && !noSecPorts.includes(normalizedIf) && !suppressSecWarn && !isRaw) { noSecPorts.push(normalizedIf); }
                 
                 if (isAccessMode) {
                     let vlanMatch = block.match(/switchport\s+access\s+vlan\s+(\d+)/i);
                     validAccessPortsForGrid.push({
                         name: normalizedIf, origVlan: isRaw ? 'UNKNOWN' : (vlanMatch ? vlanMatch[1] : '1 (Default)'),
-                        isDown: isShutdown, isRaw: isRaw, hasStickyMac, hasDot1xPae
+                        isDown: isShutdown, isRaw: isRaw, hasStickyMac, hasDot1xPae, hasLearnedMac
                     });
                 }
             }
@@ -1658,7 +1670,7 @@
                     if (isInGroup) return; 
                 }
 
-                let curSec = p.isRaw ? "UNKNOWN" : (p.hasStickyMac && p.hasDot1xPae ? "DUAL" : p.hasStickyMac ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE");
+                let curSec = p.isRaw ? "UNKNOWN" : (p.hasStickyMac && p.hasDot1xPae ? "DUAL" : (p.hasStickyMac || p.hasLearnedMac) ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE");
                 let statusDot = p.isRaw ? '<span style="color:#8b949e">● RAW</span>' : (p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>');
                 
                 let origVlanDisplay = p.isRaw ? `<div style="display:inline-flex; align-items:center; gap:4px;"><input type="text" id="ovr_orig_vlan_${safeName}" class="override-input" style="width:35px; padding:0 2px; font-size:10px; height: 18px; text-align:center;" placeholder="Cur" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094;" onchange="generateScript()"><button class="expand-btn" style="padding: 1px 4px; font-size: 9px;" onclick="applyToAllOrigVlan('${safeName}')" title="Apply to all ports">⏬</button></div>` : p.origVlan;
@@ -1792,9 +1804,10 @@
                 let hasPortfast = isRaw ? false : /spanning-tree\s+portfast/i.test(block);
                 let hasBpduguard = isRaw ? false : /spanning-tree\s+bpduguard/i.test(block);
                 let isShutdown = isRaw ? false : /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
+                let hasLearnedMac = isRaw ? false : /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky\s+[0-9a-fA-F]{4}\.[0-9a-fA-F]{4}\.[0-9a-fA-F]{4}/i.test(block);
 
                 if (!interfacesDataMap[normalizedIf]) {
-                    interfacesDataMap[normalizedIf] = { name: normalizedIf, isTrunk: isRaw ? false : !isAccessMode, isRaw: isRaw, origVlan: vlanMatch ? vlanMatch[1] : null, hasStickyMac, hasPortSec, hasDot1xPae, hasAuthPortControl, hasPortfast, hasBpduguard, isShutdown };
+                    interfacesDataMap[normalizedIf] = { name: normalizedIf, isTrunk: isRaw ? false : !isAccessMode, isRaw: isRaw, origVlan: vlanMatch ? vlanMatch[1] : null, hasStickyMac, hasPortSec, hasDot1xPae, hasAuthPortControl, hasPortfast, hasBpduguard, isShutdown, hasLearnedMac };
                 } else {
                     if (!isAccessMode && !isRaw) interfacesDataMap[normalizedIf].isTrunk = true;
                     if (isRaw) interfacesDataMap[normalizedIf].isRaw = true;
@@ -1806,6 +1819,7 @@
                     if (hasPortfast) interfacesDataMap[normalizedIf].hasPortfast = true;
                     if (hasBpduguard) interfacesDataMap[normalizedIf].hasBpduguard = true;
                     if (isShutdown) interfacesDataMap[normalizedIf].isShutdown = true;
+                    if (hasLearnedMac) interfacesDataMap[normalizedIf].hasLearnedMac = true;
                 }
             }
         });
@@ -1872,7 +1886,7 @@
                 secChanged = true;
             } else if (!iface.isRaw) {
                 if (secVal === 'dot1x') { if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true; } 
-                else if (secVal === 'sticky') { if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true; } 
+                else if (secVal === 'sticky') { if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec || iface.hasLearnedMac) secChanged = true; } 
                 else if (secVal === 'reset') { if ((isCurrentlySticky || isCurrentlyDot1x) && !isDual) secChanged = true; } 
                 else if (secVal === 'remove') { if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true; }
             }
@@ -1896,7 +1910,7 @@
 
             if (secVal === 'dot1x' && secChanged) {
                 if (isCurrentlySticky && !iface.isRaw) {
-                    if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
+                    if (iface.hasStickyMac || iface.hasLearnedMac) cmds.push("no switchport port-security mac-address sticky");
                     if (iface.hasPortSec) cmds.push("no switchport port-security");
                 }
                 if (!iface.isShutdown && !iface.isRaw && !cmds.includes("shut")) cmds.push("shut");
@@ -1907,12 +1921,19 @@
                     if (iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
                     if (iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
                 }
+                
+                if (iface.hasLearnedMac && !iface.isRaw && !isCurrentlyDot1x) {
+                    if (iface.hasStickyMac || iface.hasLearnedMac) cmds.push("no switchport port-security mac-address sticky");
+                    if (iface.hasPortSec) cmds.push("no switchport port-security");
+                }
+
                 if (!iface.isShutdown && !iface.isRaw && !cmds.includes("shut")) cmds.push("shut");
-                if (!iface.hasStickyMac || iface.isRaw) cmds.push("switchport port-security mac-address sticky");
-                if (!iface.hasPortSec || iface.isRaw) cmds.push("switchport port-security");
+                
+                if (!iface.hasStickyMac || iface.isRaw || iface.hasLearnedMac || isCurrentlyDot1x) cmds.push("switchport port-security mac-address sticky");
+                if (!iface.hasPortSec || iface.isRaw || iface.hasLearnedMac || isCurrentlyDot1x) cmds.push("switchport port-security");
             } else if (secVal === 'reset' && secChanged) {
                 if (isCurrentlySticky) {
-                    if (iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
+                    if (iface.hasStickyMac || iface.hasLearnedMac) cmds.push("no switchport port-security mac-address sticky");
                     if (iface.hasPortSec) cmds.push("no switchport port-security");
                     if (!iface.isShutdown && !iface.isRaw && !cmds.includes("shut")) cmds.push("shut");
                     cmds.push("switchport port-security mac-address sticky", "switchport port-security");
@@ -1939,7 +1960,7 @@
                 if ((!iface.isShutdown || iface.isRaw) && !cmds.includes("shut")) cmds.push("shut");
                 cmds.push("switchport port-security mac-address sticky", "switchport port-security");
             } else if (secVal === 'remove' && secChanged) {
-                if (iface.hasStickyMac || iface.isRaw) cmds.push("no switchport port-security mac-address sticky");
+                if (iface.hasStickyMac || iface.hasLearnedMac || iface.isRaw) cmds.push("no switchport port-security mac-address sticky");
                 if (iface.hasPortSec || iface.isRaw) cmds.push("no switchport port-security");
                 if (iface.hasDot1xPae || iface.isRaw) cmds.push("no dot1x pae authenticator");
                 if (iface.hasAuthPortControl || iface.isRaw) cmds.push("no authentication port-control auto");
@@ -2008,236 +2029,4 @@
                 let oEdge = document.getElementById('ovr_edge_' + safeName);
                 let oAdmin = document.getElementById('ovr_admin_' + safeName);
                 vlanVal = (oVlan && oVlan.value) ? oVlan.value : globalTargetVlan;
-                secVal = (oSec && oSec.value !== 'global' && oSec.value !== 'leave') ? oSec.value : globalSecurityMode;
-                edgeVal = (oEdge && oEdge.value !== 'global' && oEdge.value !== 'leave') ? oEdge.value : (applyStp ? 'apply' : 'leave');
-                adminVal = (oAdmin && oAdmin.value !== 'global' && oAdmin.value !== 'leave') ? oAdmin.value : adminState;
-            }
-
-            let vlanChanged = vlanVal && vlanVal !== iface.origVlan;
-            let forceEdgeApply = edgeVal === 'apply'; let forceEdgeRemove = edgeVal === 'remove';
-            let stpChanged = (forceEdgeApply && (!iface.hasPortfast || !iface.hasBpduguard)) || (forceEdgeRemove && (iface.hasPortfast || iface.hasBpduguard));
-            
-            let forceUp = adminVal === 'up'; let forceDown = adminVal === 'down'; let forceBounce = adminVal === 'bounce';
-            let stateChanged = forceBounce || (forceUp && (iface.isShutdown || iface.isRaw)) || (forceDown && (!iface.isShutdown || iface.isRaw));
-            
-            let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
-            let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec;
-            let secChanged = false;
-            
-            if (iface.isRaw && secVal !== 'leave') {
-                if (secVal.startsWith('reset')) secChanged = false;
-                else secChanged = true;
-            } else if (!iface.isRaw) {
-                if (secVal === 'dot1x') { if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true; } 
-                else if (secVal === 'sticky') { if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true; } 
-                else if (secVal === 'remove') { if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true; } 
-                else if (secVal === 'reset') { secChanged = false; }
-            }
-            
-            let rawModeAccessApplies = iface.isRaw && forceRawAccess;
-            let needsBounce = vlanChanged || stpChanged || secChanged;
-
-            if (!needsBounce && !stateChanged && !iface.isRaw) return null;
-            if (iface.isRaw && !vlanChanged && !stpChanged && !secChanged && adminVal === 'leave' && !rawModeAccessApplies) return null;
-
-            if (rawModeAccessApplies) cmds.push("no switchport mode access");
-            
-            if (vlanChanged) {
-                if (iface.isRaw) {
-                    if (iface.origVlan && iface.origVlan !== 'UNKNOWN' && iface.origVlan !== '') {
-                        cmds.push(`switchport access vlan ${iface.origVlan}`);
-                    } else {
-                        cmds.push("no switchport access vlan");
-                    }
-                } else {
-                    cmds.push(iface.origVlan ? `switchport access vlan ${iface.origVlan}` : "no switchport access vlan");
-                }
-            }
-            
-            if (forceEdgeApply) {
-                if (!iface.hasPortfast || iface.isRaw) cmds.push("no spanning-tree portfast");
-                if (!iface.hasBpduguard || iface.isRaw) cmds.push("no spanning-tree bpduguard enable");
-            } else if (forceEdgeRemove) {
-                if (iface.hasPortfast && !iface.isRaw) cmds.push("spanning-tree portfast");
-                if (iface.hasBpduguard && !iface.isRaw) cmds.push("spanning-tree bpduguard enable");
-            }
-            
-            let portStateBeforeRollback = forceDown ? "shut" : ((forceUp || forceBounce) ? "no shut" : (iface.isShutdown && !iface.isRaw ? "shut" : "no shut"));
-            
-            if (secChanged) {
-                if (iface.isRaw) {
-                    if (secVal === 'conv_sticky_to_dot1x') {
-                        cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
-                    } else if (secVal === 'conv_dot1x_to_sticky') {
-                        cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
-                    } else if (secVal === 'dot1x') {
-                        cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
-                    } else if (secVal === 'sticky') {
-                        cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
-                    } else {
-                        cmds.push("no dot1x pae authenticator", "no authentication port-control auto", "no switchport port-security mac-address sticky", "no switchport port-security");
-                    }
-                } else {
-                    if (secVal === 'dot1x') {
-                        if (!iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
-                        if (!iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
-                    } else if (secVal === 'sticky') {
-                        if (!iface.hasStickyMac) cmds.push("no switchport port-security mac-address sticky");
-                        if (!iface.hasPortSec) cmds.push("no switchport port-security");
-                    } else if (secVal === 'conv_sticky_to_dot1x') {
-                        cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
-                    } else if (secVal === 'conv_dot1x_to_sticky') {
-                        cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
-                    }
-                }
-                
-                if (portStateBeforeRollback !== "shut" && !cmds.includes("shut")) {
-                    if (!iface.isRaw || secVal === 'conv_sticky_to_dot1x' || secVal === 'conv_dot1x_to_sticky') {
-                        cmds.push("shut");
-                    }
-                }
-                
-                if (iface.isRaw) {
-                    if (secVal === 'conv_sticky_to_dot1x') {
-                        cmds.push("switchport port-security mac-address sticky", "switchport port-security");
-                    } else if (secVal === 'conv_dot1x_to_sticky') {
-                        cmds.push("dot1x pae authenticator", "authentication port-control auto");
-                    }
-                } else {
-                    if (secVal === 'dot1x' && isCurrentlySticky) {
-                        if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
-                        if (iface.hasPortSec) cmds.push("switchport port-security");
-                    } else if (secVal === 'sticky' && isCurrentlyDot1x) {
-                        if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
-                        if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
-                    } else if (secVal === 'remove') {
-                        if (iface.hasStickyMac) cmds.push("switchport port-security mac-address sticky");
-                        if (iface.hasPortSec) cmds.push("switchport port-security");
-                        if (iface.hasDot1xPae) cmds.push("dot1x pae authenticator");
-                        if (iface.hasAuthPortControl) cmds.push("authentication port-control auto");
-                    } else if (secVal === 'conv_sticky_to_dot1x') {
-                        cmds.push("switchport port-security mac-address sticky", "switchport port-security");
-                    } else if (secVal === 'conv_dot1x_to_sticky') {
-                        cmds.push("dot1x pae authenticator", "authentication port-control auto");
-                    }
-                }
-            } 
-            
-            if (needsBounce && !cmds.includes("shut") && portStateBeforeRollback !== "shut" && !iface.isRaw) {
-                cmds.push("shut");
-            }
-
-            let isShutInCmds = cmds.includes("shut");
-
-            if (iface.isRaw) {
-                if (needsBounce) {
-                    if (!isShutInCmds) cmds.push("shut");
-                    if (cmds[cmds.length - 1] !== "no shut") cmds.push("no shut");
-                } else {
-                    if (forceDown && !isShutInCmds) cmds.push("shut");
-                    else if (forceUp && !isShutInCmds) cmds.push("no shut");
-                }
-            } else {
-                if (iface.isShutdown) { 
-                    if (portStateBeforeRollback !== "shut" && !isShutInCmds && !iface.isRaw) cmds.push("shut");
-                } else {
-                    if ((portStateBeforeRollback === "shut" || isShutInCmds) && cmds[cmds.length - 1] !== "no shut" && !iface.isRaw) {
-                        cmds.push("no shut");
-                    }
-                }
-            }
-
-            if (cmds.length >= 2 && cmds[cmds.length - 1] === "shut" && cmds[cmds.length - 2] === "shut") cmds.pop();
-
-            return cmds.length ? cmds : null;
-        }
-
-        function build(fn) {
-            let lines = ["conf t"];
-            let groups = {};
-            let skippedPorts = [];
-            let trunkPorts = [];
-            let hasRaw = false;
-            
-            interfacesData.forEach(d => { 
-                if (d.isTrunk) { trunkPorts.push(d.name); return; }
-                if (d.isRaw) hasRaw = true;
-                let c = fn(d); 
-                if (c) { 
-                    let k = c.join('\n'); 
-                    if (!groups[k]) groups[k] = []; 
-                    groups[k].push(d.name); 
-                } else { skippedPorts.push(d.name); }
-            });
-            
-            let keys = Object.keys(groups);
-            
-            if (!keys.length) return "! NO_CHANGES_REQUIRED\n! All valid pasted ports already match the targeted configuration.";
-            if (trunkPorts.length > 0) lines.unshift(`! SAFETY LOCK: Ignored ${trunkPorts.length} Trunk/Uplink port(s).`);
-            if (skippedPorts.length > 0) lines.unshift(`! NOTE: Skipped ${skippedPorts.length} valid port(s) that already match the target config.`);
-            if (hasRaw && fn === getRollback) lines.unshift(`! WARNING: Rollback for RAW ports is best-effort (defaults applied) as original state was unknown.`);
-            
-            keys.forEach((k, idx) => {
-                let ifaces = groups[k];
-                ifaces.sort((a, b) => a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'}));
-                let aggregatedItems = [];
-                let parsed = ifaces.map(p => {
-                    let match = p.match(/^(.*?)(\d+)$/);
-                    return match ? { original: p, prefix: match[1], port: parseInt(match[2], 10), isMappable: true } : { original: p, isMappable: false };
-                });
-
-                let i = 0;
-                while (i < parsed.length) {
-                    let current = parsed[i];
-                    if (!current.isMappable) { aggregatedItems.push(current.original); i++; continue; }
-                    let startPort = current.port, endPort = startPort, j = i + 1;
-                    while (j < parsed.length && parsed[j].isMappable && parsed[j].prefix === current.prefix && parsed[j].port === endPort + 1) { endPort = parsed[j].port; j++; }
-                    if (startPort === endPort) { aggregatedItems.push(current.original); } else { aggregatedItems.push(`${current.prefix}${startPort}-${endPort}`); }
-                    i = j;
-                }
-                
-                for (let i = 0; i < aggregatedItems.length; i += chunkSize) {
-                    let chunk = aggregatedItems.slice(i, i + chunkSize);
-                    let isRange = chunk.length > 1 || chunk[0].includes('-'); 
-                    lines.push(isRange ? `int range ${chunk.join(', ')}` : `int ${chunk[0]}`);
-                    if (fn === getPrimary) {
-                        let totalPortsInChunk = 0;
-                        chunk.forEach(p => {
-                            if (p.includes('-')) { let parts = p.split('-'); totalPortsInChunk += (parseInt(parts[1], 10) - parseInt(parts[0].match(/\d+$/)[0], 10) + 1); } else { totalPortsInChunk++; }
-                        });
-                        primaryCompiledPorts += totalPortsInChunk;
-                    }
-                    lines.push(k); lines.push("exit");
-                    if (slowPaste && (idx < keys.length - 1 || i + chunkSize < aggregatedItems.length)) lines.push("! --- buffer wait ---");
-                }
-            });
-            
-            if (lines.length > 0 && lines[lines.length - 1] === "exit") {
-                lines[lines.length - 1] = "end";
-                lines.push("wr", "!");
-            } else {
-                lines.push("end", "wr", "!");
-            }
-            
-            return lines.join('\n');
-        }
-
-        let generatedPrimary = build(getPrimary);
-        let generatedRollback = build(getRollback);
-        
-        updateCodeDisplay('primaryCode', 'primaryLines', generatedPrimary);
-        updateCodeDisplay('rollbackCode', 'rollbackLines', generatedRollback);
-        
-        let hasPrimaryChanges = !generatedPrimary.includes("NO_CHANGES_REQUIRED");
-        document.getElementById('copyPrimaryBtn').disabled = !hasPrimaryChanges; document.getElementById('copyRollbackBtn').disabled = !hasPrimaryChanges; document.getElementById('dlPrimaryBtn').disabled = !hasPrimaryChanges; document.getElementById('dlRollbackBtn').disabled = !hasPrimaryChanges;
-
-        document.getElementById('statusMsg').style.display = 'flex';
-        if (hasPrimaryChanges) { 
-            document.getElementById('statusMsg').innerHTML = `<span>STATUS: ${primaryCompiledPorts} PORTS COMPILED_SUCCESSFULLY</span><span class="diff-stats">[ <span class="diff-add">+${globalAdds}</span> LINES_ADDED | <span class="diff-rem">-${globalRemoves}</span> LINES_REMOVED | <span class="diff-bnc">${globalBounces}</span> PORTS_BOUNCED ]</span>`; 
-        } else { 
-            document.getElementById('statusMsg').innerHTML = `<span>STATUS: 0 ELIGIBLE PORTS_COMPILED</span><span></span>`; 
-        }
-    }
-</script>
-</body>
-</html>
+                sec
