@@ -185,7 +185,7 @@
         }
         
         .radio-group label:has(input[value="remove"]:checked) { border-color: var(--accent-red) !important; color: #ff7b72 !important; background: rgba(248, 81, 73, 0.1) !important; animation: danger-glitch 2s infinite linear !important; }
-        [data-theme="fab-neko"] .radio-group label:has(input[value="remove"]:checked) { color: #fff !important; background: rgba(255, 107, 129, 0.9) !important; border-color: var(--accent-red) !important; } 
+        [data-theme="fab-neko"] .radio-group label:has(input[value="remove"]:checked) { color: #fff !important; background: rgba(255, 107, 129, 0.9) !important; border-color: var(--accent-red) !important; }
 
         input[type="number"], input[type="text"].override-input { background: rgba(1, 4, 9, 0.8); border: 1px solid var(--border-color); color: #d29922; padding: 6px; border-radius: 4px; width: 100%; box-sizing: border-box; outline: none; font-family: "Courier New", Courier, monospace; text-align: center; height: 31px; }
         [data-theme="fab-neko"] input[type="number"], [data-theme="fab-neko"] input[type="text"].override-input { background: rgba(20, 16, 29, 0.8); color: var(--hl-yellow); } 
@@ -371,7 +371,6 @@
             <div class="qol-dropdown-content" id="qolDropdown">
                 <button onclick="changeTheme('dark')" id="theme-dark" class="active">Theme: Dark (Default)</button>
                 <button onclick="changeTheme('fab-neko')" id="theme-fab-neko">Theme: Fabulous Neko 🐈</button>
-                <button onclick="changeTheme('timeline-neko')" id="theme-timeline-neko">Theme: Timeline NEKO ⏳</button>
                 <button onclick="changeTheme('gamer-neko')" id="theme-gamer-neko">Theme: Gamer NEKO 🎮</button>
             </div>
         </div>
@@ -710,7 +709,6 @@
         const favicon = document.getElementById('dynamicFavicon');
         let iconChar = '🐈‍⬛'; 
         if (theme === 'fab-neko') iconChar = '🐈';
-        if (theme === 'timeline-neko') iconChar = '⏳';
         if (theme === 'gamer-neko') iconChar = '🎮';
         favicon.href = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${iconChar}</text></svg>`;
     }
@@ -819,8 +817,6 @@
         let width, height;
         let particles = [];
         const speed = 0.3;
-        let timelineBranches = [];
-        let timelineTime = 0;
         let meteors = [];
         let ships = [];
         let lasers = [];
@@ -829,7 +825,7 @@
         function initCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            particles = []; timelineBranches = []; meteors = []; fabPolygons = [];
+            particles = []; meteors = []; fabPolygons = [];
             for (let i = 0; i < 80; i++) particles.push(new Particle());
             for (let i = 0; i < 40; i++) fabPolygons.push(new PolygonParticle());
             ships = []; lasers = [];
@@ -871,12 +867,11 @@
         }
 
         function drawNetwork() { const rootStyles = getComputedStyle(document.documentElement); const lColor = rootStyles.getPropertyValue('--particle-line').trim() || 'rgba(88, 166, 255, 0.25)'; const rgbMatch = lColor.match(/rgba?\((\d+,\s*\d+,\s*\d+)/); const rgbBase = rgbMatch ? rgbMatch[1] : '88, 166, 255'; particles.forEach(p => { p.update(); p.draw(); }); for (let i = 0; i < particles.length; i++) { for (let j = i + 1; j < particles.length; j++) { let dx = particles[i].x - particles[j].x; let dy = particles[i].y - particles[j].y; let dist = Math.sqrt(dx * dx + dy * dy); if (dist < 140) { ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); let opacity = 1 - (dist / 140); ctx.strokeStyle = `rgba(${rgbBase}, ${opacity * 0.25})`; ctx.lineWidth = 1; ctx.stroke(); } } } }
-        function drawTimeline() { timelineTime += 0.02; let centerY = height / 2; ctx.shadowBlur = 12; ctx.shadowColor = "rgba(255, 170, 51, 0.3)"; for (let i = 0; i < 10; i++) { ctx.beginPath(); let phase = timelineTime * (1 + i * 0.1); let yOffset = Math.sin(phase) * (8 + i * 1.5); ctx.moveTo(0, centerY + yOffset); for (let x = 0; x <= width; x += 50) { let y = centerY + yOffset + Math.sin(x * 0.005 + phase) * 15; ctx.lineTo(x, y); } ctx.strokeStyle = `rgba(255, ${180 + i*5}, ${50 + i*10}, 0.2)`; ctx.lineWidth = 1.5; ctx.stroke(); } ctx.shadowBlur = 0; if (Math.random() < 0.02 && timelineBranches.length < 12) { timelineBranches.push({ x: width * 0.2 + Math.random() * width * 0.5, y: centerY, dir: Math.random() > 0.5 ? 1 : -1, spread: 60 + Math.random() * 120, progress: 0, maxProgress: width, speed: 4 + Math.random() * 4, life: 1.0, color: Math.random() > 0.85 ? 'rgba(218, 85, 96, ' : 'rgba(255, 140, 0, ' }); } for (let i = timelineBranches.length - 1; i >= 0; i--) { let b = timelineBranches[i]; b.progress += b.speed; if (b.progress > b.maxProgress) b.life -= 0.015; if (b.life <= 0) { timelineBranches.splice(i, 1); continue; } ctx.beginPath(); ctx.moveTo(b.x, b.y); let cp1x = b.x + 100, cp1y = b.y; let cp2x = b.x + 150, cp2y = b.y + b.spread * b.dir; let endX = b.x + 250, endY = b.y + b.spread * b.dir; let drawLength = Math.min(b.progress, width - b.x); for (let step = 0; step <= drawLength; step += 15) { let pct = step / 250; let px, py; if (step <= 250) { let inv = 1 - pct; px = inv*inv*inv*b.x + 3*inv*inv*pct*cp1x + 3*inv*pct*pct*cp2x + pct*pct*pct*endX; py = inv*inv*inv*b.y + 3*inv*inv*pct*cp1y + 3*inv*pct*pct*cp2y + pct*pct*pct*endY; } else { px = b.x + step; py = endY + Math.sin((px * 0.01) + timelineTime) * 10; } ctx.lineTo(px, py); } ctx.shadowBlur = 10; ctx.shadowColor = b.color + (b.life * 0.5) + ')'; ctx.strokeStyle = b.color + b.life + ')'; ctx.lineWidth = 2; ctx.stroke(); ctx.shadowBlur = 0; } }
         function drawGamerFloor() { ctx.beginPath(); let grad = ctx.createRadialGradient(width/2, height, 10, width/2, height, height*0.7); grad.addColorStop(0, 'rgba(18, 2, 28, 0.4)'); grad.addColorStop(1, 'transparent'); ctx.fillStyle = grad; ctx.fillRect(0, 0, width, height); if (Math.random() < 0.005) meteors.push(new Meteor()); meteors = meteors.filter(m => m.update()); meteors.forEach(m => m.draw()); lasers = lasers.filter(l => l.update()); lasers.forEach(l => l.draw()); ships.sort((a, b) => a.z - b.z); ships.forEach(s => { s.update(ships); s.draw(); }); particles.forEach(p => { p.update(); p.draw(); }); }
         function drawFabNeko() { fabPolygons.forEach(p => { p.update(); p.draw(); }); }
 
         let currentMode = 'dark'; let lastTime = 0;
-        function animate(timestamp) { const delta = timestamp - lastTime; lastTime = timestamp; const theme = document.documentElement.getAttribute('data-theme') || 'dark'; if (theme !== currentMode) { if (theme === 'timeline-neko') timelineBranches = []; currentMode = theme; } ctx.clearRect(0, 0, width, height); if (theme === 'timeline-neko') { drawTimeline(); } else if (theme === 'gamer-neko') { drawGamerFloor(); } else if (theme === 'fab-neko') { drawFabNeko(); } else { drawNetwork(); } requestAnimationFrame(animate); }
+        function animate(timestamp) { const delta = timestamp - lastTime; lastTime = timestamp; const theme = document.documentElement.getAttribute('data-theme') || 'dark'; if (theme !== currentMode) { currentMode = theme; } ctx.clearRect(0, 0, width, height); if (theme === 'gamer-neko') { drawGamerFloor(); } else if (theme === 'fab-neko') { drawFabNeko(); } else { drawNetwork(); } requestAnimationFrame(animate); }
         
         window.addEventListener('resize', initCanvas); initCanvas(); requestAnimationFrame(animate);
         window.HologramEngine = { mode: 'hologram', particles: particles };
@@ -918,7 +913,7 @@
 
         const configTextarea = document.getElementById('configInput');
         configTextarea.addEventListener('dragover', (e) => { e.preventDefault(); configTextarea.classList.add('drag-active'); });
-        configTextarea.addEventListener('dragleave', () => configTextarea.classList.remove('drag-active'); });
+        configTextarea.addEventListener('dragleave', () => configTextarea.classList.remove('drag-active'));
         configTextarea.addEventListener('drop', (e) => { e.preventDefault(); configTextarea.classList.remove('drag-active'); if(e.dataTransfer.files[0]) { const reader = new FileReader(); reader.onload = (evt) => { configTextarea.value = evt.target.result; checkDynamicWarnings(); }; reader.readAsText(e.dataTransfer.files[0]); } else { const text = e.dataTransfer.getData('text/plain'); if(text) { configTextarea.value = text; checkDynamicWarnings(); } } });
     });
 
@@ -952,8 +947,6 @@
     function toggleWrapper(wrapperId, btnId, name) { const wrapper = document.getElementById(wrapperId); const btn = document.getElementById(btnId); if (wrapperId === 'manifestWrapper') { document.getElementById('dbWrapper').classList.remove('expanded'); document.getElementById('dbBtn').innerText = `[ VIEW_LOCAL_DATABASE ]`; } else { document.getElementById('manifestWrapper').classList.remove('expanded'); document.getElementById('manifestBtn').innerText = `[ VIEW_SYSTEM_MANIFEST ]`; } wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? `[ CLOSE_${name} ]` : `[ VIEW_${name} ]`; }
     function toggleAdvOptions() { const wrapper = document.getElementById('advOptionsWrapper'); const btn = document.getElementById('advOptionsBtn'); wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; }
 
-    function handleRemoveClick(elem) { if(elem.disabled) return; if(elem.checked) { const isSuppressed = localStorage.getItem('noccat_suppress_remove_warning'); if (isSuppressed === 'true') { checkDynamicWarnings(); return; } currentMatrixTriggerElem = null; document.getElementById('dontShowAgainCheckbox').checked = false; document.getElementById('removeWarningModal').classList.add('visible'); checkDynamicWarnings(); } }
-    
     function handleRemoveChange(elem) { 
         if(elem.disabled) return; 
         checkDynamicWarnings();
@@ -1858,7 +1851,6 @@
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec || iface.hasLearnedMac;
-            let isDual = isCurrentlyDot1x && isCurrentlySticky;
             let secChanged = false;
             
             if (iface.isRaw && secVal !== 'leave') {
@@ -2038,8 +2030,10 @@
                     if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true;
                 } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky') {
                     if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec || iface.hasLearnedMac) secChanged = true;
-                } else if (secVal === 'reset' || secVal === 'reset_dot1x' || secVal === 'reset_sticky') {
-                    secChanged = false;
+                } else if (secVal === 'reset') {
+                    if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
+                } else if (secVal === 'reset_dot1x' || secVal === 'reset_sticky') {
+                    secChanged = true;
                 } else if (secVal === 'remove') {
                     if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
                 }
@@ -2077,23 +2071,17 @@
             
             if (secChanged) {
                 if (iface.isRaw) {
-                     if (secVal === 'conv_sticky_to_dot1x') {
+                     if (secVal === 'dot1x' || secVal === 'conv_sticky_to_dot1x' || secVal === 'reset_dot1x') {
                          cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
-                     } else if (secVal === 'conv_dot1x_to_sticky') {
+                     } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky' || secVal === 'reset_sticky') {
                          cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
-                     } else {
+                     } else if (secVal === 'reset' || secVal === 'remove') {
                          cmds.push("no dot1x pae authenticator", "no authentication port-control auto", "no switchport port-security mac-address sticky", "no switchport port-security");
                      }
                 } else {
-                     if (secVal === 'dot1x') {
-                         if (!iface.hasDot1xPae) cmds.push("no dot1x pae authenticator");
-                         if (!iface.hasAuthPortControl) cmds.push("no authentication port-control auto");
-                     } else if (secVal === 'sticky') {
-                         if (!iface.hasStickyMac && !iface.hasLearnedMac) cmds.push("no switchport port-security mac-address sticky");
-                         if (!iface.hasPortSec) cmds.push("no switchport port-security");
-                     } else if (secVal === 'conv_sticky_to_dot1x') {
+                     if (secVal === 'dot1x' || secVal === 'conv_sticky_to_dot1x' || secVal === 'reset_dot1x') {
                          cmds.push("no dot1x pae authenticator", "no authentication port-control auto");
-                     } else if (secVal === 'conv_dot1x_to_sticky') {
+                     } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky' || secVal === 'reset_sticky') {
                          cmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
                      }
                 }
