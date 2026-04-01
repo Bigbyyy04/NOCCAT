@@ -7,7 +7,7 @@
     <link id="dynamicFavicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐈‍⬛</text></svg>">
     <style>
         /* --- FLUID TRANSITIONS --- */
-        body, .container, .form-group, .cyber-btn, input, select, .tz-widget, .code-window, .manifest-box, .db-box, .override-table th, .override-table td, .logo-accent, .tooltip-icon, .warning-box, .config-group-box, .override-table-wrapper {
+        body, .container, .form-group, .cyber-btn, input, select, .tz-widget, .code-window, .manifest-box, .db-box, .override-table th, .override-table td, .logo-accent, .tooltip-icon, .warning-box, .config-group-box, .override-table-wrapper, .top-bar {
             transition: background-color 0.5s ease-in-out, border-color 0.5s ease-in-out, color 0.5s ease-in-out, box-shadow 0.5s ease-in-out, text-shadow 0.5s ease-in-out, max-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
         }
 
@@ -53,8 +53,22 @@
             animation: smooth-pulse 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards !important;
         }
 
-        /* --- HEADER ROW --- */
-        .top-bar { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; gap: 20px; }
+        /* --- STICKY HEADER ROW --- */
+        .top-bar { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 20px; gap: 20px; 
+            position: sticky; top: -1px; z-index: 900; 
+            background: rgba(13, 17, 23, 0.95); 
+            backdrop-filter: blur(10px); 
+            padding: 15px 20px; 
+            margin: -20px -20px 20px -20px; 
+            border-bottom: 1px solid var(--border-color); 
+            border-radius: 0 0 8px 8px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+        [data-theme="fab-neko"] .top-bar { background: rgba(26, 21, 37, 0.95); box-shadow: 0 5px 15px rgba(0,0,0,0.6); }
+        [data-theme="gamer-neko"] .top-bar { background: rgba(8, 1, 15, 0.95); box-shadow: 0 5px 15px rgba(0,0,0,0.8); }
+
         h2 { color: #ffffff; font-size: 1.7rem; margin: 0; display: flex; align-items: baseline; gap: 12px; font-family: "Courier New", Courier, monospace; font-weight: bold; flex-grow: 1; }
         [data-theme="fab-neko"] h2 { color: var(--text-main); } [data-theme="gamer-neko"] h2 { color: var(--text-main); text-shadow: 0 0 10px rgba(240, 98, 240, 0.6); } 
 
@@ -76,6 +90,14 @@
         .qol-dropdown-content button:last-child { border-bottom: none; } .qol-dropdown-content button:hover { background: rgba(188, 140, 255, 0.1); color: var(--accent-blue); } .qol-dropdown-content button.active { font-weight: bold; color: var(--neon-green); }
         [data-theme="fab-neko"] .qol-dropdown-content button:hover { background: rgba(11, 203, 212, 0.15); color: var(--accent-blue); } [data-theme="gamer-neko"] .qol-dropdown-content button:hover { background: rgba(240, 98, 240, 0.15); color: var(--accent-blue); }
         
+        /* SCALE SLIDER CSS */
+        .scale-slider { -webkit-appearance: none; background: transparent; width: 100%; cursor: ew-resize; outline: none; }
+        .scale-slider::-webkit-slider-runnable-track { width: 100%; height: 3px; background: var(--border-color); border-radius: 2px; }
+        .scale-slider::-webkit-slider-thumb { -webkit-appearance: none; height: 12px; width: 12px; border-radius: 50%; background: var(--accent-blue); margin-top: -4.5px; box-shadow: 0 0 5px var(--accent-blue); transition: 0.2s; }
+        .scale-slider::-webkit-slider-thumb:hover { transform: scale(1.3); }
+        [data-theme="fab-neko"] .scale-slider::-webkit-slider-thumb { background: var(--neon-green); box-shadow: 0 0 5px var(--neon-green); }
+        [data-theme="gamer-neko"] .scale-slider::-webkit-slider-thumb { background: var(--hl-orange); box-shadow: 0 0 8px var(--hl-orange); }
+
         /* --- TIMEZONE WIDGET --- */
         .tz-widget { display: flex; align-items: center; gap: 8px; font-family: "Courier New", Courier, monospace; font-size: 11px; color: var(--text-main); background: rgba(13, 17, 23, 0.85); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 4px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); backdrop-filter: blur(4px); white-space: nowrap; }
         [data-theme="fab-neko"] .tz-widget { background: rgba(39, 32, 54, 0.85); box-shadow: inset 0 0 10px rgba(0,0,0,0.4); } [data-theme="gamer-neko"] .tz-widget { background: rgba(18, 2, 28, 0.85); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
@@ -211,9 +233,10 @@
         .override-table-wrapper { max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 4px; scrollbar-width: thin; scrollbar-color: var(--border-color) var(--code-bg); margin-top: 5px; }
         .override-table-wrapper::-webkit-scrollbar { width: 10px; } .override-table-wrapper::-webkit-scrollbar-track { background: var(--code-bg); } .override-table-wrapper::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
         .override-table { width: 100%; border-collapse: collapse; font-size: 11px; font-family: "Courier New", Courier, monospace; }
-        .override-table th { background: rgba(13, 17, 23, 0.95); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border-color); color: var(--accent-blue); position: sticky; top: 0; z-index: 10; }
-        .override-table td { padding: 6px 12px; border-bottom: 1px solid #21262d; color: var(--text-main); vertical-align: middle; background: rgba(22, 27, 34, 0.6); transition: 0.2s; cursor: grab; }
-        .override-table tr:last-child td { border-bottom: none; }
+        
+        .override-table th { background: rgba(13, 17, 23, 0.95); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border-color); border-right: 1px solid rgba(88, 166, 255, 0.15); color: var(--accent-blue); position: sticky; top: 0; z-index: 10; }
+        .override-table td { padding: 6px 12px; border-bottom: 1px solid #21262d; border-right: 1px solid rgba(88, 166, 255, 0.15); color: var(--text-main); vertical-align: middle; background: rgba(22, 27, 34, 0.6); transition: 0.2s; cursor: grab; }
+        .override-table th:last-child, .override-table td:last-child { border-right: none; }
         
         .override-table tr.selected-row td { background: rgba(88, 166, 255, 0.2); border-color: var(--accent-blue); }
         .override-table tr:hover td { background: rgba(88, 166, 255, 0.1); }
@@ -221,8 +244,13 @@
         
         .override-table th:nth-child(1) { width: 15%; } .override-table th:nth-child(2) { width: 22%; } .override-table th:nth-child(3) { width: 13%; } .override-table th:nth-child(4) { width: 20%; } .override-table th:nth-child(5) { width: 13%; } .override-table th:nth-child(6) { width: 12%; } .override-table th:nth-child(7) { width: 5%; text-align: center; }
 
-        [data-theme="fab-neko"] .override-table th { background: rgba(26, 21, 37, 0.95); color: var(--accent-blue); } [data-theme="fab-neko"] .override-table td { background: rgba(39, 32, 54, 0.6); border-bottom: 1px solid #312540; } [data-theme="fab-neko"] .override-table tr:hover td { background: rgba(11, 203, 212, 0.15); } [data-theme="fab-neko"] .override-table tr.selected-row td { background: rgba(11, 203, 212, 0.3); }
-        [data-theme="gamer-neko"] .override-table th { background: rgba(18, 2, 28, 0.95); color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); } [data-theme="gamer-neko"] .override-table td { background: rgba(18, 2, 28, 0.6); border-bottom: 1px solid #c45b9a; } [data-theme="gamer-neko"] .override-table tr:hover td { background: rgba(240, 98, 240, 0.1); }
+        [data-theme="fab-neko"] .override-table th { background: rgba(26, 21, 37, 0.95); color: var(--accent-blue); border-right-color: rgba(11, 203, 212, 0.15); } 
+        [data-theme="fab-neko"] .override-table td { background: rgba(39, 32, 54, 0.6); border-bottom: 1px solid #312540; border-right: 1px solid rgba(11, 203, 212, 0.15); } 
+        [data-theme="fab-neko"] .override-table tr:hover td { background: rgba(11, 203, 212, 0.15); } [data-theme="fab-neko"] .override-table tr.selected-row td { background: rgba(11, 203, 212, 0.3); }
+        
+        [data-theme="gamer-neko"] .override-table th { background: rgba(18, 2, 28, 0.95); color: var(--text-main); text-shadow: 0 0 5px rgba(240, 98, 240, 0.6); border-right-color: rgba(240, 98, 240, 0.15); } 
+        [data-theme="gamer-neko"] .override-table td { background: rgba(18, 2, 28, 0.6); border-bottom: 1px solid #c45b9a; border-right: 1px solid rgba(240, 98, 240, 0.15); } 
+        [data-theme="gamer-neko"] .override-table tr:hover td { background: rgba(240, 98, 240, 0.1); }
         
         .override-input { background: rgba(1, 4, 9, 0.8); border: 1px dashed rgba(88, 166, 255, 0.5); color: var(--neon-green); padding: 4px 6px; border-radius: 3px; width: 100%; box-sizing: border-box; font-family: monospace; outline: none; transition: 0.2s; height: auto; }
         .override-input:focus { border-color: var(--neon-green); border-style: solid; box-shadow: 0 0 5px rgba(57,255,20,0.3); } .override-input::placeholder { color: #484f58; font-style: italic; }
@@ -372,6 +400,15 @@
                 <button onclick="changeTheme('dark')" id="theme-dark" class="active">Theme: Dark (Default)</button>
                 <button onclick="changeTheme('fab-neko')" id="theme-fab-neko">Theme: Fabulous Neko 🐈</button>
                 <button onclick="changeTheme('gamer-neko')" id="theme-gamer-neko">Theme: Gamer NEKO 🎮</button>
+                
+                <div style="padding: 10px 16px; border-top: 1px dashed var(--border-color); margin-top: 5px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--accent-blue); margin-bottom: 8px; font-family: monospace; font-weight: bold;">
+                        <span>UI/TEXT SCALE</span>
+                        <span id="textScaleVal" style="color: var(--neon-green);">100%</span>
+                    </div>
+                    <input type="range" id="textScaleSlider" class="scale-slider" min="75" max="150" value="100" oninput="updateTextScale()" ondblclick="resetTextScale()" title="Double-click to reset">
+                </div>
+                
             </div>
         </div>
 
@@ -386,14 +423,17 @@
             
             <select id="sourceTzSelector" class="tz-select source-tz" onchange="updateClocks()">
                 <option value="Local">LOCAL</option>
-                <option value="UTC">UTC</option>
-                <option value="America/New_York">EST</option>
-                <option value="America/Los_Angeles">PST</option>
-                <option value="Europe/London">GMT</option>
-                <option value="Europe/Berlin">CET</option>
-                <option value="Asia/Kolkata">IST</option>
-                <option value="Asia/Manila">PHT</option>
-                <option value="Australia/Sydney">AEST</option>
+                <option value="UTC">UTC (GMT+0)</option>
+                <option value="America/New_York">EST (GMT-5)</option>
+                <option value="America/Bogota">COT (GMT-5)</option>
+                <option value="America/Los_Angeles">PST (GMT-8)</option>
+                <option value="Europe/London">GMT (GMT+0)</option>
+                <option value="Europe/Berlin">CET (GMT+1)</option>
+                <option value="Europe/Kyiv">EEST (GMT+3)</option>
+                <option value="Asia/Kolkata">IST (GMT+5:30)</option>
+                <option value="Asia/Manila">PHT (GMT+8)</option>
+                <option value="Asia/Tokyo">JST (GMT+9)</option>
+                <option value="Australia/Sydney">AEST (GMT+10)</option>
             </select>
             
             <span style="opacity: 0.5; margin: 0 2px;">></span>
@@ -401,290 +441,301 @@
             <span style="opacity: 0.3; margin: 0 4px;">|</span>
             
             <select id="tzSelector" class="tz-select" onchange="updateClocks()">
-                <option value="UTC">UTC</option>
+                <option value="UTC">UTC (GMT+0)</option>
                 <option value="Local">LOCAL</option>
-                <option value="America/New_York">EST</option>
-                <option value="America/Los_Angeles">PST</option>
-                <option value="Europe/London">GMT</option>
-                <option value="Europe/Berlin">CET</option>
-                <option value="Asia/Kolkata">IST</option>
-                <option value="Asia/Manila">PHT</option>
-                <option value="Australia/Sydney">AEST</option>
+                <option value="America/New_York">EST (GMT-5)</option>
+                <option value="America/Bogota">COT (GMT-5)</option>
+                <option value="America/Los_Angeles">PST (GMT-8)</option>
+                <option value="Europe/London">GMT (GMT+0)</option>
+                <option value="Europe/Berlin">CET (GMT+1)</option>
+                <option value="Europe/Kyiv">EEST (GMT+3)</option>
+                <option value="Asia/Kolkata">IST (GMT+5:30)</option>
+                <option value="Asia/Manila">PHT (GMT+8)</option>
+                <option value="Asia/Tokyo">JST (GMT+9)</option>
+                <option value="Australia/Sydney">AEST (GMT+10)</option>
             </select>
             <span id="convertedTimeDisplay" style="color: var(--neon-green);">00:00:00</span>
         </div>
     </div>
 
-    <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
-        <div class="header-row">
-            <label style="color: var(--accent-purple); text-shadow: 0 0 8px rgba(188, 140, 255, 0.4);">00 // SYSTEM_MANUAL [READ_ME]</label>
-            <button class="expand-btn" id="readmeBtn" onclick="toggleReadme()">[ EXPAND ]</button>
-        </div>
-        <div id="readmeWrapper" class="readme-wrapper">
-            <div style="min-height: 0; overflow: hidden;">
-                <div class="readme-content">
-                    <p>Welcome to <strong>N0&lt;AT</strong>. This utility dynamically compiles bulk configuration and rollback scripts for Cisco access switches. It features an <strong>idempotent logic engine</strong>, meaning it will cross-reference your targets and only generate commands for ports that actually require state changes.</p>
-                    
-                    <h3>> Config Input (01)</h3>
-                    <p>To provide the engine with the current interface states, paste the raw terminal output of the <code>show running-config interface</code> command from your access switch. <strong>You can also drag and drop a .txt log file directly into the input box.</strong></p>
-                    
-                    <div class="sample-code" style="margin-bottom: 5px;">
-                        <div style="flex:1;">
-                            <strong>STANDARD PARSE:</strong><br>
-                            <span style="color: var(--hl-orange);">PH-NOC-ACC0101#</span>sh running-config interface Gi1/0/1<br>
-                            Building configuration...<br><br>
-                            Current configuration : 157 bytes<br>
-                            !<br>
-                            interface GigabitEthernet1/0/1<br>
-                            description : Sample<br>
-                            switchport access vlan <span style="color: var(--hl-cyan); font-weight: bold;">100</span><br>
-                            <span style="color: var(--hl-yellow);">switchport mode access</span><br>
-                            <span style="color: var(--accent-purple);">spanning-tree bpduguard enable</span><br>
-                            end
+    <div id="scalableContent">
+
+        <div class="form-group input-section" style="border-color: rgba(188, 140, 255, 0.3);">
+            <div class="header-row">
+                <label style="color: var(--accent-purple); text-shadow: 0 0 8px rgba(188, 140, 255, 0.4);">00 // SYSTEM_MANUAL [READ_ME]</label>
+                <button class="expand-btn" id="readmeBtn" onclick="toggleReadme()">[ EXPAND ]</button>
+            </div>
+            <div id="readmeWrapper" class="readme-wrapper">
+                <div style="min-height: 0; overflow: hidden;">
+                    <div class="readme-content">
+                        <p>Welcome to <strong>N0&lt;AT</strong>. This utility dynamically compiles bulk configuration and rollback scripts for Cisco access switches. It features an <strong>idempotent logic engine</strong>, meaning it will cross-reference your targets and only generate commands for ports that actually require state changes.</p>
+                        
+                        <h3>> Config Input (01)</h3>
+                        <p>To provide the engine with the current interface states, paste the raw terminal output of the <code>show running-config interface</code> command from your access switch. <strong>You can also drag and drop a .txt log file directly into the input box.</strong></p>
+                        
+                        <div class="sample-code" style="margin-bottom: 5px;">
+                            <div style="flex:1;">
+                                <strong>STANDARD PARSE:</strong><br>
+                                <span style="color: var(--hl-orange);">PH-NOC-ACC0101#</span>sh running-config interface Gi1/0/1<br>
+                                Building configuration...<br><br>
+                                Current configuration : 157 bytes<br>
+                                !<br>
+                                interface GigabitEthernet1/0/1<br>
+                                description : Sample<br>
+                                switchport access vlan <span style="color: var(--hl-cyan); font-weight: bold;">100</span><br>
+                                <span style="color: var(--hl-yellow);">switchport mode access</span><br>
+                                <span style="color: var(--accent-purple);">spanning-tree bpduguard enable</span><br>
+                                end
+                            </div>
+                            <div style="width: 1px; background: var(--border-color); margin: 0 10px;"></div>
+                            <div style="flex:1;">
+                                <strong style="color:var(--hl-yellow)">RAW OMNI-PARSE (BLIND MODE):</strong><br>
+                                <span style="color: #8b949e;">You can paste a flat list of ports. The engine will detect this and bypass idempotency to blindly force the requested parameters.</span><br><br>
+                                Gi1/0/1<br>
+                                Gi1/0/2<br>
+                                Fa0/1<br>
+                                Te2/1/1
+                            </div>
                         </div>
-                        <div style="width: 1px; background: var(--border-color); margin: 0 10px;"></div>
-                        <div style="flex:1;">
-                            <strong style="color:var(--hl-yellow)">RAW OMNI-PARSE (BLIND MODE):</strong><br>
-                            <span style="color: #8b949e;">You can paste a flat list of ports. The engine will detect this and bypass idempotency to blindly force the requested parameters.</span><br><br>
-                            Gi1/0/1<br>
-                            Gi1/0/2<br>
-                            Fa0/1<br>
-                            Te2/1/1
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group input-section">
+            <div class="header-row">
+                <label>01 // Config Input</label>
+                <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-grow: 1;">
+                    <div id="deviceHud" class="device-hud">Waiting for target...</div>
+                    <button class="expand-btn" id="expandBtn" style="margin-left: 10px;" onclick="toggleExpand()">[ EXPAND ]</button>
+                </div>
+            </div>
+            <div style="position: relative;">
+                <textarea id="configInput" placeholder="Paste config logs or a raw list of ports here..." spellcheck="false" oninput="checkDynamicWarnings()"></textarea>
+                <div class="drag-overlay-text">DROP CONFIG OR PORT LIST</div>
+            </div>
+        </div>
+
+        <div class="controls-row">
+            
+            <div class="form-group global-param-section" style="width: 80px;">
+                <div style="margin-bottom: 10px;">
+                    <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
+                        02 // VLAN
+                        <div class="tooltip-icon" data-tooltip="GLOBAL MASTER: This VLAN applies to all parsed ports simultaneously. Overrides can be set in Section 07.">i</div>
+                    </label>
+                </div>
+                <input type="number" id="vlanInput" placeholder="ALL" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();">
+            </div>
+            
+            <div class="form-group global-param-section" style="flex-grow: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <label style="margin-bottom: 0;">03 // Protocol Mode</label>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <div class="checkbox-group" style="width: auto;">
+                            <label style="padding: 2px 6px; font-size: 9px; letter-spacing: 0.5px;">
+                                <input type="checkbox" id="suppressCheckbox" onchange="checkDynamicWarnings()">
+                                <span>OPEN_PORT</span>
+                            </label>
+                        </div>
+                        <div class="tooltip-icon" data-tooltip="Suppresses the 'No Port Security' warning for intentional IT or specific campaign use.">i</div>
+                    </div>
+                </div>
+                <div class="radio-group">
+                    <label><input type="radio" name="securityMode" value="leave" checked onchange="checkDynamicWarnings()"><span>--</span></label>
+                    <label class="disabled"><input type="radio" name="securityMode" value="dot1x" disabled onchange="checkDynamicWarnings()"><span>DOT1X</span></label>
+                    <label class="disabled"><input type="radio" name="securityMode" value="sticky" disabled onchange="checkDynamicWarnings()"><span>STICKY</span></label>
+                    <label class="disabled"><input type="radio" name="securityMode" value="remove" onchange="handleRemoveChange(this)" disabled><span>REMOVE</span></label>
+                    <label class="disabled"><input type="radio" name="securityMode" value="reset" disabled onchange="checkDynamicWarnings()"><span>RESET</span></label>
+                </div>
+            </div>
+
+            <div class="form-group global-param-section" style="width: 100px;">
+                <div style="margin-bottom: 10px;">
+                    <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
+                        04 // EDGE
+                        <div class="tooltip-icon" data-tooltip="Applies 'spanning-tree portfast' and 'bpduguard enable'.">i</div>
+                    </label>
+                </div>
+                <div class="checkbox-group">
+                    <label class="disabled"><input type="checkbox" id="stpCheckbox" disabled onchange="generateScript()"><span>ENABLE</span></label>
+                </div>
+            </div>
+
+            <div class="form-group global-param-section" style="width: 215px;">
+                <div style="margin-bottom: 10px;">
+                    <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
+                        05 // ADMIN STATE
+                        <div class="tooltip-icon" data-tooltip="UP forces 'no shut'. DWN forces 'shut'. BNC explicitly bounces the port (shut/no shut). LEAVE preserves original state.">i</div>
+                    </label>
+                </div>
+                <div class="radio-group">
+                    <label><input type="radio" name="adminState" value="leave" checked onchange="generateScript()"><span>--</span></label>
+                    <label class="disabled"><input type="radio" name="adminState" value="up" disabled onchange="generateScript()"><span>UP</span></label>
+                    <label class="disabled"><input type="radio" name="adminState" value="down" disabled onchange="generateScript()"><span>DWN</span></label>
+                    <label class="disabled"><input type="radio" name="adminState" value="bounce" disabled onchange="generateScript()"><span>BNC</span></label>
+                </div>
+            </div>
+            
+            <div class="form-group global-param-section" style="width: 90px;">
+                <div style="margin-bottom: 10px;">
+                    <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
+                        06 // DELAY
+                        <div class="tooltip-icon" data-tooltip="SLOW PASTE: Reduces chunks to 2 ports and injects '! buffer wait' to prevent dropping characters on older switches.">i</div>
+                    </label>
+                </div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="slowPasteCheckbox" onchange="generateScript()"><span>ENABLE</span></label>
+                </div>
+            </div>
+
+        </div>
+        
+        <div id="advancedOptionsContainer" class="form-group input-section" style="display: none; border-color: rgba(227, 179, 65, 0.4);">
+            <div class="header-row">
+                <label style="color: var(--p-matrix-title); text-shadow: 0 0 8px rgba(227, 179, 65, 0.4); display: flex; align-items: center; gap: 6px;">
+                    07 // ADVANCED OPTIONS [ PER-PORT MATRIX ]
+                    <div class="tooltip-icon" style="color: var(--p-matrix-title); border-color: var(--p-matrix-title);" data-tooltip="Granular control. Inputs here will overwrite the Global selections for specific individual ports. Edits here will NOT auto-execute until you hit Execute_Run.">i</div>
+                </label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button class="expand-btn" id="clearMatrixBtn" style="color: var(--accent-red); border-color: var(--accent-red); display: none;" onclick="clearStandardMatrix()">[ CLEAR OVERRIDES ]</button>
+                    <button class="expand-btn" id="advOptionsBtn" style="color: var(--p-matrix-title); border-color: var(--p-matrix-title);" onclick="toggleAdvOptions()">[ EXPAND ]</button>
+                </div>
+            </div>
+            <div id="advOptionsWrapper" class="readme-wrapper">
+                <div style="min-height: 0; overflow: hidden; padding: 5px;">
+                    
+                    <div id="blindGroupingContainer" style="display:none; margin-bottom: 15px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
+                            <label style="color:var(--hl-yellow); margin-bottom: 0; font-size: 13px;">> BLIND CONFIGURATION GROUPS</label>
+                            <div style="display:flex; gap: 8px;">
+                                <button class="expand-btn" style="color:var(--accent-red); border-color:var(--accent-red);" onclick="clearRawMatrix()">[ CLEAR OVERRIDES ]</button>
+                                <button class="expand-btn" style="color:var(--neon-green); border-color:var(--neon-green);" onclick="createConfigGroup()">[ + NEW GROUP ]</button>
+                            </div>
+                        </div>
+                        <div id="groupsWrapper" class="groups-grid"></div>
+                        <label style="color:var(--text-main); margin-top: 15px; font-size: 11px;">> UNGROUPED PORTS (Right Click to Group or Copy/Paste)</label>
+                    </div>
+
+                    <div class="override-table-wrapper" id="overrideTableContainer">
+                        <table class="override-table">
+                            <thead>
+                                <tr>
+                                    <th>INTERFACE</th>
+                                    <th>CURRENT STATE</th>
+                                    <th>OVR: VLAN</th>
+                                    <th>OVR: SECURITY</th>
+                                    <th>OVR: EDGE</th>
+                                    <th>OVR: ADMIN</th>
+                                    <th style="text-align: center;">ALL</th>
+                                </tr>
+                            </thead>
+                            <tbody id="overrideTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-row">
+            <button class="clear-btn" onclick="clearAll()">Clear All Data</button>
+            <button id="executeBtn" class="cyber-btn" onclick="executeWithSound()" disabled>Execute_Run</button>
+        </div>
+
+        <div id="warningBox" class="warning-box"></div>
+        
+        <div class="status-container">
+            <div id="statusMsg"></div>
+        </div>
+
+        <div class="script-header">
+            <label style="margin:0;">> Implementation_Output</label>
+            <div class="btn-group-small">
+                <button id="dlPrimaryBtn" class="copy-btn dl-btn" onclick="downloadCode('primaryCode', 'Implementation')" disabled>Download</button>
+                <button id="copyPrimaryBtn" class="copy-btn" onclick="copyCode('primaryCode', this)" disabled>Copy</button>
+            </div>
+        </div>
+        <div class="code-window">
+            <div id="primaryLines" class="line-numbers"></div>
+            <div id="primaryCode" class="code-content">-- system_idle --</div>
+        </div>
+
+        <div class="script-header">
+            <label style="margin:0; color:var(--accent-red);">> Rollback_Protocol</label>
+            <div class="btn-group-small">
+                <button id="dlRollbackBtn" class="copy-btn dl-btn rollback" onclick="downloadCode('rollbackCode', 'Rollback')" disabled>Download</button>
+                <button id="copyRollbackBtn" class="copy-btn rollback" onclick="copyCode('rollbackCode', this)" disabled>Copy</button>
+            </div>
+        </div>
+        <div class="code-window" style="border-color: #442d30;">
+            <div id="rollbackLines" class="line-numbers" style="color:#6e3636"></div>
+            <div id="rollbackCode" class="code-content" style="color: #ffa198;">-- system_idle --</div>
+        </div>
+        
+        <div class="bottom-actions">
+            <button class="expand-btn" id="manifestBtn" onclick="toggleWrapper('manifestWrapper', 'manifestBtn', 'SYSTEM_MANIFEST')">[ VIEW_SYSTEM_MANIFEST ]</button>
+            <button class="expand-btn" id="dbBtn" style="color: var(--accent-green); border-color: var(--border-color);" onclick="toggleWrapper('dbWrapper', 'dbBtn', 'LOCAL_DATABASE')">[ VIEW_LOCAL_DATABASE ]</button>
+        </div>
+        
+        <div id="manifestWrapper" class="readme-wrapper">
+            <div style="min-height: 0; padding-bottom: 5px; overflow: hidden;">
+                <div class="readme-content manifest-box">
+                    <h3 style="margin-top: 0;">⚙️ 1. Idempotent Execution Engine</h3>
+                    <ul>
+                        <li><strong>State-Aware Compilation:</strong> Parses current `show run` configurations to evaluate existing states. Only outputs commands needed to reach the target state, completely ignoring parameters that already match.</li>
+                        <li><strong>Smart Range Aggregation:</strong> Automatically compresses sequential ports (e.g., <code>Gi1/0/1, Gi1/0/2, Gi1/0/3</code>) into optimized <code>interface range Gi1/0/1-3</code> blocks to save terminal buffer space.</li>
+                        <li><strong>Automated Rollback Protocol:</strong> Dynamically calculates and generates the exact reverse script required to seamlessly undo applied changes and return interfaces to their pre-execution state.</li>
+                        <li><strong>Surgical Command Stripping:</strong> Intelligently prepends `no` commands (e.g., `no dot1x pae authenticator`) before applying new security protocols to prevent device rejection or ghost configurations.</li>
+                    </ul>
+
+                    <h3>📡 2. Omni-Parse Input & Drag-and-Drop</h3>
+                    <ul>
+                        <li><strong>Standard Parsing:</strong> Accepts standard Cisco interface configuration blocks natively (e.g., <code>interface Gi1/0/1...</code>).</li>
+                        <li><strong>Blind Mode (Raw Ports):</strong> Auto-detects flat lists of ports without config data. Disables global settings to enforce safety, requires configuration via the explicit Advanced Matrix, and prevents arbitrary state bouncing.</li>
+                        <li><strong>Omni-Drop Zone:</strong> Seamlessly drag and drop `.txt` log files or raw text highlights directly into the input box for immediate parsing. Auto-clears cache on reload to prevent accidental execution of old data.</li>
+                    </ul>
+
+                    <h3>🛡️ 3. Security & Port Protection</h3>
+                    <ul>
+                        <li><strong>Trunk Port Hard-Stop:</strong> Automatically detects uplinks/trunks (missing `switchport mode access`) and entirely locks them out of the script generation, preventing catastrophic network loops or outages.</li>
+                        <li><strong>DOT1X & STICKY Pushing:</strong> Instantly formats ports with 802.1X or Port Security MAC Sticky templates while removing conflicting protocols.</li>
+                        <li><strong>REMOVE Protocol:</strong> Systematically strips security to leave the port open. Triggers a mandatory Critical Danger validation modal to enforce IT CAB/Ticket compliance.</li>
+                        <li><strong>Universal RESET:</strong> Wipes existing security and immediately replaces it. During Blind Mode, dynamically limits resets to explicit protocol targets.</li>
+                    </ul>
+
+                    <h3>🎛️ 4. Multi-Tenant Device HUD & DB</h3>
+                    <ul>
+                        <li><strong>Zero-Trust Local Database:</strong> Offline `localStorage` dictionary mapping hostnames to IPs. (Click[ VIEW_LOCAL_DATABASE ] to configure).</li>
+                        <li><strong>Device HUD:</strong> Actively scans the pasted input for prompt hostnames (e.g., `PH-NOC-ACC01#`) and cross-references the local DB to display target IPs directly above the input box.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="dbWrapper" class="readme-wrapper">
+            <div style="min-height: 0; padding-bottom: 5px; overflow: hidden;">
+                <div class="db-box">
+                    <label style="color: var(--accent-green); margin-bottom: 10px;">> ZERO-TRUST_LOCAL_DB</label>
+                    
+                    <div class="db-security-note">
+                        <strong>🔒 SECURITY NOTE:</strong> This database is completely offline and Zero-Trust. Your data is saved directly into your browser's local cache (localStorage). It is <strong>never</strong> transmitted to GitHub, any external server, or the public internet. Only you can see this data on this specific computer.
+                    </div>
+
+                    <p style="font-size: 11.5px; color: var(--text-main); opacity: 0.8; margin-top: 0;">Any new data pasted here is <strong>MERGED</strong> into your existing local database. To remove old switches, click 'Clear Memory' and paste a fresh master list.</p>
+                    <textarea id="dbInput" placeholder="-- Formats Accepted --&#10;PH-NOC-ACC0101, 10.20.30.40&#10;PH-NOC-AS0202   10.30.40.50   Access Switch" spellcheck="false" style="border-color: rgba(35, 134, 54, 0.5);"></textarea>
+                    <div class="db-controls">
+                        <span class="db-status" id="dbStatus">STATUS: DB_IDLE</span>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="clear-btn" style="padding: 4px 15px;" onclick="clearDB()">Clear Memory</button>
+                            <button class="cyber-btn" style="padding: 4px 15px;" onclick="saveDB()">Merge & Save</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="form-group input-section">
-        <div class="header-row">
-            <label>01 // Config Input</label>
-            <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-grow: 1;">
-                <div id="deviceHud" class="device-hud">Waiting for target...</div>
-                <button class="expand-btn" id="expandBtn" style="margin-left: 10px;" onclick="toggleExpand()">[ EXPAND ]</button>
-            </div>
-        </div>
-        <div style="position: relative;">
-            <textarea id="configInput" placeholder="Paste config logs or a raw list of ports here..." spellcheck="false" oninput="checkDynamicWarnings()"></textarea>
-            <div class="drag-overlay-text">DROP CONFIG OR PORT LIST</div>
-        </div>
-    </div>
-
-    <div class="controls-row">
-        
-        <div class="form-group global-param-section" style="width: 80px;">
-            <div style="margin-bottom: 10px;">
-                <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
-                    02 // VLAN
-                    <div class="tooltip-icon" data-tooltip="GLOBAL MASTER: This VLAN applies to all parsed ports simultaneously. Overrides can be set in Section 07.">i</div>
-                </label>
-            </div>
-            <input type="number" id="vlanInput" placeholder="ALL" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();">
-        </div>
-        
-        <div class="form-group global-param-section" style="flex-grow: 1;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <label style="margin-bottom: 0;">03 // Protocol Mode</label>
-                <div style="display: flex; align-items: center; gap: 6px;">
-                    <div class="checkbox-group" style="width: auto;">
-                        <label style="padding: 2px 6px; font-size: 9px; letter-spacing: 0.5px;">
-                            <input type="checkbox" id="suppressCheckbox" onchange="checkDynamicWarnings()">
-                            <span>OPEN_PORT</span>
-                        </label>
-                    </div>
-                    <div class="tooltip-icon" data-tooltip="Suppresses the 'No Port Security' warning for intentional IT or specific campaign use.">i</div>
-                </div>
-            </div>
-            <div class="radio-group">
-                <label><input type="radio" name="securityMode" value="leave" checked onchange="checkDynamicWarnings()"><span>--</span></label>
-                <label class="disabled"><input type="radio" name="securityMode" value="dot1x" disabled onchange="checkDynamicWarnings()"><span>DOT1X</span></label>
-                <label class="disabled"><input type="radio" name="securityMode" value="sticky" disabled onchange="checkDynamicWarnings()"><span>STICKY</span></label>
-                <label class="disabled"><input type="radio" name="securityMode" value="remove" onchange="handleRemoveChange(this)" disabled><span>REMOVE</span></label>
-                <label class="disabled"><input type="radio" name="securityMode" value="reset" disabled onchange="checkDynamicWarnings()"><span>RESET</span></label>
-            </div>
-        </div>
-
-        <div class="form-group global-param-section" style="width: 100px;">
-            <div style="margin-bottom: 10px;">
-                <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
-                    04 // EDGE
-                    <div class="tooltip-icon" data-tooltip="Applies 'spanning-tree portfast' and 'bpduguard enable'.">i</div>
-                </label>
-            </div>
-            <div class="checkbox-group">
-                <label class="disabled"><input type="checkbox" id="stpCheckbox" disabled onchange="generateScript()"><span>ENABLE</span></label>
-            </div>
-        </div>
-
-        <div class="form-group global-param-section" style="width: 215px;">
-            <div style="margin-bottom: 10px;">
-                <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
-                    05 // ADMIN STATE
-                    <div class="tooltip-icon" data-tooltip="UP forces 'no shut'. DWN forces 'shut'. BNC explicitly bounces the port (shut/no shut). LEAVE preserves original state.">i</div>
-                </label>
-            </div>
-            <div class="radio-group">
-                <label><input type="radio" name="adminState" value="leave" checked onchange="generateScript()"><span>--</span></label>
-                <label class="disabled"><input type="radio" name="adminState" value="up" disabled onchange="generateScript()"><span>UP</span></label>
-                <label class="disabled"><input type="radio" name="adminState" value="down" disabled onchange="generateScript()"><span>DWN</span></label>
-                <label class="disabled"><input type="radio" name="adminState" value="bounce" disabled onchange="generateScript()"><span>BNC</span></label>
-            </div>
-        </div>
-        
-        <div class="form-group global-param-section" style="width: 90px;">
-            <div style="margin-bottom: 10px;">
-                <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
-                    06 // DELAY
-                    <div class="tooltip-icon" data-tooltip="SLOW PASTE: Reduces chunks to 2 ports and injects '! buffer wait' to prevent dropping characters on older switches.">i</div>
-                </label>
-            </div>
-            <div class="checkbox-group">
-                <label><input type="checkbox" id="slowPasteCheckbox" onchange="generateScript()"><span>ENABLE</span></label>
-            </div>
-        </div>
-
-    </div>
     
-    <div id="advancedOptionsContainer" class="form-group input-section" style="display: none; border-color: rgba(227, 179, 65, 0.4);">
-        <div class="header-row">
-            <label style="color: var(--p-matrix-title); text-shadow: 0 0 8px rgba(227, 179, 65, 0.4); display: flex; align-items: center; gap: 6px;">
-                07 // ADVANCED OPTIONS [ PER-PORT MATRIX ]
-                <div class="tooltip-icon" style="color: var(--p-matrix-title); border-color: var(--p-matrix-title);" data-tooltip="Granular control. Inputs here will overwrite the Global selections for specific individual ports. Edits here will NOT auto-execute until you hit Execute_Run.">i</div>
-            </label>
-            <button class="expand-btn" id="advOptionsBtn" style="color: var(--p-matrix-title); border-color: var(--p-matrix-title);" onclick="toggleAdvOptions()">[ EXPAND ]</button>
-        </div>
-        <div id="advOptionsWrapper" class="readme-wrapper">
-            <div style="min-height: 0; overflow: hidden; padding: 5px;">
-                
-                <div id="blindGroupingContainer" style="display:none; margin-bottom: 15px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
-                        <label style="color:var(--hl-yellow); margin-bottom: 0; font-size: 13px;">> BLIND CONFIGURATION GROUPS</label>
-                        <button class="expand-btn" style="color:var(--neon-green); border-color:var(--neon-green);" onclick="createConfigGroup()">[ + NEW GROUP ]</button>
-                    </div>
-                    <div id="groupsWrapper" class="groups-grid"></div>
-                    <label style="color:var(--text-main); margin-top: 15px; font-size: 11px;">> UNGROUPED PORTS (Right Click to Group or Copy/Paste)</label>
-                </div>
-
-                <div class="override-table-wrapper" id="overrideTableContainer">
-                    <table class="override-table">
-                        <thead>
-                            <tr>
-                                <th>INTERFACE</th>
-                                <th>CURRENT STATE</th>
-                                <th>OVR: VLAN</th>
-                                <th>OVR: SECURITY</th>
-                                <th>OVR: EDGE</th>
-                                <th>OVR: ADMIN</th>
-                                <th style="text-align: center;">ALL</th>
-                            </tr>
-                        </thead>
-                        <tbody id="overrideTableBody">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="action-row">
-        <button class="clear-btn" onclick="clearAll()">Clear All Data</button>
-        <button id="executeBtn" class="cyber-btn" onclick="executeWithSound()" disabled>Execute_Run</button>
-    </div>
-
-    <div id="warningBox" class="warning-box"></div>
-    
-    <div class="status-container">
-        <div id="statusMsg"></div>
-    </div>
-
-    <div class="script-header">
-        <label style="margin:0;">> Implementation_Output</label>
-        <div class="btn-group-small">
-            <button id="dlPrimaryBtn" class="copy-btn dl-btn" onclick="downloadCode('primaryCode', 'Implementation')" disabled>Download</button>
-            <button id="copyPrimaryBtn" class="copy-btn" onclick="copyCode('primaryCode', this)" disabled>Copy</button>
-        </div>
-    </div>
-    <div class="code-window">
-        <div id="primaryLines" class="line-numbers"></div>
-        <div id="primaryCode" class="code-content">-- system_idle --</div>
-    </div>
-
-    <div class="script-header">
-        <label style="margin:0; color:var(--accent-red);">> Rollback_Protocol</label>
-        <div class="btn-group-small">
-            <button id="dlRollbackBtn" class="copy-btn dl-btn rollback" onclick="downloadCode('rollbackCode', 'Rollback')" disabled>Download</button>
-            <button id="copyRollbackBtn" class="copy-btn rollback" onclick="copyCode('rollbackCode', this)" disabled>Copy</button>
-        </div>
-    </div>
-    <div class="code-window" style="border-color: #442d30;">
-        <div id="rollbackLines" class="line-numbers" style="color:#6e3636"></div>
-        <div id="rollbackCode" class="code-content" style="color: #ffa198;">-- system_idle --</div>
-    </div>
-    
-    <div class="bottom-actions">
-        <button class="expand-btn" id="manifestBtn" onclick="toggleWrapper('manifestWrapper', 'manifestBtn', 'SYSTEM_MANIFEST')">[ VIEW_SYSTEM_MANIFEST ]</button>
-        <button class="expand-btn" id="dbBtn" style="color: var(--accent-green); border-color: var(--border-color);" onclick="toggleWrapper('dbWrapper', 'dbBtn', 'LOCAL_DATABASE')">[ VIEW_LOCAL_DATABASE ]</button>
-    </div>
-    
-    <div id="manifestWrapper" class="readme-wrapper">
-        <div style="min-height: 0; padding-bottom: 5px; overflow: hidden;">
-            <div class="readme-content manifest-box">
-                <h3 style="margin-top: 0;">⚙️ 1. Idempotent Execution Engine</h3>
-                <ul>
-                    <li><strong>State-Aware Compilation:</strong> Parses current `show run` configurations to evaluate existing states. Only outputs commands needed to reach the target state, completely ignoring parameters that already match.</li>
-                    <li><strong>Smart Range Aggregation:</strong> Automatically compresses sequential ports (e.g., <code>Gi1/0/1, Gi1/0/2, Gi1/0/3</code>) into optimized <code>interface range Gi1/0/1-3</code> blocks to save terminal buffer space.</li>
-                    <li><strong>Automated Rollback Protocol:</strong> Dynamically calculates and generates the exact reverse script required to seamlessly undo applied changes and return interfaces to their pre-execution state.</li>
-                    <li><strong>Surgical Command Stripping:</strong> Intelligently prepends `no` commands (e.g., `no dot1x pae authenticator`) before applying new security protocols to prevent device rejection or ghost configurations.</li>
-                </ul>
-
-                <h3>📡 2. Omni-Parse Input & Drag-and-Drop</h3>
-                <ul>
-                    <li><strong>Standard Parsing:</strong> Accepts standard Cisco interface configuration blocks natively (e.g., <code>interface Gi1/0/1...</code>).</li>
-                    <li><strong>Blind Mode (Raw Ports):</strong> Auto-detects flat lists of ports without config data. Disables global settings to enforce safety, requires configuration via the explicit Advanced Matrix, and prevents arbitrary state bouncing.</li>
-                    <li><strong>Omni-Drop Zone:</strong> Seamlessly drag and drop `.txt` log files or raw text highlights directly into the input box for immediate parsing. Auto-clears cache on reload to prevent accidental execution of old data.</li>
-                </ul>
-
-                <h3>🛡️ 3. Security & Port Protection</h3>
-                <ul>
-                    <li><strong>Trunk Port Hard-Stop:</strong> Automatically detects uplinks/trunks (missing `switchport mode access`) and entirely locks them out of the script generation, preventing catastrophic network loops or outages.</li>
-                    <li><strong>DOT1X & STICKY Pushing:</strong> Instantly formats ports with 802.1X or Port Security MAC Sticky templates while removing conflicting protocols.</li>
-                    <li><strong>REMOVE Protocol:</strong> Systematically strips security to leave the port open. Triggers a mandatory Critical Danger validation modal to enforce IT CAB/Ticket compliance.</li>
-                    <li><strong>Universal RESET:</strong> Wipes existing security and immediately replaces it. During Blind Mode, dynamically limits resets to explicit protocol targets.</li>
-                </ul>
-
-                <h3>🎛️ 4. Multi-Tenant Device HUD & DB</h3>
-                <ul>
-                    <li><strong>Zero-Trust Local Database:</strong> Offline `localStorage` dictionary mapping hostnames to IPs. (Click[ VIEW_LOCAL_DATABASE ] to configure).</li>
-                    <li><strong>Device HUD:</strong> Actively scans the pasted input for prompt hostnames (e.g., `PH-NOC-ACC01#`) and cross-references the local DB to display target IPs directly above the input box.</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    
-    <div id="dbWrapper" class="readme-wrapper">
-        <div style="min-height: 0; padding-bottom: 5px; overflow: hidden;">
-            <div class="db-box">
-                <label style="color: var(--accent-green); margin-bottom: 10px;">> ZERO-TRUST_LOCAL_DB</label>
-                
-                <div class="db-security-note">
-                    <strong>🔒 SECURITY NOTE:</strong> This database is completely offline and Zero-Trust. Your data is saved directly into your browser's local cache (localStorage). It is <strong>never</strong> transmitted to GitHub, any external server, or the public internet. Only you can see this data on this specific computer.
-                </div>
-
-                <p style="font-size: 11.5px; color: var(--text-main); opacity: 0.8; margin-top: 0;">Any new data pasted here is <strong>MERGED</strong> into your existing local database. To remove old switches, click 'Clear Memory' and paste a fresh master list.</p>
-                <textarea id="dbInput" placeholder="-- Formats Accepted --&#10;PH-NOC-ACC0101, 10.20.30.40&#10;PH-NOC-AS0202   10.30.40.50   Access Switch" spellcheck="false" style="border-color: rgba(35, 134, 54, 0.5);"></textarea>
-                <div class="db-controls">
-                    <span class="db-status" id="dbStatus">STATUS: DB_IDLE</span>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="clear-btn" style="padding: 4px 15px;" onclick="clearDB()">Clear Memory</button>
-                        <button class="cyber-btn" style="padding: 4px 15px;" onclick="saveDB()">Merge & Save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div id="removeWarningModal" class="modal-overlay">
+    </div> <div id="removeWarningModal" class="modal-overlay">
         <div class="modal-box">
             <h3>⚠️ CRITICAL SECURITY WARNING</h3>
             <p>You are selecting the <strong>REMOVE</strong> protocol. This will actively strip 802.1X and Sticky MAC configurations from the targeted ports, leaving them completely open to the network.</p>
@@ -736,6 +787,29 @@
     let easterEggActive = false;
     let clipboardConfig = null;
     let wasInBlindMode = false;
+
+    function updateTextScale(forceValue) {
+        const slider = document.getElementById('textScaleSlider');
+        let val = forceValue !== undefined ? forceValue : slider.value;
+        slider.value = val;
+        document.getElementById('textScaleVal').innerText = val + '%';
+        let scaleRatio = val / 100;
+        
+        let scalableContent = document.getElementById('scalableContent');
+        if (scalableContent) scalableContent.style.zoom = scaleRatio;
+        
+        let cm = document.getElementById('customContextMenu');
+        if(cm) cm.style.zoom = scaleRatio;
+        
+        let modalBox = document.querySelector('.modal-box');
+        if(modalBox) modalBox.style.zoom = scaleRatio;
+
+        localStorage.setItem('noccat_ui_scale', val);
+    }
+
+    function resetTextScale() {
+        updateTextScale(100);
+    }
 
     function triggerSmoothPulse() {
         document.body.classList.add('smooth-pulse-active');
@@ -895,6 +969,7 @@
     let hasRawPortsGlobal = false;
 
     window.addEventListener('load', () => {
+
         const savedTheme = localStorage.getItem('noccat_theme');
         if (savedTheme) { document.documentElement.setAttribute('data-theme', savedTheme); updateActiveThemeInMenu(savedTheme); updateFavicon(savedTheme); }
         const savedSrcTz = localStorage.getItem('noccat_tz_src');
@@ -903,6 +978,10 @@
         if (savedTgtTz) document.getElementById('tzSelector').value = savedTgtTz;
         const saved24h = localStorage.getItem('noccat_tz_24h');
         if (saved24h !== null) { is24Hour = saved24h === 'true'; document.getElementById('fmtToggleBtn').innerText = is24Hour ? "[ 24H ]" : "[ 12H ]"; }
+        
+        const savedScale = localStorage.getItem('noccat_ui_scale');
+        if (savedScale) { updateTextScale(savedScale); }
+        
         updateClocks(); setInterval(updateClocks, 1000);
         
         const savedDB = localStorage.getItem('noccat_db');
@@ -932,20 +1011,32 @@
             lastSelectedRowIndex = index;
         }
 
+        let scale = document.getElementById('textScaleSlider').value / 100;
         menu.style.display = 'block'; 
-        menu.style.left = e.pageX + 'px'; 
-        menu.style.top = e.pageY + 'px';
+        menu.style.left = (e.pageX / scale) + 'px'; 
+        menu.style.top = (e.pageY / scale) + 'px';
     });
 
     function parseToDB(text) { const ipRegex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/; text.split('\n').forEach(line => { const match = line.match(ipRegex); if (match) { const host = line.split(/[,\t\s]+/)[0].toLowerCase(); switchDB[host] = match[0]; } }); }
     function generateDBString() { return Object.keys(switchDB).map(host => `${host.toUpperCase()}, ${switchDB[host]}`).join('\n'); }
     function saveDB() { const dbText = document.getElementById('dbInput').value; parseToDB(dbText); const mergedString = generateDBString(); localStorage.setItem('noccat_db', mergedString); document.getElementById('dbInput').value = mergedString; const statusElem = document.getElementById('dbStatus'); statusElem.innerText = `STATUS: MERGED_&_SAVED_${Object.keys(switchDB).length}_HOSTS`; statusElem.style.color = 'var(--neon-green)'; setTimeout(() => { statusElem.style.color = 'var(--accent-green)'; }, 2000); checkDynamicWarnings(); }
-    function clearDB() { if(confirm("Are you sure you want to wipe the Local Browser Database AND all saved preferences?")) { localStorage.removeItem('noccat_db'); localStorage.removeItem('noccat_suppress_remove_warning'); localStorage.removeItem('noccat_tz_src'); localStorage.removeItem('noccat_tz_tgt'); localStorage.removeItem('noccat_tz_24h'); localStorage.removeItem('noccat_theme'); document.documentElement.removeAttribute('data-theme'); updateActiveThemeInMenu('dark'); updateFavicon('dark'); document.getElementById('dbInput').value = ""; switchDB = {}; document.getElementById('dbStatus').innerText = "STATUS: MEMORY_WIPED"; document.getElementById('deviceHud').classList.remove('visible'); } }
+    function clearDB() { if(confirm("Are you sure you want to wipe the Local Browser Database AND all saved preferences?")) { localStorage.removeItem('noccat_db'); localStorage.removeItem('noccat_suppress_remove_warning'); localStorage.removeItem('noccat_tz_src'); localStorage.removeItem('noccat_tz_tgt'); localStorage.removeItem('noccat_tz_24h'); localStorage.removeItem('noccat_theme'); localStorage.removeItem('noccat_ui_scale'); document.documentElement.removeAttribute('data-theme'); updateActiveThemeInMenu('dark'); updateFavicon('dark'); resetTextScale(); document.getElementById('dbInput').value = ""; switchDB = {}; document.getElementById('dbStatus').innerText = "STATUS: MEMORY_WIPED"; document.getElementById('deviceHud').classList.remove('visible'); } }
 
     function toggleReadme() { const wrapper = document.getElementById('readmeWrapper'); const btn = document.getElementById('readmeBtn'); wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; }
     function toggleExpand() { const textarea = document.getElementById('configInput'); const btn = document.getElementById('expandBtn'); textarea.classList.toggle('expanded'); btn.innerText = textarea.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; if (!textarea.classList.contains('expanded') && textarea.value.split('\n').length > 8) { textarea.dataset.manualCollapse = "true"; } else { textarea.dataset.manualCollapse = ""; } }
     function toggleWrapper(wrapperId, btnId, name) { const wrapper = document.getElementById(wrapperId); const btn = document.getElementById(btnId); if (wrapperId === 'manifestWrapper') { document.getElementById('dbWrapper').classList.remove('expanded'); document.getElementById('dbBtn').innerText = `[ VIEW_LOCAL_DATABASE ]`; } else { document.getElementById('manifestWrapper').classList.remove('expanded'); document.getElementById('manifestBtn').innerText = `[ VIEW_SYSTEM_MANIFEST ]`; } wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? `[ CLOSE_${name} ]` : `[ VIEW_${name} ]`; }
-    function toggleAdvOptions() { const wrapper = document.getElementById('advOptionsWrapper'); const btn = document.getElementById('advOptionsBtn'); wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; }
+    
+    function toggleAdvOptions() { 
+        const wrapper = document.getElementById('advOptionsWrapper'); 
+        const btn = document.getElementById('advOptionsBtn'); 
+        const clearBtn = document.getElementById('clearMatrixBtn'); 
+        wrapper.classList.toggle('expanded'); 
+        let isExpanded = wrapper.classList.contains('expanded'); 
+        btn.innerText = isExpanded ? "[ COLLAPSE ]" : "[ EXPAND ]"; 
+        if(clearBtn) { 
+            clearBtn.style.display = (isExpanded && !hasRawPortsGlobal) ? 'block' : 'none'; 
+        } 
+    }
 
     function handleRemoveChange(elem) { 
         if(elem.disabled) return; 
@@ -1004,8 +1095,57 @@
         const execBtn = document.getElementById('executeBtn'); execBtn.disabled = true; execBtn.classList.remove('ready'); execBtn.classList.remove('auto-cast'); execBtn.innerText = "Execute_Run";
         const uiControlsToLock =[ document.querySelector('input[name="securityMode"][value="dot1x"]'), document.querySelector('input[name="securityMode"][value="sticky"]'), document.querySelector('input[name="securityMode"][value="remove"]'), document.querySelector('input[name="securityMode"][value="reset"]'), document.getElementById('stpCheckbox'), document.querySelector('input[name="adminState"][value="up"]'), document.querySelector('input[name="adminState"][value="down"]'), document.querySelector('input[name="adminState"][value="bounce"]') ]; uiControlsToLock.forEach(btn => { if (btn) { btn.disabled = true; btn.closest('label').classList.add('disabled'); } }); 
         document.getElementById('copyPrimaryBtn').disabled = true; document.getElementById('copyRollbackBtn').disabled = true; document.getElementById('dlPrimaryBtn').disabled = true; document.getElementById('dlRollbackBtn').disabled = true; document.getElementById('statusMsg').style.display = 'none'; document.getElementById('warningBox').style.display = 'none'; document.getElementById('deviceHud').classList.remove('visible'); document.getElementById('advancedOptionsContainer').style.display = 'none'; document.getElementById('advOptionsWrapper').classList.remove('expanded'); document.getElementById('advOptionsBtn').innerText = "[ EXPAND ]"; document.getElementById('overrideTableBody').innerHTML = ''; 
+        let clearBtn = document.getElementById('clearMatrixBtn'); if (clearBtn) clearBtn.style.display = 'none';
         const textarea = document.getElementById('configInput'); textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) toggleExpand(); detectedGlobalHostname = "N0CAT_Script"; blindGroups = []; groupIdCounter = 1; clipboardConfig = null; document.getElementById('pasteContextBtn').style.color = '#666'; document.getElementById('pasteContextBtn').style.pointerEvents = 'none';
         wasInBlindMode = false;
+    }
+    
+    function clearStandardMatrix() {
+        if (hasRawPortsGlobal) return;
+        
+        document.querySelectorAll('#overrideTableBody tr').forEach(tr => {
+            let vInput = tr.querySelector('.override-input');
+            let selects = tr.querySelectorAll('.override-select');
+            
+            if(vInput) vInput.value = '';
+            if(selects.length >= 3) {
+                selects[0].value = 'global';
+                selects[0].classList.remove('danger-mode');
+                selects[1].value = 'global';
+                selects[2].value = 'global';
+            }
+        });
+        
+        generateScript();
+    }
+
+    function clearRawMatrix() {
+        if (!hasRawPortsGlobal) return;
+        
+        document.querySelectorAll('#overrideTableBody tr').forEach(tr => {
+            let inputs = tr.querySelectorAll('.override-input');
+            let selects = tr.querySelectorAll('.override-select');
+            
+            inputs.forEach(inp => inp.value = '');
+            
+            if(selects.length >= 3) {
+                selects[0].value = 'leave';
+                selects[0].classList.remove('danger-mode');
+                selects[1].value = 'leave';
+                selects[2].value = 'leave';
+            }
+        });
+        
+        blindGroups.forEach(g => {
+            g.origVlan = '';
+            g.vlan = '';
+            g.sec = 'leave';
+            g.edge = 'leave';
+            g.admin = 'leave';
+        });
+        renderGroupsUI();
+        
+        generateScript();
     }
 
     function copyCode(id, btn) { 
@@ -1673,8 +1813,15 @@
                 </tr>`;
                 rowIndex++;
             });
+            
             overrideTableBody.innerHTML = gridHTML;
             overrideSection.style.display = 'block';
+
+            let clearMatrixBtn = document.getElementById('clearMatrixBtn');
+            if (clearMatrixBtn) {
+                let isExpanded = document.getElementById('advOptionsWrapper').classList.contains('expanded');
+                clearMatrixBtn.style.display = (!hasRawPortsGlobal && isExpanded) ? 'block' : 'none';
+            }
             
             for (let id in currentOverrides) {
                 let el = document.getElementById(id);
@@ -2031,9 +2178,9 @@
                 } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky') {
                     if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec || iface.hasLearnedMac) secChanged = true;
                 } else if (secVal === 'reset') {
-                    if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
+                    secChanged = false;
                 } else if (secVal === 'reset_dot1x' || secVal === 'reset_sticky') {
-                    secChanged = true;
+                    secChanged = false;
                 } else if (secVal === 'remove') {
                     if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
                 }
