@@ -1837,7 +1837,7 @@
                 let curSec = p.isRaw ? "UNKNOWN" : (p.hasStickyMac && p.hasDot1xPae ? "DUAL" : (p.hasStickyMac || p.hasLearnedMac) ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE");
                 let statusDot = p.isRaw ? '<span style="color:#8b949e">● RAW</span>' : (p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>');
                 
-                let origVlanDisplay = p.isRaw ? `<div style="display:inline-flex; align-items:center; gap:4px;"><input type="text" id="ovr_orig_vlan_${safeName}" class="override-input" style="width:35px; padding:0 2px; font-size:10px; height: 18px; text-align:center;" placeholder="Cur" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094;" onchange="generateScript()"><button class="expand-btn" style="padding: 1px 4px; font-size: 9px;" onclick="applyToAllOrigVlan('${safeName}')" title="Apply to all ports">⏬</button></div>` : p.origVlan;
+                let origVlanDisplay = p.isRaw ? `<div style="display:inline-flex; align-items:center; gap:4px;"><input type="text" id="ovr_orig_vlan_${safeName}" class="override-input" style="width:35px; padding:0 2px; font-size:10px; height: 18px; text-align:center;" placeholder="Cur" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094;" onchange="generateScript()"><button class="expand-btn" style="padding: 1px 4px; font-size: 9px;" onclick="applyToAllOrigVlan('${safeName}')" title="Apply to all ports">⏬</button></div>` : p.origVlan;
 
                 let secOptions = p.isRaw 
                     ? `<option value="leave">-- (Leave)</option><option value="dot1x">DOT1X</option><option value="sticky">STICKY MAC</option><option value="remove_sticky">REMOVE STICKY</option><option value="remove_dot1x">REMOVE DOT1X</option><option value="reset_dot1x">RESET DOT1X</option><option value="reset_sticky">RESET STICKY</option><option value="conv_sticky_to_dot1x">CNV:STK>DOT1X</option><option value="conv_dot1x_to_sticky">CNV:DOT1X>STK</option>`
@@ -1857,10 +1857,10 @@
                 gridHTML += `<tr ${dragAttrs}>
                     <td><strong>${p.name}</strong></td>
                     <td style="opacity: 0.8; font-size: 10px; white-space: nowrap;">${statusDot} | V: ${origVlanDisplay} | S: ${curSec}</td>
-                    <td><input type="number" id="ovr_vlan_${safeName}" class="override-input" placeholder="${p.isRaw ? '--' : 'Global'}" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();"></td>
-                    <td><select id="ovr_sec_${safeName}" class="override-select" onchange="handleMatrixSecChange(this)">${secOptions}</select></td>
-                    <td><select id="ovr_edge_${safeName}" class="override-select" onchange="generateScript()">${edgeOptions}</select></td>
-                    <td><select id="ovr_admin_${safeName}" class="override-select" style="width:85px;" onchange="generateScript()">${adminOptions}</select></td>
+                    <td><input type="number" id="ovr_vlan_${safeName}" class="override-input" placeholder="${p.isRaw ? '--' : 'Global'}" min="1" max="4094" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();"></td>
+                    <td><select id="ovr_sec_${safeName}" class="override-select" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" onchange="handleMatrixSecChange(this)">${secOptions}</select></td>
+                    <td><select id="ovr_edge_${safeName}" class="override-select" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" onchange="generateScript()">${edgeOptions}</select></td>
+                    <td><select id="ovr_admin_${safeName}" class="override-select" style="width:85px;" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" onchange="generateScript()">${adminOptions}</select></td>
                     <td style="text-align:center;">${applyAllBtn}</td>
                 </tr>`;
                 rowIndex++;
