@@ -414,7 +414,7 @@
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v11.2 [Auto-Cast & Grouping Update]</span>
+            <span class="version-tag">// Configuration Automation Tool // v11.3 [Exec Update]</span>
         </h2>
         
         <div class="tz-widget">
@@ -511,7 +511,7 @@
                 </div>
             </div>
             <div style="position: relative;">
-                <textarea id="configInput" placeholder="Paste config logs or a raw list of ports here..." spellcheck="false" oninput="checkDynamicWarnings()"></textarea>
+                <textarea id="configInput" placeholder="Paste config logs or a raw list of ports here..." spellcheck="false" oninput="checkDynamicWarnings(); generateScript();"></textarea>
                 <div class="drag-overlay-text">DROP CONFIG OR PORT LIST</div>
             </div>
         </div>
@@ -534,7 +534,7 @@
                     <div style="display: flex; align-items: center; gap: 6px;">
                         <div class="checkbox-group" style="width: auto;">
                             <label style="padding: 2px 6px; font-size: 9px; letter-spacing: 0.5px;">
-                                <input type="checkbox" id="suppressCheckbox" onchange="checkDynamicWarnings()">
+                                <input type="checkbox" id="suppressCheckbox" onchange="checkDynamicWarnings(); generateScript();">
                                 <span>OPEN_PORT</span>
                             </label>
                         </div>
@@ -542,11 +542,11 @@
                     </div>
                 </div>
                 <div class="radio-group">
-                    <label><input type="radio" name="securityMode" value="leave" checked onchange="checkDynamicWarnings()"><span>--</span></label>
-                    <label class="disabled"><input type="radio" name="securityMode" value="dot1x" disabled onchange="checkDynamicWarnings()"><span>DOT1X</span></label>
-                    <label class="disabled"><input type="radio" name="securityMode" value="sticky" disabled onchange="checkDynamicWarnings()"><span>STICKY</span></label>
+                    <label><input type="radio" name="securityMode" value="leave" checked onchange="checkDynamicWarnings(); generateScript();"><span>--</span></label>
+                    <label class="disabled"><input type="radio" name="securityMode" value="dot1x" disabled onchange="checkDynamicWarnings(); generateScript();"><span>DOT1X</span></label>
+                    <label class="disabled"><input type="radio" name="securityMode" value="sticky" disabled onchange="checkDynamicWarnings(); generateScript();"><span>STICKY</span></label>
                     <label class="disabled"><input type="radio" name="securityMode" value="remove" onchange="handleRemoveChange(this)" disabled><span>REMOVE</span></label>
-                    <label class="disabled"><input type="radio" name="securityMode" value="reset" disabled onchange="checkDynamicWarnings()"><span>RESET</span></label>
+                    <label class="disabled"><input type="radio" name="securityMode" value="reset" disabled onchange="checkDynamicWarnings(); generateScript();"><span>RESET</span></label>
                 </div>
             </div>
 
@@ -640,7 +640,7 @@
 
         <div class="action-row">
             <button class="clear-btn" onclick="clearAll()">Clear All Data</button>
-            <button id="executeBtn" class="cyber-btn" onclick="executeWithSound()" disabled>Execute_Run</button>
+            <button id="executeBtn" class="cyber-btn" onclick="executeWithSound()" title="Hold to toggle AUTO_EXECUTE mode" disabled>Execute_Run</button>
         </div>
 
         <div id="warningBox" class="warning-box"></div>
@@ -787,6 +787,10 @@
     let easterEggActive = false;
     let clipboardConfig = null;
     let wasInBlindMode = false;
+    
+    let isAutoExecuteStandard = false;
+    let pressTimer;
+    let longPressTriggered = false;
 
     function updateTextScale(forceValue) {
         const slider = document.getElementById('textScaleSlider');
@@ -872,11 +876,11 @@
                     engine.particles.forEach(p => { p.vx *= 10; p.vy *= 10; });
                     setTimeout(() => {
                         engine.particles.forEach(p => { p.vx *= 0.1; p.vy *= 0.1; });
-                        generateScript(); 
+                        coreGenerateScript(false); 
                         easterEggActive = false;
                     }, 1500);
                 } else {
-                    setTimeout(() => { generateScript(); easterEggActive = false; }, 1500);
+                    setTimeout(() => { coreGenerateScript(false); easterEggActive = false; }, 1500);
                 }
                 inputBuffer = [];
             }
@@ -993,7 +997,41 @@
         const configTextarea = document.getElementById('configInput');
         configTextarea.addEventListener('dragover', (e) => { e.preventDefault(); configTextarea.classList.add('drag-active'); });
         configTextarea.addEventListener('dragleave', () => configTextarea.classList.remove('drag-active'));
-        configTextarea.addEventListener('drop', (e) => { e.preventDefault(); configTextarea.classList.remove('drag-active'); if(e.dataTransfer.files[0]) { const reader = new FileReader(); reader.onload = (evt) => { configTextarea.value = evt.target.result; checkDynamicWarnings(); }; reader.readAsText(e.dataTransfer.files[0]); } else { const text = e.dataTransfer.getData('text/plain'); if(text) { configTextarea.value = text; checkDynamicWarnings(); } } });
+        configTextarea.addEventListener('drop', (e) => { e.preventDefault(); configTextarea.classList.remove('drag-active'); if(e.dataTransfer.files[0]) { const reader = new FileReader(); reader.onload = (evt) => { configTextarea.value = evt.target.result; checkDynamicWarnings(); generateScript(); }; reader.readAsText(e.dataTransfer.files[0]); } else { const text = e.dataTransfer.getData('text/plain'); if(text) { configTextarea.value = text; checkDynamicWarnings(); generateScript(); } } });
+        
+        const execBtn = document.getElementById('executeBtn');
+    
+        function handleLongPressStart(e) {
+            if (execBtn.disabled || hasRawPortsGlobal) return;
+            longPressTriggered = false;
+            pressTimer = window.setTimeout(() => {
+                longPressTriggered = true;
+                isAutoExecuteStandard = !isAutoExecuteStandard;
+                if (isAutoExecuteStandard) {
+                    execBtn.classList.add('auto-cast');
+                    execBtn.classList.remove('ready');
+                    execBtn.innerText = "AUTO_EXECUTE [ON]";
+                    playCyberBeep();
+                    coreGenerateScript(false);
+                } else {
+                    execBtn.classList.remove('auto-cast');
+                    execBtn.classList.add('ready');
+                    execBtn.innerText = "Execute_Run";
+                    playCyberBeep();
+                }
+            }, 800);
+        }
+        
+        function handleLongPressEnd() {
+            clearTimeout(pressTimer);
+        }
+
+        execBtn.addEventListener('mousedown', handleLongPressStart);
+        execBtn.addEventListener('mouseup', handleLongPressEnd);
+        execBtn.addEventListener('mouseleave', handleLongPressEnd);
+        execBtn.addEventListener('touchstart', handleLongPressStart, {passive: true});
+        execBtn.addEventListener('touchend', handleLongPressEnd);
+        execBtn.addEventListener('touchcancel', handleLongPressEnd);
     });
 
     document.addEventListener('click', function(e) { document.getElementById('customContextMenu').style.display = 'none'; });
@@ -1019,7 +1057,7 @@
 
     function parseToDB(text) { const ipRegex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/; text.split('\n').forEach(line => { const match = line.match(ipRegex); if (match) { const host = line.split(/[,\t\s]+/)[0].toLowerCase(); switchDB[host] = match[0]; } }); }
     function generateDBString() { return Object.keys(switchDB).map(host => `${host.toUpperCase()}, ${switchDB[host]}`).join('\n'); }
-    function saveDB() { const dbText = document.getElementById('dbInput').value; parseToDB(dbText); const mergedString = generateDBString(); localStorage.setItem('noccat_db', mergedString); document.getElementById('dbInput').value = mergedString; const statusElem = document.getElementById('dbStatus'); statusElem.innerText = `STATUS: MERGED_&_SAVED_${Object.keys(switchDB).length}_HOSTS`; statusElem.style.color = 'var(--neon-green)'; setTimeout(() => { statusElem.style.color = 'var(--accent-green)'; }, 2000); checkDynamicWarnings(); }
+    function saveDB() { const dbText = document.getElementById('dbInput').value; parseToDB(dbText); const mergedString = generateDBString(); localStorage.setItem('noccat_db', mergedString); document.getElementById('dbInput').value = mergedString; const statusElem = document.getElementById('dbStatus'); statusElem.innerText = `STATUS: MERGED_&_SAVED_${Object.keys(switchDB).length}_HOSTS`; statusElem.style.color = 'var(--neon-green)'; setTimeout(() => { statusElem.style.color = 'var(--accent-green)'; }, 2000); checkDynamicWarnings(); generateScript(); }
     function clearDB() { if(confirm("Are you sure you want to wipe the Local Browser Database AND all saved preferences?")) { localStorage.removeItem('noccat_db'); localStorage.removeItem('noccat_suppress_remove_warning'); localStorage.removeItem('noccat_tz_src'); localStorage.removeItem('noccat_tz_tgt'); localStorage.removeItem('noccat_tz_24h'); localStorage.removeItem('noccat_theme'); localStorage.removeItem('noccat_ui_scale'); document.documentElement.removeAttribute('data-theme'); updateActiveThemeInMenu('dark'); updateFavicon('dark'); resetTextScale(); document.getElementById('dbInput').value = ""; switchDB = {}; document.getElementById('dbStatus').innerText = "STATUS: MEMORY_WIPED"; document.getElementById('deviceHud').classList.remove('visible'); } }
 
     function toggleReadme() { const wrapper = document.getElementById('readmeWrapper'); const btn = document.getElementById('readmeBtn'); wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; }
@@ -1098,6 +1136,7 @@
         let clearBtn = document.getElementById('clearMatrixBtn'); if (clearBtn) clearBtn.style.display = 'none';
         const textarea = document.getElementById('configInput'); textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) toggleExpand(); detectedGlobalHostname = "N0CAT_Script"; blindGroups = []; groupIdCounter = 1; clipboardConfig = null; document.getElementById('pasteContextBtn').style.color = '#666'; document.getElementById('pasteContextBtn').style.pointerEvents = 'none';
         wasInBlindMode = false;
+        isAutoExecuteStandard = false;
     }
     
     function clearStandardMatrix() {
@@ -1150,7 +1189,7 @@
 
     function copyCode(id, btn) { 
         const text = document.getElementById(id).innerText; 
-        if(text.includes("-- system_idle --") || text.includes("NO_CHANGES_REQUIRED")) return; 
+        if(text.includes("-- system_idle --") || text.includes("NO_CHANGES_REQUIRED") || text.includes("pending execution")) return; 
         
         let lines = text.split('\n').filter(l => !l.startsWith('! SAFETY LOCK:') && !l.startsWith('! NOTE:') && !l.startsWith('! WARNING:'));
         
@@ -1160,9 +1199,15 @@
         setTimeout(() => btn.innerText = originalText, 1000); 
     }
     
-    function downloadCode(id, suffix) { const text = document.getElementById(id).innerText; if(text.includes("-- system_idle --") || text.includes("NO_CHANGES_REQUIRED")) return; const blob = new Blob([text], { type: "text/plain" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `${detectedGlobalHostname}_${suffix}.txt`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+    function downloadCode(id, suffix) { const text = document.getElementById(id).innerText; if(text.includes("-- system_idle --") || text.includes("NO_CHANGES_REQUIRED") || text.includes("pending execution")) return; const blob = new Blob([text], { type: "text/plain" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `${detectedGlobalHostname}_${suffix}.txt`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
     function playCyberBeep() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(880, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.1); gain.gain.setValueAtTime(0.05, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1); osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.1); } catch(e) {} }
-    function executeWithSound() { playCyberBeep(); generateScript(); }
+    
+    function executeWithSound() { 
+        if (longPressTriggered) return;
+        playCyberBeep(); 
+        coreGenerateScript(false); 
+    }
+    
     function updateCodeDisplay(id, linesId, content) { const codeElem = document.getElementById(id); const linesElem = document.getElementById(linesId); codeElem.innerText = content; const lineCount = content.split('\n').length; let lineNumbers = ""; for (let i = 1; i <= lineCount; i++) lineNumbers += i + "\n"; linesElem.innerText = lineNumbers; }
 
     function copySelectedConfig() {
@@ -1472,6 +1517,7 @@
         }
         blindGroups.push({ id: groupIdCounter++, name: defaultName, ports: [], origVlan: '', vlan: '', sec: 'leave', edge: 'leave', admin: 'leave' });
         checkDynamicWarnings();
+        generateScript();
     }
     
     function deleteGroup(groupId) {
@@ -1636,7 +1682,11 @@
                     wasInBlindMode = true;
                 }
             } else {
-                execBtn.classList.remove('auto-cast'); execBtn.classList.add('ready'); execBtn.innerText = "Execute_Run";
+                if (isAutoExecuteStandard) {
+                    execBtn.classList.add('auto-cast'); execBtn.classList.remove('ready'); execBtn.innerText = "AUTO_EXECUTE [ON]";
+                } else {
+                    execBtn.classList.remove('auto-cast'); execBtn.classList.add('ready'); execBtn.innerText = "Execute_Run";
+                }
                 if (wasInBlindMode) {
                     wasInBlindMode = false;
                 }
@@ -1759,7 +1809,8 @@
             if (portsWithFullEdge === totalParsedPorts) { edgeCheckbox.disabled = true; edgeCheckbox.closest('label').classList.add('disabled'); edgeCheckbox.checked = false; } else { edgeCheckbox.disabled = false; edgeCheckbox.closest('label').classList.remove('disabled'); }
             if (portsWithNoShut === totalParsedPorts) { upRadio.disabled = true; upRadio.closest('label').classList.add('disabled'); if (upRadio.checked) leaveAdminRadio.checked = true; } else { upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled'); }
             if (portsWithShutdown === totalParsedPorts) { downRadio.disabled = true; downRadio.closest('label').classList.add('disabled'); if (downRadio.checked) leaveAdminRadio.checked = true; } else { downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled'); }
-            if (portsWithShutdown === totalParsedPorts || isSecurityModifying) { bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled'); if (bounceRadio.checked) leaveAdminRadio.checked = true; } else { bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled'); }
+            
+            if (portsWithShutdown === totalParsedPorts) { bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled'); if (bounceRadio.checked) leaveAdminRadio.checked = true; } else { bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled'); }
         }
         
         if (validAccessPortsForGrid.length > 0) {
@@ -1882,6 +1933,26 @@
     }
 
     function generateScript() {
+        if (hasRawPortsGlobal || isAutoExecuteStandard) {
+            coreGenerateScript(false);
+        } else {
+            let hasChanges = coreGenerateScript(true);
+            if (hasChanges) {
+                updateCodeDisplay('primaryCode', 'primaryLines', "-- pending execution (click Execute_Run) --");
+                updateCodeDisplay('rollbackCode', 'rollbackLines', "-- pending execution (click Execute_Run) --");
+                document.getElementById('statusMsg').style.display = 'flex';
+                document.getElementById('statusMsg').innerHTML = `<span>STATUS: CHANGES PENDING...</span><span></span>`;
+                document.getElementById('copyPrimaryBtn').disabled = true; 
+                document.getElementById('copyRollbackBtn').disabled = true; 
+                document.getElementById('dlPrimaryBtn').disabled = true; 
+                document.getElementById('dlRollbackBtn').disabled = true;
+            } else {
+                coreGenerateScript(false);
+            }
+        }
+    }
+
+    function coreGenerateScript(isDryRun = false) {
         let configText = document.getElementById('configInput').value;
         configText = configText.replace(/\r\n/g, '\n');
         
@@ -1946,10 +2017,12 @@
         
         const interfacesData = Object.values(interfacesDataMap);
         if (interfacesData.length === 0) {
+            if (isDryRun) return false;
             updateCodeDisplay('primaryCode', 'primaryLines', "-- system_idle --");
             updateCodeDisplay('rollbackCode', 'rollbackLines', "-- system_idle --");
             document.getElementById('copyPrimaryBtn').disabled = true; document.getElementById('copyRollbackBtn').disabled = true; document.getElementById('dlPrimaryBtn').disabled = true; document.getElementById('dlRollbackBtn').disabled = true;
-            document.getElementById('statusMsg').innerHTML = `STATUS: 0 ELIGIBLE PORTS_PARSED`; return;
+            document.getElementById('statusMsg').style.display = 'flex';
+            document.getElementById('statusMsg').innerHTML = `<span>STATUS: 0 ELIGIBLE PORTS_PARSED</span><span></span>`; return;
         }
         
         const chunkSize = slowPaste ? 2 : 5;
@@ -2083,17 +2156,18 @@
             cmds.push(...secRemoveCmds);
 
             let alreadyDown = iface.isShutdown && !iface.isRaw;
+            let needsBounceHere = forceBounce;
 
-            if (forceDown || forceBounce) {
-                if ((!alreadyDown || forceBounce) && !cmds.includes("shut")) {
+            if (forceDown || needsBounceHere) {
+                if ((!alreadyDown || needsBounceHere) && !cmds.includes("shut")) {
                     cmds.push("shut");
                 }
             }
 
             cmds.push(...secApplyCmds);
 
-            if (forceUp || forceBounce) {
-                if ((alreadyDown || forceBounce || cmds.includes("shut")) && cmds[cmds.length - 1] !== "no shut") {
+            if (forceUp || needsBounceHere) {
+                if ((alreadyDown || needsBounceHere || cmds.includes("shut")) && cmds[cmds.length - 1] !== "no shut") {
                     cmds.push("no shut");
                 }
             }
@@ -2141,7 +2215,6 @@
                 adminVal = (oAdmin && oAdmin.value !== 'global' && oAdmin.value !== 'leave') ? oAdmin.value : adminState;
             }
 
-            // Immediately skip generating rollback scripts for any explicitly reset ports
             if (secVal.startsWith('reset')) return null;
 
             let cmds = [];
@@ -2149,7 +2222,10 @@
             let forceEdgeApply = edgeVal === 'apply'; let forceEdgeRemove = edgeVal === 'remove';
             let stpChanged = (forceEdgeApply && (!iface.hasPortfast || !iface.hasBpduguard)) || (forceEdgeRemove && (iface.hasPortfast || iface.hasBpduguard));
             
-            let forceUp = adminVal === 'up'; let forceDown = adminVal === 'down'; let forceBounce = adminVal === 'bounce';
+            let forceUp = adminVal === 'up'; 
+            let forceDown = adminVal === 'down'; 
+            let forceBounce = adminVal === 'bounce';
+            
             let stateChanged = forceBounce || (forceUp && (iface.isShutdown || iface.isRaw)) || (forceDown && (!iface.isShutdown || iface.isRaw));
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
@@ -2205,8 +2281,6 @@
                          secRemoveCmds.push("no dot1x pae authenticator", "no authentication port-control auto");
                      } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky') {
                          secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
-                     } else if (secVal === 'remove') {
-                         // Rollbacks on non-raw standard remove will naturally fall back to below, RAW doesn't know original state
                      }
                 } else {
                      if (secVal === 'dot1x' || secVal === 'conv_sticky_to_dot1x') {
@@ -2239,7 +2313,7 @@
 
             let origIsShut = iface.isRaw ? false : iface.isShutdown;
             let primaryLeftItShut = iface.isRaw ? false : (forceDown ? true : ((forceUp || forceBounce) ? false : origIsShut));
-            let needsBounceHere = forceBounce || secChanged;
+            let needsBounceHere = forceBounce;
 
             if (!primaryLeftItShut && (needsBounceHere || origIsShut)) {
                 if (!cmds.includes("shut")) cmds.push("shut");
@@ -2339,11 +2413,17 @@
         let generatedPrimary = build(getPrimary);
         let generatedRollback = build(getRollback);
         
+        let hasPrimaryChanges = !generatedPrimary.includes("NO_CHANGES_REQUIRED");
+        
+        if (isDryRun) return hasPrimaryChanges;
+
         updateCodeDisplay('primaryCode', 'primaryLines', generatedPrimary);
         updateCodeDisplay('rollbackCode', 'rollbackLines', generatedRollback);
         
-        let hasPrimaryChanges = !generatedPrimary.includes("NO_CHANGES_REQUIRED");
-        document.getElementById('copyPrimaryBtn').disabled = !hasPrimaryChanges; document.getElementById('copyRollbackBtn').disabled = !hasPrimaryChanges; document.getElementById('dlPrimaryBtn').disabled = !hasPrimaryChanges; document.getElementById('dlRollbackBtn').disabled = !hasPrimaryChanges;
+        document.getElementById('copyPrimaryBtn').disabled = !hasPrimaryChanges; 
+        document.getElementById('copyRollbackBtn').disabled = !hasPrimaryChanges; 
+        document.getElementById('dlPrimaryBtn').disabled = !hasPrimaryChanges; 
+        document.getElementById('dlRollbackBtn').disabled = !hasPrimaryChanges;
 
         document.getElementById('statusMsg').style.display = 'flex';
         if (hasPrimaryChanges) { 
