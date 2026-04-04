@@ -230,7 +230,7 @@
         .port-tag .remove-btn:hover { color: #ff7b72; text-shadow: 0 0 5px #ff7b72; }
 
         /* --- PER-PORT OVERRIDE TABLE CSS --- */
-        .override-table-wrapper { max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 4px; scrollbar-width: thin; scrollbar-color: var(--border-color) var(--code-bg); margin-top: 5px; }
+        .override-table-wrapper { max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 4px; scrollbar-width: thin; scrollbar-color: var(--border-color) var(--code-bg); margin-top: 5px; user-select: none; }
         .override-table-wrapper::-webkit-scrollbar { width: 10px; } .override-table-wrapper::-webkit-scrollbar-track { background: var(--code-bg); } .override-table-wrapper::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
         .override-table { width: 100%; border-collapse: collapse; font-size: 11px; font-family: "Courier New", Courier, monospace; }
         
@@ -242,7 +242,7 @@
         .override-table tr:hover td { background: rgba(88, 166, 255, 0.1); }
         .override-table tr.drag-row-over td { border-top: 2px solid var(--neon-green) !important; }
         
-        .override-table th:nth-child(1) { width: 15%; } .override-table th:nth-child(2) { width: 22%; } .override-table th:nth-child(3) { width: 13%; } .override-table th:nth-child(4) { width: 20%; } .override-table th:nth-child(5) { width: 13%; } .override-table th:nth-child(6) { width: 12%; } .override-table th:nth-child(7) { width: 5%; text-align: center; }
+        .override-table th:nth-child(1) { width: 18%; } .override-table th:nth-child(2) { width: 25%; } .override-table th:nth-child(3) { width: 15%; } .override-table th:nth-child(4) { width: 20%; } .override-table th:nth-child(5) { width: 12%; } .override-table th:nth-child(6) { width: 10%; }
 
         [data-theme="fab-neko"] .override-table th { background: rgba(26, 21, 37, 0.95); color: var(--accent-blue); border-right-color: rgba(11, 203, 212, 0.15); } 
         [data-theme="fab-neko"] .override-table td { background: rgba(39, 32, 54, 0.6); border-bottom: 1px solid #312540; border-right: 1px solid rgba(11, 203, 212, 0.15); } 
@@ -376,10 +376,11 @@
 <div class="cat-ear-icon">🎧</div>
 
 <div id="customContextMenu" class="custom-context-menu">
-    <div onclick="groupSelectedPorts()">> Group Selected Ports</div>
-    <div style="height: 1px; background: var(--border-color); margin: 4px 0; cursor: default;"></div>
+    <div id="ctxGroupPorts" onclick="groupSelectedPorts()">> Group Selected Ports</div>
+    <div id="ctxGroupPortsSep" style="height: 1px; background: var(--border-color); margin: 4px 0; cursor: default;"></div>
     <div onclick="copySelectedConfig()">> Copy Config (Ctrl+C)</div>
     <div onclick="pasteSelectedConfig()" id="pasteContextBtn" style="color: #666; pointer-events: none;">> Paste Config (Ctrl+V)</div>
+    <div onclick="applySelectedToAll()">> Apply Config to All Ports</div>
     <div style="height: 1px; background: var(--border-color); margin: 4px 0; cursor: default;"></div>
     <div onclick="selectAllPorts()">> Select All</div>
     <div onclick="unselectAllPorts()">> Unselect All</div>
@@ -387,7 +388,7 @@
     <div onclick="sortPorts('desc')">> Sort Descending</div>
     <div style="height: 1px; background: var(--border-color); margin: 4px 0; cursor: default;"></div>
     <div onclick="clearSelectedConfig()">> Clear Selected Config</div>
-    <div onclick="deleteSelectedPorts()" style="color: var(--accent-red);">> Delete Ports</div>
+    <div id="ctxDeletePorts" onclick="deleteSelectedPorts()" style="color: var(--accent-red);">> Delete Ports</div>
 </div>
 
 <div class="container">
@@ -414,7 +415,7 @@
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v11.3 [Exec Update]</span>
+            <span class="version-tag">// Configuration Automation Tool // v11.5 [Exec Update]</span>
         </h2>
         
         <div class="tz-widget">
@@ -627,7 +628,6 @@
                                     <th>OVR: SECURITY</th>
                                     <th>OVR: EDGE</th>
                                     <th>OVR: ADMIN</th>
-                                    <th style="text-align: center;">ALL</th>
                                 </tr>
                             </thead>
                             <tbody id="overrideTableBody">
@@ -841,9 +841,9 @@
     }
 
     document.addEventListener('keydown', (e) => {
-        if (hasRawPortsGlobal && (e.ctrlKey || e.metaKey)) {
+        if (e.ctrlKey || e.metaKey) {
             let activeTag = document.activeElement ? document.activeElement.tagName : '';
-            if (activeTag !== 'INPUT' && activeTag !== 'TEXTAREA') {
+            if (activeTag !== 'INPUT' && activeTag !== 'TEXTAREA' && activeTag !== 'SELECT') {
                 if (e.key.toLowerCase() === 'c') {
                     if (document.querySelectorAll('.selected-row').length > 0) {
                         e.preventDefault();
@@ -1140,6 +1140,8 @@
     let blindGroups = []; 
     let groupIdCounter = 1;
     let hasRawPortsGlobal = false;
+    let isMouseSelecting = false;
+    let mouseSelectMode = true;
 
     window.addEventListener('load', () => {
 
@@ -1201,12 +1203,64 @@
         execBtn.addEventListener('touchstart', handleLongPressStart, {passive: true});
         execBtn.addEventListener('touchend', handleLongPressEnd);
         execBtn.addEventListener('touchcancel', handleLongPressEnd);
+        
+        // --- DELEGATED DRAG-TO-SELECT LOGIC FOR MATRIX TABLE ---
+        document.getElementById('overrideTableBody').addEventListener('mousedown', function(e) {
+            if (e.button !== 0) return; // Only left click
+            if (['INPUT', 'SELECT', 'OPTION', 'BUTTON'].includes(e.target.tagName)) return;
+            let tr = e.target.closest('tr');
+            if (!tr) return;
+            
+            isMouseSelecting = true;
+            let index = Array.from(tr.parentNode.children).indexOf(tr);
+
+            if (e.shiftKey && lastSelectedRowIndex !== -1) {
+                let rows = Array.from(document.querySelectorAll('#overrideTableBody tr'));
+                let start = Math.min(lastSelectedRowIndex, index);
+                let end = Math.max(lastSelectedRowIndex, index);
+                
+                let isSelecting = rows[lastSelectedRowIndex].classList.contains('selected-row');
+                
+                for (let i = start; i <= end; i++) {
+                    if (isSelecting) rows[i].classList.add('selected-row');
+                    else rows[i].classList.remove('selected-row');
+                }
+                if (window.getSelection) { window.getSelection().removeAllRanges(); }
+            } else {
+                mouseSelectMode = !tr.classList.contains('selected-row');
+                if (mouseSelectMode) tr.classList.add('selected-row');
+                else tr.classList.remove('selected-row');
+            }
+            
+            lastSelectedRowIndex = index;
+            
+            // Prevent default to enable clean dragging for standard mode
+            // Allow default in Raw Mode if dragging to reorder
+            if (!(hasRawPortsGlobal && tr.hasAttribute('draggable'))) {
+                e.preventDefault();
+            }
+        });
+
+        document.getElementById('overrideTableBody').addEventListener('mouseover', function(e) {
+            if (!isMouseSelecting) return;
+            let tr = e.target.closest('tr');
+            if (!tr) return;
+            if (['INPUT', 'SELECT', 'OPTION', 'BUTTON'].includes(e.target.tagName)) return;
+            
+            if (mouseSelectMode) tr.classList.add('selected-row');
+            else tr.classList.remove('selected-row');
+            
+            lastSelectedRowIndex = Array.from(tr.parentNode.children).indexOf(tr);
+        });
+
+        document.addEventListener('mouseup', function() {
+            isMouseSelecting = false;
+        });
     });
 
     document.addEventListener('click', function(e) { document.getElementById('customContextMenu').style.display = 'none'; });
     
     document.getElementById('overrideTableBody').addEventListener('contextmenu', function(e) {
-        if (!hasRawPortsGlobal) return;
         e.preventDefault(); 
         let menu = document.getElementById('customContextMenu'); 
         
@@ -1217,6 +1271,10 @@
             let index = Array.from(tr.parentNode.children).indexOf(tr);
             lastSelectedRowIndex = index;
         }
+
+        document.getElementById('ctxGroupPorts').style.display = hasRawPortsGlobal ? 'block' : 'none';
+        document.getElementById('ctxGroupPortsSep').style.display = hasRawPortsGlobal ? 'block' : 'none';
+        document.getElementById('ctxDeletePorts').style.display = hasRawPortsGlobal ? 'block' : 'none';
 
         let scale = document.getElementById('textScaleSlider').value / 100;
         menu.style.display = 'block'; 
@@ -1450,6 +1508,51 @@
             generateScript();
         }
     }
+
+    function applySelectedToAll() {
+        if (!clipboardConfig) {
+            copySelectedConfig();
+        }
+        
+        let selectedRows = document.querySelectorAll('.selected-row');
+        if (selectedRows.length === 0) return;
+        
+        let vlanVal = clipboardConfig.vlan;
+        let secVal = clipboardConfig.sec;
+        let edgeVal = clipboardConfig.edge;
+        let adminVal = clipboardConfig.admin;
+
+        let needsWarning = false;
+
+        document.querySelectorAll('#overrideTableBody tr').forEach(tr => {
+            let vInput = tr.querySelector('td:nth-child(3) input[type="number"]');
+            let sSelect = tr.querySelector('td:nth-child(4) select');
+            let eSelect = tr.querySelector('td:nth-child(5) select');
+            let aSelect = tr.querySelector('td:nth-child(6) select');
+
+            if (vInput) vInput.value = vlanVal;
+            if (sSelect) {
+                sSelect.value = secVal;
+                if(secVal.startsWith('remove')) { sSelect.classList.add('danger-mode'); needsWarning = true; } 
+                else { sSelect.classList.remove('danger-mode'); }
+            }
+            if (eSelect) eSelect.value = edgeVal;
+            if (aSelect) aSelect.value = adminVal;
+            
+            let originalBg = tr.style.backgroundColor;
+            tr.style.backgroundColor = 'rgba(57, 255, 20, 0.3)';
+            setTimeout(() => tr.style.backgroundColor = originalBg, 300);
+        });
+
+        document.getElementById('customContextMenu').style.display = 'none';
+
+        if (needsWarning && localStorage.getItem('noccat_suppress_remove_warning') !== 'true') {
+            document.getElementById('dontShowAgainCheckbox').checked = false; 
+            document.getElementById('removeWarningModal').classList.add('visible');
+        } else {
+            generateScript();
+        }
+    }
     
     function selectAllPorts() {
         document.querySelectorAll('#overrideTableBody tr').forEach(r => r.classList.add('selected-row'));
@@ -1514,30 +1617,6 @@
             if (oInput) oInput.value = vlanVal;
         });
         generateScript();
-    }
-
-    function applyToAllMatrix(sourceSafeName) {
-        let vlanVal = document.getElementById('ovr_vlan_' + sourceSafeName).value;
-        let secVal = document.getElementById('ovr_sec_' + sourceSafeName).value;
-        let edgeVal = document.getElementById('ovr_edge_' + sourceSafeName).value;
-        let adminVal = document.getElementById('ovr_admin_' + sourceSafeName).value;
-        let needsWarning = false;
-
-        document.querySelectorAll('#overrideTableBody tr').forEach(tr => {
-            let vInput = tr.querySelector('.override-input');
-            let selects = tr.querySelectorAll('.override-select');
-            
-            if(vInput) vInput.value = vlanVal;
-            if(selects.length >= 3) {
-                selects[0].value = secVal;
-                if(secVal.startsWith('remove')) { selects[0].classList.add('danger-mode'); needsWarning = true; } else { selects[0].classList.remove('danger-mode'); }
-                selects[1].value = edgeVal; selects[2].value = adminVal;
-            }
-        });
-
-        if (needsWarning && localStorage.getItem('noccat_suppress_remove_warning') !== 'true') {
-            document.getElementById('dontShowAgainCheckbox').checked = false; document.getElementById('removeWarningModal').classList.add('visible');
-        } else { generateScript(); }
     }
 
     function unselectAllPorts() {
@@ -1697,30 +1776,6 @@
     function updateGroupConfig(groupId, key, val) {
         let group = blindGroups.find(g => g.id === groupId);
         if (group) group[key] = val;
-    }
-    
-    function toggleRowSelection(tr, ev, index) {
-        if (!hasRawPortsGlobal) return;
-        
-        if (ev && ev.shiftKey && lastSelectedRowIndex !== -1) {
-            let rows = Array.from(document.querySelectorAll('#overrideTableBody tr'));
-            let start = Math.min(lastSelectedRowIndex, index);
-            let end = Math.max(lastSelectedRowIndex, index);
-            
-            let isSelecting = rows[lastSelectedRowIndex].classList.contains('selected-row');
-            
-            for (let i = start; i <= end; i++) {
-                if (isSelecting) {
-                    rows[i].classList.add('selected-row');
-                } else {
-                    rows[i].classList.remove('selected-row');
-                }
-            }
-            if (window.getSelection) { window.getSelection().removeAllRanges(); }
-        } else {
-            tr.classList.toggle('selected-row');
-        }
-        lastSelectedRowIndex = index;
     }
     
     function groupSelectedPorts() {
@@ -2020,8 +2075,7 @@
                     ? `<option value="leave">-- (Leave)</option><option value="up">UP</option><option value="down">DOWN</option><option value="bounce">BOUNCE</option>`
                     : `<option value="global">Global</option><option value="leave">-- (Leave)</option><option value="up">UP</option><option value="down">DOWN</option><option value="bounce">BNC</option>`;
 
-                let dragAttrs = hasRawPortsGlobal ? `draggable="true" ondragstart="dragPort(event, '${p.name}', this)" ondragover="allowRowDrop(event)" ondragleave="dragRowLeave(event)" ondrop="dropOnRow(event, '${p.name}')" onclick="toggleRowSelection(this, event, ${rowIndex})" data-port="${p.name}"` : '';
-                let applyAllBtn = hasRawPortsGlobal ? '' : `<button class="expand-btn" style="padding: 4px 8px; font-size: 12px;" onclick="applyToAllMatrix('${safeName}')" title="Apply to all ports">⏬</button>`;
+                let dragAttrs = hasRawPortsGlobal ? `draggable="true" ondragstart="dragPort(event, '${p.name}', this)" ondragover="allowRowDrop(event)" ondragleave="dragRowLeave(event)" ondrop="dropOnRow(event, '${p.name}')" data-port="${p.name}"` : `data-port="${p.name}"`;
 
                 gridHTML += `<tr ${dragAttrs}>
                     <td><strong>${p.name}</strong></td>
@@ -2030,7 +2084,6 @@
                     <td><select id="ovr_sec_${safeName}" class="override-select" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" onchange="handleMatrixSecChange(this)">${secOptions}</select></td>
                     <td><select id="ovr_edge_${safeName}" class="override-select" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" onchange="generateScript()">${edgeOptions}</select></td>
                     <td><select id="ovr_admin_${safeName}" class="override-select" style="width:85px;" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" onchange="generateScript()">${adminOptions}</select></td>
-                    <td style="text-align:center;">${applyAllBtn}</td>
                 </tr>`;
                 rowIndex++;
             });
@@ -2111,13 +2164,18 @@
                 updateCodeDisplay('rollbackCode', 'rollbackLines', "-- pending execution (click Execute_Run) --");
                 document.getElementById('statusMsg').style.display = 'flex';
                 document.getElementById('statusMsg').innerHTML = `<span>STATUS: CHANGES PENDING...</span><span></span>`;
-                document.getElementById('copyPrimaryBtn').disabled = true; 
-                document.getElementById('copyRollbackBtn').disabled = true; 
-                document.getElementById('dlPrimaryBtn').disabled = true; 
-                document.getElementById('dlRollbackBtn').disabled = true;
             } else {
-                coreGenerateScript(false);
+                updateCodeDisplay('primaryCode', 'primaryLines', "-- system_idle --\n! Target state matches current configuration.");
+                updateCodeDisplay('rollbackCode', 'rollbackLines', "-- system_idle --");
+                document.getElementById('statusMsg').style.display = 'flex';
+                document.getElementById('statusMsg').innerHTML = `<span>STATUS: 0 CHANGES_PENDING</span><span></span>`;
             }
+            
+            // Hard lock the buttons since the user hasn't executed the script yet
+            document.getElementById('copyPrimaryBtn').disabled = true; 
+            document.getElementById('copyRollbackBtn').disabled = true; 
+            document.getElementById('dlPrimaryBtn').disabled = true; 
+            document.getElementById('dlRollbackBtn').disabled = true;
         }
     }
 
@@ -2302,7 +2360,12 @@
                     } else if (secVal === 'conv_dot1x_to_sticky') {
                         secRemoveCmds.push("no dot1x pae authenticator", "no authentication port-control auto");
                     } else if (secVal === 'remove') {
-                        secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "no dot1x pae authenticator", "no authentication port-control auto");
+                        if (isCurrentlySticky) {
+                            secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
+                        }
+                        if (isCurrentlyDot1x) {
+                            secRemoveCmds.push("no dot1x pae authenticator", "no authentication port-control auto");
+                        }
                     } else if (secVal === 'dot1x' && isCurrentlySticky) {
                         secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
                     } else if (secVal === 'sticky' && isCurrentlyDot1x) {
