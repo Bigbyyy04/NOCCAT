@@ -230,7 +230,7 @@
         .port-tag .remove-btn:hover { color: #ff7b72; text-shadow: 0 0 5px #ff7b72; }
 
         /* --- PER-PORT OVERRIDE TABLE CSS --- */
-        .override-table-wrapper { max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 4px; scrollbar-width: thin; scrollbar-color: var(--border-color) var(--code-bg); margin-top: 5px; user-select: none; }
+        .override-table-wrapper { max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 4px; scrollbar-width: thin; scrollbar-color: var(--border-color) var(--code-bg); margin-top: 5px; }
         .override-table-wrapper::-webkit-scrollbar { width: 10px; } .override-table-wrapper::-webkit-scrollbar-track { background: var(--code-bg); } .override-table-wrapper::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
         .override-table { width: 100%; border-collapse: collapse; font-size: 11px; font-family: "Courier New", Courier, monospace; }
         
@@ -242,7 +242,7 @@
         .override-table tr:hover td { background: rgba(88, 166, 255, 0.1); }
         .override-table tr.drag-row-over td { border-top: 2px solid var(--neon-green) !important; }
         
-        .override-table th:nth-child(1) { width: 18%; } .override-table th:nth-child(2) { width: 25%; } .override-table th:nth-child(3) { width: 15%; } .override-table th:nth-child(4) { width: 20%; } .override-table th:nth-child(5) { width: 12%; } .override-table th:nth-child(6) { width: 10%; }
+        .override-table th:nth-child(1) { width: 15%; } .override-table th:nth-child(2) { width: 22%; } .override-table th:nth-child(3) { width: 13%; } .override-table th:nth-child(4) { width: 20%; } .override-table th:nth-child(5) { width: 13%; } .override-table th:nth-child(6) { width: 12%; } .override-table th:nth-child(7) { width: 5%; text-align: center; }
 
         [data-theme="fab-neko"] .override-table th { background: rgba(26, 21, 37, 0.95); color: var(--accent-blue); border-right-color: rgba(11, 203, 212, 0.15); } 
         [data-theme="fab-neko"] .override-table td { background: rgba(39, 32, 54, 0.6); border-bottom: 1px solid #312540; border-right: 1px solid rgba(11, 203, 212, 0.15); } 
@@ -376,11 +376,10 @@
 <div class="cat-ear-icon">🎧</div>
 
 <div id="customContextMenu" class="custom-context-menu">
-    <div id="ctxGroupPorts" onclick="groupSelectedPorts()">> Group Selected Ports</div>
-    <div id="ctxGroupPortsSep" style="height: 1px; background: var(--border-color); margin: 4px 0; cursor: default;"></div>
+    <div onclick="groupSelectedPorts()">> Group Selected Ports</div>
+    <div style="height: 1px; background: var(--border-color); margin: 4px 0; cursor: default;"></div>
     <div onclick="copySelectedConfig()">> Copy Config (Ctrl+C)</div>
     <div onclick="pasteSelectedConfig()" id="pasteContextBtn" style="color: #666; pointer-events: none;">> Paste Config (Ctrl+V)</div>
-    <div onclick="applySelectedToAll()">> Apply Config to All Ports</div>
     <div style="height: 1px; background: var(--border-color); margin: 4px 0; cursor: default;"></div>
     <div onclick="selectAllPorts()">> Select All</div>
     <div onclick="unselectAllPorts()">> Unselect All</div>
@@ -388,7 +387,7 @@
     <div onclick="sortPorts('desc')">> Sort Descending</div>
     <div style="height: 1px; background: var(--border-color); margin: 4px 0; cursor: default;"></div>
     <div onclick="clearSelectedConfig()">> Clear Selected Config</div>
-    <div id="ctxDeletePorts" onclick="deleteSelectedPorts()" style="color: var(--accent-red);">> Delete Ports</div>
+    <div onclick="deleteSelectedPorts()" style="color: var(--accent-red);">> Delete Ports</div>
 </div>
 
 <div class="container">
@@ -415,7 +414,7 @@
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v11.5 [Exec Update]</span>
+            <span class="version-tag">// Configuration Automation Tool // v11.2 [Auto-Cast & Grouping Update]</span>
         </h2>
         
         <div class="tz-widget">
@@ -512,7 +511,7 @@
                 </div>
             </div>
             <div style="position: relative;">
-                <textarea id="configInput" placeholder="Paste config logs or a raw list of ports here..." spellcheck="false" oninput="checkDynamicWarnings(); generateScript();"></textarea>
+                <textarea id="configInput" placeholder="Paste config logs or a raw list of ports here..." spellcheck="false" oninput="checkDynamicWarnings()"></textarea>
                 <div class="drag-overlay-text">DROP CONFIG OR PORT LIST</div>
             </div>
         </div>
@@ -535,7 +534,7 @@
                     <div style="display: flex; align-items: center; gap: 6px;">
                         <div class="checkbox-group" style="width: auto;">
                             <label style="padding: 2px 6px; font-size: 9px; letter-spacing: 0.5px;">
-                                <input type="checkbox" id="suppressCheckbox" onchange="checkDynamicWarnings(); generateScript();">
+                                <input type="checkbox" id="suppressCheckbox" onchange="checkDynamicWarnings()">
                                 <span>OPEN_PORT</span>
                             </label>
                         </div>
@@ -543,11 +542,11 @@
                     </div>
                 </div>
                 <div class="radio-group">
-                    <label><input type="radio" name="securityMode" value="leave" checked onchange="checkDynamicWarnings(); generateScript();"><span>--</span></label>
-                    <label class="disabled"><input type="radio" name="securityMode" value="dot1x" disabled onchange="checkDynamicWarnings(); generateScript();"><span>DOT1X</span></label>
-                    <label class="disabled"><input type="radio" name="securityMode" value="sticky" disabled onchange="checkDynamicWarnings(); generateScript();"><span>STICKY</span></label>
+                    <label><input type="radio" name="securityMode" value="leave" checked onchange="checkDynamicWarnings()"><span>--</span></label>
+                    <label class="disabled"><input type="radio" name="securityMode" value="dot1x" disabled onchange="checkDynamicWarnings()"><span>DOT1X</span></label>
+                    <label class="disabled"><input type="radio" name="securityMode" value="sticky" disabled onchange="checkDynamicWarnings()"><span>STICKY</span></label>
                     <label class="disabled"><input type="radio" name="securityMode" value="remove" onchange="handleRemoveChange(this)" disabled><span>REMOVE</span></label>
-                    <label class="disabled"><input type="radio" name="securityMode" value="reset" disabled onchange="checkDynamicWarnings(); generateScript();"><span>RESET</span></label>
+                    <label class="disabled"><input type="radio" name="securityMode" value="reset" disabled onchange="checkDynamicWarnings()"><span>RESET</span></label>
                 </div>
             </div>
 
@@ -628,6 +627,7 @@
                                     <th>OVR: SECURITY</th>
                                     <th>OVR: EDGE</th>
                                     <th>OVR: ADMIN</th>
+                                    <th style="text-align: center;">ALL</th>
                                 </tr>
                             </thead>
                             <tbody id="overrideTableBody">
@@ -640,7 +640,7 @@
 
         <div class="action-row">
             <button class="clear-btn" onclick="clearAll()">Clear All Data</button>
-            <button id="executeBtn" class="cyber-btn" onclick="executeWithSound()" title="Hold to toggle AUTO_EXECUTE mode" disabled>Execute_Run</button>
+            <button id="executeBtn" class="cyber-btn" onclick="executeWithSound()" disabled>Execute_Run</button>
         </div>
 
         <div id="warningBox" class="warning-box"></div>
@@ -787,10 +787,6 @@
     let easterEggActive = false;
     let clipboardConfig = null;
     let wasInBlindMode = false;
-    
-    let isAutoExecuteStandard = false;
-    let pressTimer;
-    let longPressTriggered = false;
 
     function updateTextScale(forceValue) {
         const slider = document.getElementById('textScaleSlider');
@@ -841,9 +837,9 @@
     }
 
     document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey || e.metaKey) {
+        if (hasRawPortsGlobal && (e.ctrlKey || e.metaKey)) {
             let activeTag = document.activeElement ? document.activeElement.tagName : '';
-            if (activeTag !== 'INPUT' && activeTag !== 'TEXTAREA' && activeTag !== 'SELECT') {
+            if (activeTag !== 'INPUT' && activeTag !== 'TEXTAREA') {
                 if (e.key.toLowerCase() === 'c') {
                     if (document.querySelectorAll('.selected-row').length > 0) {
                         e.preventDefault();
@@ -876,11 +872,11 @@
                     engine.particles.forEach(p => { p.vx *= 10; p.vy *= 10; });
                     setTimeout(() => {
                         engine.particles.forEach(p => { p.vx *= 0.1; p.vy *= 0.1; });
-                        coreGenerateScript(false); 
+                        generateScript(); 
                         easterEggActive = false;
                     }, 1500);
                 } else {
-                    setTimeout(() => { coreGenerateScript(false); easterEggActive = false; }, 1500);
+                    setTimeout(() => { generateScript(); easterEggActive = false; }, 1500);
                 }
                 inputBuffer = [];
             }
@@ -900,23 +896,6 @@
         let lasers = [];
         let fabPolygons = [];
 
-        // NEW: Mouse tracking for the Water Ripple / Hover effect
-        let mouse = {
-            x: -1000,
-            y: -1000,
-            radius: 120
-        };
-
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
-
-        window.addEventListener('mouseout', () => {
-            mouse.x = -1000;
-            mouse.y = -1000;
-        });
-
         function initCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
@@ -928,139 +907,15 @@
         }
 
         class Particle {
-            constructor() { 
-                this.x = Math.random() * width; 
-                this.y = Math.random() * height; 
-                this.vx = (Math.random() - 0.5) * speed; 
-                this.vy = (Math.random() - 0.5) * speed; 
-                this.baseVx = this.vx;
-                this.baseVy = this.vy;
-                this.glow = 0;
-                this.radius = Math.random() * 1.5 + 0.5; 
-            }
-            update() { 
-                let dxMouse = this.x - mouse.x;
-                let dyMouse = this.y - mouse.y;
-                let distMouseSq = dxMouse * dxMouse + dyMouse * dyMouse;
-                let interactRadSq = mouse.radius * mouse.radius;
-
-                if (distMouseSq < interactRadSq) {
-                    let distMouse = Math.sqrt(distMouseSq);
-                    let force = (mouse.radius - distMouse) / mouse.radius;
-                    
-                    this.vx += (dxMouse / distMouse) * force * 0.6;
-                    this.vy += (dyMouse / distMouse) * force * 0.6;
-                    this.glow = Math.max(this.glow, force);
-                }
-
-                if (this.glow > 0) {
-                    this.glow -= 0.02;
-                    if (this.glow < 0) this.glow = 0;
-                }
-
-                this.x += this.vx; 
-                this.y += this.vy; 
-
-                this.vx += (this.baseVx - this.vx) * 0.05;
-                this.vy += (this.baseVy - this.vy) * 0.05;
-
-                if (this.x < 0) this.x = width; 
-                if (this.x > width) this.x = 0; 
-                if (this.y < 0) this.y = height; 
-                if (this.y > height) this.y = 0; 
-            }
-            draw() { 
-                ctx.beginPath(); 
-                ctx.arc(this.x, this.y, this.radius + (this.glow * 1.5), 0, Math.PI * 2); 
-                const rootStyles = getComputedStyle(document.documentElement); 
-                let pColor = rootStyles.getPropertyValue('--particle-color').trim() || 'rgba(88, 166, 255, 0.4)'; 
-                
-                let rgbMatch = pColor.match(/rgba?\((\d+,\s*\d+,\s*\d+)(?:,\s*([\d.]+))?\)/);
-                if (rgbMatch) {
-                    let baseAlpha = parseFloat(rgbMatch[2]) || 0.4;
-                    ctx.fillStyle = `rgba(${rgbMatch[1]}, ${baseAlpha + (this.glow * 0.5)})`;
-                } else {
-                    ctx.fillStyle = pColor;
-                }
-                ctx.fill(); 
-            }
+            constructor() { this.x = Math.random() * width; this.y = Math.random() * height; this.vx = (Math.random() - 0.5) * speed; this.vy = (Math.random() - 0.5) * speed; this.radius = Math.random() * 1.5 + 0.5; }
+            update() { this.x += this.vx; this.y += this.vy; if (this.x < 0) this.x = width; if (this.x > width) this.x = 0; if (this.y < 0) this.y = height; if (this.y > height) this.y = 0; }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); const rootStyles = getComputedStyle(document.documentElement); ctx.fillStyle = rootStyles.getPropertyValue('--particle-color').trim() || 'rgba(88, 166, 255, 0.4)'; ctx.fill(); }
         }
 
         class PolygonParticle {
-            constructor() { 
-                this.x = Math.random() * width; 
-                this.y = Math.random() * height; 
-                this.vx = (Math.random() - 0.5) * 0.4; 
-                this.vy = (Math.random() - 0.5) * 0.4; 
-                this.baseVx = this.vx;
-                this.baseVy = this.vy;
-                this.glow = 0;
-                this.radius = Math.random() * 15 + 8; 
-                this.sides = Math.floor(Math.random() * 4) + 3; 
-                this.angle = Math.random() * Math.PI * 2; 
-                this.rotSpeed = (Math.random() - 0.5) * 0.02; 
-                const colors = ['rgba(165, 119, 196, 0.3)', 'rgba(217, 120, 184, 0.3)', 'rgba(168, 216, 234, 0.3)', 'rgba(244, 163, 184, 0.3)']; 
-                this.color = colors[Math.floor(Math.random() * colors.length)]; 
-            }
-            update() { 
-                let dxMouse = this.x - mouse.x;
-                let dyMouse = this.y - mouse.y;
-                let distMouseSq = dxMouse * dxMouse + dyMouse * dyMouse;
-                let interactRadSq = mouse.radius * mouse.radius;
-
-                if (distMouseSq < interactRadSq) {
-                    let distMouse = Math.sqrt(distMouseSq);
-                    let force = (mouse.radius - distMouse) / mouse.radius;
-                    
-                    this.vx += (dxMouse / distMouse) * force * 0.6;
-                    this.vy += (dyMouse / distMouse) * force * 0.6;
-                    this.glow = Math.max(this.glow, force);
-                }
-
-                if (this.glow > 0) {
-                    this.glow -= 0.02;
-                    if (this.glow < 0) this.glow = 0;
-                }
-
-                this.x += this.vx; 
-                this.y += this.vy; 
-                this.vx += (this.baseVx - this.vx) * 0.05;
-                this.vy += (this.baseVy - this.vy) * 0.05;
-
-                this.angle += this.rotSpeed; 
-                if (this.x < -50) this.x = width + 50; 
-                if (this.x > width + 50) this.x = -50; 
-                if (this.y < -50) this.y = height + 50; 
-                if (this.y > height + 50) this.y = -50; 
-            }
-            draw() { 
-                ctx.save(); 
-                ctx.translate(this.x, this.y); 
-                let scale = 1 + (this.glow * 0.5);
-                ctx.scale(scale, scale);
-                ctx.rotate(this.angle); 
-                ctx.beginPath(); 
-                for (let i = 0; i < this.sides; i++) { 
-                    let a = (Math.PI * 2 / this.sides) * i; 
-                    ctx.lineTo(Math.cos(a) * this.radius, Math.sin(a) * this.radius); 
-                } 
-                ctx.closePath(); 
-                
-                let rgbMatch = this.color.match(/rgba?\((\d+,\s*\d+,\s*\d+)(?:,\s*([\d.]+))?\)/);
-                if (rgbMatch) {
-                    let baseAlpha = parseFloat(rgbMatch[2]) || 0.3;
-                    ctx.fillStyle = `rgba(${rgbMatch[1]}, ${baseAlpha + (this.glow * 0.5)})`;
-                    ctx.strokeStyle = `rgba(${rgbMatch[1]}, ${Math.min(1, (baseAlpha*2) + (this.glow * 0.5))})`;
-                } else {
-                    ctx.fillStyle = this.color; 
-                    ctx.strokeStyle = this.color.replace('0.3', '0.6'); 
-                }
-                
-                ctx.fill(); 
-                ctx.lineWidth = 1; 
-                ctx.stroke(); 
-                ctx.restore(); 
-            }
+            constructor() { this.x = Math.random() * width; this.y = Math.random() * height; this.vx = (Math.random() - 0.5) * 0.4; this.vy = (Math.random() - 0.5) * 0.4; this.radius = Math.random() * 15 + 8; this.sides = Math.floor(Math.random() * 4) + 3; this.angle = Math.random() * Math.PI * 2; this.rotSpeed = (Math.random() - 0.5) * 0.02; const colors = ['rgba(165, 119, 196, 0.3)', 'rgba(217, 120, 184, 0.3)', 'rgba(168, 216, 234, 0.3)', 'rgba(244, 163, 184, 0.3)']; this.color = colors[Math.floor(Math.random() * colors.length)]; }
+            update() { this.x += this.vx; this.y += this.vy; this.angle += this.rotSpeed; if (this.x < -50) this.x = width + 50; if (this.x > width + 50) this.x = -50; if (this.y < -50) this.y = height + 50; if (this.y > height + 50) this.y = -50; }
+            draw() { ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.angle); ctx.beginPath(); for (let i = 0; i < this.sides; i++) { let a = (Math.PI * 2 / this.sides) * i; ctx.lineTo(Math.cos(a) * this.radius, Math.sin(a) * this.radius); } ctx.closePath(); ctx.fillStyle = this.color; ctx.fill(); ctx.strokeStyle = this.color.replace('0.3', '0.6'); ctx.lineWidth = 1; ctx.stroke(); ctx.restore(); }
         }
 
         class Meteor {
@@ -1085,35 +940,7 @@
             draw() { let opacity = this.z * 0.9; ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.angle); ctx.beginPath(); let s = 4 * this.z + 1; ctx.moveTo(s*1.5, 0); ctx.lineTo(-s, -s*0.8); ctx.lineTo(-s*0.5, 0); ctx.lineTo(-s, s*0.8); ctx.closePath(); ctx.fillStyle = this.color + opacity + ')'; ctx.fill(); ctx.beginPath(); ctx.moveTo(-s*0.6, 0); ctx.lineTo(-s - (Math.random()*8*this.z + 3), 0); ctx.strokeStyle = this.faction === 1 ? `rgba(255,200,255,${opacity})` : `rgba(200,255,255,${opacity})`; ctx.lineWidth = 1; ctx.stroke(); ctx.restore(); }
         }
 
-        function drawNetwork() { 
-            const rootStyles = getComputedStyle(document.documentElement); 
-            const lColor = rootStyles.getPropertyValue('--particle-line').trim() || 'rgba(88, 166, 255, 0.25)'; 
-            const rgbMatch = lColor.match(/rgba?\((\d+,\s*\d+,\s*\d+)/); 
-            const rgbBase = rgbMatch ? rgbMatch[1] : '88, 166, 255'; 
-            
-            particles.forEach(p => { p.update(); p.draw(); }); 
-            
-            for (let i = 0; i < particles.length; i++) { 
-                for (let j = i + 1; j < particles.length; j++) { 
-                    let dx = particles[i].x - particles[j].x; 
-                    let dy = particles[i].y - particles[j].y; 
-                    let dist = Math.sqrt(dx * dx + dy * dy); 
-                    if (dist < 140) { 
-                        ctx.beginPath(); 
-                        ctx.moveTo(particles[i].x, particles[i].y); 
-                        ctx.lineTo(particles[j].x, particles[j].y); 
-                        
-                        let opacity = 1 - (dist / 140); 
-                        let lineGlow = Math.max(particles[i].glow, particles[j].glow);
-                        let finalOpacity = (opacity * 0.25) + (lineGlow * 0.4);
-                        
-                        ctx.strokeStyle = `rgba(${rgbBase}, ${finalOpacity})`; 
-                        ctx.lineWidth = 1 + (lineGlow * 1.5); 
-                        ctx.stroke(); 
-                    } 
-                } 
-            } 
-        }
+        function drawNetwork() { const rootStyles = getComputedStyle(document.documentElement); const lColor = rootStyles.getPropertyValue('--particle-line').trim() || 'rgba(88, 166, 255, 0.25)'; const rgbMatch = lColor.match(/rgba?\((\d+,\s*\d+,\s*\d+)/); const rgbBase = rgbMatch ? rgbMatch[1] : '88, 166, 255'; particles.forEach(p => { p.update(); p.draw(); }); for (let i = 0; i < particles.length; i++) { for (let j = i + 1; j < particles.length; j++) { let dx = particles[i].x - particles[j].x; let dy = particles[i].y - particles[j].y; let dist = Math.sqrt(dx * dx + dy * dy); if (dist < 140) { ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); let opacity = 1 - (dist / 140); ctx.strokeStyle = `rgba(${rgbBase}, ${opacity * 0.25})`; ctx.lineWidth = 1; ctx.stroke(); } } } }
         function drawGamerFloor() { ctx.beginPath(); let grad = ctx.createRadialGradient(width/2, height, 10, width/2, height, height*0.7); grad.addColorStop(0, 'rgba(18, 2, 28, 0.4)'); grad.addColorStop(1, 'transparent'); ctx.fillStyle = grad; ctx.fillRect(0, 0, width, height); if (Math.random() < 0.005) meteors.push(new Meteor()); meteors = meteors.filter(m => m.update()); meteors.forEach(m => m.draw()); lasers = lasers.filter(l => l.update()); lasers.forEach(l => l.draw()); ships.sort((a, b) => a.z - b.z); ships.forEach(s => { s.update(ships); s.draw(); }); particles.forEach(p => { p.update(); p.draw(); }); }
         function drawFabNeko() { fabPolygons.forEach(p => { p.update(); p.draw(); }); }
 
@@ -1140,8 +967,6 @@
     let blindGroups = []; 
     let groupIdCounter = 1;
     let hasRawPortsGlobal = false;
-    let isMouseSelecting = false;
-    let mouseSelectMode = true;
 
     window.addEventListener('load', () => {
 
@@ -1168,99 +993,13 @@
         const configTextarea = document.getElementById('configInput');
         configTextarea.addEventListener('dragover', (e) => { e.preventDefault(); configTextarea.classList.add('drag-active'); });
         configTextarea.addEventListener('dragleave', () => configTextarea.classList.remove('drag-active'));
-        configTextarea.addEventListener('drop', (e) => { e.preventDefault(); configTextarea.classList.remove('drag-active'); if(e.dataTransfer.files[0]) { const reader = new FileReader(); reader.onload = (evt) => { configTextarea.value = evt.target.result; checkDynamicWarnings(); generateScript(); }; reader.readAsText(e.dataTransfer.files[0]); } else { const text = e.dataTransfer.getData('text/plain'); if(text) { configTextarea.value = text; checkDynamicWarnings(); generateScript(); } } });
-        
-        const execBtn = document.getElementById('executeBtn');
-    
-        function handleLongPressStart(e) {
-            if (execBtn.disabled || hasRawPortsGlobal) return;
-            longPressTriggered = false;
-            pressTimer = window.setTimeout(() => {
-                longPressTriggered = true;
-                isAutoExecuteStandard = !isAutoExecuteStandard;
-                if (isAutoExecuteStandard) {
-                    execBtn.classList.add('auto-cast');
-                    execBtn.classList.remove('ready');
-                    execBtn.innerText = "AUTO_EXECUTE [ON]";
-                    playCyberBeep();
-                    coreGenerateScript(false);
-                } else {
-                    execBtn.classList.remove('auto-cast');
-                    execBtn.classList.add('ready');
-                    execBtn.innerText = "Execute_Run";
-                    playCyberBeep();
-                }
-            }, 800);
-        }
-        
-        function handleLongPressEnd() {
-            clearTimeout(pressTimer);
-        }
-
-        execBtn.addEventListener('mousedown', handleLongPressStart);
-        execBtn.addEventListener('mouseup', handleLongPressEnd);
-        execBtn.addEventListener('mouseleave', handleLongPressEnd);
-        execBtn.addEventListener('touchstart', handleLongPressStart, {passive: true});
-        execBtn.addEventListener('touchend', handleLongPressEnd);
-        execBtn.addEventListener('touchcancel', handleLongPressEnd);
-        
-        // --- DELEGATED DRAG-TO-SELECT LOGIC FOR MATRIX TABLE ---
-        document.getElementById('overrideTableBody').addEventListener('mousedown', function(e) {
-            if (e.button !== 0) return; // Only left click
-            if (['INPUT', 'SELECT', 'OPTION', 'BUTTON'].includes(e.target.tagName)) return;
-            let tr = e.target.closest('tr');
-            if (!tr) return;
-            
-            isMouseSelecting = true;
-            let index = Array.from(tr.parentNode.children).indexOf(tr);
-
-            if (e.shiftKey && lastSelectedRowIndex !== -1) {
-                let rows = Array.from(document.querySelectorAll('#overrideTableBody tr'));
-                let start = Math.min(lastSelectedRowIndex, index);
-                let end = Math.max(lastSelectedRowIndex, index);
-                
-                let isSelecting = rows[lastSelectedRowIndex].classList.contains('selected-row');
-                
-                for (let i = start; i <= end; i++) {
-                    if (isSelecting) rows[i].classList.add('selected-row');
-                    else rows[i].classList.remove('selected-row');
-                }
-                if (window.getSelection) { window.getSelection().removeAllRanges(); }
-            } else {
-                mouseSelectMode = !tr.classList.contains('selected-row');
-                if (mouseSelectMode) tr.classList.add('selected-row');
-                else tr.classList.remove('selected-row');
-            }
-            
-            lastSelectedRowIndex = index;
-            
-            // Prevent default to enable clean dragging for standard mode
-            // Allow default in Raw Mode if dragging to reorder
-            if (!(hasRawPortsGlobal && tr.hasAttribute('draggable'))) {
-                e.preventDefault();
-            }
-        });
-
-        document.getElementById('overrideTableBody').addEventListener('mouseover', function(e) {
-            if (!isMouseSelecting) return;
-            let tr = e.target.closest('tr');
-            if (!tr) return;
-            if (['INPUT', 'SELECT', 'OPTION', 'BUTTON'].includes(e.target.tagName)) return;
-            
-            if (mouseSelectMode) tr.classList.add('selected-row');
-            else tr.classList.remove('selected-row');
-            
-            lastSelectedRowIndex = Array.from(tr.parentNode.children).indexOf(tr);
-        });
-
-        document.addEventListener('mouseup', function() {
-            isMouseSelecting = false;
-        });
+        configTextarea.addEventListener('drop', (e) => { e.preventDefault(); configTextarea.classList.remove('drag-active'); if(e.dataTransfer.files[0]) { const reader = new FileReader(); reader.onload = (evt) => { configTextarea.value = evt.target.result; checkDynamicWarnings(); }; reader.readAsText(e.dataTransfer.files[0]); } else { const text = e.dataTransfer.getData('text/plain'); if(text) { configTextarea.value = text; checkDynamicWarnings(); } } });
     });
 
     document.addEventListener('click', function(e) { document.getElementById('customContextMenu').style.display = 'none'; });
     
     document.getElementById('overrideTableBody').addEventListener('contextmenu', function(e) {
+        if (!hasRawPortsGlobal) return;
         e.preventDefault(); 
         let menu = document.getElementById('customContextMenu'); 
         
@@ -1272,10 +1011,6 @@
             lastSelectedRowIndex = index;
         }
 
-        document.getElementById('ctxGroupPorts').style.display = hasRawPortsGlobal ? 'block' : 'none';
-        document.getElementById('ctxGroupPortsSep').style.display = hasRawPortsGlobal ? 'block' : 'none';
-        document.getElementById('ctxDeletePorts').style.display = hasRawPortsGlobal ? 'block' : 'none';
-
         let scale = document.getElementById('textScaleSlider').value / 100;
         menu.style.display = 'block'; 
         menu.style.left = (e.pageX / scale) + 'px'; 
@@ -1284,7 +1019,7 @@
 
     function parseToDB(text) { const ipRegex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/; text.split('\n').forEach(line => { const match = line.match(ipRegex); if (match) { const host = line.split(/[,\t\s]+/)[0].toLowerCase(); switchDB[host] = match[0]; } }); }
     function generateDBString() { return Object.keys(switchDB).map(host => `${host.toUpperCase()}, ${switchDB[host]}`).join('\n'); }
-    function saveDB() { const dbText = document.getElementById('dbInput').value; parseToDB(dbText); const mergedString = generateDBString(); localStorage.setItem('noccat_db', mergedString); document.getElementById('dbInput').value = mergedString; const statusElem = document.getElementById('dbStatus'); statusElem.innerText = `STATUS: MERGED_&_SAVED_${Object.keys(switchDB).length}_HOSTS`; statusElem.style.color = 'var(--neon-green)'; setTimeout(() => { statusElem.style.color = 'var(--accent-green)'; }, 2000); checkDynamicWarnings(); generateScript(); }
+    function saveDB() { const dbText = document.getElementById('dbInput').value; parseToDB(dbText); const mergedString = generateDBString(); localStorage.setItem('noccat_db', mergedString); document.getElementById('dbInput').value = mergedString; const statusElem = document.getElementById('dbStatus'); statusElem.innerText = `STATUS: MERGED_&_SAVED_${Object.keys(switchDB).length}_HOSTS`; statusElem.style.color = 'var(--neon-green)'; setTimeout(() => { statusElem.style.color = 'var(--accent-green)'; }, 2000); checkDynamicWarnings(); }
     function clearDB() { if(confirm("Are you sure you want to wipe the Local Browser Database AND all saved preferences?")) { localStorage.removeItem('noccat_db'); localStorage.removeItem('noccat_suppress_remove_warning'); localStorage.removeItem('noccat_tz_src'); localStorage.removeItem('noccat_tz_tgt'); localStorage.removeItem('noccat_tz_24h'); localStorage.removeItem('noccat_theme'); localStorage.removeItem('noccat_ui_scale'); document.documentElement.removeAttribute('data-theme'); updateActiveThemeInMenu('dark'); updateFavicon('dark'); resetTextScale(); document.getElementById('dbInput').value = ""; switchDB = {}; document.getElementById('dbStatus').innerText = "STATUS: MEMORY_WIPED"; document.getElementById('deviceHud').classList.remove('visible'); } }
 
     function toggleReadme() { const wrapper = document.getElementById('readmeWrapper'); const btn = document.getElementById('readmeBtn'); wrapper.classList.toggle('expanded'); btn.innerText = wrapper.classList.contains('expanded') ? "[ COLLAPSE ]" : "[ EXPAND ]"; }
@@ -1363,7 +1098,6 @@
         let clearBtn = document.getElementById('clearMatrixBtn'); if (clearBtn) clearBtn.style.display = 'none';
         const textarea = document.getElementById('configInput'); textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) toggleExpand(); detectedGlobalHostname = "N0CAT_Script"; blindGroups = []; groupIdCounter = 1; clipboardConfig = null; document.getElementById('pasteContextBtn').style.color = '#666'; document.getElementById('pasteContextBtn').style.pointerEvents = 'none';
         wasInBlindMode = false;
-        isAutoExecuteStandard = false;
     }
     
     function clearStandardMatrix() {
@@ -1416,7 +1150,7 @@
 
     function copyCode(id, btn) { 
         const text = document.getElementById(id).innerText; 
-        if(text.includes("-- system_idle --") || text.includes("NO_CHANGES_REQUIRED") || text.includes("pending execution")) return; 
+        if(text.includes("-- system_idle --") || text.includes("NO_CHANGES_REQUIRED")) return; 
         
         let lines = text.split('\n').filter(l => !l.startsWith('! SAFETY LOCK:') && !l.startsWith('! NOTE:') && !l.startsWith('! WARNING:'));
         
@@ -1426,15 +1160,9 @@
         setTimeout(() => btn.innerText = originalText, 1000); 
     }
     
-    function downloadCode(id, suffix) { const text = document.getElementById(id).innerText; if(text.includes("-- system_idle --") || text.includes("NO_CHANGES_REQUIRED") || text.includes("pending execution")) return; const blob = new Blob([text], { type: "text/plain" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `${detectedGlobalHostname}_${suffix}.txt`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+    function downloadCode(id, suffix) { const text = document.getElementById(id).innerText; if(text.includes("-- system_idle --") || text.includes("NO_CHANGES_REQUIRED")) return; const blob = new Blob([text], { type: "text/plain" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `${detectedGlobalHostname}_${suffix}.txt`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
     function playCyberBeep() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(880, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.1); gain.gain.setValueAtTime(0.05, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1); osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.1); } catch(e) {} }
-    
-    function executeWithSound() { 
-        if (longPressTriggered) return;
-        playCyberBeep(); 
-        coreGenerateScript(false); 
-    }
-    
+    function executeWithSound() { playCyberBeep(); generateScript(); }
     function updateCodeDisplay(id, linesId, content) { const codeElem = document.getElementById(id); const linesElem = document.getElementById(linesId); codeElem.innerText = content; const lineCount = content.split('\n').length; let lineNumbers = ""; for (let i = 1; i <= lineCount; i++) lineNumbers += i + "\n"; linesElem.innerText = lineNumbers; }
 
     function copySelectedConfig() {
@@ -1508,51 +1236,6 @@
             generateScript();
         }
     }
-
-    function applySelectedToAll() {
-        if (!clipboardConfig) {
-            copySelectedConfig();
-        }
-        
-        let selectedRows = document.querySelectorAll('.selected-row');
-        if (selectedRows.length === 0) return;
-        
-        let vlanVal = clipboardConfig.vlan;
-        let secVal = clipboardConfig.sec;
-        let edgeVal = clipboardConfig.edge;
-        let adminVal = clipboardConfig.admin;
-
-        let needsWarning = false;
-
-        document.querySelectorAll('#overrideTableBody tr').forEach(tr => {
-            let vInput = tr.querySelector('td:nth-child(3) input[type="number"]');
-            let sSelect = tr.querySelector('td:nth-child(4) select');
-            let eSelect = tr.querySelector('td:nth-child(5) select');
-            let aSelect = tr.querySelector('td:nth-child(6) select');
-
-            if (vInput) vInput.value = vlanVal;
-            if (sSelect) {
-                sSelect.value = secVal;
-                if(secVal.startsWith('remove')) { sSelect.classList.add('danger-mode'); needsWarning = true; } 
-                else { sSelect.classList.remove('danger-mode'); }
-            }
-            if (eSelect) eSelect.value = edgeVal;
-            if (aSelect) aSelect.value = adminVal;
-            
-            let originalBg = tr.style.backgroundColor;
-            tr.style.backgroundColor = 'rgba(57, 255, 20, 0.3)';
-            setTimeout(() => tr.style.backgroundColor = originalBg, 300);
-        });
-
-        document.getElementById('customContextMenu').style.display = 'none';
-
-        if (needsWarning && localStorage.getItem('noccat_suppress_remove_warning') !== 'true') {
-            document.getElementById('dontShowAgainCheckbox').checked = false; 
-            document.getElementById('removeWarningModal').classList.add('visible');
-        } else {
-            generateScript();
-        }
-    }
     
     function selectAllPorts() {
         document.querySelectorAll('#overrideTableBody tr').forEach(r => r.classList.add('selected-row'));
@@ -1617,6 +1300,30 @@
             if (oInput) oInput.value = vlanVal;
         });
         generateScript();
+    }
+
+    function applyToAllMatrix(sourceSafeName) {
+        let vlanVal = document.getElementById('ovr_vlan_' + sourceSafeName).value;
+        let secVal = document.getElementById('ovr_sec_' + sourceSafeName).value;
+        let edgeVal = document.getElementById('ovr_edge_' + sourceSafeName).value;
+        let adminVal = document.getElementById('ovr_admin_' + sourceSafeName).value;
+        let needsWarning = false;
+
+        document.querySelectorAll('#overrideTableBody tr').forEach(tr => {
+            let vInput = tr.querySelector('.override-input');
+            let selects = tr.querySelectorAll('.override-select');
+            
+            if(vInput) vInput.value = vlanVal;
+            if(selects.length >= 3) {
+                selects[0].value = secVal;
+                if(secVal.startsWith('remove')) { selects[0].classList.add('danger-mode'); needsWarning = true; } else { selects[0].classList.remove('danger-mode'); }
+                selects[1].value = edgeVal; selects[2].value = adminVal;
+            }
+        });
+
+        if (needsWarning && localStorage.getItem('noccat_suppress_remove_warning') !== 'true') {
+            document.getElementById('dontShowAgainCheckbox').checked = false; document.getElementById('removeWarningModal').classList.add('visible');
+        } else { generateScript(); }
     }
 
     function unselectAllPorts() {
@@ -1765,7 +1472,6 @@
         }
         blindGroups.push({ id: groupIdCounter++, name: defaultName, ports: [], origVlan: '', vlan: '', sec: 'leave', edge: 'leave', admin: 'leave' });
         checkDynamicWarnings();
-        generateScript();
     }
     
     function deleteGroup(groupId) {
@@ -1776,6 +1482,30 @@
     function updateGroupConfig(groupId, key, val) {
         let group = blindGroups.find(g => g.id === groupId);
         if (group) group[key] = val;
+    }
+    
+    function toggleRowSelection(tr, ev, index) {
+        if (!hasRawPortsGlobal) return;
+        
+        if (ev && ev.shiftKey && lastSelectedRowIndex !== -1) {
+            let rows = Array.from(document.querySelectorAll('#overrideTableBody tr'));
+            let start = Math.min(lastSelectedRowIndex, index);
+            let end = Math.max(lastSelectedRowIndex, index);
+            
+            let isSelecting = rows[lastSelectedRowIndex].classList.contains('selected-row');
+            
+            for (let i = start; i <= end; i++) {
+                if (isSelecting) {
+                    rows[i].classList.add('selected-row');
+                } else {
+                    rows[i].classList.remove('selected-row');
+                }
+            }
+            if (window.getSelection) { window.getSelection().removeAllRanges(); }
+        } else {
+            tr.classList.toggle('selected-row');
+        }
+        lastSelectedRowIndex = index;
     }
     
     function groupSelectedPorts() {
@@ -1906,11 +1636,7 @@
                     wasInBlindMode = true;
                 }
             } else {
-                if (isAutoExecuteStandard) {
-                    execBtn.classList.add('auto-cast'); execBtn.classList.remove('ready'); execBtn.innerText = "AUTO_EXECUTE [ON]";
-                } else {
-                    execBtn.classList.remove('auto-cast'); execBtn.classList.add('ready'); execBtn.innerText = "Execute_Run";
-                }
+                execBtn.classList.remove('auto-cast'); execBtn.classList.add('ready'); execBtn.innerText = "Execute_Run";
                 if (wasInBlindMode) {
                     wasInBlindMode = false;
                 }
@@ -2033,8 +1759,7 @@
             if (portsWithFullEdge === totalParsedPorts) { edgeCheckbox.disabled = true; edgeCheckbox.closest('label').classList.add('disabled'); edgeCheckbox.checked = false; } else { edgeCheckbox.disabled = false; edgeCheckbox.closest('label').classList.remove('disabled'); }
             if (portsWithNoShut === totalParsedPorts) { upRadio.disabled = true; upRadio.closest('label').classList.add('disabled'); if (upRadio.checked) leaveAdminRadio.checked = true; } else { upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled'); }
             if (portsWithShutdown === totalParsedPorts) { downRadio.disabled = true; downRadio.closest('label').classList.add('disabled'); if (downRadio.checked) leaveAdminRadio.checked = true; } else { downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled'); }
-            
-            if (portsWithShutdown === totalParsedPorts) { bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled'); if (bounceRadio.checked) leaveAdminRadio.checked = true; } else { bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled'); }
+            if (portsWithShutdown === totalParsedPorts || isSecurityModifying) { bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled'); if (bounceRadio.checked) leaveAdminRadio.checked = true; } else { bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled'); }
         }
         
         if (validAccessPortsForGrid.length > 0) {
@@ -2061,11 +1786,10 @@
                 let curSec = p.isRaw ? "UNKNOWN" : (p.hasStickyMac && p.hasDot1xPae ? "DUAL" : (p.hasStickyMac || p.hasLearnedMac) ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE");
                 let statusDot = p.isRaw ? '<span style="color:#8b949e">● RAW</span>' : (p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>');
                 
-                let origVlanDisplay = p.isRaw ? `<div style="display:inline-flex; align-items:center; gap:4px;"><input type="text" id="ovr_orig_vlan_${safeName}" class="override-input" style="width:35px; padding:0 2px; font-size:10px; height: 18px; text-align:center;" placeholder="Cur" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094;" onchange="generateScript()"><button class="expand-btn" style="padding: 1px 4px; font-size: 9px;" onclick="applyToAllOrigVlan('${safeName}')" title="Apply to all ports">⏬</button></div>` : p.origVlan;
+                let origVlanDisplay = p.isRaw ? `<div style="display:inline-flex; align-items:center; gap:4px;"><input type="text" id="ovr_orig_vlan_${safeName}" class="override-input" style="width:35px; padding:0 2px; font-size:10px; height: 18px; text-align:center;" placeholder="Cur" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094;" onchange="generateScript()"><button class="expand-btn" style="padding: 1px 4px; font-size: 9px;" onclick="applyToAllOrigVlan('${safeName}')" title="Apply to all ports">⏬</button></div>` : p.origVlan;
 
-                let secOptions = p.isRaw 
-                    ? `<option value="leave">-- (Leave)</option><option value="dot1x">DOT1X</option><option value="sticky">STICKY MAC</option><option value="remove_sticky">REMOVE STICKY</option><option value="remove_dot1x">REMOVE DOT1X</option><option value="reset_dot1x">RESET DOT1X</option><option value="reset_sticky">RESET STICKY</option><option value="conv_sticky_to_dot1x">CNV:STK>DOT1X</option><option value="conv_dot1x_to_sticky">CNV:DOT1X>STK</option>`
-                    : `<option value="global">Global</option><option value="leave">-- (Leave)</option><option value="dot1x">DOT1X</option><option value="sticky">STICKY</option><option value="remove">REMOVE</option><option value="reset">RESET</option>`;
+                let explicitOptions = `<option value="leave">-- (Leave)</option><option value="dot1x">DOT1X</option><option value="sticky">STICKY MAC</option><option value="remove_sticky">REMOVE STICKY</option><option value="remove_dot1x">REMOVE DOT1X</option><option value="reset_dot1x">RESET DOT1X</option><option value="reset_sticky">RESET STICKY</option><option value="conv_sticky_to_dot1x">CNV:STK>DOT1X</option><option value="conv_dot1x_to_sticky">CNV:DOT1X>STK</option>`;
+                let secOptions = p.isRaw ? explicitOptions : `<option value="global">Global</option>` + explicitOptions;
 
                 let edgeOptions = p.isRaw 
                     ? `<option value="leave">-- (Leave)</option><option value="apply">APPLY EDGE</option><option value="remove">REMOVE EDGE</option>`
@@ -2075,15 +1799,17 @@
                     ? `<option value="leave">-- (Leave)</option><option value="up">UP</option><option value="down">DOWN</option><option value="bounce">BOUNCE</option>`
                     : `<option value="global">Global</option><option value="leave">-- (Leave)</option><option value="up">UP</option><option value="down">DOWN</option><option value="bounce">BNC</option>`;
 
-                let dragAttrs = hasRawPortsGlobal ? `draggable="true" ondragstart="dragPort(event, '${p.name}', this)" ondragover="allowRowDrop(event)" ondragleave="dragRowLeave(event)" ondrop="dropOnRow(event, '${p.name}')" data-port="${p.name}"` : `data-port="${p.name}"`;
+                let dragAttrs = hasRawPortsGlobal ? `draggable="true" ondragstart="dragPort(event, '${p.name}', this)" ondragover="allowRowDrop(event)" ondragleave="dragRowLeave(event)" ondrop="dropOnRow(event, '${p.name}')" onclick="toggleRowSelection(this, event, ${rowIndex})" data-port="${p.name}"` : '';
+                let applyAllBtn = hasRawPortsGlobal ? '' : `<button class="expand-btn" style="padding: 4px 8px; font-size: 12px;" onclick="applyToAllMatrix('${safeName}')" title="Apply to all ports">⏬</button>`;
 
                 gridHTML += `<tr ${dragAttrs}>
                     <td><strong>${p.name}</strong></td>
                     <td style="opacity: 0.8; font-size: 10px; white-space: nowrap;">${statusDot} | V: ${origVlanDisplay} | S: ${curSec}</td>
-                    <td><input type="number" id="ovr_vlan_${safeName}" class="override-input" placeholder="${p.isRaw ? '--' : 'Global'}" min="1" max="4094" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();"></td>
-                    <td><select id="ovr_sec_${safeName}" class="override-select" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" onchange="handleMatrixSecChange(this)">${secOptions}</select></td>
-                    <td><select id="ovr_edge_${safeName}" class="override-select" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" onchange="generateScript()">${edgeOptions}</select></td>
-                    <td><select id="ovr_admin_${safeName}" class="override-select" style="width:85px;" onmouseenter="this.closest('tr').setAttribute('draggable', false)" onmouseleave="this.closest('tr').setAttribute('draggable', true)" onchange="generateScript()">${adminOptions}</select></td>
+                    <td><input type="number" id="ovr_vlan_${safeName}" class="override-input" placeholder="${p.isRaw ? '--' : 'Global'}" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();"></td>
+                    <td><select id="ovr_sec_${safeName}" class="override-select" onchange="handleMatrixSecChange(this)">${secOptions}</select></td>
+                    <td><select id="ovr_edge_${safeName}" class="override-select" onchange="generateScript()">${edgeOptions}</select></td>
+                    <td><select id="ovr_admin_${safeName}" class="override-select" style="width:85px;" onchange="generateScript()">${adminOptions}</select></td>
+                    <td style="text-align:center;">${applyAllBtn}</td>
                 </tr>`;
                 rowIndex++;
             });
@@ -2101,7 +1827,7 @@
                 let el = document.getElementById(id);
                 if (el && (!el.disabled || el.value !== 'reset')) {
                     el.value = currentOverrides[id];
-                    if (el.classList.contains('override-select') && el.value.startsWith('remove')) el.classList.add('danger-mode');
+                    if (el.classList.contains('override-select') && el.value.startsWith('remove') && id.includes('_sec_')) el.classList.add('danger-mode');
                 }
             }
         } else {
@@ -2155,31 +1881,6 @@
     }
 
     function generateScript() {
-        if (hasRawPortsGlobal || isAutoExecuteStandard) {
-            coreGenerateScript(false);
-        } else {
-            let hasChanges = coreGenerateScript(true);
-            if (hasChanges) {
-                updateCodeDisplay('primaryCode', 'primaryLines', "-- pending execution (click Execute_Run) --");
-                updateCodeDisplay('rollbackCode', 'rollbackLines', "-- pending execution (click Execute_Run) --");
-                document.getElementById('statusMsg').style.display = 'flex';
-                document.getElementById('statusMsg').innerHTML = `<span>STATUS: CHANGES PENDING...</span><span></span>`;
-            } else {
-                updateCodeDisplay('primaryCode', 'primaryLines', "-- system_idle --\n! Target state matches current configuration.");
-                updateCodeDisplay('rollbackCode', 'rollbackLines', "-- system_idle --");
-                document.getElementById('statusMsg').style.display = 'flex';
-                document.getElementById('statusMsg').innerHTML = `<span>STATUS: 0 CHANGES_PENDING</span><span></span>`;
-            }
-            
-            // Hard lock the buttons since the user hasn't executed the script yet
-            document.getElementById('copyPrimaryBtn').disabled = true; 
-            document.getElementById('copyRollbackBtn').disabled = true; 
-            document.getElementById('dlPrimaryBtn').disabled = true; 
-            document.getElementById('dlRollbackBtn').disabled = true;
-        }
-    }
-
-    function coreGenerateScript(isDryRun = false) {
         let configText = document.getElementById('configInput').value;
         configText = configText.replace(/\r\n/g, '\n');
         
@@ -2244,12 +1945,10 @@
         
         const interfacesData = Object.values(interfacesDataMap);
         if (interfacesData.length === 0) {
-            if (isDryRun) return false;
             updateCodeDisplay('primaryCode', 'primaryLines', "-- system_idle --");
             updateCodeDisplay('rollbackCode', 'rollbackLines', "-- system_idle --");
             document.getElementById('copyPrimaryBtn').disabled = true; document.getElementById('copyRollbackBtn').disabled = true; document.getElementById('dlPrimaryBtn').disabled = true; document.getElementById('dlRollbackBtn').disabled = true;
-            document.getElementById('statusMsg').style.display = 'flex';
-            document.getElementById('statusMsg').innerHTML = `<span>STATUS: 0 ELIGIBLE PORTS_PARSED</span><span></span>`; return;
+            document.getElementById('statusMsg').innerHTML = `STATUS: 0 ELIGIBLE PORTS_PARSED`; return;
         }
         
         const chunkSize = slowPaste ? 2 : 5;
@@ -2360,12 +2059,7 @@
                     } else if (secVal === 'conv_dot1x_to_sticky') {
                         secRemoveCmds.push("no dot1x pae authenticator", "no authentication port-control auto");
                     } else if (secVal === 'remove') {
-                        if (isCurrentlySticky) {
-                            secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
-                        }
-                        if (isCurrentlyDot1x) {
-                            secRemoveCmds.push("no dot1x pae authenticator", "no authentication port-control auto");
-                        }
+                        secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "no dot1x pae authenticator", "no authentication port-control auto");
                     } else if (secVal === 'dot1x' && isCurrentlySticky) {
                         secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
                     } else if (secVal === 'sticky' && isCurrentlyDot1x) {
@@ -2388,18 +2082,17 @@
             cmds.push(...secRemoveCmds);
 
             let alreadyDown = iface.isShutdown && !iface.isRaw;
-            let needsBounceHere = forceBounce;
 
-            if (forceDown || needsBounceHere) {
-                if ((!alreadyDown || needsBounceHere) && !cmds.includes("shut")) {
+            if (forceDown || forceBounce) {
+                if ((!alreadyDown || forceBounce) && !cmds.includes("shut")) {
                     cmds.push("shut");
                 }
             }
 
             cmds.push(...secApplyCmds);
 
-            if (forceUp || needsBounceHere) {
-                if ((alreadyDown || needsBounceHere || cmds.includes("shut")) && cmds[cmds.length - 1] !== "no shut") {
+            if (forceUp || forceBounce) {
+                if ((alreadyDown || forceBounce || cmds.includes("shut")) && cmds[cmds.length - 1] !== "no shut") {
                     cmds.push("no shut");
                 }
             }
@@ -2447,17 +2140,12 @@
                 adminVal = (oAdmin && oAdmin.value !== 'global' && oAdmin.value !== 'leave') ? oAdmin.value : adminState;
             }
 
-            if (secVal.startsWith('reset')) return null;
-
             let cmds = [];
             let vlanChanged = vlanVal && vlanVal !== iface.origVlan;
             let forceEdgeApply = edgeVal === 'apply'; let forceEdgeRemove = edgeVal === 'remove';
             let stpChanged = (forceEdgeApply && (!iface.hasPortfast || !iface.hasBpduguard)) || (forceEdgeRemove && (iface.hasPortfast || iface.hasBpduguard));
             
-            let forceUp = adminVal === 'up'; 
-            let forceDown = adminVal === 'down'; 
-            let forceBounce = adminVal === 'bounce';
-            
+            let forceUp = adminVal === 'up'; let forceDown = adminVal === 'down'; let forceBounce = adminVal === 'bounce';
             let stateChanged = forceBounce || (forceUp && (iface.isShutdown || iface.isRaw)) || (forceDown && (!iface.isShutdown || iface.isRaw));
             
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
@@ -2465,7 +2153,8 @@
             let secChanged = false;
             
             if (iface.isRaw && secVal !== 'leave') {
-                secChanged = true;
+                if (secVal.startsWith('reset')) secChanged = false;
+                else secChanged = true;
             } else if (!iface.isRaw) {
                 if (secVal === 'dot1x' || secVal === 'conv_sticky_to_dot1x') {
                     if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true;
@@ -2513,6 +2202,8 @@
                          secRemoveCmds.push("no dot1x pae authenticator", "no authentication port-control auto");
                      } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky') {
                          secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
+                     } else if (secVal === 'remove') {
+                         // Rollbacks on non-raw standard remove will naturally fall back to below, RAW doesn't know original state
                      }
                 } else {
                      if (secVal === 'dot1x' || secVal === 'conv_sticky_to_dot1x') {
@@ -2545,7 +2236,7 @@
 
             let origIsShut = iface.isRaw ? false : iface.isShutdown;
             let primaryLeftItShut = iface.isRaw ? false : (forceDown ? true : ((forceUp || forceBounce) ? false : origIsShut));
-            let needsBounceHere = forceBounce;
+            let needsBounceHere = forceBounce || secChanged;
 
             if (!primaryLeftItShut && (needsBounceHere || origIsShut)) {
                 if (!cmds.includes("shut")) cmds.push("shut");
@@ -2645,17 +2336,11 @@
         let generatedPrimary = build(getPrimary);
         let generatedRollback = build(getRollback);
         
-        let hasPrimaryChanges = !generatedPrimary.includes("NO_CHANGES_REQUIRED");
-        
-        if (isDryRun) return hasPrimaryChanges;
-
         updateCodeDisplay('primaryCode', 'primaryLines', generatedPrimary);
         updateCodeDisplay('rollbackCode', 'rollbackLines', generatedRollback);
         
-        document.getElementById('copyPrimaryBtn').disabled = !hasPrimaryChanges; 
-        document.getElementById('copyRollbackBtn').disabled = !hasPrimaryChanges; 
-        document.getElementById('dlPrimaryBtn').disabled = !hasPrimaryChanges; 
-        document.getElementById('dlRollbackBtn').disabled = !hasPrimaryChanges;
+        let hasPrimaryChanges = !generatedPrimary.includes("NO_CHANGES_REQUIRED");
+        document.getElementById('copyPrimaryBtn').disabled = !hasPrimaryChanges; document.getElementById('copyRollbackBtn').disabled = !hasPrimaryChanges; document.getElementById('dlPrimaryBtn').disabled = !hasPrimaryChanges; document.getElementById('dlRollbackBtn').disabled = !hasPrimaryChanges;
 
         document.getElementById('statusMsg').style.display = 'flex';
         if (hasPrimaryChanges) { 
