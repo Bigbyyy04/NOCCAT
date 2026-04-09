@@ -1750,8 +1750,6 @@
             blindContainer.style.display = 'none';
         }
 
-        const isSecurityModifying = selectedSecurityMode !== 'leave';
-
         if (totalParsedPorts > 0 && !hasRawPorts) {
             if (portsWithFullDot1x === totalParsedPorts) { dot1xRadio.disabled = true; dot1xRadio.closest('label').classList.add('disabled'); if (dot1xRadio.checked) leaveSecRadio.checked = true; } else { dot1xRadio.disabled = false; dot1xRadio.closest('label').classList.remove('disabled'); }
             if (portsWithFullSticky === totalParsedPorts) { stickyRadio.disabled = true; stickyRadio.closest('label').classList.add('disabled'); if (stickyRadio.checked) leaveSecRadio.checked = true; } else { stickyRadio.disabled = false; stickyRadio.closest('label').classList.remove('disabled'); }
@@ -1759,7 +1757,7 @@
             if (portsWithFullEdge === totalParsedPorts) { edgeCheckbox.disabled = true; edgeCheckbox.closest('label').classList.add('disabled'); edgeCheckbox.checked = false; } else { edgeCheckbox.disabled = false; edgeCheckbox.closest('label').classList.remove('disabled'); }
             if (portsWithNoShut === totalParsedPorts) { upRadio.disabled = true; upRadio.closest('label').classList.add('disabled'); if (upRadio.checked) leaveAdminRadio.checked = true; } else { upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled'); }
             if (portsWithShutdown === totalParsedPorts) { downRadio.disabled = true; downRadio.closest('label').classList.add('disabled'); if (downRadio.checked) leaveAdminRadio.checked = true; } else { downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled'); }
-            if (portsWithShutdown === totalParsedPorts || isSecurityModifying) { bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled'); if (bounceRadio.checked) leaveAdminRadio.checked = true; } else { bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled'); }
+            if (portsWithShutdown === totalParsedPorts) { bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled'); if (bounceRadio.checked) leaveAdminRadio.checked = true; } else { bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled'); }
         }
         
         if (validAccessPortsForGrid.length > 0) {
