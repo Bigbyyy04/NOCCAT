@@ -1750,6 +1750,8 @@
             blindContainer.style.display = 'none';
         }
 
+        const isSecurityModifying = selectedSecurityMode !== 'leave';
+
         if (totalParsedPorts > 0 && !hasRawPorts) {
             if (portsWithFullDot1x === totalParsedPorts) { dot1xRadio.disabled = true; dot1xRadio.closest('label').classList.add('disabled'); if (dot1xRadio.checked) leaveSecRadio.checked = true; } else { dot1xRadio.disabled = false; dot1xRadio.closest('label').classList.remove('disabled'); }
             if (portsWithFullSticky === totalParsedPorts) { stickyRadio.disabled = true; stickyRadio.closest('label').classList.add('disabled'); if (stickyRadio.checked) leaveSecRadio.checked = true; } else { stickyRadio.disabled = false; stickyRadio.closest('label').classList.remove('disabled'); }
@@ -1757,7 +1759,7 @@
             if (portsWithFullEdge === totalParsedPorts) { edgeCheckbox.disabled = true; edgeCheckbox.closest('label').classList.add('disabled'); edgeCheckbox.checked = false; } else { edgeCheckbox.disabled = false; edgeCheckbox.closest('label').classList.remove('disabled'); }
             if (portsWithNoShut === totalParsedPorts) { upRadio.disabled = true; upRadio.closest('label').classList.add('disabled'); if (upRadio.checked) leaveAdminRadio.checked = true; } else { upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled'); }
             if (portsWithShutdown === totalParsedPorts) { downRadio.disabled = true; downRadio.closest('label').classList.add('disabled'); if (downRadio.checked) leaveAdminRadio.checked = true; } else { downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled'); }
-            if (portsWithShutdown === totalParsedPorts) { bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled'); if (bounceRadio.checked) leaveAdminRadio.checked = true; } else { bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled'); }
+            if (portsWithShutdown === totalParsedPorts || isSecurityModifying) { bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled'); if (bounceRadio.checked) leaveAdminRadio.checked = true; } else { bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled'); }
         }
         
         if (validAccessPortsForGrid.length > 0) {
@@ -1786,8 +1788,9 @@
                 
                 let origVlanDisplay = p.isRaw ? `<div style="display:inline-flex; align-items:center; gap:4px;"><input type="text" id="ovr_orig_vlan_${safeName}" class="override-input" style="width:35px; padding:0 2px; font-size:10px; height: 18px; text-align:center;" placeholder="Cur" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094;" onchange="generateScript()"><button class="expand-btn" style="padding: 1px 4px; font-size: 9px;" onclick="applyToAllOrigVlan('${safeName}')" title="Apply to all ports">⏬</button></div>` : p.origVlan;
 
-                let explicitOptions = `<option value="leave">-- (Leave)</option><option value="dot1x">DOT1X</option><option value="sticky">STICKY MAC</option><option value="remove_sticky">REMOVE STICKY</option><option value="remove_dot1x">REMOVE DOT1X</option><option value="reset_dot1x">RESET DOT1X</option><option value="reset_sticky">RESET STICKY</option><option value="conv_sticky_to_dot1x">CNV:STK>DOT1X</option><option value="conv_dot1x_to_sticky">CNV:DOT1X>STK</option>`;
-                let secOptions = p.isRaw ? explicitOptions : `<option value="global">Global</option>` + explicitOptions;
+                let secOptions = p.isRaw 
+                    ? `<option value="leave">-- (Leave)</option><option value="dot1x">DOT1X</option><option value="sticky">STICKY MAC</option><option value="remove_sticky">REMOVE STICKY</option><option value="remove_dot1x">REMOVE DOT1X</option><option value="reset_dot1x">RESET DOT1X</option><option value="reset_sticky">RESET STICKY</option><option value="conv_sticky_to_dot1x">CNV:STK>DOT1X</option><option value="conv_dot1x_to_sticky">CNV:DOT1X>STK</option>`
+                    : `<option value="global">Global</option><option value="leave">-- (Leave)</option><option value="dot1x">DOT1X</option><option value="sticky">STICKY</option><option value="remove">REMOVE</option><option value="reset">RESET</option>`;
 
                 let edgeOptions = p.isRaw 
                     ? `<option value="leave">-- (Leave)</option><option value="apply">APPLY EDGE</option><option value="remove">REMOVE EDGE</option>`
@@ -2138,6 +2141,9 @@
                 adminVal = (oAdmin && oAdmin.value !== 'global' && oAdmin.value !== 'leave') ? oAdmin.value : adminState;
             }
 
+            // Immediately skip generating rollback scripts for any explicitly reset ports
+            if (secVal.startsWith('reset')) return null;
+
             let cmds = [];
             let vlanChanged = vlanVal && vlanVal !== iface.origVlan;
             let forceEdgeApply = edgeVal === 'apply'; let forceEdgeRemove = edgeVal === 'remove';
@@ -2151,8 +2157,7 @@
             let secChanged = false;
             
             if (iface.isRaw && secVal !== 'leave') {
-                if (secVal.startsWith('reset')) secChanged = false;
-                else secChanged = true;
+                secChanged = true;
             } else if (!iface.isRaw) {
                 if (secVal === 'dot1x' || secVal === 'conv_sticky_to_dot1x') {
                     if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true;
@@ -2187,8 +2192,8 @@
                 if (!iface.hasPortfast || iface.isRaw) cmds.push("no spanning-tree portfast");
                 if (!iface.hasBpduguard || iface.isRaw) cmds.push("no spanning-tree bpduguard enable");
             } else if (forceEdgeRemove) {
-                if (iface.hasPortfast && !iface.isRaw) cmds.push("spanning-tree portfast");
-                if (iface.hasBpduguard && !iface.isRaw) cmds.push("spanning-tree bpduguard enable");
+                if (iface.hasPortfast || iface.isRaw) cmds.push("spanning-tree portfast");
+                if (iface.hasBpduguard || iface.isRaw) cmds.push("spanning-tree bpduguard enable");
             }
             
             let secRemoveCmds = [];
