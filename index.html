@@ -577,15 +577,27 @@
                 </div>
             </div>
             
+            <div class="form-group force-access-section" style="width: 90px;">
+                <div style="margin-bottom: 10px;">
+                    <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
+                        06 // ACCESS
+                        <div class="tooltip-icon" data-tooltip="Forces 'switchport mode access'. Bypasses the Trunk safety lock for explicitly blank/default ports.">i</div>
+                    </label>
+                </div>
+                <div class="checkbox-group">
+                    <label class="disabled"><input type="checkbox" id="forceAccessCheckbox" disabled onchange="checkDynamicWarnings(); generateScript();"><span>FORCE</span></label>
+                </div>
+            </div>
+            
             <div class="form-group global-param-section" style="width: 90px;">
                 <div style="margin-bottom: 10px;">
                     <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
-                        06 // DELAY
+                        07 // DELAY
                         <div class="tooltip-icon" data-tooltip="SLOW PASTE: Reduces chunks to 2 ports and injects '! buffer wait' to prevent dropping characters on older switches.">i</div>
                     </label>
                 </div>
                 <div class="checkbox-group">
-                    <label><input type="checkbox" id="slowPasteCheckbox" onchange="generateScript()"><span>ENABLE</span></label>
+                    <label class="disabled"><input type="checkbox" id="slowPasteCheckbox" disabled onchange="generateScript()"><span>ENABLE</span></label>
                 </div>
             </div>
 
@@ -594,7 +606,7 @@
         <div id="advancedOptionsContainer" class="form-group input-section" style="display: none; border-color: rgba(227, 179, 65, 0.4);">
             <div class="header-row">
                 <label style="color: var(--p-matrix-title); text-shadow: 0 0 8px rgba(227, 179, 65, 0.4); display: flex; align-items: center; gap: 6px;">
-                    07 // ADVANCED OPTIONS [ PER-PORT MATRIX ]
+                    08 // ADVANCED OPTIONS [ PER-PORT MATRIX ]
                     <div class="tooltip-icon" style="color: var(--p-matrix-title); border-color: var(--p-matrix-title);" data-tooltip="Granular control. Inputs here will overwrite the Global selections for specific individual ports. Edits here will NOT auto-execute until you hit Execute_Run.">i</div>
                 </label>
                 <div style="display: flex; gap: 10px; align-items: center;">
@@ -1091,9 +1103,9 @@
     function confirmRemove() { const dontShow = document.getElementById('dontShowAgainCheckbox').checked; if(dontShow) { localStorage.setItem('noccat_suppress_remove_warning', 'true'); } document.getElementById('removeWarningModal').classList.remove('visible'); if (currentMatrixTriggerElem) { currentMatrixTriggerElem = null; } else { checkDynamicWarnings(); } generateScript(); }
 
     function clearAll() { 
-        document.getElementById('configInput').value = ""; document.getElementById('vlanInput').value = ""; document.querySelector('input[name="securityMode"][value="leave"]').checked = true; document.getElementById('stpCheckbox').checked = false; document.querySelector('input[name="adminState"][value="leave"]').checked = true; document.getElementById('suppressCheckbox').checked = false; document.getElementById('slowPasteCheckbox').checked = false; document.getElementById('primaryCode').innerText = "-- system_idle --"; document.getElementById('primaryLines').innerText = ""; document.getElementById('rollbackCode').innerText = "-- system_idle --"; document.getElementById('rollbackLines').innerText = ""; 
+        document.getElementById('configInput').value = ""; document.getElementById('vlanInput').value = ""; document.querySelector('input[name="securityMode"][value="leave"]').checked = true; document.getElementById('stpCheckbox').checked = false; document.querySelector('input[name="adminState"][value="leave"]').checked = true; document.getElementById('suppressCheckbox').checked = false; document.getElementById('slowPasteCheckbox').checked = false; document.getElementById('forceAccessCheckbox').checked = false; document.getElementById('primaryCode').innerText = "-- system_idle --"; document.getElementById('primaryLines').innerText = ""; document.getElementById('rollbackCode').innerText = "-- system_idle --"; document.getElementById('rollbackLines').innerText = ""; 
         const execBtn = document.getElementById('executeBtn'); execBtn.disabled = true; execBtn.classList.remove('ready'); execBtn.classList.remove('auto-cast'); execBtn.innerText = "Execute_Run";
-        const uiControlsToLock =[ document.querySelector('input[name="securityMode"][value="dot1x"]'), document.querySelector('input[name="securityMode"][value="sticky"]'), document.querySelector('input[name="securityMode"][value="remove"]'), document.querySelector('input[name="securityMode"][value="reset"]'), document.getElementById('stpCheckbox'), document.querySelector('input[name="adminState"][value="up"]'), document.querySelector('input[name="adminState"][value="down"]'), document.querySelector('input[name="adminState"][value="bounce"]') ]; uiControlsToLock.forEach(btn => { if (btn) { btn.disabled = true; btn.closest('label').classList.add('disabled'); } }); 
+        const uiControlsToLock =[ document.querySelector('input[name="securityMode"][value="dot1x"]'), document.querySelector('input[name="securityMode"][value="sticky"]'), document.querySelector('input[name="securityMode"][value="remove"]'), document.querySelector('input[name="securityMode"][value="reset"]'), document.getElementById('stpCheckbox'), document.querySelector('input[name="adminState"][value="up"]'), document.querySelector('input[name="adminState"][value="down"]'), document.querySelector('input[name="adminState"][value="bounce"]'), document.getElementById('forceAccessCheckbox') ]; uiControlsToLock.forEach(btn => { if (btn) { btn.disabled = true; btn.closest('label').classList.add('disabled'); } }); 
         document.getElementById('copyPrimaryBtn').disabled = true; document.getElementById('copyRollbackBtn').disabled = true; document.getElementById('dlPrimaryBtn').disabled = true; document.getElementById('dlRollbackBtn').disabled = true; document.getElementById('statusMsg').style.display = 'none'; document.getElementById('warningBox').style.display = 'none'; document.getElementById('deviceHud').classList.remove('visible'); document.getElementById('advancedOptionsContainer').style.display = 'none'; document.getElementById('advOptionsWrapper').classList.remove('expanded'); document.getElementById('advOptionsBtn').innerText = "[ EXPAND ]"; document.getElementById('overrideTableBody').innerHTML = ''; 
         let clearBtn = document.getElementById('clearMatrixBtn'); if (clearBtn) clearBtn.style.display = 'none';
         const textarea = document.getElementById('configInput'); textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) toggleExpand(); detectedGlobalHostname = "N0CAT_Script"; blindGroups = []; groupIdCounter = 1; clipboardConfig = null; document.getElementById('pasteContextBtn').style.color = '#666'; document.getElementById('pasteContextBtn').style.pointerEvents = 'none';
@@ -1592,6 +1604,7 @@
         
         const lineCount = configText.split('\n').length;
         const suppressSecWarn = document.getElementById('suppressCheckbox').checked;
+        const forceAccess = document.getElementById('forceAccessCheckbox').checked;
         
         const dot1xRadio = document.querySelector('input[name="securityMode"][value="dot1x"]');
         const stickyRadio = document.querySelector('input[name="securityMode"][value="sticky"]');
@@ -1601,11 +1614,13 @@
         const selectedSecurityMode = document.querySelector('input[name="securityMode"]:checked').value;
         
         const edgeCheckbox = document.getElementById('stpCheckbox');
+        const forceAccessCheckbox = document.getElementById('forceAccessCheckbox');
         
         const upRadio = document.querySelector('input[name="adminState"][value="up"]');
         const downRadio = document.querySelector('input[name="adminState"][value="down"]');
         const bounceRadio = document.querySelector('input[name="adminState"][value="bounce"]');
         const leaveAdminRadio = document.querySelector('input[name="adminState"][value="leave"]');
+        const slowPasteCheckbox = document.getElementById('slowPasteCheckbox');
         
         let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         let textBlocks = [];
@@ -1651,8 +1666,8 @@
         if (!configText.trim() || !hasValidInterface) {
             warningBox.style.display = 'none'; deviceHud.classList.remove('visible'); overrideSection.style.display = 'none';
             textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) { textarea.classList.remove('expanded'); expandBtn.innerText = "[ EXPAND ]"; }
-            document.querySelectorAll('.global-param-section').forEach(el => el.classList.remove('disabled-panel'));
-            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceRadio];
+            document.querySelectorAll('.global-param-section, .force-access-section').forEach(el => el.classList.remove('disabled-panel'));
+            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceRadio, forceAccessCheckbox, slowPasteCheckbox];
             allToggles.forEach(t => { t.disabled = true; t.closest('label').classList.add('disabled'); });
             leaveSecRadio.checked = true; leaveAdminRadio.checked = true; edgeCheckbox.checked = false; detectedGlobalHostname = "N0CAT_Script";
             return;
@@ -1702,8 +1717,12 @@
                 
                 totalParsedPorts++;
                 let isRaw = /! RAW_MODE_FLAG/.test(block);
-                let isAccessMode = isRaw ? true : /switchport\s+mode\s+access/i.test(block);
-                if (!isAccessMode && !unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
+                
+                let isExplicitTrunk = /(?:switchport\s+mode\s+trunk|switchport\s+trunk)/i.test(block);
+                let hasAccessConfig = /switchport\s+mode\s+access/i.test(block);
+                let isAccessMode = isRaw ? true : (hasAccessConfig || (forceAccess && !isExplicitTrunk));
+                
+                if (isExplicitTrunk && !unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
 
                 let isShutdown = isRaw ? false : /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
                 if (isShutdown && !isRaw) { portsWithShutdown++; if (!shutdownPorts.includes(normalizedIf)) shutdownPorts.push(normalizedIf); } 
@@ -1726,9 +1745,9 @@
 
                 if (isAnySticky && isAnyDot1x && !conflictedPorts.includes(normalizedIf)) { conflictedPorts.push(normalizedIf); } 
                 else if (((hasStickyMac && !hasPortSec) || (!hasStickyMac && hasPortSec && !hasLearnedMac) || (hasDot1xPae && !hasAuthPortControl) || (!hasDot1xPae && hasAuthPortControl)) && !fragmentPorts.includes(normalizedIf) && !isRaw) { fragmentPorts.push(normalizedIf); } 
-                else if (!isAnySticky && !isAnyDot1x && !noSecPorts.includes(normalizedIf) && !suppressSecWarn && !isRaw) { noSecPorts.push(normalizedIf); }
+                else if (!isAnySticky && !isAnyDot1x && !noSecPorts.includes(normalizedIf) && !suppressSecWarn && !isRaw && !isExplicitTrunk) { noSecPorts.push(normalizedIf); }
                 
-                if (isAccessMode) {
+                if (isAccessMode || (!isExplicitTrunk && !isRaw)) {
                     let vlanMatch = block.match(/switchport\s+access\s+vlan\s+(\d+)/i);
                     validAccessPortsForGrid.push({
                         name: normalizedIf, origVlan: isRaw ? 'UNKNOWN' : (vlanMatch ? vlanMatch[1] : '1 (Default)'),
@@ -1742,13 +1761,22 @@
 
         if (hasRawPorts && isRawModeGlobal) {
             document.querySelectorAll('.global-param-section').forEach(el => el.classList.add('disabled-panel'));
+            document.querySelectorAll('.force-access-section').forEach(el => el.classList.remove('disabled-panel'));
             if (!document.getElementById('advOptionsWrapper').classList.contains('expanded')) { toggleAdvOptions(); }
             blindContainer.style.display = 'block';
             renderGroupsUI();
+            
+            forceAccessCheckbox.disabled = false; forceAccessCheckbox.closest('label').classList.remove('disabled');
         } else {
-            document.querySelectorAll('.global-param-section').forEach(el => el.classList.remove('disabled-panel'));
+            document.querySelectorAll('.global-param-section, .force-access-section').forEach(el => el.classList.remove('disabled-panel'));
             blindContainer.style.display = 'none';
+            if (totalParsedPorts > 0) {
+                forceAccessCheckbox.disabled = false; forceAccessCheckbox.closest('label').classList.remove('disabled');
+                slowPasteCheckbox.disabled = false; slowPasteCheckbox.closest('label').classList.remove('disabled');
+            }
         }
+
+        const isSecurityModifying = selectedSecurityMode !== 'leave';
 
         if (totalParsedPorts > 0 && !hasRawPorts) {
             if (portsWithFullDot1x === totalParsedPorts) { dot1xRadio.disabled = true; dot1xRadio.closest('label').classList.add('disabled'); if (dot1xRadio.checked) leaveSecRadio.checked = true; } else { dot1xRadio.disabled = false; dot1xRadio.closest('label').classList.remove('disabled'); }
@@ -1837,7 +1865,7 @@
         let baseHasContent = false;
         
         if (hasRawPorts) {
-            warningHTML += `<div style="margin-bottom: ${(unsafePorts.length > 0 || shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// 🛑 DANGER: BLIND OVERRIDE MODE (RAW PORTS) 🛑 //////</strong><br><em style="color: var(--accent-red);">Idempotency and Trunk protections are DISABLED. You are configuring unknown states. Proceed with extreme caution.</em><br><label class="raw-force-toggle" style="cursor: pointer;"><input type="checkbox" ${forceRawAccess ? 'checked' : ''} onchange="updateForceAccess(this.checked)"> Force 'switchport mode access' <div class="tooltip-icon" style="margin-left: 5px; color: var(--accent-red); border-color: var(--accent-red); background: rgba(248, 81, 73, 0.1);" data-tooltip="DANGER: Forcing access mode bypasses safety locks. Applying this to an Uplink or Trunk port will cause severe network outages.">i</div></label></div>`;
+            warningHTML += `<div style="margin-bottom: ${(unsafePorts.length > 0 || shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// 🛑 DANGER: BLIND OVERRIDE MODE (RAW PORTS) 🛑 //////</strong><br><em style="color: var(--accent-red);">Idempotency and Trunk protections are DISABLED. You are configuring unknown states. Proceed with extreme caution.</em></div>`;
             baseHasContent = true;
         }
 
@@ -1887,6 +1915,7 @@
         const applyStp = document.getElementById('stpCheckbox').checked;
         const adminState = document.querySelector('input[name="adminState"]:checked').value;
         const slowPaste = document.getElementById('slowPasteCheckbox').checked;
+        const forceAccess = document.getElementById('forceAccessCheckbox').checked;
         
         let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         let textBlocks = [];
@@ -1912,7 +1941,10 @@
                 let rawIf = ifMatch[1];
                 let normalizedIf = rawIf.replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te').replace(/\s+/g, '');
                 let isRaw = /! RAW_MODE_FLAG/.test(block);
-                let isAccessMode = isRaw ? true : /switchport\s+mode\s+access/i.test(block);
+                
+                let isExplicitTrunk = /(?:switchport\s+mode\s+trunk|switchport\s+trunk)/i.test(block);
+                let hasAccessConfig = /switchport\s+mode\s+access/i.test(block);
+                
                 let vlanMatch = block.match(/switchport\s+access\s+vlan\s+(\d+)/i);
                 let hasStickyMac = isRaw ? false : /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky[ \t]*\r?(?:\n|$)/i.test(block);
                 let hasPortSec = isRaw ? false : /(?:^|\n)[ \t]*switchport\s+port-security[ \t]*\r?(?:\n|$)/i.test(block);
@@ -1924,10 +1956,18 @@
                 let hasLearnedMac = isRaw ? false : /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky\s+[0-9a-fA-F]{4}\.[0-9a-fA-F]{4}\.[0-9a-fA-F]{4}/i.test(block);
 
                 if (!interfacesDataMap[normalizedIf]) {
-                    interfacesDataMap[normalizedIf] = { name: normalizedIf, isTrunk: isRaw ? false : !isAccessMode, isRaw: isRaw, origVlan: vlanMatch ? vlanMatch[1] : null, hasStickyMac, hasPortSec, hasDot1xPae, hasAuthPortControl, hasPortfast, hasBpduguard, isShutdown, hasLearnedMac };
+                    interfacesDataMap[normalizedIf] = { 
+                        name: normalizedIf, 
+                        isTrunk: isRaw ? false : isExplicitTrunk, 
+                        isRaw: isRaw, 
+                        hasAccessConfig: hasAccessConfig,
+                        origVlan: vlanMatch ? vlanMatch[1] : null, 
+                        hasStickyMac, hasPortSec, hasDot1xPae, hasAuthPortControl, hasPortfast, hasBpduguard, isShutdown, hasLearnedMac 
+                    };
                 } else {
-                    if (!isAccessMode && !isRaw) interfacesDataMap[normalizedIf].isTrunk = true;
+                    if (isExplicitTrunk && !isRaw) interfacesDataMap[normalizedIf].isTrunk = true;
                     if (isRaw) interfacesDataMap[normalizedIf].isRaw = true;
+                    if (hasAccessConfig) interfacesDataMap[normalizedIf].hasAccessConfig = true;
                     if (vlanMatch) interfacesDataMap[normalizedIf].origVlan = vlanMatch[1];
                     if (hasStickyMac) interfacesDataMap[normalizedIf].hasStickyMac = true;
                     if (hasPortSec) interfacesDataMap[normalizedIf].hasPortSec = true;
@@ -1987,6 +2027,7 @@
                 adminVal = (oAdmin && oAdmin.value !== 'global' && oAdmin.value !== 'leave') ? oAdmin.value : adminState;
             }
 
+            let needsAccessCommand = iface.isRaw ? forceAccess : (forceAccess && !iface.hasAccessConfig);
             let vlanChanged = vlanVal && vlanVal !== iface.origVlan;
             let forceEdgeApply = edgeVal === 'apply'; let forceEdgeRemove = edgeVal === 'remove';
             let stpChanged = (forceEdgeApply && (!iface.hasPortfast || !iface.hasBpduguard)) || (forceEdgeRemove && (iface.hasPortfast || iface.hasBpduguard));
@@ -2014,13 +2055,12 @@
                 }
             }
             
-            let rawModeAccessApplies = iface.isRaw && forceRawAccess;
-            let hasChanges = vlanChanged || stpChanged || secChanged || stateChanged;
+            let hasChanges = vlanChanged || stpChanged || secChanged || stateChanged || needsAccessCommand;
 
             if (!hasChanges && !iface.isRaw) return null;
-            if (iface.isRaw && !hasChanges && !rawModeAccessApplies) return null;
+            if (iface.isRaw && !hasChanges) return null;
 
-            if (rawModeAccessApplies) cmds.push("switchport mode access");
+            if (needsAccessCommand) cmds.push("switchport mode access");
             if (vlanChanged) cmds.push(`switchport access vlan ${vlanVal}`);
             
             if (forceEdgeApply) {
@@ -2139,6 +2179,7 @@
             }
 
             let cmds = [];
+            let needsAccessCommand = iface.isRaw ? forceAccess : (forceAccess && !iface.hasAccessConfig);
             let vlanChanged = vlanVal && vlanVal !== iface.origVlan;
             let forceEdgeApply = edgeVal === 'apply'; let forceEdgeRemove = edgeVal === 'remove';
             let stpChanged = (forceEdgeApply && (!iface.hasPortfast || !iface.hasBpduguard)) || (forceEdgeRemove && (iface.hasPortfast || iface.hasBpduguard));
@@ -2165,13 +2206,12 @@
                 }
             }
             
-            let rawModeAccessApplies = iface.isRaw && forceRawAccess;
-            let hasChanges = vlanChanged || stpChanged || secChanged || stateChanged;
+            let hasChanges = vlanChanged || stpChanged || secChanged || stateChanged || needsAccessCommand;
 
             if (!hasChanges && !iface.isRaw) return null;
-            if (iface.isRaw && !hasChanges && !rawModeAccessApplies) return null;
+            if (iface.isRaw && !hasChanges) return null;
 
-            if (rawModeAccessApplies) cmds.push("no switchport mode access");
+            if (needsAccessCommand) cmds.push("no switchport mode access");
             
             if (vlanChanged) {
                 if (iface.isRaw) {
