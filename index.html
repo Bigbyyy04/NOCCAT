@@ -562,18 +562,19 @@
                 </div>
             </div>
 
-            <div class="form-group global-param-section" style="width: 215px;">
+            <div class="form-group global-param-section" style="width: 290px;">
                 <div style="margin-bottom: 10px;">
                     <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
                         05 // ADMIN STATE
-                        <div class="tooltip-icon" data-tooltip="UP forces 'no shut'. DWN forces 'shut'. BNC explicitly bounces the port (shut/no shut). LEAVE preserves original state.">i</div>
+                        <div class="tooltip-icon" data-tooltip="UP forces 'no shut'. DWN forces 'shut'. BNC ALL bounces every parsed port. BNC CHG bounces only ports receiving other modifications.">i</div>
                     </label>
                 </div>
                 <div class="radio-group">
                     <label><input type="radio" name="adminState" value="leave" checked onchange="generateScript()"><span>--</span></label>
                     <label class="disabled"><input type="radio" name="adminState" value="up" disabled onchange="generateScript()"><span>UP</span></label>
                     <label class="disabled"><input type="radio" name="adminState" value="down" disabled onchange="generateScript()"><span>DWN</span></label>
-                    <label class="disabled"><input type="radio" name="adminState" value="bounce" disabled onchange="generateScript()"><span>BNC</span></label>
+                    <label class="disabled" title="Bounce ALL parsed ports"><input type="radio" name="adminState" value="bounce_all" disabled onchange="generateScript()"><span>BNC ALL</span></label>
+                    <label class="disabled" title="Bounce ONLY ports with other changes"><input type="radio" name="adminState" value="bounce_chg" disabled onchange="generateScript()"><span>BNC CHG</span></label>
                 </div>
             </div>
             
@@ -1105,7 +1106,7 @@
     function clearAll() { 
         document.getElementById('configInput').value = ""; document.getElementById('vlanInput').value = ""; document.querySelector('input[name="securityMode"][value="leave"]').checked = true; document.getElementById('stpCheckbox').checked = false; document.querySelector('input[name="adminState"][value="leave"]').checked = true; document.getElementById('suppressCheckbox').checked = false; document.getElementById('slowPasteCheckbox').checked = false; document.getElementById('forceAccessCheckbox').checked = false; document.getElementById('primaryCode').innerText = "-- system_idle --"; document.getElementById('primaryLines').innerText = ""; document.getElementById('rollbackCode').innerText = "-- system_idle --"; document.getElementById('rollbackLines').innerText = ""; 
         const execBtn = document.getElementById('executeBtn'); execBtn.disabled = true; execBtn.classList.remove('ready'); execBtn.classList.remove('auto-cast'); execBtn.innerText = "Execute_Run";
-        const uiControlsToLock =[ document.querySelector('input[name="securityMode"][value="dot1x"]'), document.querySelector('input[name="securityMode"][value="sticky"]'), document.querySelector('input[name="securityMode"][value="remove"]'), document.querySelector('input[name="securityMode"][value="reset"]'), document.getElementById('stpCheckbox'), document.querySelector('input[name="adminState"][value="up"]'), document.querySelector('input[name="adminState"][value="down"]'), document.querySelector('input[name="adminState"][value="bounce"]'), document.getElementById('forceAccessCheckbox') ]; uiControlsToLock.forEach(btn => { if (btn) { btn.disabled = true; btn.closest('label').classList.add('disabled'); } }); 
+        const uiControlsToLock =[ document.querySelector('input[name="securityMode"][value="dot1x"]'), document.querySelector('input[name="securityMode"][value="sticky"]'), document.querySelector('input[name="securityMode"][value="remove"]'), document.querySelector('input[name="securityMode"][value="reset"]'), document.getElementById('stpCheckbox'), document.querySelector('input[name="adminState"][value="up"]'), document.querySelector('input[name="adminState"][value="down"]'), document.querySelector('input[name="adminState"][value="bounce_all"]'), document.querySelector('input[name="adminState"][value="bounce_chg"]'), document.getElementById('forceAccessCheckbox'), document.getElementById('slowPasteCheckbox') ]; uiControlsToLock.forEach(btn => { if (btn) { btn.disabled = true; btn.closest('label').classList.add('disabled'); } }); 
         document.getElementById('copyPrimaryBtn').disabled = true; document.getElementById('copyRollbackBtn').disabled = true; document.getElementById('dlPrimaryBtn').disabled = true; document.getElementById('dlRollbackBtn').disabled = true; document.getElementById('statusMsg').style.display = 'none'; document.getElementById('warningBox').style.display = 'none'; document.getElementById('deviceHud').classList.remove('visible'); document.getElementById('advancedOptionsContainer').style.display = 'none'; document.getElementById('advOptionsWrapper').classList.remove('expanded'); document.getElementById('advOptionsBtn').innerText = "[ EXPAND ]"; document.getElementById('overrideTableBody').innerHTML = ''; 
         let clearBtn = document.getElementById('clearMatrixBtn'); if (clearBtn) clearBtn.style.display = 'none';
         const textarea = document.getElementById('configInput'); textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) toggleExpand(); detectedGlobalHostname = "N0CAT_Script"; blindGroups = []; groupIdCounter = 1; clipboardConfig = null; document.getElementById('pasteContextBtn').style.color = '#666'; document.getElementById('pasteContextBtn').style.pointerEvents = 'none';
@@ -1618,7 +1619,8 @@
         
         const upRadio = document.querySelector('input[name="adminState"][value="up"]');
         const downRadio = document.querySelector('input[name="adminState"][value="down"]');
-        const bounceRadio = document.querySelector('input[name="adminState"][value="bounce"]');
+        const bounceAllRadio = document.querySelector('input[name="adminState"][value="bounce_all"]');
+        const bounceChgRadio = document.querySelector('input[name="adminState"][value="bounce_chg"]');
         const leaveAdminRadio = document.querySelector('input[name="adminState"][value="leave"]');
         const slowPasteCheckbox = document.getElementById('slowPasteCheckbox');
         
@@ -1667,7 +1669,7 @@
             warningBox.style.display = 'none'; deviceHud.classList.remove('visible'); overrideSection.style.display = 'none';
             textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) { textarea.classList.remove('expanded'); expandBtn.innerText = "[ EXPAND ]"; }
             document.querySelectorAll('.global-param-section, .force-access-section').forEach(el => el.classList.remove('disabled-panel'));
-            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceRadio, forceAccessCheckbox, slowPasteCheckbox];
+            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceAllRadio, bounceChgRadio, forceAccessCheckbox, slowPasteCheckbox];
             allToggles.forEach(t => { t.disabled = true; t.closest('label').classList.add('disabled'); });
             leaveSecRadio.checked = true; leaveAdminRadio.checked = true; edgeCheckbox.checked = false; detectedGlobalHostname = "N0CAT_Script";
             return;
@@ -1785,7 +1787,16 @@
             if (portsWithFullEdge === totalParsedPorts) { edgeCheckbox.disabled = true; edgeCheckbox.closest('label').classList.add('disabled'); edgeCheckbox.checked = false; } else { edgeCheckbox.disabled = false; edgeCheckbox.closest('label').classList.remove('disabled'); }
             if (portsWithNoShut === totalParsedPorts) { upRadio.disabled = true; upRadio.closest('label').classList.add('disabled'); if (upRadio.checked) leaveAdminRadio.checked = true; } else { upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled'); }
             if (portsWithShutdown === totalParsedPorts) { downRadio.disabled = true; downRadio.closest('label').classList.add('disabled'); if (downRadio.checked) leaveAdminRadio.checked = true; } else { downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled'); }
-            if (portsWithShutdown === totalParsedPorts) { bounceRadio.disabled = true; bounceRadio.closest('label').classList.add('disabled'); if (bounceRadio.checked) leaveAdminRadio.checked = true; } else { bounceRadio.disabled = false; bounceRadio.closest('label').classList.remove('disabled'); }
+            
+            if (portsWithShutdown === totalParsedPorts) { 
+                bounceAllRadio.disabled = true; bounceAllRadio.closest('label').classList.add('disabled'); 
+                if (bounceAllRadio.checked) leaveAdminRadio.checked = true; 
+                bounceChgRadio.disabled = true; bounceChgRadio.closest('label').classList.add('disabled'); 
+                if (bounceChgRadio.checked) leaveAdminRadio.checked = true; 
+            } else { 
+                bounceAllRadio.disabled = false; bounceAllRadio.closest('label').classList.remove('disabled'); 
+                bounceChgRadio.disabled = false; bounceChgRadio.closest('label').classList.remove('disabled'); 
+            }
         }
         
         if (validAccessPortsForGrid.length > 0) {
@@ -2032,9 +2043,6 @@
             let forceEdgeApply = edgeVal === 'apply'; let forceEdgeRemove = edgeVal === 'remove';
             let stpChanged = (forceEdgeApply && (!iface.hasPortfast || !iface.hasBpduguard)) || (forceEdgeRemove && (iface.hasPortfast || iface.hasBpduguard));
             
-            let forceUp = adminVal === 'up'; let forceDown = adminVal === 'down'; let forceBounce = adminVal === 'bounce';
-            let stateChanged = forceBounce || forceUp || forceDown;
-            
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec || iface.hasLearnedMac;
             let secChanged = false;
@@ -2046,15 +2054,18 @@
                     if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true;
                 } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky') {
                     if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec || iface.hasLearnedMac) secChanged = true;
-                } else if (secVal === 'reset') {
+                } else if (secVal === 'reset' || secVal === 'reset_dot1x' || secVal === 'reset_sticky') {
                     if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
-                } else if (secVal === 'reset_dot1x' || secVal === 'reset_sticky') {
-                    secChanged = true;
                 } else if (secVal === 'remove') {
                     if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
                 }
             }
             
+            let forceUp = adminVal === 'up'; 
+            let forceDown = adminVal === 'down'; 
+            let forceBounce = adminVal === 'bounce_all' || adminVal === 'bounce' || (adminVal === 'bounce_chg' && (vlanChanged || stpChanged || secChanged || needsAccessCommand));
+            let stateChanged = forceBounce || forceUp || forceDown;
+
             let hasChanges = vlanChanged || stpChanged || secChanged || stateChanged || needsAccessCommand;
 
             if (!hasChanges && !iface.isRaw) return null;
@@ -2084,7 +2095,7 @@
                         secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
                     } else if (secVal === 'conv_dot1x_to_sticky') {
                         secRemoveCmds.push("no dot1x pae authenticator", "no authentication port-control auto");
-                    } else if (secVal === 'remove' || secVal === 'reset') { // standard mode explicit
+                    } else if (secVal === 'remove' || secVal === 'reset') {
                         secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "no dot1x pae authenticator", "no authentication port-control auto");
                     }
                 } else {
@@ -2184,9 +2195,6 @@
             let forceEdgeApply = edgeVal === 'apply'; let forceEdgeRemove = edgeVal === 'remove';
             let stpChanged = (forceEdgeApply && (!iface.hasPortfast || !iface.hasBpduguard)) || (forceEdgeRemove && (iface.hasPortfast || iface.hasBpduguard));
             
-            let forceUp = adminVal === 'up'; let forceDown = adminVal === 'down'; let forceBounce = adminVal === 'bounce';
-            let stateChanged = forceBounce || (forceUp && (iface.isShutdown || iface.isRaw)) || (forceDown && (!iface.isShutdown || iface.isRaw));
-            
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec || iface.hasLearnedMac;
             let secChanged = false;
@@ -2205,6 +2213,26 @@
                     secChanged = false; 
                 }
             }
+
+            let primarySecChanged = false;
+            if (iface.isRaw && secVal !== 'leave') {
+                primarySecChanged = true;
+            } else if (!iface.isRaw) {
+                if (secVal === 'dot1x' || secVal === 'conv_sticky_to_dot1x') {
+                    if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) primarySecChanged = true;
+                } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky') {
+                    if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec || iface.hasLearnedMac) primarySecChanged = true;
+                } else if (secVal === 'reset' || secVal === 'reset_dot1x' || secVal === 'reset_sticky') {
+                    if (isCurrentlySticky || isCurrentlyDot1x) primarySecChanged = true;
+                } else if (secVal === 'remove') {
+                    if (isCurrentlySticky || isCurrentlyDot1x) primarySecChanged = true;
+                }
+            }
+
+            let forceUp = adminVal === 'up'; 
+            let forceDown = adminVal === 'down'; 
+            let forceBounce = adminVal === 'bounce_all' || adminVal === 'bounce' || (adminVal === 'bounce_chg' && (vlanChanged || stpChanged || primarySecChanged || needsAccessCommand));
+            let stateChanged = forceBounce || (forceUp && (iface.isShutdown || iface.isRaw)) || (forceDown && (!iface.isShutdown || iface.isRaw));
             
             let hasChanges = vlanChanged || stpChanged || secChanged || stateChanged || needsAccessCommand;
 
