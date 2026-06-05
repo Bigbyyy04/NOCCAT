@@ -534,8 +534,12 @@
                                 <input type="checkbox" id="suppressCheckbox" onchange="checkDynamicWarnings()">
                                 <span>OPEN_PORT</span>
                             </label>
+                            <label id="forceResetStickyLabel" class="disabled" style="padding: 2px 6px; font-size: 9px; letter-spacing: 0.5px;">
+                                <input type="checkbox" id="forceResetStickyCheckbox" disabled onchange="generateScript()">
+                                <span>RST_STK</span>
+                            </label>
                         </div>
-                        <div class="tooltip-icon" data-tooltip="Suppresses the 'No Port Security' warning for intentional IT or specific campaign use.">i</div>
+                        <div class="tooltip-icon" data-tooltip="OPEN_PORT suppresses 'No Port Security' warnings. RST_STK resets existing Sticky MACs when STICKY is selected alongside DOT1X conversions.">i</div>
                     </div>
                 </div>
                 <div class="radio-group">
@@ -1101,9 +1105,9 @@
     function confirmRemove() { const dontShow = document.getElementById('dontShowAgainCheckbox').checked; if(dontShow) { localStorage.setItem('noccat_suppress_remove_warning', 'true'); } document.getElementById('removeWarningModal').classList.remove('visible'); if (currentMatrixTriggerElem) { currentMatrixTriggerElem = null; } else { checkDynamicWarnings(); } generateScript(); }
 
     function clearAll() { 
-        document.getElementById('configInput').value = ""; document.getElementById('vlanInput').value = ""; document.querySelector('input[name="securityMode"][value="leave"]').checked = true; document.getElementById('stpCheckbox').checked = false; document.querySelector('input[name="adminState"][value="leave"]').checked = true; document.getElementById('suppressCheckbox').checked = false; document.getElementById('slowPasteCheckbox').checked = false; document.getElementById('forceAccessCheckbox').checked = false; document.getElementById('primaryCode').innerText = "-- system_idle --"; document.getElementById('primaryLines').innerText = ""; document.getElementById('rollbackCode').innerText = "-- system_idle --"; document.getElementById('rollbackLines').innerText = ""; 
+        document.getElementById('configInput').value = ""; document.getElementById('vlanInput').value = ""; document.querySelector('input[name="securityMode"][value="leave"]').checked = true; document.getElementById('stpCheckbox').checked = false; document.querySelector('input[name="adminState"][value="leave"]').checked = true; document.getElementById('suppressCheckbox').checked = false; document.getElementById('forceResetStickyCheckbox').checked = false; document.getElementById('forceResetStickyCheckbox').disabled = true; document.getElementById('forceResetStickyLabel').classList.add('disabled'); document.getElementById('slowPasteCheckbox').checked = false; document.getElementById('forceAccessCheckbox').checked = false; document.getElementById('primaryCode').innerText = "-- system_idle --"; document.getElementById('primaryLines').innerText = ""; document.getElementById('rollbackCode').innerText = "-- system_idle --"; document.getElementById('rollbackLines').innerText = ""; 
         const execBtn = document.getElementById('executeBtn'); execBtn.disabled = true; execBtn.classList.remove('ready'); execBtn.classList.remove('auto-cast'); execBtn.innerText = "Execute_Run";
-        const uiControlsToLock =[ document.querySelector('input[name="securityMode"][value="dot1x"]'), document.querySelector('input[name="securityMode"][value="sticky"]'), document.querySelector('input[name="securityMode"][value="remove"]'), document.querySelector('input[name="securityMode"][value="reset"]'), document.getElementById('stpCheckbox'), document.querySelector('input[name="adminState"][value="up"]'), document.querySelector('input[name="adminState"][value="down"]'), document.querySelector('input[name="adminState"][value="bounce_all"]'), document.querySelector('input[name="adminState"][value="bounce_chg"]'), document.getElementById('forceAccessCheckbox'), document.getElementById('slowPasteCheckbox') ]; uiControlsToLock.forEach(btn => { if (btn) { btn.disabled = true; btn.closest('label').classList.add('disabled'); } }); 
+        const uiControlsToLock =[ document.querySelector('input[name="securityMode"][value="dot1x"]'), document.querySelector('input[name="securityMode"][value="sticky"]'), document.querySelector('input[name="securityMode"][value="remove"]'), document.querySelector('input[name="securityMode"][value="reset"]'), document.getElementById('stpCheckbox'), document.querySelector('input[name="adminState"][value="up"]'), document.querySelector('input[name="adminState"][value="down"]'), document.querySelector('input[name="adminState"][value="bounce_all"]'), document.querySelector('input[name="adminState"][value="bounce_chg"]'), document.getElementById('forceAccessCheckbox'), document.getElementById('slowPasteCheckbox'), document.getElementById('forceResetStickyCheckbox') ]; uiControlsToLock.forEach(btn => { if (btn) { btn.disabled = true; btn.closest('label').classList.add('disabled'); } }); 
         document.getElementById('copyPrimaryBtn').disabled = true; document.getElementById('copyRollbackBtn').disabled = true; document.getElementById('dlPrimaryBtn').disabled = true; document.getElementById('dlRollbackBtn').disabled = true; document.getElementById('statusMsg').style.display = 'none'; document.getElementById('warningBox').style.display = 'none'; document.getElementById('deviceHud').classList.remove('visible'); document.getElementById('advancedOptionsContainer').style.display = 'none'; document.getElementById('advOptionsWrapper').classList.remove('expanded'); document.getElementById('advOptionsBtn').innerText = "[ EXPAND ]"; document.getElementById('overrideTableBody').innerHTML = ''; 
         let clearBtn = document.getElementById('clearMatrixBtn'); if (clearBtn) clearBtn.style.display = 'none';
         const textarea = document.getElementById('configInput'); textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) toggleExpand(); detectedGlobalHostname = "N0CAT_Script"; blindGroups = []; groupIdCounter = 1; clipboardConfig = null; document.getElementById('pasteContextBtn').style.color = '#666'; document.getElementById('pasteContextBtn').style.pointerEvents = 'none';
@@ -1669,6 +1673,10 @@
             const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceAllRadio, bounceChgRadio, forceAccessCheckbox, slowPasteCheckbox];
             allToggles.forEach(t => { t.disabled = true; t.closest('label').classList.add('disabled'); });
             leaveSecRadio.checked = true; leaveAdminRadio.checked = true; edgeCheckbox.checked = false; detectedGlobalHostname = "N0CAT_Script";
+            
+            document.getElementById('forceResetStickyCheckbox').checked = false;
+            document.getElementById('forceResetStickyCheckbox').disabled = true;
+            document.getElementById('forceResetStickyLabel').classList.add('disabled');
             return;
         }
 
@@ -1707,6 +1715,9 @@
         let unsafePorts = [], shutdownPorts = [], conflictedPorts = [], fragmentPorts = [], noSecPorts = [];
         let validAccessPortsForGrid = [];
         let allParsedPorts = [];
+        
+        let hasAnyDot1xGlobal = false;
+        let hasAnyStickyGlobal = false;
 
         textBlocks.forEach(block => {
             const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
@@ -1739,6 +1750,9 @@
                 if ((hasStickyMac || hasLearnedMac) && hasPortSec) portsWithFullSticky++;
                 if (hasDot1xPae && hasAuthPortControl) portsWithFullDot1x++;
                 
+                if (hasDot1xPae || hasAuthPortControl) hasAnyDot1xGlobal = true;
+                if (hasStickyMac || hasPortSec || hasLearnedMac) hasAnyStickyGlobal = true;
+                
                 let hasPortfast = /spanning-tree\s+portfast/i.test(block), hasBpduguard = /spanning-tree\s+bpduguard/i.test(block);
                 if (hasPortfast && hasBpduguard) portsWithFullEdge++;
 
@@ -1755,6 +1769,18 @@
                 }
             }
         });
+
+        const forceResetStickyCheckbox = document.getElementById('forceResetStickyCheckbox');
+        const forceResetStickyLabel = document.getElementById('forceResetStickyLabel');
+        
+        if (hasAnyDot1xGlobal && hasAnyStickyGlobal) {
+            forceResetStickyCheckbox.disabled = false;
+            forceResetStickyLabel.classList.remove('disabled');
+        } else {
+            forceResetStickyCheckbox.disabled = true;
+            forceResetStickyLabel.classList.add('disabled');
+            forceResetStickyCheckbox.checked = false;
+        }
 
         blindGroups.forEach(g => { g.ports = g.ports.filter(p => allParsedPorts.includes(p)); });
 
@@ -1924,6 +1950,7 @@
         const adminState = document.querySelector('input[name="adminState"]:checked').value;
         const slowPaste = document.getElementById('slowPasteCheckbox').checked;
         const forceAccess = document.getElementById('forceAccessCheckbox').checked;
+        const forceResetSticky = document.getElementById('forceResetStickyCheckbox') && document.getElementById('forceResetStickyCheckbox').checked;
         
         let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         let textBlocks = [];
@@ -2040,8 +2067,6 @@
             let forceEdgeApply = edgeVal === 'apply'; let forceEdgeRemove = edgeVal === 'remove';
             let stpChanged = (forceEdgeApply && (!iface.hasPortfast || !iface.hasBpduguard)) || (forceEdgeRemove && (iface.hasPortfast || iface.hasBpduguard));
             
-            let forceUp = adminVal === 'up'; let forceDown = adminVal === 'down'; let forceBounce = adminVal === 'bounce_all' || adminVal === 'bounce' || (adminVal === 'bounce_chg' && (vlanChanged || stpChanged || needsAccessCommand));
-            
             let isCurrentlyDot1x = iface.hasDot1xPae || iface.hasAuthPortControl;
             let isCurrentlySticky = iface.hasStickyMac || iface.hasPortSec || iface.hasLearnedMac;
             let secChanged = false;
@@ -2053,21 +2078,19 @@
                     if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true;
                 } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky') {
                     if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true;
-                } else if (secVal === 'reset') {
+                    else if (forceResetSticky && isCurrentlySticky) secChanged = true;
+                } else if (secVal === 'reset' || secVal === 'reset_dot1x' || secVal === 'reset_sticky') {
                     if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
-                } else if (secVal === 'reset_dot1x' || secVal === 'reset_sticky') {
-                    secChanged = true;
                 } else if (secVal === 'remove') {
                     if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
                 }
             }
 
-            if (adminVal === 'bounce_chg' && secChanged) {
-                forceBounce = true;
-            }
+            let forceUp = adminVal === 'up'; 
+            let forceDown = adminVal === 'down'; 
+            let forceBounce = adminVal === 'bounce_all' || adminVal === 'bounce' || (adminVal === 'bounce_chg' && (vlanChanged || stpChanged || secChanged || needsAccessCommand));
             let stateChanged = forceBounce || forceUp || forceDown;
             
-            let rawModeAccessApplies = iface.isRaw && forceRawAccess;
             let hasChanges = vlanChanged || stpChanged || secChanged || stateChanged || needsAccessCommand;
 
             if (!hasChanges && !iface.isRaw) return null;
@@ -2113,8 +2136,13 @@
                         secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security", "no dot1x pae authenticator", "no authentication port-control auto");
                     } else if (secVal === 'dot1x' && isCurrentlySticky) {
                         secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
-                    } else if (secVal === 'sticky' && isCurrentlyDot1x) {
-                        secRemoveCmds.push("no dot1x pae authenticator", "no authentication port-control auto");
+                    } else if (secVal === 'sticky') {
+                        if (isCurrentlyDot1x) {
+                            secRemoveCmds.push("no dot1x pae authenticator", "no authentication port-control auto");
+                        }
+                        if (forceResetSticky && isCurrentlySticky) {
+                            secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
+                        }
                     } else if (secVal === 'reset') {
                         if (isCurrentlySticky) secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
                         if (isCurrentlyDot1x) secRemoveCmds.push("no dot1x pae authenticator", "no authentication port-control auto");
@@ -2125,8 +2153,8 @@
                     if (!iface.hasDot1xPae || iface.isRaw || secVal.startsWith('reset') || secVal.startsWith('conv')) secApplyCmds.push("dot1x pae authenticator");
                     if (!iface.hasAuthPortControl || iface.isRaw || secVal.startsWith('reset') || secVal.startsWith('conv')) secApplyCmds.push("authentication port-control auto");
                 } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky' || secVal === 'reset_sticky' || (secVal === 'reset' && isCurrentlySticky)) {
-                    if (!iface.hasStickyMac || iface.isRaw || iface.hasLearnedMac || isCurrentlyDot1x || secVal.startsWith('reset') || secVal.startsWith('conv')) secApplyCmds.push("switchport port-security mac-address sticky");
-                    if (!iface.hasPortSec || iface.isRaw || iface.hasLearnedMac || isCurrentlyDot1x || secVal.startsWith('reset') || secVal.startsWith('conv')) secApplyCmds.push("switchport port-security");
+                    if (!iface.hasStickyMac || iface.isRaw || iface.hasLearnedMac || isCurrentlyDot1x || secVal.startsWith('reset') || secVal.startsWith('conv') || (secVal === 'sticky' && forceResetSticky)) secApplyCmds.push("switchport port-security mac-address sticky");
+                    if (!iface.hasPortSec || iface.isRaw || iface.hasLearnedMac || isCurrentlyDot1x || secVal.startsWith('reset') || secVal.startsWith('conv') || (secVal === 'sticky' && forceResetSticky)) secApplyCmds.push("switchport port-security");
                 }
             } 
 
@@ -2209,6 +2237,7 @@
                     if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) secChanged = true;
                 } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky') {
                     if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) secChanged = true;
+                    else if (forceResetSticky && isCurrentlySticky) secChanged = true;
                 } else if (secVal === 'remove') {
                     if (isCurrentlySticky || isCurrentlyDot1x) secChanged = true;
                 } else if (secVal.startsWith('reset')) {
@@ -2224,6 +2253,7 @@
                     if (isCurrentlySticky || !iface.hasDot1xPae || !iface.hasAuthPortControl) primarySecChanged = true;
                 } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky') {
                     if (isCurrentlyDot1x || !iface.hasStickyMac || !iface.hasPortSec) primarySecChanged = true;
+                    else if (forceResetSticky && isCurrentlySticky) primarySecChanged = true;
                 } else if (secVal === 'reset' || secVal === 'reset_dot1x' || secVal === 'reset_sticky') {
                     if (isCurrentlySticky || isCurrentlyDot1x) primarySecChanged = true;
                 } else if (secVal === 'remove') {
