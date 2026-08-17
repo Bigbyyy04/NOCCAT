@@ -77,6 +77,7 @@
         [data-theme="fab-neko"] .logo-accent { box-shadow: 0 0 12px rgba(255, 71, 133, 0.6); background-color: var(--neon-green); color: #fff; } [data-theme="gamer-neko"] .logo-accent { background-color: var(--neon-green); box-shadow: 0 0 15px rgba(240, 98, 240, 0.8); color: #fff; }
 
         .version-tag { font-size: 0.8rem; color: var(--accent-blue); opacity: 0.6; text-transform: uppercase; letter-spacing: 2px; font-weight: normal; font-family: "Segoe UI", Roboto, monospace; }
+        .live-viewers { font-size: 0.75rem; color: var(--neon-green); background: rgba(57, 255, 20, 0.1); border: 1px solid var(--neon-green); padding: 3px 8px; border-radius: 4px; box-shadow: 0 0 8px rgba(57, 255, 20, 0.2); font-family: "Courier New", Courier, monospace; text-transform: uppercase; display: inline-flex; align-items: center; gap: 5px; transition: all 0.3s ease; }
         
         /* --- QUALITY_OF_LIFE MENU --- */
         .qol-menu { position: relative; display: inline-block; align-self: center; padding-bottom: 10px; margin-bottom: -10px; }
@@ -412,6 +413,7 @@
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
             <span class="version-tag">// Configuration Automation Tool // v11.2 [Auto-Cast & Grouping Update]</span>
+            <span id="liveViewers" class="live-viewers" title="Real-Time Active Users">👁️ ONLINE: ...</span>
         </h2>
         
         <div class="tz-widget">
@@ -733,11 +735,11 @@
                     <label style="color: var(--accent-green); margin-bottom: 10px;">> ZERO-TRUST_LOCAL_DB</label>
                     
                     <div class="db-security-note">
-                        <strong>🔒 SECURITY NOTE:</strong> This database is completely offline and Zero-Trust. Your data is saved directly into your browser's local cache (localStorage). It is <strong>never</strong> transmitted to GitHub, any external server, or the public internet. Only you can see this data on this specific computer.
+                        <strong>🔒 SECURITY NOTE:</strong> This database is completely offline and Zero-Trust. Your data is saved directly into your browser's local cache (localStorage).
                     </div>
 
                     <p style="font-size: 11.5px; color: var(--text-main); opacity: 0.8; margin-top: 0;">Any new data pasted here is <strong>MERGED</strong> into your existing local database. To remove old switches, click 'Clear Memory' and paste a fresh master list.</p>
-                    <textarea id="dbInput" placeholder="-- Formats Accepted --&#10;PH-NOC-ACC0101, 10.20.30.40&#10;PH-NOC-AS0202   10.30.40.50   Access Switch" spellcheck="false" style="border-color: rgba(35, 134, 54, 0.5);"></textarea>
+                    <textarea id="dbInput" placeholder="-- Formats Accepted --&#10;PH-NOC-ACC0101, 10.20.30.40&#10;PH-NOC-AS0202   10.30.40.50   Access Switch" spellcheck="false"></textarea>
                     <div class="db-controls">
                         <span class="db-status" id="dbStatus">STATUS: DB_IDLE</span>
                         <div style="display: flex; gap: 10px;">
@@ -769,7 +771,76 @@
 
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <script>
+    // --- REAL-TIME LIVE VIEWERS (FIREBASE ENGINE) ---
+    window.addEventListener('load', () => {
+        const viewerElement = document.getElementById('liveViewers');
+        let fallbackTriggered = false;
+
+        const triggerFallback = () => {
+            if (fallbackTriggered) return;
+            fallbackTriggered = true;
+            viewerElement.innerText = "👁️ ONLINE: --";
+            viewerElement.title = "Firebase blocked by VPN or Adblocker. Live tracking disabled.";
+            viewerElement.style.color = "var(--hl-orange)";
+        };
+
+        const fallbackTimer = setTimeout(() => {
+            triggerFallback();
+        }, 3000);
+
+        if (typeof firebase === 'undefined') {
+            clearTimeout(fallbackTimer);
+            triggerFallback();
+            return;
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB0OaQA-A6t6cSGYYCd1-BfstBI9mPeyb8",
+            authDomain: "n0cape-db.firebaseapp.com",
+            databaseURL: "https://n0cape-db-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "n0cape-db",
+            storageBucket: "n0cape-db.firebasestorage.app",
+            messagingSenderId: "987676674320",
+            appId: "1:987676674320:web:9a74fbf14c0c6cd877bd95",
+            measurementId: "G-T5PK7001EX"
+        };
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.database();
+            const connectedRef = db.ref('.info/connected');
+
+            connectedRef.on('value', (snap) => {
+                if (snap.val() === true) {
+                    clearTimeout(fallbackTimer);
+                    
+                    const listRef = db.ref('viewers');
+                    const userRef = listRef.push(); 
+                    userRef.onDisconnect().remove();
+                    userRef.set(true);
+
+                    listRef.on('value', (s) => {
+                        if (fallbackTriggered) return; 
+                        viewerElement.innerText = `👁️ ONLINE: ${s.numChildren()}`;
+                        viewerElement.style.textShadow = "0 0 10px var(--neon-green)";
+                        viewerElement.style.color = "#fff";
+                        setTimeout(() => {
+                            viewerElement.style.textShadow = "none";
+                            viewerElement.style.color = "var(--neon-green)";
+                        }, 1500);
+                    });
+                }
+            });
+        } catch(e) {
+            clearTimeout(fallbackTimer);
+            triggerFallback();
+        }
+    });
+
     function updateFavicon(theme) {
         const favicon = document.getElementById('dynamicFavicon');
         let iconChar = '🐈‍⬛'; 
