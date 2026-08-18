@@ -77,7 +77,7 @@
         [data-theme="fab-neko"] .logo-accent { box-shadow: 0 0 12px rgba(255, 71, 133, 0.6); background-color: var(--neon-green); color: #fff; } [data-theme="gamer-neko"] .logo-accent { background-color: var(--neon-green); box-shadow: 0 0 15px rgba(240, 98, 240, 0.8); color: #fff; }
 
         .version-tag { font-size: 0.8rem; color: var(--accent-blue); opacity: 0.6; text-transform: uppercase; letter-spacing: 2px; font-weight: normal; font-family: "Segoe UI", Roboto, monospace; }
-        .live-viewers { font-size: 0.75rem; color: var(--neon-green); background: rgba(57, 255, 20, 0.1); border: 1px solid var(--neon-green); padding: 3px 8px; border-radius: 4px; box-shadow: 0 0 8px rgba(57, 255, 20, 0.2); font-family: "Courier New", Courier, monospace; text-transform: uppercase; display: inline-flex; align-items: center; gap: 5px; transition: all 0.3s ease; }
+        .live-viewers { font-size: 10px; color: var(--neon-green); font-family: "Courier New", Courier, monospace; text-transform: uppercase; display: inline-flex; align-items: center; gap: 5px; transition: all 0.3s ease; opacity: 0.9; margin-top: 2px; }
         
         /* --- QUALITY_OF_LIFE MENU --- */
         .qol-menu { position: relative; display: inline-block; align-self: center; padding-bottom: 10px; margin-bottom: -10px; }
@@ -413,47 +413,49 @@
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
             <span class="version-tag">// Configuration Automation Tool // v11.2 [Auto-Cast & Grouping Update]</span>
-            <span id="liveViewers" class="live-viewers" title="Real-Time Active Users">👁️ ONLINE: ...</span>
         </h2>
         
-        <div class="tz-widget">
-            <button id="fmtToggleBtn" class="fmt-toggle" onclick="toggleTimeFormat()" title="Toggle 12H / 24H Format">[ 24H ]</button>
-            <div id="liveIndicator" class="live-dot pulse" onclick="resetToLiveTime()" title="LIVE CLOCK (Click to resume)"></div>
-            
-            <select id="sourceTzSelector" class="tz-select source-tz" onchange="updateClocks()">
-                <option value="Local">LOCAL</option>
-                <option value="UTC">UTC (GMT+0)</option>
-                <option value="America/New_York">EST (GMT-5)</option>
-                <option value="America/Bogota">COT (GMT-5)</option>
-                <option value="America/Los_Angeles">PST (GMT-8)</option>
-                <option value="Europe/London">GMT (GMT+0)</option>
-                <option value="Europe/Berlin">CET (GMT+1)</option>
-                <option value="Europe/Kyiv">EEST (GMT+3)</option>
-                <option value="Asia/Kolkata">IST (GMT+5:30)</option>
-                <option value="Asia/Manila">PHT (GMT+8)</option>
-                <option value="Asia/Tokyo">JST (GMT+9)</option>
-                <option value="Australia/Sydney">AEST (GMT+10)</option>
-            </select>
-            
-            <span style="opacity: 0.5; margin: 0 2px;">></span>
-            <input type="text" id="localTimeInput" class="tz-time-input" maxlength="11" autocomplete="off" onfocus="setCustomTime()" oninput="updateClocks()">
-            <span style="opacity: 0.3; margin: 0 4px;">|</span>
-            
-            <select id="tzSelector" class="tz-select" onchange="updateClocks()">
-                <option value="UTC">UTC (GMT+0)</option>
-                <option value="Local">LOCAL</option>
-                <option value="America/New_York">EST (GMT-5)</option>
-                <option value="America/Bogota">COT (GMT-5)</option>
-                <option value="America/Los_Angeles">PST (GMT-8)</option>
-                <option value="Europe/London">GMT (GMT+0)</option>
-                <option value="Europe/Berlin">CET (GMT+1)</option>
-                <option value="Europe/Kyiv">EEST (GMT+3)</option>
-                <option value="Asia/Kolkata">IST (GMT+5:30)</option>
-                <option value="Asia/Manila">PHT (GMT+8)</option>
-                <option value="Asia/Tokyo">JST (GMT+9)</option>
-                <option value="Australia/Sydney">AEST (GMT+10)</option>
-            </select>
-            <span id="convertedTimeDisplay" style="color: var(--neon-green);">00:00:00</span>
+        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
+            <div class="tz-widget">
+                <button id="fmtToggleBtn" class="fmt-toggle" onclick="toggleTimeFormat()" title="Toggle 12H / 24H Format">[ 24H ]</button>
+                <div id="liveIndicator" class="live-dot pulse" onclick="resetToLiveTime()" title="LIVE CLOCK (Click to resume)"></div>
+                
+                <select id="sourceTzSelector" class="tz-select source-tz" onchange="updateClocks()">
+                    <option value="Local">LOCAL</option>
+                    <option value="UTC">UTC (GMT+0)</option>
+                    <option value="America/New_York">EST (GMT-5)</option>
+                    <option value="America/Bogota">COT (GMT-5)</option>
+                    <option value="America/Los_Angeles">PST (GMT-8)</option>
+                    <option value="Europe/London">GMT (GMT+0)</option>
+                    <option value="Europe/Berlin">CET (GMT+1)</option>
+                    <option value="Europe/Kyiv">EEST (GMT+3)</option>
+                    <option value="Asia/Kolkata">IST (GMT+5:30)</option>
+                    <option value="Asia/Manila">PHT (GMT+8)</option>
+                    <option value="Asia/Tokyo">JST (GMT+9)</option>
+                    <option value="Australia/Sydney">AEST (GMT+10)</option>
+                </select>
+                
+                <span style="opacity: 0.5; margin: 0 2px;">></span>
+                <input type="text" id="localTimeInput" class="tz-time-input" maxlength="11" autocomplete="off" onfocus="setCustomTime()" oninput="updateClocks()">
+                <span style="opacity: 0.3; margin: 0 4px;">|</span>
+                
+                <select id="tzSelector" class="tz-select" onchange="updateClocks()">
+                    <option value="UTC">UTC (GMT+0)</option>
+                    <option value="Local">LOCAL</option>
+                    <option value="America/New_York">EST (GMT-5)</option>
+                    <option value="America/Bogota">COT (GMT-5)</option>
+                    <option value="America/Los_Angeles">PST (GMT-8)</option>
+                    <option value="Europe/London">GMT (GMT+0)</option>
+                    <option value="Europe/Berlin">CET (GMT+1)</option>
+                    <option value="Europe/Kyiv">EEST (GMT+3)</option>
+                    <option value="Asia/Kolkata">IST (GMT+5:30)</option>
+                    <option value="Asia/Manila">PHT (GMT+8)</option>
+                    <option value="Asia/Tokyo">JST (GMT+9)</option>
+                    <option value="Australia/Sydney">AEST (GMT+10)</option>
+                </select>
+                <span id="convertedTimeDisplay" style="color: var(--neon-green);">00:00:00</span>
+            </div>
+            <span id="liveViewers" class="live-viewers" title="Real-Time Active Users">👁️ Current active users: ...</span>
         </div>
     </div>
 
@@ -783,7 +785,7 @@
         const triggerFallback = () => {
             if (fallbackTriggered) return;
             fallbackTriggered = true;
-            viewerElement.innerText = "👁️ ONLINE: --";
+            viewerElement.innerText = "👁️ Current active users: --";
             viewerElement.title = "Firebase blocked by VPN or Adblocker. Live tracking disabled.";
             viewerElement.style.color = "var(--hl-orange)";
         };
@@ -825,7 +827,7 @@
 
                     listRef.on('value', (s) => {
                         if (fallbackTriggered) return; 
-                        viewerElement.innerText = `👁️ ONLINE: ${s.numChildren()}`;
+                        viewerElement.innerText = `👁️ Current active users: ${s.numChildren()}`;
                         viewerElement.style.textShadow = "0 0 10px var(--neon-green)";
                         viewerElement.style.color = "#fff";
                         setTimeout(() => {
