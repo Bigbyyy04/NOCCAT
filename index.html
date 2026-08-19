@@ -26,6 +26,12 @@
             --accent-red: #ff6b81; --hl-orange: #ff9f43; --hl-yellow: #feca57; --hl-cyan: #48dbfb; --code-bg: #14101d; 
             --particle-color: rgba(255, 71, 133, 0.3); --particle-line: rgba(11, 203, 212, 0.2); --p-matrix-title: #ff9f43;    
         }
+        [data-theme="gamer-neko"] {
+            --bg-color: #08010f; --card-bg: #12021c; --border-color: #c45b9a; --text-main: #a3d9ff; --btn-text: #fff; 
+            --accent-blue: #8bc8f7; --accent-green: #26b3be; --neon-green: #f062f0; --accent-purple: #bd693c; 
+            --accent-red: #da5560; --hl-orange: #ffaa33; --hl-yellow: #e6a0e6; --hl-cyan: #7de8e1; --code-bg: #0a1221; 
+            --particle-color: rgba(240, 98, 240, 0.3); --particle-line: rgba(240, 98, 240, 0.15); --p-matrix-title: #a3d9ff; 
+        }
         [data-theme="summerkat"] {
             --bg-color: #0b1a2a; 
             --card-bg: rgba(10, 35, 55, 0.85); 
@@ -300,7 +306,7 @@
         [data-theme="fab-neko"] .override-table th { background: rgba(26, 21, 37, 0.95); color: var(--accent-blue); border-right-color: rgba(11, 203, 212, 0.15); } 
         [data-theme="fab-neko"] .override-table td { background: rgba(39, 32, 54, 0.6); border-bottom: 1px solid #312540; border-right: 1px solid rgba(11, 203, 212, 0.15); } 
         [data-theme="fab-neko"] .override-table tr:hover td { background: rgba(11, 203, 212, 0.15); } [data-theme="fab-neko"] .override-table tr.selected-row td { background: rgba(11, 203, 212, 0.3); }
-
+        
         [data-theme="summerkat"] .override-table th { background: rgba(10, 35, 55, 0.95); } 
         [data-theme="summerkat"] .override-table td { background: rgba(10, 35, 55, 0.6); border-bottom: 1px solid #1e5570; border-right: 1px solid rgba(0, 212, 255, 0.15); } 
         [data-theme="summerkat"] .override-table tr:hover td { background: rgba(0, 212, 255, 0.1); }
@@ -1120,7 +1126,7 @@
 
         const configTextarea = document.getElementById('configInput');
         configTextarea.addEventListener('dragover', (e) => { e.preventDefault(); configTextarea.classList.add('drag-active'); });
-        configTextarea.addEventListener('dragleave', () => configTextarea.classList.remove('drag-active'); });
+        configTextarea.addEventListener('dragleave', () => configTextarea.classList.remove('drag-active'));
         configTextarea.addEventListener('drop', (e) => { e.preventDefault(); configTextarea.classList.remove('drag-active'); if(e.dataTransfer.files[0]) { const reader = new FileReader(); reader.onload = (evt) => { configTextarea.value = evt.target.result; checkDynamicWarnings(); }; reader.readAsText(e.dataTransfer.files[0]); } else { const text = e.dataTransfer.getData('text/plain'); if(text) { configTextarea.value = text; checkDynamicWarnings(); } } });
     });
 
