@@ -1141,7 +1141,7 @@
 
         const configTextarea = document.getElementById('configInput');
         configTextarea.addEventListener('dragover', (e) => { e.preventDefault(); configTextarea.classList.add('drag-active'); });
-        configTextarea.addEventListener('dragleave', () => configTextarea.classList.remove('drag-active'); });
+        configTextarea.addEventListener('dragleave', () => configTextarea.classList.remove('drag-active'));
         configTextarea.addEventListener('drop', (e) => { e.preventDefault(); configTextarea.classList.remove('drag-active'); if(e.dataTransfer.files[0]) { const reader = new FileReader(); reader.onload = (evt) => { configTextarea.value = evt.target.result; checkDynamicWarnings(); }; reader.readAsText(e.dataTransfer.files[0]); } else { const text = e.dataTransfer.getData('text/plain'); if(text) { configTextarea.value = text; checkDynamicWarnings(); } } });
     });
 
