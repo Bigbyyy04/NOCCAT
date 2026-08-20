@@ -365,7 +365,7 @@
         [data-theme="fab-neko"] .override-input,[data-theme="fab-neko"] .override-select { background: rgba(20, 16, 29, 0.8); border-color: var(--border-color); color: var(--text-main); } [data-theme="fab-neko"] .override-input:focus,[data-theme="fab-neko"] .override-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 5px rgba(11, 203, 212, 0.4); border-style: solid; }[data-theme="fab-neko"] .override-input::placeholder { color: #6e5585; }
         [data-theme="summerkat"] .override-input,[data-theme="summerkat"] .override-select { background: rgba(2, 10, 20, 0.8); border-color: var(--border-color); color: var(--text-main); } [data-theme="summerkat"] .override-input:focus,[data-theme="summerkat"] .override-select:focus { border-color: var(--neon-green); box-shadow: 0 0 5px rgba(255, 202, 58, 0.4); border-style: solid; }
         [data-theme="autumnkat"] .override-input,[data-theme="autumnkat"] .override-select { background: rgba(25, 15, 10, 0.8); border-color: var(--border-color); color: var(--text-main); } [data-theme="autumnkat"] .override-input:focus,[data-theme="autumnkat"] .override-select:focus { border-color: var(--neon-green); box-shadow: 0 0 5px rgba(255, 191, 105, 0.4); border-style: solid; }
-        [data-theme="springkat"] .override-input,[data-theme="springkat"] .override-select { background: rgba(18, 24, 38, 0.8); border-color: var(--border-color); color: var(--text-main); } [data-theme="springkat"] .override-input:focus,[data-theme="springkat"] .override-select:focus { border-color: var(--neon-green); box-shadow: 0 0 5px rgba(255, 158, 100, 0.4); border-style: solid; }
+        [data-theme="springkat"] .override-input,[data-theme="springkat"] .override-select { background: rgba(26, 27, 38, 0.8); border-color: var(--border-color); color: var(--text-main); } [data-theme="springkat"] .override-input:focus,[data-theme="springkat"] .override-select:focus { border-color: var(--neon-green); box-shadow: 0 0 5px rgba(255, 158, 100, 0.4); border-style: solid; }
 
         /* --- CONTEXT MENU --- */
         .custom-context-menu { display: none; position: absolute; background: var(--card-bg); border: 1px solid var(--accent-blue); box-shadow: 0 0 15px rgba(0,0,0,0.8); z-index: 1000; border-radius: 4px; padding: 5px 0; min-width: 150px; }
@@ -473,7 +473,10 @@
         .db-box textarea { height: 150px; margin-bottom: 10px; }
         .db-controls { display: flex; justify-content: space-between; align-items: center; }
         .db-status { font-size: 11px; color: var(--accent-green); font-family: monospace; }
-        [data-theme="fab-neko"] .db-status, [data-theme="summerkat"] .db-status, [data-theme="autumnkat"] .db-status, [data-theme="springkat"] .db-status { color: var(--accent-blue); } 
+        [data-theme="fab-neko"] .db-status { color: var(--accent-blue); } 
+        [data-theme="summerkat"] .db-status { color: var(--accent-blue); } 
+        [data-theme="autumnkat"] .db-status { color: var(--accent-blue); } 
+        [data-theme="springkat"] .db-status { color: var(--accent-blue); } 
 
         /* --- CUSTOM MODAL --- */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
@@ -990,8 +993,8 @@
             
             if(themeName === 'summerkat') {
                 if(video) {
-                    const targetSrc = 'SUMMERKAT.mp4';
-                    if (!video.src.includes(targetSrc)) {
+                    const targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/SUMMERKAT.mp4';
+                    if (!video.src.includes('SUMMERKAT.mp4')) {
                         video.src = targetSrc;
                         video.load();
                     }
@@ -1000,8 +1003,8 @@
                 }
             } else if(themeName === 'autumnkat') {
                 if(video) {
-                    const targetSrc = 'AUTUMNKAT.mp4';
-                    if (!video.src.includes(targetSrc)) {
+                    const targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/AUTUMNKAT.mp4';
+                    if (!video.src.includes('AUTUMNKAT.mp4')) {
                         video.src = targetSrc;
                         video.load();
                     }
@@ -1010,8 +1013,8 @@
                 }
             } else if(themeName === 'springkat') {
                 if(video) {
-                    const targetSrc = 'SPRINGKAT.mp4';
-                    if (!video.src.includes(targetSrc)) {
+                    const targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/SPRINGKAT.mp4';
+                    if (!video.src.includes('SPRINGKAT.mp4')) {
                         video.src = targetSrc;
                         video.load();
                     }
@@ -1172,11 +1175,11 @@
                 if(canvas) canvas.style.opacity = 0;
                 if(video) {
                     let targetSrc = '';
-                    if (savedTheme === 'summerkat') targetSrc = 'SUMMERKAT.mp4';
-                    else if (savedTheme === 'autumnkat') targetSrc = 'AUTUMNKAT.mp4';
-                    else if (savedTheme === 'springkat') targetSrc = 'SPRINGKAT.mp4';
+                    if (savedTheme === 'summerkat') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/SUMMERKAT.mp4';
+                    else if (savedTheme === 'autumnkat') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/AUTUMNKAT.mp4';
+                    else if (savedTheme === 'springkat') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/SPRINGKAT.mp4';
                     
-                    if (!video.src.includes(targetSrc)) {
+                    if (!video.src.includes(targetSrc.split('/').pop())) {
                         video.src = targetSrc;
                         video.load();
                     }
