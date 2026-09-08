@@ -7,7 +7,7 @@
     <link id="dynamicFavicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐈‍⬛</text></svg>">
     <style>
         /* --- FLUID TRANSITIONS --- */
-        body, .container, .form-group, .cyber-btn, input, select, .tz-widget, .code-window, .manifest-box, .db-box, .override-table th, .override-table td, .logo-accent, .tooltip-icon, .warning-box, .config-group-box, .override-table-wrapper, .top-bar, #solidBg {
+        body, .container, .form-group, .cyber-btn, input, select, .tz-widget, .code-window, .manifest-box, .db-box, .override-table th, .override-table td, .logo-accent, .tooltip-icon, .warning-box, .config-group-box, .override-table-wrapper, .top-bar, #solidBg, .sec-stat-badge {
             transition: background-color 0.5s ease-in-out, border-color 0.5s ease-in-out, color 0.5s ease-in-out, box-shadow 0.5s ease-in-out, text-shadow 0.5s ease-in-out, max-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
         }
 
@@ -465,6 +465,13 @@
         [data-theme="makoto"] .action-row { border-top-color: rgba(255, 117, 143, 0.3); }
         [data-theme="whales"] .action-row { border-top-color: rgba(0, 180, 216, 0.3); }
 
+        /* SECURITY STAT BADGES */
+        .sec-stat-badge { background: rgba(13, 17, 23, 0.6); border: 1px dashed var(--border-color); padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: 0.3s; color: var(--text-main); display: flex; gap: 6px; align-items: center; }
+        .sec-stat-badge span { color: var(--accent-blue); font-weight: bold; }
+        .sec-stat-badge:hover { border-color: var(--accent-blue); background: rgba(88, 166, 255, 0.1); }
+        .sec-stat-badge.active-sec-filter { border-color: var(--neon-green); background: rgba(57, 255, 20, 0.15); box-shadow: 0 0 10px rgba(57, 255, 20, 0.3); color: #fff; border-style: solid; }
+        .sec-stat-badge.active-sec-filter span { color: var(--neon-green); }
+
         @keyframes pulse-ready { 0% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.3); } 50% { box-shadow: 0 0 20px rgba(57, 255, 20, 0.8); } 100% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.3); } }
         @keyframes pulse-ready-summer { 0% { box-shadow: 0 0 5px rgba(230, 57, 70, 0.3); } 50% { box-shadow: 0 0 20px rgba(230, 57, 70, 0.8); } 100% { box-shadow: 0 0 5px rgba(230, 57, 70, 0.3); } }
         @keyframes pulse-ready-spring { 0% { box-shadow: 0 0 5px rgba(247, 118, 142, 0.3); } 50% { box-shadow: 0 0 20px rgba(247, 118, 142, 0.8); } 100% { box-shadow: 0 0 5px rgba(247, 118, 142, 0.3); } }
@@ -646,7 +653,7 @@
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v11.2 [Auto-Cast & Grouping Update]</span>
+            <span class="version-tag">// Configuration Automation Tool // v11.3 [State Tracking Update]</span>
         </h2>
         
         <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
@@ -751,13 +758,15 @@
             </div>
         </div>
 
+<!-- END OF PART 1 -->
+
         <div class="controls-row">
             
             <div class="form-group global-param-section" style="width: 80px;">
                 <div style="margin-bottom: 10px;">
                     <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
                         02 // VLAN
-                        <div class="tooltip-icon" data-tooltip="GLOBAL MASTER: This VLAN applies to all parsed ports simultaneously. Overrides can be set in Section 07.">i</div>
+                        <div class="tooltip-icon" data-tooltip="GLOBAL MASTER: This VLAN applies to all parsed ports simultaneously. Overrides can be set in Section 08.">i</div>
                     </label>
                 </div>
                 <input type="number" id="vlanInput" placeholder="ALL" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();">
@@ -857,6 +866,18 @@
             <div id="advOptionsWrapper" class="readme-wrapper">
                 <div style="min-height: 0; overflow: hidden; padding: 5px;">
                     
+                    <!-- SECURITY STATS FILTER BAR -->
+                    <div id="securityStatsBar" style="display: none; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 4px; margin-bottom: 12px; font-family: monospace; font-size: 11px;">
+                        <span style="color: var(--accent-blue); font-weight: bold;">SECURITY STATES:</span>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <div id="statDot1x" class="sec-stat-badge" onclick="filterBySecurityState('DOT1X')" title="Click to filter 802.1X ports">DOT1X: <span id="cntDot1x">0</span></div>
+                            <div id="statSticky" class="sec-stat-badge" onclick="filterBySecurityState('STICKY')" title="Click to filter Sticky MAC ports">STICKY: <span id="cntSticky">0</span></div>
+                            <div id="statDual" class="sec-stat-badge" onclick="filterBySecurityState('DUAL')" title="Click to filter Dual/Conflicted ports">DUAL: <span id="cntDual">0</span></div>
+                            <div id="statNone" class="sec-stat-badge" onclick="filterBySecurityState('NONE')" title="Click to filter Unsecured ports">NONE: <span id="cntNone">0</span></div>
+                            <span id="secFilterReset" style="display: none; color: var(--accent-red); cursor: pointer; text-decoration: underline; font-size: 10px;" onclick="clearSecStateFilter()">[ CLEAR FILTER ]</span>
+                        </div>
+                    </div>
+
                     <div id="blindGroupingContainer" style="display:none; margin-bottom: 15px;">
                         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">
                             <label style="color:var(--hl-yellow); margin-bottom: 0; font-size: 13px;">> BLIND CONFIGURATION GROUPS</label>
@@ -1007,9 +1028,7 @@
 
 </div>
 
-<!-- ======== END OF PART 1 ======== -->
-
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
@@ -1079,17 +1098,30 @@
         }
     });
 
+    const videoThemes = {
+        'summerkat': 'SUMMERKAT.mp4',
+        'autumnkat': 'AUTUMNKAT.mp4',
+        'springkat': 'SPRINGKAT.mp4',
+        'suncalico': 'SUNCALICO.mp4',
+        'nightwalkcp': 'NIGHTWALKCP.mp4',
+        'lofi-girl': 'LOFI_GIRL.mp4',
+        'makoto': 'MAKOTO.SHINKAI.mp4',
+        'whales': 'WHALES.mp4'
+    };
+
     function updateFavicon(theme) {
         const favicon = document.getElementById('dynamicFavicon');
-        let iconChar = '🐈‍⬛'; 
-        if (theme === 'summerkat') iconChar = '🏖️';
-        if (theme === 'autumnkat') iconChar = '🍂';
-        if (theme === 'springkat') iconChar = '🌸';
-        if (theme === 'suncalico') iconChar = '🐾';
-        if (theme === 'nightwalkcp') iconChar = '🌃';
-        if (theme === 'lofi-girl') iconChar = '🎧';
-        if (theme === 'makoto') iconChar = '🌌';
-        if (theme === 'whales') iconChar = '🐋';
+        const icons = {
+            'summerkat': '🏖️',
+            'autumnkat': '🍂',
+            'springkat': '🌸',
+            'suncalico': '🐾',
+            'nightwalkcp': '🌃',
+            'lofi-girl': '🎧',
+            'makoto': '🌌',
+            'whales': '🐋'
+        };
+        let iconChar = icons[theme] || '🐈‍⬛'; 
         favicon.href = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${iconChar}</text></svg>`;
     }
 
@@ -1106,19 +1138,10 @@
             updateActiveThemeInMenu(themeName);
             updateFavicon(themeName);
             
-            if(['summerkat', 'autumnkat', 'springkat', 'suncalico', 'nightwalkcp', 'lofi-girl', 'makoto', 'whales'].includes(themeName)) {
+            if (videoThemes[themeName]) {
                 if(video) {
-                    let targetSrc = '';
-                    if (themeName === 'summerkat') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/SUMMERKAT.mp4';
-                    else if (themeName === 'autumnkat') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/AUTUMNKAT.mp4';
-                    else if (themeName === 'springkat') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/SPRINGKAT.mp4';
-                    else if (themeName === 'suncalico') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/SUNCALICO.mp4';
-                    else if (themeName === 'nightwalkcp') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/NIGHTWALKCP.mp4';
-                    else if (themeName === 'lofi-girl') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/LOFI_GIRL.mp4';
-                    else if (themeName === 'makoto') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/MAKOTO.SHINKAI.mp4';
-                    else if (themeName === 'whales') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/WHALES.mp4';
-                    
-                    if (!video.src.includes(targetSrc.split('/').pop())) {
+                    const targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/' + videoThemes[themeName];
+                    if (!video.src.includes(videoThemes[themeName])) {
                         video.src = targetSrc;
                         video.load();
                     }
@@ -1140,6 +1163,47 @@
 
     let clipboardConfig = null;
     let wasInBlindMode = false;
+    let activeSecFilter = null;
+
+    function filterBySecurityState(secState) {
+        activeSecFilter = secState;
+        
+        const wrapper = document.getElementById('advOptionsWrapper');
+        const btn = document.getElementById('advOptionsBtn');
+        if (!wrapper.classList.contains('expanded')) {
+            wrapper.classList.add('expanded');
+            btn.innerText = "[ COLLAPSE ]";
+        }
+
+        document.querySelectorAll('.sec-stat-badge').forEach(b => b.classList.remove('active-sec-filter'));
+        const activeBadgeMap = { 'DOT1X': 'statDot1x', 'STICKY': 'statSticky', 'DUAL': 'statDual', 'NONE': 'statNone' };
+        if (activeBadgeMap[secState]) {
+            document.getElementById(activeBadgeMap[secState]).classList.add('active-sec-filter');
+        }
+        document.getElementById('secFilterReset').style.display = 'inline';
+
+        const rows = document.querySelectorAll('#overrideTableBody tr');
+        rows.forEach(tr => {
+            const secCell = tr.querySelector('td:nth-child(2)');
+            if (!secCell) return;
+            const text = secCell.innerText;
+
+            let matches = false;
+            if (secState === 'DOT1X' && text.includes('S: DOT1X')) matches = true;
+            else if (secState === 'STICKY' && text.includes('S: STICKY')) matches = true;
+            else if (secState === 'DUAL' && text.includes('S: DUAL')) matches = true;
+            else if (secState === 'NONE' && text.includes('S: NONE')) matches = true;
+
+            tr.style.display = matches ? '' : 'none';
+        });
+    }
+
+    function clearSecStateFilter() {
+        activeSecFilter = null;
+        document.querySelectorAll('.sec-stat-badge').forEach(b => b.classList.remove('active-sec-filter'));
+        document.getElementById('secFilterReset').style.display = 'none';
+        document.querySelectorAll('#overrideTableBody tr').forEach(tr => tr.style.display = '');
+    }
 
     function updateTextScale(forceValue) {
         const slider = document.getElementById('textScaleSlider');
@@ -1221,7 +1285,7 @@
             const theme = document.documentElement.getAttribute('data-theme') || 'dark'; 
             if (theme !== currentMode) { currentMode = theme; } 
             
-            if (['summerkat', 'autumnkat', 'springkat', 'suncalico', 'nightwalkcp', 'lofi-girl', 'makoto', 'whales'].includes(theme)) {
+            if (videoThemes[theme]) {
                 ctx.clearRect(0, 0, width, height);
                 requestAnimationFrame(animate);
                 return;
@@ -1265,20 +1329,11 @@
             const video = document.getElementById('videoBg');
             const canvas = document.getElementById('networkBg');
             
-            if(['summerkat', 'autumnkat', 'springkat', 'suncalico', 'nightwalkcp', 'lofi-girl', 'makoto', 'whales'].includes(savedTheme)) {
+            if(videoThemes[savedTheme]) {
                 if(canvas) canvas.style.opacity = 0;
                 if(video) {
-                    let targetSrc = '';
-                    if (savedTheme === 'summerkat') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/SUMMERKAT.mp4';
-                    else if (savedTheme === 'autumnkat') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/AUTUMNKAT.mp4';
-                    else if (savedTheme === 'springkat') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/SPRINGKAT.mp4';
-                    else if (savedTheme === 'suncalico') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/SUNCALICO.mp4';
-                    else if (savedTheme === 'nightwalkcp') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/NIGHTWALKCP.mp4';
-                    else if (savedTheme === 'lofi-girl') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/LOFI_GIRL.mp4';
-                    else if (savedTheme === 'makoto') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/MAKOTO.SHINKAI.mp4';
-                    else if (savedTheme === 'whales') targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/WHALES.mp4';
-                    
-                    if (!video.src.includes(targetSrc.split('/').pop())) {
+                    const targetSrc = 'https://github.com/Bigbyyy04/NOCCAT/releases/download/WALLPAPER/' + videoThemes[savedTheme];
+                    if (!video.src.includes(videoThemes[savedTheme])) {
                         video.src = targetSrc;
                         video.load();
                     }
@@ -1353,7 +1408,7 @@
         let isExpanded = wrapper.classList.contains('expanded'); 
         btn.innerText = isExpanded ? "[ COLLAPSE ]" : "[ EXPAND ]"; 
         if(clearBtn) { 
-            clearBtn.style.display = (isExpanded && !hasRawPortsGlobal) ? 'block' : 'none'; 
+            clearBtn.style.display = (!hasRawPortsGlobal && isExpanded) ? 'block' : 'none'; 
         } 
     }
 
@@ -1416,7 +1471,7 @@
         document.getElementById('copyPrimaryBtn').disabled = true; document.getElementById('copyRollbackBtn').disabled = true; document.getElementById('dlPrimaryBtn').disabled = true; document.getElementById('dlRollbackBtn').disabled = true; document.getElementById('statusMsg').style.display = 'none'; document.getElementById('warningBox').style.display = 'none'; document.getElementById('deviceHud').classList.remove('visible'); document.getElementById('advancedOptionsContainer').style.display = 'none'; document.getElementById('advOptionsWrapper').classList.remove('expanded'); document.getElementById('advOptionsBtn').innerText = "[ EXPAND ]"; document.getElementById('overrideTableBody').innerHTML = ''; 
         let clearBtn = document.getElementById('clearMatrixBtn'); if (clearBtn) clearBtn.style.display = 'none';
         const textarea = document.getElementById('configInput'); textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) toggleExpand(); detectedGlobalHostname = "N0CAT_Script"; blindGroups = []; groupIdCounter = 1; clipboardConfig = null; document.getElementById('pasteContextBtn').style.color = '#666'; document.getElementById('pasteContextBtn').style.pointerEvents = 'none';
-        wasInBlindMode = false;
+        wasInBlindMode = false; clearSecStateFilter();
     }
     
     function clearStandardMatrix() {
@@ -1982,6 +2037,13 @@
             document.getElementById('forceResetStickyCheckbox').checked = false;
             document.getElementById('forceResetStickyCheckbox').disabled = true;
             document.getElementById('forceResetStickyLabel').classList.add('disabled');
+            
+            document.getElementById('cntDot1x').innerText = '0';
+            document.getElementById('cntSticky').innerText = '0';
+            document.getElementById('cntDual').innerText = '0';
+            document.getElementById('cntNone').innerText = '0';
+            document.getElementById('securityStatsBar').style.display = 'none';
+            clearSecStateFilter();
             return;
         }
 
@@ -2018,6 +2080,7 @@
         let totalParsedPorts = 0, portsWithFullDot1x = 0, portsWithFullSticky = 0, portsWithFullEdge = 0, portsWithShutdown = 0, portsWithNoShut = 0;
         let hasAnySecurity = false, hasActivePorts = false;
         let unsafePorts = [], shutdownPorts = [], conflictedPorts = [], fragmentPorts = [], noSecPorts = [];
+        let dot1xOnlyPorts = [], stickyOnlyPorts = [], dualPorts = [], nonePorts = [];
         let validAccessPortsForGrid = [];
         let allParsedPorts = [];
         
@@ -2057,6 +2120,11 @@
                 
                 if (hasDot1xPae || hasAuthPortControl) hasAnyDot1xGlobal = true;
                 if (hasStickyMac || hasPortSec || hasLearnedMac) hasAnyStickyGlobal = true;
+
+                if (isAnyDot1x && isAnySticky) dualPorts.push(normalizedIf);
+                else if (isAnyDot1x) dot1xOnlyPorts.push(normalizedIf);
+                else if (isAnySticky) stickyOnlyPorts.push(normalizedIf);
+                else if (!isRaw && !isExplicitTrunk) nonePorts.push(normalizedIf);
                 
                 let hasPortfast = /spanning-tree\s+portfast/i.test(block), hasBpduguard = /spanning-tree\s+bpduguard/i.test(block);
                 if (hasPortfast && hasBpduguard) portsWithFullEdge++;
@@ -2074,6 +2142,19 @@
                 }
             }
         });
+
+        // UPDATE LIVE SECURITY STAT COUNTERS
+        document.getElementById('cntDot1x').innerText = dot1xOnlyPorts.length;
+        document.getElementById('cntSticky').innerText = stickyOnlyPorts.length;
+        document.getElementById('cntDual').innerText = dualPorts.length;
+        document.getElementById('cntNone').innerText = nonePorts.length;
+
+        if (totalParsedPorts > 0 && !hasRawPorts) {
+            document.getElementById('securityStatsBar').style.display = 'flex';
+        } else {
+            document.getElementById('securityStatsBar').style.display = 'none';
+            clearSecStateFilter();
+        }
 
         const forceResetStickyCheckbox = document.getElementById('forceResetStickyCheckbox');
         const forceResetStickyLabel = document.getElementById('forceResetStickyLabel');
@@ -2167,7 +2248,17 @@
                 let dragAttrs = hasRawPortsGlobal ? `draggable="true" ondragstart="dragPort(event, '${p.name}', this)" ondragover="allowRowDrop(event)" ondragleave="dragRowLeave(event)" ondrop="dropOnRow(event, '${p.name}')" onclick="toggleRowSelection(this, event, ${rowIndex})" data-port="${p.name}"` : '';
                 let applyAllBtn = hasRawPortsGlobal ? '' : `<button class="expand-btn" style="padding: 4px 8px; font-size: 12px;" onclick="applyToAllMatrix('${safeName}')" title="Apply to all ports">⏬</button>`;
 
-                gridHTML += `<tr ${dragAttrs}>
+                let displayStyle = "";
+                if (activeSecFilter) {
+                    let matches = false;
+                    if (activeSecFilter === 'DOT1X' && curSec === 'DOT1X') matches = true;
+                    else if (activeSecFilter === 'STICKY' && curSec === 'STICKY') matches = true;
+                    else if (activeSecFilter === 'DUAL' && curSec === 'DUAL') matches = true;
+                    else if (activeSecFilter === 'NONE' && curSec === 'NONE') matches = true;
+                    if (!matches) displayStyle = 'display: none;';
+                }
+
+                gridHTML += `<tr ${dragAttrs} style="${displayStyle}">
                     <td><strong>${p.name}</strong></td>
                     <td style="opacity: 0.8; font-size: 10px; white-space: nowrap;">${statusDot} | V: ${origVlanDisplay} | S: ${curSec}</td>
                     <td><input type="number" id="ovr_vlan_${safeName}" class="override-input" placeholder="${p.isRaw ? '--' : 'Global'}" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();"></td>
@@ -2607,8 +2698,6 @@
                          secRemoveCmds.push("no dot1x pae authenticator", "no authentication port-control auto");
                      } else if (secVal === 'sticky' || secVal === 'conv_dot1x_to_sticky') {
                          secRemoveCmds.push("no switchport port-security mac-address sticky", "no switchport port-security");
-                     } else if (secVal === 'remove') {
-                         // Rollbacks on non-raw standard remove will naturally fall back to below, RAW doesn't know original state
                      }
                 } else {
                      if (secVal === 'dot1x' || secVal === 'conv_sticky_to_dot1x') {
