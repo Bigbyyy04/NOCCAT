@@ -612,7 +612,7 @@
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v11.9 [Hacker Terminal]</span>
+            <span class="version-tag">// Configuration Automation Tool // v12.0</span>
         </h2>
         
         <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
@@ -738,7 +738,7 @@
                 <div style="margin-bottom: 10px;">
                     <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
                         02 // VLAN
-                        <div class="tooltip-icon" data-tooltip="GLOBAL MASTER: This VLAN applies to all parsed ports simultaneously. Overrides can be set in Section 08.">i</div>
+                        <div class="tooltip-icon" data-tooltip="GLOBAL MASTER: This VLAN applies to all parsed ports simultaneously. Overrides can be set in Section 09.">i</div>
                     </label>
                 </div>
                 <input type="number" id="vlanInput" placeholder="ALL" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();">
@@ -821,12 +821,24 @@
                     <label class="disabled"><input type="checkbox" id="slowPasteCheckbox" disabled onchange="generateScript()"><span>ENABLE</span></label>
                 </div>
             </div>
+
+            <div class="form-group global-param-section" style="width: 90px;">
+                <div style="margin-bottom: 10px;">
+                    <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
+                        08 // VERIFY
+                        <div class="tooltip-icon" data-tooltip="Appends 'show run' and 'show int status' to the end of the script for all modified ports.">i</div>
+                    </label>
+                </div>
+                <div class="checkbox-group">
+                    <label class="disabled"><input type="checkbox" id="verifyLogsCheckbox" disabled onchange="generateScript()"><span>ENABLE</span></label>
+                </div>
+            </div>
         </div>
         
         <div id="advancedOptionsContainer" class="form-group input-section" style="display: none; border-color: rgba(var(--p-matrix-title-rgb), 0.4);">
             <div class="header-row">
                 <label style="color: var(--p-matrix-title); text-shadow: 0 0 8px rgba(var(--p-matrix-title-rgb), 0.4); display: flex; align-items: center; gap: 6px;">
-                    08 // ADVANCED OPTIONS [ PER-PORT MATRIX ]
+                    09 // ADVANCED OPTIONS [ PER-PORT MATRIX ]
                     <div class="tooltip-icon" style="color: var(--p-matrix-title); border-color: var(--p-matrix-title);" data-tooltip="Granular control. Inputs here will overwrite the Global selections for specific individual ports. Edits here will NOT auto-execute until you hit Execute_Run.">i</div>
                 </label>
                 <div style="display: flex; gap: 10px; align-items: center;">
@@ -1580,13 +1592,13 @@
     function confirmRemove() { if(document.getElementById('dontShowAgainCheckbox').checked) localStorage.setItem('noccat_suppress_remove_warning', 'true'); document.getElementById('removeWarningModal').classList.remove('visible'); NoccatState.currentMatrixTriggerElem = null; checkDynamicWarnings(); triggerScriptUpdate(); }
 
     function clearAll() { 
-        document.getElementById('configInput').value = ""; document.getElementById('vlanInput').value = ""; document.querySelector('input[name="securityMode"][value="leave"]').checked = true; document.getElementById('stpCheckbox').checked = false; document.querySelector('input[name="adminState"][value="leave"]').checked = true; document.getElementById('suppressCheckbox').checked = false; document.getElementById('forceResetStickyCheckbox').checked = false; document.getElementById('forceResetStickyCheckbox').disabled = true; document.getElementById('forceResetStickyLabel').classList.add('disabled'); document.getElementById('slowPasteCheckbox').checked = false; document.getElementById('forceAccessCheckbox').checked = false; document.getElementById('primaryCode').innerText = "-- system_idle --"; document.getElementById('primaryLines').innerText = ""; document.getElementById('rollbackCode').innerText = "-- system_idle --"; document.getElementById('rollbackLines').innerText = ""; 
+        document.getElementById('configInput').value = ""; document.getElementById('vlanInput').value = ""; document.querySelector('input[name="securityMode"][value="leave"]').checked = true; document.getElementById('stpCheckbox').checked = false; document.querySelector('input[name="adminState"][value="leave"]').checked = true; document.getElementById('suppressCheckbox').checked = false; document.getElementById('forceResetStickyCheckbox').checked = false; document.getElementById('forceResetStickyCheckbox').disabled = true; document.getElementById('forceResetStickyLabel').classList.add('disabled'); document.getElementById('slowPasteCheckbox').checked = false; document.getElementById('forceAccessCheckbox').checked = false; document.getElementById('verifyLogsCheckbox').checked = false; document.getElementById('primaryCode').innerText = "-- system_idle --"; document.getElementById('primaryLines').innerText = ""; document.getElementById('rollbackCode').innerText = "-- system_idle --"; document.getElementById('rollbackLines').innerText = ""; 
         
         if (NoccatState.typeInterval) clearInterval(NoccatState.typeInterval);
         document.getElementById('executionLogs').innerHTML = "-- idle --";
         
         const execBtn = document.getElementById('executeBtn'); execBtn.disabled = true; execBtn.classList.remove('ready', 'auto-cast'); execBtn.innerText = "Execute_Run";
-        document.querySelectorAll('input[name="securityMode"], #stpCheckbox, input[name="adminState"], #forceAccessCheckbox, #slowPasteCheckbox, #forceResetStickyCheckbox').forEach(btn => { if (btn.value && btn.value !== 'leave') { btn.disabled = true; btn.closest('label').classList.add('disabled'); } }); 
+        document.querySelectorAll('input[name="securityMode"], #stpCheckbox, input[name="adminState"], #forceAccessCheckbox, #slowPasteCheckbox, #verifyLogsCheckbox, #forceResetStickyCheckbox').forEach(btn => { if (btn.value && btn.value !== 'leave') { btn.disabled = true; btn.closest('label').classList.add('disabled'); } }); 
         document.getElementById('copyPrimaryBtn').disabled = true; document.getElementById('copyRollbackBtn').disabled = true; document.getElementById('dlPrimaryBtn').disabled = true; document.getElementById('dlRollbackBtn').disabled = true; document.getElementById('statusMsg').style.display = 'none'; document.getElementById('warningBox').style.display = 'none'; document.getElementById('deviceHud').classList.remove('visible'); document.getElementById('advancedOptionsContainer').style.display = 'none'; document.getElementById('advOptionsWrapper').classList.remove('expanded'); document.getElementById('advOptionsBtn').innerText = "[ EXPAND ]"; document.getElementById('overrideTableBody').innerHTML = ''; 
         
         let clearBtn = document.getElementById('clearMatrixBtn'); if (clearBtn) clearBtn.style.display = 'none';
@@ -1845,15 +1857,30 @@
         const metricsBtn = document.getElementById('metricsBtn'); const metricsContent = document.getElementById('metricsContent');
         
         const lineCount = configText.split('\n').length;
-        const suppressSecWarn = document.getElementById('suppressCheckbox').checked;
-        const forceAccess = document.getElementById('forceAccessCheckbox').checked;
-        const dot1xRadio = document.querySelector('input[name="securityMode"][value="dot1x"]'); const stickyRadio = document.querySelector('input[name="securityMode"][value="sticky"]'); const removeRadio = document.querySelector('input[name="securityMode"][value="remove"]'); const resetRadio = document.querySelector('input[name="securityMode"][value="reset"]'); const leaveSecRadio = document.querySelector('input[name="securityMode"][value="leave"]'); 
+        const suppressSecWarnElem = document.getElementById('suppressCheckbox');
+        const suppressSecWarn = suppressSecWarnElem ? suppressSecWarnElem.checked : false;
+
+        const forceAccessCheckboxElem = document.getElementById('forceAccessCheckbox');
+        const forceAccess = forceAccessCheckboxElem ? forceAccessCheckboxElem.checked : false;
+
+        const dot1xRadio = document.querySelector('input[name="securityMode"][value="dot1x"]'); 
+        const stickyRadio = document.querySelector('input[name="securityMode"][value="sticky"]'); 
+        const removeRadio = document.querySelector('input[name="securityMode"][value="remove"]'); 
+        const resetRadio = document.querySelector('input[name="securityMode"][value="reset"]'); 
+        const leaveSecRadio = document.querySelector('input[name="securityMode"][value="leave"]'); 
         
         let checkedRadio = document.querySelector('input[name="securityMode"]:checked');
         const selectedSecurityMode = checkedRadio ? checkedRadio.value : 'leave';
 
-        const edgeCheckbox = document.getElementById('stpCheckbox'); const forceAccessCheckbox = document.getElementById('forceAccessCheckbox');
-        const upRadio = document.querySelector('input[name="adminState"][value="up"]'); const downRadio = document.querySelector('input[name="adminState"][value="down"]'); const bounceAllRadio = document.querySelector('input[name="adminState"][value="bounce_all"]'); const bounceChgRadio = document.querySelector('input[name="adminState"][value="bounce_chg"]'); const leaveAdminRadio = document.querySelector('input[name="adminState"][value="leave"]'); const slowPasteCheckbox = document.getElementById('slowPasteCheckbox');
+        const edgeCheckbox = document.getElementById('stpCheckbox'); 
+        
+        const upRadio = document.querySelector('input[name="adminState"][value="up"]'); 
+        const downRadio = document.querySelector('input[name="adminState"][value="down"]'); 
+        const bounceAllRadio = document.querySelector('input[name="adminState"][value="bounce_all"]'); 
+        const bounceChgRadio = document.querySelector('input[name="adminState"][value="bounce_chg"]'); 
+        const leaveAdminRadio = document.querySelector('input[name="adminState"][value="leave"]'); 
+        const slowPasteCheckbox = document.getElementById('slowPasteCheckbox');
+        const verifyLogsCheckbox = document.getElementById('verifyLogsCheckbox');
         
         let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         let textBlocks = []; let hasRawPorts = false;
@@ -1897,21 +1924,25 @@
             closeMetricDetail();
             textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) { textarea.classList.remove('expanded'); expandBtn.innerText = "[ EXPAND ]"; }
             document.querySelectorAll('.global-param-section, .force-access-section').forEach(el => el.classList.remove('disabled-panel'));
-            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceAllRadio, bounceChgRadio, forceAccessCheckbox, slowPasteCheckbox];
+            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceAllRadio, bounceChgRadio, forceAccessCheckbox, slowPasteCheckbox, verifyLogsCheckbox];
             allToggles.forEach(t => { if(t){ t.disabled = true; t.closest('label').classList.add('disabled'); } });
-            leaveSecRadio.checked = true; leaveAdminRadio.checked = true; edgeCheckbox.checked = false; NoccatState.detectedGlobalHostname = "N0CAT_Script";
+            
+            if (leaveSecRadio) leaveSecRadio.checked = true; 
+            if (leaveAdminRadio) leaveAdminRadio.checked = true; 
+            if (edgeCheckbox) edgeCheckbox.checked = false; 
+            NoccatState.detectedGlobalHostname = "N0CAT_Script";
             
             const forceResetStickyCheckboxElem = document.getElementById('forceResetStickyCheckbox');
             const forceResetStickyLabelElem = document.getElementById('forceResetStickyLabel');
-            if(forceResetStickyCheckboxElem) {
-                forceResetStickyCheckboxElem.checked = false; 
-                forceResetStickyCheckboxElem.disabled = true; 
-            }
-            if(forceResetStickyLabelElem) {
-                forceResetStickyLabelElem.classList.add('disabled');
-            }
+            if(forceResetStickyCheckboxElem) { forceResetStickyCheckboxElem.checked = false; forceResetStickyCheckboxElem.disabled = true; }
+            if(forceResetStickyLabelElem) { forceResetStickyLabelElem.classList.add('disabled'); }
             
-            document.getElementById('cntDot1x').innerText = '0'; document.getElementById('cntSticky').innerText = '0'; document.getElementById('cntDual').innerText = '0'; document.getElementById('cntNone').innerText = '0'; document.getElementById('securityStatsBar').style.display = 'none';
+            let cntDot1xElem = document.getElementById('cntDot1x'); if(cntDot1xElem) cntDot1xElem.innerText = '0'; 
+            let cntStickyElem = document.getElementById('cntSticky'); if(cntStickyElem) cntStickyElem.innerText = '0'; 
+            let cntDualElem = document.getElementById('cntDual'); if(cntDualElem) cntDualElem.innerText = '0'; 
+            let cntNoneElem = document.getElementById('cntNone'); if(cntNoneElem) cntNoneElem.innerText = '0'; 
+            
+            let secStatsBar = document.getElementById('securityStatsBar'); if(secStatsBar) secStatsBar.style.display = 'none';
             clearSecStateFilter();
             return;
         }
@@ -2026,7 +2057,10 @@
             }
         });
 
-        document.getElementById('cntDot1x').innerText = dot1xOnlyPorts.length; document.getElementById('cntSticky').innerText = stickyOnlyPorts.length; document.getElementById('cntDual').innerText = dualPorts.length; document.getElementById('cntNone').innerText = nonePorts.length;
+        let cntDot1xElem = document.getElementById('cntDot1x'); if(cntDot1xElem) cntDot1xElem.innerText = dot1xOnlyPorts.length; 
+        let cntStickyElem = document.getElementById('cntSticky'); if(cntStickyElem) cntStickyElem.innerText = stickyOnlyPorts.length; 
+        let cntDualElem = document.getElementById('cntDual'); if(cntDualElem) cntDualElem.innerText = dualPorts.length; 
+        let cntNoneElem = document.getElementById('cntNone'); if(cntNoneElem) cntNoneElem.innerText = nonePorts.length;
 
         // POPULATE METRICS DISPLAY WITH INTERACTIVE CLICKABLE LISTS
         let vlanCounts = {};
@@ -2090,13 +2124,13 @@
                     ${vlanHtml || '<span style="opacity:0.5; padding: 6px 10px; font-size: 12px; font-family: Segoe UI, sans-serif;">N/A</span>'}
                 </div>
             `;
-            document.getElementById('securityStatsBar').style.display = 'flex';
+            let secStatsBar = document.getElementById('securityStatsBar'); if(secStatsBar) secStatsBar.style.display = 'flex';
         } else {
             metricsBtn.style.display = 'none';
             document.getElementById('metricsWrapper').classList.remove('expanded');
             metricsBtn.style.background = 'transparent';
             closeMetricDetail();
-            document.getElementById('securityStatsBar').style.display = 'none';
+            let secStatsBar = document.getElementById('securityStatsBar'); if(secStatsBar) secStatsBar.style.display = 'none';
             clearSecStateFilter();
         }
 
@@ -2118,30 +2152,65 @@
         if (hasRawPorts && isRawModeGlobal) {
             document.querySelectorAll('.global-param-section').forEach(el => el.classList.add('disabled-panel')); document.querySelectorAll('.force-access-section').forEach(el => el.classList.remove('disabled-panel'));
             if (!document.getElementById('advOptionsWrapper').classList.contains('expanded')) toggleAdvOptions();
-            blindContainer.style.display = 'block'; renderGroupsUI(); forceAccessCheckbox.disabled = false; forceAccessCheckbox.closest('label').classList.remove('disabled');
+            blindContainer.style.display = 'block'; renderGroupsUI(); 
+            if (forceAccessCheckbox) { forceAccessCheckbox.disabled = false; forceAccessCheckbox.closest('label').classList.remove('disabled'); }
+            if (verifyLogsCheckbox) { verifyLogsCheckbox.disabled = false; verifyLogsCheckbox.closest('label').classList.remove('disabled'); }
         } else {
             document.querySelectorAll('.global-param-section, .force-access-section').forEach(el => el.classList.remove('disabled-panel')); blindContainer.style.display = 'none';
-            if (totalParsedPorts > 0) { forceAccessCheckbox.disabled = false; forceAccessCheckbox.closest('label').classList.remove('disabled'); slowPasteCheckbox.disabled = false; slowPasteCheckbox.closest('label').classList.remove('disabled'); }
+            if (totalParsedPorts > 0) { 
+                if (forceAccessCheckbox) { forceAccessCheckbox.disabled = false; forceAccessCheckbox.closest('label').classList.remove('disabled'); }
+                if (slowPasteCheckbox) { slowPasteCheckbox.disabled = false; slowPasteCheckbox.closest('label').classList.remove('disabled'); }
+                if (verifyLogsCheckbox) { verifyLogsCheckbox.disabled = false; verifyLogsCheckbox.closest('label').classList.remove('disabled'); }
+            }
         }
 
         if (totalParsedPorts > 0 && !hasRawPorts) {
             if (portsWithFullDot1x === totalParsedPorts && dualPorts.length === 0) { 
-                dot1xRadio.disabled = true; dot1xRadio.closest('label').classList.add('disabled'); if (dot1xRadio.checked) leaveSecRadio.checked = true; 
+                if(dot1xRadio) { dot1xRadio.disabled = true; dot1xRadio.closest('label').classList.add('disabled'); if (dot1xRadio.checked && leaveSecRadio) leaveSecRadio.checked = true; }
             } else { 
-                dot1xRadio.disabled = false; dot1xRadio.closest('label').classList.remove('disabled'); 
+                if(dot1xRadio) { dot1xRadio.disabled = false; dot1xRadio.closest('label').classList.remove('disabled'); }
             }
 
             if (portsWithFullSticky === totalParsedPorts && dualPorts.length === 0) { 
-                stickyRadio.disabled = true; stickyRadio.closest('label').classList.add('disabled'); if (stickyRadio.checked) leaveSecRadio.checked = true; 
+                if(stickyRadio) { stickyRadio.disabled = true; stickyRadio.closest('label').classList.add('disabled'); if (stickyRadio.checked && leaveSecRadio) leaveSecRadio.checked = true; }
             } else { 
-                stickyRadio.disabled = false; stickyRadio.closest('label').classList.remove('disabled'); 
+                if(stickyRadio) { stickyRadio.disabled = false; stickyRadio.closest('label').classList.remove('disabled'); }
             }
 
-            if (hasAnySecurity) { removeRadio.disabled = false; removeRadio.closest('label').classList.remove('disabled'); resetRadio.disabled = false; resetRadio.closest('label').classList.remove('disabled'); } else { removeRadio.disabled = true; removeRadio.closest('label').classList.add('disabled'); resetRadio.disabled = true; resetRadio.closest('label').classList.add('disabled'); if (removeRadio.checked || resetRadio.checked) leaveSecRadio.checked = true; }
-            if (portsWithFullEdge === totalParsedPorts) { edgeCheckbox.disabled = true; edgeCheckbox.closest('label').classList.add('disabled'); edgeCheckbox.checked = false; } else { edgeCheckbox.disabled = false; edgeCheckbox.closest('label').classList.remove('disabled'); }
-            if (portsWithNoShut === totalParsedPorts) { upRadio.disabled = true; upRadio.closest('label').classList.add('disabled'); if (upRadio.checked) leaveAdminRadio.checked = true; } else { upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled'); }
-            if (portsWithShutdown === totalParsedPorts) { downRadio.disabled = true; downRadio.closest('label').classList.add('disabled'); if (downRadio.checked) leaveAdminRadio.checked = true; } else { downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled'); }
-            if (portsWithShutdown === totalParsedPorts) { bounceAllRadio.disabled = true; bounceAllRadio.closest('label').classList.add('disabled'); if (bounceAllRadio.checked) leaveAdminRadio.checked = true; bounceChgRadio.disabled = true; bounceChgRadio.closest('label').classList.add('disabled'); if (bounceChgRadio.checked) leaveAdminRadio.checked = true; } else { bounceAllRadio.disabled = false; bounceAllRadio.closest('label').classList.remove('disabled'); bounceChgRadio.disabled = false; bounceChgRadio.closest('label').classList.remove('disabled'); }
+            if (hasAnySecurity) { 
+                if(removeRadio) { removeRadio.disabled = false; removeRadio.closest('label').classList.remove('disabled'); }
+                if(resetRadio) { resetRadio.disabled = false; resetRadio.closest('label').classList.remove('disabled'); }
+            } else { 
+                if(removeRadio) { removeRadio.disabled = true; removeRadio.closest('label').classList.add('disabled'); }
+                if(resetRadio) { resetRadio.disabled = true; resetRadio.closest('label').classList.add('disabled'); }
+                if ((removeRadio && removeRadio.checked) || (resetRadio && resetRadio.checked)) { if(leaveSecRadio) leaveSecRadio.checked = true; }
+            }
+
+            if (portsWithFullEdge === totalParsedPorts) { 
+                if(edgeCheckbox) { edgeCheckbox.disabled = true; edgeCheckbox.closest('label').classList.add('disabled'); edgeCheckbox.checked = false; }
+            } else { 
+                if(edgeCheckbox) { edgeCheckbox.disabled = false; edgeCheckbox.closest('label').classList.remove('disabled'); }
+            }
+
+            if (portsWithNoShut === totalParsedPorts) { 
+                if(upRadio) { upRadio.disabled = true; upRadio.closest('label').classList.add('disabled'); if (upRadio.checked && leaveAdminRadio) leaveAdminRadio.checked = true; }
+            } else { 
+                if(upRadio) { upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled'); }
+            }
+
+            if (portsWithShutdown === totalParsedPorts) { 
+                if(downRadio) { downRadio.disabled = true; downRadio.closest('label').classList.add('disabled'); if (downRadio.checked && leaveAdminRadio) leaveAdminRadio.checked = true; }
+            } else { 
+                if(downRadio) { downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled'); }
+            }
+
+            if (portsWithShutdown === totalParsedPorts) { 
+                if(bounceAllRadio) { bounceAllRadio.disabled = true; bounceAllRadio.closest('label').classList.add('disabled'); if (bounceAllRadio.checked && leaveAdminRadio) leaveAdminRadio.checked = true; }
+                if(bounceChgRadio) { bounceChgRadio.disabled = true; bounceChgRadio.closest('label').classList.add('disabled'); if (bounceChgRadio.checked && leaveAdminRadio) leaveAdminRadio.checked = true; }
+            } else { 
+                if(bounceAllRadio) { bounceAllRadio.disabled = false; bounceAllRadio.closest('label').classList.remove('disabled'); }
+                if(bounceChgRadio) { bounceChgRadio.disabled = false; bounceChgRadio.closest('label').classList.remove('disabled'); }
+            }
         }
         
         if (validAccessPortsForGrid.length > 0) {
@@ -2227,6 +2296,9 @@
         let forceAccessCheckboxElem = document.getElementById('forceAccessCheckbox');
         let forceAccess = forceAccessCheckboxElem ? forceAccessCheckboxElem.checked : false; 
         
+        let verifyLogsCheckboxElem = document.getElementById('verifyLogsCheckbox');
+        let verifyLogs = verifyLogsCheckboxElem ? verifyLogsCheckboxElem.checked : false; 
+
         let forceResetStickyCheckboxElem = document.getElementById('forceResetStickyCheckbox');
         let forceResetSticky = forceResetStickyCheckboxElem && forceResetStickyCheckboxElem.checked;
         
@@ -2499,12 +2571,16 @@
 
         function build(fn) {
             let lines = ["conf t"]; let groups = {}; let skippedPorts = []; let trunkPorts = []; let hasRaw = false;
-            
+            let modifiedPortsForVerify = [];
+
             interfacesData.forEach(d => { 
                 if (d.isTrunk) { trunkPorts.push(d.name); return; }
                 if (d.isRaw) hasRaw = true;
                 let c = fn(d); 
-                if (c) { let k = c.join('\n'); if (!groups[k]) groups[k] = []; groups[k].push(d.name); } 
+                if (c) { 
+                    let k = c.join('\n'); if (!groups[k]) groups[k] = []; groups[k].push(d.name); 
+                    modifiedPortsForVerify.push(d.name);
+                } 
                 else { skippedPorts.push(d.name); }
             });
             
@@ -2543,8 +2619,22 @@
                 }
             });
             
-            if (lines.length > 0 && lines[lines.length - 1] === "exit") { lines[lines.length - 1] = "end"; lines.push("wr", "!"); } 
-            else { lines.push("end", "wr", "!"); }
+            if (lines.length > 0 && lines[lines.length - 1] === "exit") { 
+                lines[lines.length - 1] = "end"; 
+                lines.push("wr", "!"); 
+            } else { 
+                lines.push("end", "wr", "!"); 
+            }
+
+            if (verifyLogs && modifiedPortsForVerify.length > 0) {
+                lines.push("! --- VERIFICATION LOGS ---");
+                modifiedPortsForVerify.sort((a, b) => a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'})).forEach(p => {
+                    lines.push(`show run int ${p}`);
+                    lines.push(`show int ${p} status`);
+                });
+                lines.push("!");
+            }
+
             return lines.join('\n');
         }
 
