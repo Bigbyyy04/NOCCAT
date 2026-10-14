@@ -1006,11 +1006,9 @@
     </div>
 
 </div>
+<!-- PASTE PART 2 (JAVASCRIPT) BELOW THIS LINE -->
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
-<script>
+    <script>
     // --- APP STATE ENCAPSULATION ---
     const NoccatState = {
         db: {},
@@ -1603,7 +1601,7 @@
         if (NoccatState.typeInterval) clearInterval(NoccatState.typeInterval);
         document.getElementById('executionLogs').innerHTML = "-- idle --";
         
-        const execBtn = document.getElementById('executeBtn'); execBtn.disabled = true; execBtn.classList.remove('ready', 'auto-cast'); execBtn.innerText = "Execute_Run";
+        const execBtn = document.getElementById('executeBtn'); execBtn.disabled = true; execBtn.classList.remove('ready'); execBtn.classList.remove('auto-cast'); execBtn.innerText = "Execute_Run";
         
         document.querySelectorAll('input[name="securityMode"], #stpCheckbox, input[name="adminState"], #forceAccessCheckbox, #slowPasteCheckbox, #verifyRunCheckbox, #verifyStatusCheckbox, #forceResetStickyCheckbox').forEach(btn => { 
             if (btn.type === 'radio' && btn.value && btn.value !== 'leave') { btn.disabled = true; btn.closest('label').classList.add('disabled'); } 
@@ -1904,7 +1902,7 @@
         }
 
         const interfacesDataMap = {}; 
-        let globalAdds = 0, globalRemoves = 0, globalBounces = 0, primaryCompiledPorts = 0; 
+        let globalAdds = 0; let globalRemoves = 0; let globalBounces = 0; let primaryCompiledPorts = 0; 
         executionLogsArr = []; 
 
         textBlocks.forEach(block => {
