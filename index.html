@@ -822,15 +822,16 @@
                 </div>
             </div>
 
-            <div class="form-group global-param-section" style="width: 90px;">
+            <div class="form-group global-param-section" style="width: 110px;">
                 <div style="margin-bottom: 10px;">
                     <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
                         08 // VERIFY
-                        <div class="tooltip-icon" data-tooltip="Appends 'show run' and 'show int status' to the end of the script for all modified ports.">i</div>
+                        <div class="tooltip-icon" data-tooltip="Appends 'show run' and/or 'show int status' to the end of the script for modified ports.">i</div>
                     </label>
                 </div>
                 <div class="checkbox-group">
-                    <label class="disabled"><input type="checkbox" id="verifyLogsCheckbox" disabled onchange="generateScript()"><span>ENABLE</span></label>
+                    <label class="disabled"><input type="checkbox" id="verifyRunCheckbox" disabled onchange="checkDynamicWarnings(); generateScript();"><span>RUN</span></label>
+                    <label class="disabled"><input type="checkbox" id="verifyStatusCheckbox" disabled onchange="checkDynamicWarnings(); generateScript();"><span>STAT</span></label>
                 </div>
             </div>
         </div>
@@ -1592,13 +1593,23 @@
     function confirmRemove() { if(document.getElementById('dontShowAgainCheckbox').checked) localStorage.setItem('noccat_suppress_remove_warning', 'true'); document.getElementById('removeWarningModal').classList.remove('visible'); NoccatState.currentMatrixTriggerElem = null; checkDynamicWarnings(); triggerScriptUpdate(); }
 
     function clearAll() { 
-        document.getElementById('configInput').value = ""; document.getElementById('vlanInput').value = ""; document.querySelector('input[name="securityMode"][value="leave"]').checked = true; document.getElementById('stpCheckbox').checked = false; document.querySelector('input[name="adminState"][value="leave"]').checked = true; document.getElementById('suppressCheckbox').checked = false; document.getElementById('forceResetStickyCheckbox').checked = false; document.getElementById('forceResetStickyCheckbox').disabled = true; document.getElementById('forceResetStickyLabel').classList.add('disabled'); document.getElementById('slowPasteCheckbox').checked = false; document.getElementById('forceAccessCheckbox').checked = false; document.getElementById('verifyLogsCheckbox').checked = false; document.getElementById('primaryCode').innerText = "-- system_idle --"; document.getElementById('primaryLines').innerText = ""; document.getElementById('rollbackCode').innerText = "-- system_idle --"; document.getElementById('rollbackLines').innerText = ""; 
+        document.getElementById('configInput').value = ""; document.getElementById('vlanInput').value = ""; document.querySelector('input[name="securityMode"][value="leave"]').checked = true; document.getElementById('stpCheckbox').checked = false; document.querySelector('input[name="adminState"][value="leave"]').checked = true; document.getElementById('suppressCheckbox').checked = false; document.getElementById('forceResetStickyCheckbox').checked = false; document.getElementById('forceResetStickyCheckbox').disabled = true; document.getElementById('forceResetStickyLabel').classList.add('disabled'); document.getElementById('slowPasteCheckbox').checked = false; document.getElementById('forceAccessCheckbox').checked = false; 
+        
+        let verifyRunCheckbox = document.getElementById('verifyRunCheckbox'); if (verifyRunCheckbox) verifyRunCheckbox.checked = false;
+        let verifyStatusCheckbox = document.getElementById('verifyStatusCheckbox'); if (verifyStatusCheckbox) verifyStatusCheckbox.checked = false;
+
+        document.getElementById('primaryCode').innerText = "-- system_idle --"; document.getElementById('primaryLines').innerText = ""; document.getElementById('rollbackCode').innerText = "-- system_idle --"; document.getElementById('rollbackLines').innerText = ""; 
         
         if (NoccatState.typeInterval) clearInterval(NoccatState.typeInterval);
         document.getElementById('executionLogs').innerHTML = "-- idle --";
         
         const execBtn = document.getElementById('executeBtn'); execBtn.disabled = true; execBtn.classList.remove('ready', 'auto-cast'); execBtn.innerText = "Execute_Run";
-        document.querySelectorAll('input[name="securityMode"], #stpCheckbox, input[name="adminState"], #forceAccessCheckbox, #slowPasteCheckbox, #verifyLogsCheckbox, #forceResetStickyCheckbox').forEach(btn => { if (btn.value && btn.value !== 'leave') { btn.disabled = true; btn.closest('label').classList.add('disabled'); } }); 
+        
+        document.querySelectorAll('input[name="securityMode"], #stpCheckbox, input[name="adminState"], #forceAccessCheckbox, #slowPasteCheckbox, #verifyRunCheckbox, #verifyStatusCheckbox, #forceResetStickyCheckbox').forEach(btn => { 
+            if (btn.type === 'radio' && btn.value && btn.value !== 'leave') { btn.disabled = true; btn.closest('label').classList.add('disabled'); } 
+            else if (btn.type === 'checkbox') { btn.disabled = true; btn.closest('label').classList.add('disabled'); }
+        }); 
+        
         document.getElementById('copyPrimaryBtn').disabled = true; document.getElementById('copyRollbackBtn').disabled = true; document.getElementById('dlPrimaryBtn').disabled = true; document.getElementById('dlRollbackBtn').disabled = true; document.getElementById('statusMsg').style.display = 'none'; document.getElementById('warningBox').style.display = 'none'; document.getElementById('deviceHud').classList.remove('visible'); document.getElementById('advancedOptionsContainer').style.display = 'none'; document.getElementById('advOptionsWrapper').classList.remove('expanded'); document.getElementById('advOptionsBtn').innerText = "[ EXPAND ]"; document.getElementById('overrideTableBody').innerHTML = ''; 
         
         let clearBtn = document.getElementById('clearMatrixBtn'); if (clearBtn) clearBtn.style.display = 'none';
@@ -1850,429 +1861,6 @@
         container.innerHTML = html;
     }
 
-    function checkDynamicWarnings() {
-        let configText = document.getElementById('configInput').value.replace(/\r\n/g, '\n');
-        
-        const warningBox = document.getElementById('warningBox'); const deviceHud = document.getElementById('deviceHud'); const execBtn = document.getElementById('executeBtn'); const textarea = document.getElementById('configInput'); const expandBtn = document.getElementById('expandBtn'); const overrideSection = document.getElementById('advancedOptionsContainer'); const overrideTableBody = document.getElementById('overrideTableBody'); const blindContainer = document.getElementById('blindGroupingContainer');
-        const metricsBtn = document.getElementById('metricsBtn'); const metricsContent = document.getElementById('metricsContent');
-        
-        const lineCount = configText.split('\n').length;
-        const suppressSecWarnElem = document.getElementById('suppressCheckbox');
-        const suppressSecWarn = suppressSecWarnElem ? suppressSecWarnElem.checked : false;
-
-        const forceAccessCheckboxElem = document.getElementById('forceAccessCheckbox');
-        const forceAccess = forceAccessCheckboxElem ? forceAccessCheckboxElem.checked : false;
-
-        const dot1xRadio = document.querySelector('input[name="securityMode"][value="dot1x"]'); 
-        const stickyRadio = document.querySelector('input[name="securityMode"][value="sticky"]'); 
-        const removeRadio = document.querySelector('input[name="securityMode"][value="remove"]'); 
-        const resetRadio = document.querySelector('input[name="securityMode"][value="reset"]'); 
-        const leaveSecRadio = document.querySelector('input[name="securityMode"][value="leave"]'); 
-        
-        let checkedRadio = document.querySelector('input[name="securityMode"]:checked');
-        const selectedSecurityMode = checkedRadio ? checkedRadio.value : 'leave';
-
-        const edgeCheckbox = document.getElementById('stpCheckbox'); 
-        
-        const upRadio = document.querySelector('input[name="adminState"][value="up"]'); 
-        const downRadio = document.querySelector('input[name="adminState"][value="down"]'); 
-        const bounceAllRadio = document.querySelector('input[name="adminState"][value="bounce_all"]'); 
-        const bounceChgRadio = document.querySelector('input[name="adminState"][value="bounce_chg"]'); 
-        const leaveAdminRadio = document.querySelector('input[name="adminState"][value="leave"]'); 
-        const slowPasteCheckbox = document.getElementById('slowPasteCheckbox');
-        const verifyLogsCheckbox = document.getElementById('verifyLogsCheckbox');
-        
-        let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
-        let textBlocks = []; let hasRawPorts = false;
-
-        if (isRawModeGlobal && configText.trim() !== "") {
-            let lines = configText.split('\n');
-            lines.forEach(line => { let clean = line.trim(); let match = clean.match(/^([A-Za-z]{2,}\s*\d+(?:\/\d+)*(?:\.\d+)?)$/i); if (match) { textBlocks.push(`interface ${match[1]}\n! RAW_MODE_FLAG`); } });
-            if (textBlocks.length > 0) hasRawPorts = true;
-        } else {
-            textBlocks = configText.split(/(?=^[ \t]*interface\s|^[ \t]*int\s)/im);
-            if (textBlocks.length > 0 && !/^[ \t]*(?:interface|int)\s/im.test(textBlocks[0])) textBlocks.shift();
-        }
-
-        NoccatState.hasRawPortsGlobal = hasRawPorts;
-        const hasValidInterface = textBlocks.length > 0;
-        
-        if (hasValidInterface) {
-            execBtn.disabled = false;
-            
-            if (NoccatState.autoCastEnabled) {
-                execBtn.classList.add('auto-cast'); execBtn.classList.remove('ready'); 
-                execBtn.innerText = NoccatState.hasRawPortsGlobal ? "AUTO_SYNC" : "AUTO_EXECUTE_ON";
-            } else {
-                execBtn.classList.remove('auto-cast'); execBtn.classList.add('ready'); 
-                execBtn.innerText = "Execute_Run";
-            }
-
-            if (hasRawPorts && !NoccatState.wasInBlindMode) {
-                triggerSmoothPulse(); NoccatState.wasInBlindMode = true; 
-            } else if (!hasRawPorts && NoccatState.wasInBlindMode) {
-                NoccatState.wasInBlindMode = false;
-            }
-        } else {
-            execBtn.disabled = true; execBtn.classList.remove('ready'); execBtn.classList.remove('auto-cast'); execBtn.innerText = "Execute_Run";
-            if (NoccatState.wasInBlindMode) { NoccatState.wasInBlindMode = false; }
-        }
-
-        if (!configText.trim() || !hasValidInterface) {
-            warningBox.style.display = 'none'; deviceHud.classList.remove('visible'); overrideSection.style.display = 'none';
-            metricsBtn.style.display = 'none'; document.getElementById('metricsWrapper').classList.remove('expanded'); metricsBtn.style.background = 'transparent';
-            closeMetricDetail();
-            textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) { textarea.classList.remove('expanded'); expandBtn.innerText = "[ EXPAND ]"; }
-            document.querySelectorAll('.global-param-section, .force-access-section').forEach(el => el.classList.remove('disabled-panel'));
-            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceAllRadio, bounceChgRadio, forceAccessCheckbox, slowPasteCheckbox, verifyLogsCheckbox];
-            allToggles.forEach(t => { if(t){ t.disabled = true; t.closest('label').classList.add('disabled'); } });
-            
-            if (leaveSecRadio) leaveSecRadio.checked = true; 
-            if (leaveAdminRadio) leaveAdminRadio.checked = true; 
-            if (edgeCheckbox) edgeCheckbox.checked = false; 
-            NoccatState.detectedGlobalHostname = "N0CAT_Script";
-            
-            const forceResetStickyCheckboxElem = document.getElementById('forceResetStickyCheckbox');
-            const forceResetStickyLabelElem = document.getElementById('forceResetStickyLabel');
-            if(forceResetStickyCheckboxElem) { forceResetStickyCheckboxElem.checked = false; forceResetStickyCheckboxElem.disabled = true; }
-            if(forceResetStickyLabelElem) { forceResetStickyLabelElem.classList.add('disabled'); }
-            
-            let cntDot1xElem = document.getElementById('cntDot1x'); if(cntDot1xElem) cntDot1xElem.innerText = '0'; 
-            let cntStickyElem = document.getElementById('cntSticky'); if(cntStickyElem) cntStickyElem.innerText = '0'; 
-            let cntDualElem = document.getElementById('cntDual'); if(cntDualElem) cntDualElem.innerText = '0'; 
-            let cntNoneElem = document.getElementById('cntNone'); if(cntNoneElem) cntNoneElem.innerText = '0'; 
-            
-            let secStatsBar = document.getElementById('securityStatsBar'); if(secStatsBar) secStatsBar.style.display = 'none';
-            clearSecStateFilter();
-            return;
-        }
-
-        if (lineCount > 8) { if (!textarea.classList.contains('expanded') && !textarea.dataset.manualCollapse) { textarea.classList.add('expanded'); expandBtn.innerText = "[ COLLAPSE ]"; } } else { textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) { textarea.classList.remove('expanded'); expandBtn.innerText = "[ EXPAND ]"; } }
-
-        const hostMatches = [...configText.matchAll(/^([A-Za-z0-9\-\_]+)#/gm)];
-        let uniqueHosts = []; hostMatches.forEach(match => { if (!uniqueHosts.includes(match[1])) uniqueHosts.push(match[1]); });
-
-        if (uniqueHosts.length > 0) {
-            NoccatState.detectedGlobalHostname = uniqueHosts[0]; 
-            let hudHTML = `<span style="opacity: 0.7; margin-right: 5px;">Target${uniqueHosts.length > 1 ? 's' : ''}:</span>`;
-            let hostTags = uniqueHosts.map(hostName => {
-                const lowerHost = hostName.toLowerCase();
-                let targetIp = NoccatState.db[lowerHost] ? NoccatState.db[lowerHost] : "NOT_IN_DB";
-                let ipColor = targetIp === 'NOT_IN_DB' ? 'var(--hl-orange)' : 'var(--neon-green)';
-                return `<span class="host-tag"><strong>${hostName}</strong> <span class="ip-highlight" style="color: ${ipColor}">${targetIp}</span></span>`;
-            });
-            deviceHud.innerHTML = hudHTML + hostTags.join(' '); deviceHud.classList.add('visible');
-        } else {
-            deviceHud.classList.remove('visible');
-            NoccatState.detectedGlobalHostname = hasRawPorts ? "N0CAT_RawList" : "N0CAT_Script";
-            if (hasRawPorts) {
-                deviceHud.innerHTML = `<span style="opacity: 0.7; margin-right: 5px;">Target:</span><span class="host-tag"><strong style="color:var(--hl-yellow)">UNKNOWN (RAW OVERRIDE)</strong></span>`;
-                deviceHud.classList.add('visible');
-            }
-        }
-
-        let totalParsedPorts = 0, portsWithFullDot1x = 0, portsWithFullSticky = 0, portsWithFullEdge = 0, portsWithShutdown = 0, portsWithNoShut = 0;
-        let hasAnySecurity = false, hasActivePorts = false;
-        let unsafePorts = [], shutdownPorts = [], conflictedPorts = [], fragmentPorts = [], noSecPorts = [];
-        let dot1xOnlyPorts = [], stickyOnlyPorts = [], dualPorts = [], nonePorts = [];
-        let upPorts = [], downPorts = [], stpEnabledPorts = [], stpDisabledPorts = [];
-        let trunkModePorts = [], accessModePorts = [], defaultModePorts = [];
-        let validAccessPortsForGrid = []; let allParsedPorts = [];
-        let hasAnyDot1xGlobal = false; let hasAnyStickyGlobal = false;
-
-        textBlocks.forEach(block => {
-            const ifMatch = block.match(/(?:interface|int)\s+([A-Za-z0-9\/\.\-]+)/i);
-            if (ifMatch) {
-                let normalizedIf = ifMatch[1].replace(/^gigabitethernet/i, 'Gi').replace(/^fastethernet/i, 'Fa').replace(/^tengigabitethernet/i, 'Te').replace(/\s+/g, '');
-                allParsedPorts.push(normalizedIf); 
-                totalParsedPorts++;
-                
-                let isRaw = /! RAW_MODE_FLAG/.test(block);
-                
-                let isExplicitTrunk = /(?:switchport\s+mode\s+trunk|switchport\s+trunk)/i.test(block);
-                let hasAccessConfig = /(?:^|\n)[ \t]*switchport\s+mode\s+access[ \t]*\r?(?:\n|$)/i.test(block);
-                let isAccessMode = isRaw ? true : (hasAccessConfig || (forceAccess && !isExplicitTrunk));
-                
-                if (isExplicitTrunk) {
-                    trunkModePorts.push(normalizedIf);
-                    if (!unsafePorts.includes(normalizedIf)) unsafePorts.push(normalizedIf);
-                } else if (hasAccessConfig) {
-                    accessModePorts.push(normalizedIf);
-                } else if (!isRaw) {
-                    defaultModePorts.push(normalizedIf);
-                }
-
-                let isShutdown = isRaw ? false : /(?:^|\n)[ \t]*shutdown[ \t]*\r?(?:\n|$)/i.test(block);
-                if (isShutdown && !isRaw) { 
-                    portsWithShutdown++; 
-                    downPorts.push(normalizedIf);
-                    if (!shutdownPorts.includes(normalizedIf)) shutdownPorts.push(normalizedIf); 
-                } else if (!isShutdown && !isRaw) { 
-                    portsWithNoShut++; 
-                    upPorts.push(normalizedIf);
-                    hasActivePorts = true; 
-                }
-
-                let hasStickyMac = /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasPortSec = /(?:^|\n)[ \t]*switchport\s+port-security[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasDot1xPae = /(?:^|\n)[ \t]*dot1x\s+pae\s+authenticator[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasAuthPortControl = /(?:^|\n)[ \t]*authentication\s+port-control\s+auto[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasLearnedMac = isRaw ? false : /(?:^|\n)[ \t]*switchport\s+port-security\s+mac-address\s+sticky\s+[0-9a-fA-F]{4}\.[0-9a-fA-F]{4}\.[0-9a-fA-F]{4}/i.test(block);
-
-                let isAnySticky = hasStickyMac || hasPortSec || hasLearnedMac;
-                let isAnyDot1x = hasDot1xPae || hasAuthPortControl;
-                if (isAnySticky || isAnyDot1x) hasAnySecurity = true;
-                
-                if ((hasStickyMac || hasLearnedMac) && hasPortSec) portsWithFullSticky++;
-                if (hasDot1xPae && hasAuthPortControl) portsWithFullDot1x++;
-                if (hasDot1xPae || hasAuthPortControl) hasAnyDot1xGlobal = true;
-                if (hasStickyMac || hasPortSec || hasLearnedMac) hasAnyStickyGlobal = true;
-
-                if (isAnyDot1x && isAnySticky) dualPorts.push(normalizedIf);
-                else if (isAnyDot1x) dot1xOnlyPorts.push(normalizedIf);
-                else if (isAnySticky) stickyOnlyPorts.push(normalizedIf);
-                else if (!isRaw && !isExplicitTrunk) nonePorts.push(normalizedIf);
-                
-                let hasPortfast = /(?:^|\n)[ \t]*spanning-tree\s+portfast[ \t]*\r?(?:\n|$)/i.test(block);
-                let hasBpduguard = /(?:^|\n)[ \t]*spanning-tree\s+bpduguard\s+enable[ \t]*\r?(?:\n|$)/i.test(block);
-                
-                if (hasPortfast && hasBpduguard) {
-                    portsWithFullEdge++;
-                    stpEnabledPorts.push(normalizedIf);
-                } else if (!isExplicitTrunk && !isRaw) {
-                    stpDisabledPorts.push(normalizedIf);
-                }
-
-                if (isAnySticky && isAnyDot1x && !conflictedPorts.includes(normalizedIf)) { conflictedPorts.push(normalizedIf); } 
-                else if (((hasStickyMac && !hasPortSec) || (!hasStickyMac && hasPortSec && !hasLearnedMac) || (hasDot1xPae && !hasAuthPortControl) || (!hasDot1xPae && hasAuthPortControl)) && !fragmentPorts.includes(normalizedIf) && !isRaw) { fragmentPorts.push(normalizedIf); } 
-                else if (!isAnySticky && !isAnyDot1x && !noSecPorts.includes(normalizedIf) && !suppressSecWarn && !isRaw && !isExplicitTrunk) { noSecPorts.push(normalizedIf); }
-                
-                if (isAccessMode || (!isExplicitTrunk && !isRaw)) {
-                    let vlanMatch = block.match(/(?:^|\n)[ \t]*switchport\s+access\s+vlan\s+(\d+)/i);
-                    validAccessPortsForGrid.push({
-                        name: normalizedIf, origVlan: isRaw ? 'UNKNOWN' : (vlanMatch ? vlanMatch[1] : '1 (Default)'),
-                        isDown: isShutdown, isRaw: isRaw, hasStickyMac, hasDot1xPae, hasLearnedMac, hasPortSec
-                    });
-                }
-            }
-        });
-
-        let cntDot1xElem = document.getElementById('cntDot1x'); if(cntDot1xElem) cntDot1xElem.innerText = dot1xOnlyPorts.length; 
-        let cntStickyElem = document.getElementById('cntSticky'); if(cntStickyElem) cntStickyElem.innerText = stickyOnlyPorts.length; 
-        let cntDualElem = document.getElementById('cntDual'); if(cntDualElem) cntDualElem.innerText = dualPorts.length; 
-        let cntNoneElem = document.getElementById('cntNone'); if(cntNoneElem) cntNoneElem.innerText = nonePorts.length;
-
-        // POPULATE METRICS DISPLAY WITH INTERACTIVE CLICKABLE LISTS
-        let vlanCounts = {};
-        let vlanMap = {};
-        validAccessPortsForGrid.forEach(p => {
-            let v = p.origVlan;
-            vlanCounts[v] = (vlanCounts[v] || 0) + 1;
-            if(!vlanMap[v]) vlanMap[v] = [];
-            vlanMap[v].push(p.name);
-        });
-
-        NoccatState.metricsData = {
-            dot1x: dot1xOnlyPorts,
-            sticky: stickyOnlyPorts,
-            dual: dualPorts,
-            none: nonePorts,
-            up: upPorts,
-            down: downPorts,
-            stp_on: stpEnabledPorts,
-            stp_off: stpDisabledPorts,
-            access: accessModePorts,
-            trunk: trunkModePorts,
-            default: defaultModePorts,
-            vlanMap: vlanMap
-        };
-
-        if (totalParsedPorts > 0 && !hasRawPorts) {
-            metricsBtn.style.display = 'block';
-            metricsBtn.innerText = `[ METRICS: ${totalParsedPorts} PORTS ]`;
-
-            let vlanHtml = Object.keys(vlanCounts).map(v => 
-                `<div class="metric-clickable" id="mitem_vlan_${v}" onclick="showMetricDetail('VLAN ${v} Ports', 'vlan_${v}')"><span>VLAN ${v}</span> <span class="count-badge" style="color:var(--hl-yellow)">${vlanCounts[v]}</span></div>`
-            ).join('');
-
-            metricsContent.innerHTML = `
-                <div class="metric-column">
-                    <div class="metric-column-title">PORT MODE</div>
-                    <div class="metric-clickable" id="mitem_access" onclick="showMetricDetail('ACCESS MODE Ports', 'access')"><span>ACCESS</span> <span class="count-badge" style="color:var(--neon-green)">${accessModePorts.length}</span></div>
-                    <div class="metric-clickable" id="mitem_trunk" onclick="showMetricDetail('TRUNK UPLINK Ports', 'trunk')"><span>TRUNK</span> <span class="count-badge" style="color:var(--accent-red)">${trunkModePorts.length}</span></div>
-                    <div class="metric-clickable" id="mitem_default" onclick="showMetricDetail('DEFAULT / BLANK Ports', 'default')"><span>DEFAULT</span> <span class="count-badge" style="color:var(--hl-orange)">${defaultModePorts.length}</span></div>
-                </div>
-                <div class="metric-column">
-                    <div class="metric-column-title">SECURITY</div>
-                    <div class="metric-clickable" id="mitem_dot1x" onclick="showMetricDetail('DOT1X Ports', 'dot1x')"><span>DOT1X</span> <span class="count-badge" style="color:var(--neon-green)">${dot1xOnlyPorts.length}</span></div>
-                    <div class="metric-clickable" id="mitem_sticky" onclick="showMetricDetail('STICKY Ports', 'sticky')"><span>STICKY</span> <span class="count-badge" style="color:var(--neon-green)">${stickyOnlyPorts.length}</span></div>
-                    <div class="metric-clickable" id="mitem_dual" onclick="showMetricDetail('DUAL / CONFLICT', 'dual')"><span>DUAL</span> <span class="count-badge" style="color:var(--accent-purple)">${dualPorts.length}</span></div>
-                    <div class="metric-clickable" id="mitem_none" onclick="showMetricDetail('UNSECURED Ports', 'none')"><span>NONE</span> <span class="count-badge" style="color:var(--hl-orange)">${nonePorts.length}</span></div>
-                </div>
-                <div class="metric-column">
-                    <div class="metric-column-title">STATE</div>
-                    <div class="metric-clickable" id="mitem_up" onclick="showMetricDetail('ADMIN UP Ports', 'up')"><span>UP</span> <span class="count-badge" style="color:var(--neon-green)">${portsWithNoShut}</span></div>
-                    <div class="metric-clickable" id="mitem_down" onclick="showMetricDetail('ADMIN DOWN Ports', 'down')"><span>DOWN</span> <span class="count-badge" style="color:var(--accent-red)">${portsWithShutdown}</span></div>
-                </div>
-                <div class="metric-column">
-                    <div class="metric-column-title">EDGE (STP)</div>
-                    <div class="metric-clickable" id="mitem_stp_on" onclick="showMetricDetail('STP ENABLED Ports', 'stp_on')"><span>ENABLED</span> <span class="count-badge" style="color:var(--neon-green)">${portsWithFullEdge}</span></div>
-                    <div class="metric-clickable" id="mitem_stp_off" onclick="showMetricDetail('STP DISABLED Ports', 'stp_off')"><span>DISABLED</span> <span class="count-badge" style="color:var(--hl-orange)">${stpDisabledPorts.length}</span></div>
-                </div>
-                <div class="metric-column" style="max-height: 180px; overflow-y: auto; padding-right: 4px;">
-                    <div class="metric-column-title">VLAN DIST.</div>
-                    ${vlanHtml || '<span style="opacity:0.5; padding: 6px 10px; font-size: 12px; font-family: Segoe UI, sans-serif;">N/A</span>'}
-                </div>
-            `;
-            let secStatsBar = document.getElementById('securityStatsBar'); if(secStatsBar) secStatsBar.style.display = 'flex';
-        } else {
-            metricsBtn.style.display = 'none';
-            document.getElementById('metricsWrapper').classList.remove('expanded');
-            metricsBtn.style.background = 'transparent';
-            closeMetricDetail();
-            let secStatsBar = document.getElementById('securityStatsBar'); if(secStatsBar) secStatsBar.style.display = 'none';
-            clearSecStateFilter();
-        }
-
-        const forceResetStickyCheckboxElem = document.getElementById('forceResetStickyCheckbox');
-        const forceResetStickyLabelElem = document.getElementById('forceResetStickyLabel');
-        if(forceResetStickyCheckboxElem && forceResetStickyLabelElem) {
-            if (hasAnyDot1xGlobal && hasAnyStickyGlobal) { 
-                forceResetStickyCheckboxElem.disabled = false; 
-                forceResetStickyLabelElem.classList.remove('disabled'); 
-            } else { 
-                forceResetStickyCheckboxElem.disabled = true; 
-                forceResetStickyLabelElem.classList.add('disabled'); 
-                forceResetStickyCheckboxElem.checked = false; 
-            }
-        }
-
-        NoccatState.blindGroups.forEach(g => { g.ports = g.ports.filter(p => allParsedPorts.includes(p)); });
-
-        if (hasRawPorts && isRawModeGlobal) {
-            document.querySelectorAll('.global-param-section').forEach(el => el.classList.add('disabled-panel')); document.querySelectorAll('.force-access-section').forEach(el => el.classList.remove('disabled-panel'));
-            if (!document.getElementById('advOptionsWrapper').classList.contains('expanded')) toggleAdvOptions();
-            blindContainer.style.display = 'block'; renderGroupsUI(); 
-            if (forceAccessCheckbox) { forceAccessCheckbox.disabled = false; forceAccessCheckbox.closest('label').classList.remove('disabled'); }
-            if (verifyLogsCheckbox) { verifyLogsCheckbox.disabled = false; verifyLogsCheckbox.closest('label').classList.remove('disabled'); }
-        } else {
-            document.querySelectorAll('.global-param-section, .force-access-section').forEach(el => el.classList.remove('disabled-panel')); blindContainer.style.display = 'none';
-            if (totalParsedPorts > 0) { 
-                if (forceAccessCheckbox) { forceAccessCheckbox.disabled = false; forceAccessCheckbox.closest('label').classList.remove('disabled'); }
-                if (slowPasteCheckbox) { slowPasteCheckbox.disabled = false; slowPasteCheckbox.closest('label').classList.remove('disabled'); }
-                if (verifyLogsCheckbox) { verifyLogsCheckbox.disabled = false; verifyLogsCheckbox.closest('label').classList.remove('disabled'); }
-            }
-        }
-
-        if (totalParsedPorts > 0 && !hasRawPorts) {
-            if (portsWithFullDot1x === totalParsedPorts && dualPorts.length === 0) { 
-                if(dot1xRadio) { dot1xRadio.disabled = true; dot1xRadio.closest('label').classList.add('disabled'); if (dot1xRadio.checked && leaveSecRadio) leaveSecRadio.checked = true; }
-            } else { 
-                if(dot1xRadio) { dot1xRadio.disabled = false; dot1xRadio.closest('label').classList.remove('disabled'); }
-            }
-
-            if (portsWithFullSticky === totalParsedPorts && dualPorts.length === 0) { 
-                if(stickyRadio) { stickyRadio.disabled = true; stickyRadio.closest('label').classList.add('disabled'); if (stickyRadio.checked && leaveSecRadio) leaveSecRadio.checked = true; }
-            } else { 
-                if(stickyRadio) { stickyRadio.disabled = false; stickyRadio.closest('label').classList.remove('disabled'); }
-            }
-
-            if (hasAnySecurity) { 
-                if(removeRadio) { removeRadio.disabled = false; removeRadio.closest('label').classList.remove('disabled'); }
-                if(resetRadio) { resetRadio.disabled = false; resetRadio.closest('label').classList.remove('disabled'); }
-            } else { 
-                if(removeRadio) { removeRadio.disabled = true; removeRadio.closest('label').classList.add('disabled'); }
-                if(resetRadio) { resetRadio.disabled = true; resetRadio.closest('label').classList.add('disabled'); }
-                if ((removeRadio && removeRadio.checked) || (resetRadio && resetRadio.checked)) { if(leaveSecRadio) leaveSecRadio.checked = true; }
-            }
-
-            if (portsWithFullEdge === totalParsedPorts) { 
-                if(edgeCheckbox) { edgeCheckbox.disabled = true; edgeCheckbox.closest('label').classList.add('disabled'); edgeCheckbox.checked = false; }
-            } else { 
-                if(edgeCheckbox) { edgeCheckbox.disabled = false; edgeCheckbox.closest('label').classList.remove('disabled'); }
-            }
-
-            if (portsWithNoShut === totalParsedPorts) { 
-                if(upRadio) { upRadio.disabled = true; upRadio.closest('label').classList.add('disabled'); if (upRadio.checked && leaveAdminRadio) leaveAdminRadio.checked = true; }
-            } else { 
-                if(upRadio) { upRadio.disabled = false; upRadio.closest('label').classList.remove('disabled'); }
-            }
-
-            if (portsWithShutdown === totalParsedPorts) { 
-                if(downRadio) { downRadio.disabled = true; downRadio.closest('label').classList.add('disabled'); if (downRadio.checked && leaveAdminRadio) leaveAdminRadio.checked = true; }
-            } else { 
-                if(downRadio) { downRadio.disabled = false; downRadio.closest('label').classList.remove('disabled'); }
-            }
-
-            if (portsWithShutdown === totalParsedPorts) { 
-                if(bounceAllRadio) { bounceAllRadio.disabled = true; bounceAllRadio.closest('label').classList.add('disabled'); if (bounceAllRadio.checked && leaveAdminRadio) leaveAdminRadio.checked = true; }
-                if(bounceChgRadio) { bounceChgRadio.disabled = true; bounceChgRadio.closest('label').classList.add('disabled'); if (bounceChgRadio.checked && leaveAdminRadio) leaveAdminRadio.checked = true; }
-            } else { 
-                if(bounceAllRadio) { bounceAllRadio.disabled = false; bounceAllRadio.closest('label').classList.remove('disabled'); }
-                if(bounceChgRadio) { bounceChgRadio.disabled = false; bounceChgRadio.closest('label').classList.remove('disabled'); }
-            }
-        }
-        
-        if (validAccessPortsForGrid.length > 0) {
-            const currentOverrides = {}; document.querySelectorAll('.override-input, .override-select').forEach(inp => { if (inp.value && inp.value !== 'global') { currentOverrides[inp.id] = inp.value; } });
-            const tableWrapper = document.getElementById('overrideTableContainer'); tableWrapper.style.maxHeight = validAccessPortsForGrid.length > 5 ? '500px' : '250px';
-
-            let gridHTML = ""; let rowIndex = 0;
-            validAccessPortsForGrid.forEach(p => {
-                let safeName = p.name.replace(/[^a-zA-Z0-9]/g, '_');
-                if (NoccatState.hasRawPortsGlobal) { let isInGroup = NoccatState.blindGroups.some(g => g.ports.includes(p.name)); if (isInGroup) return; }
-
-                let curSec = p.isRaw ? "UNKNOWN" : (p.hasStickyMac && p.hasDot1xPae ? "DUAL" : (p.hasStickyMac || p.hasLearnedMac) ? "STICKY" : p.hasDot1xPae ? "DOT1X" : "NONE");
-                let statusDot = p.isRaw ? '<span style="color:#8b949e">● RAW</span>' : (p.isDown ? '<span style="color:var(--accent-red)">● DWN</span>' : '<span style="color:var(--neon-green)">● UP</span>');
-                
-                let origVlanDisplay = p.isRaw ? `<div style="display:inline-flex; align-items:center; gap:4px;"><input type="text" id="ovr_orig_vlan_${safeName}" class="override-input" style="width:35px; padding:0 2px; font-size:10px; height: 18px; text-align:center;" placeholder="Cur" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094;" onchange="triggerScriptUpdate()"><button class="expand-btn" style="padding: 1px 4px; font-size: 9px;" onclick="applyToAllOrigVlan('${safeName}')" title="Apply to all ports">⏬</button></div>` : p.origVlan;
-
-                let explicitOptions = `<option value="leave">-- (Leave)</option><option value="dot1x">DOT1X</option><option value="sticky">STICKY MAC</option><option value="remove_sticky">REMOVE STICKY</option><option value="remove_dot1x">REMOVE DOT1X</option><option value="reset_dot1x">RESET DOT1X</option><option value="reset_sticky">RESET STICKY</option><option value="conv_sticky_to_dot1x">CNV:STK>DOT1X</option><option value="conv_dot1x_to_sticky">CNV:DOT1X>STK</option>`;
-                let secOptions = p.isRaw ? explicitOptions : `<option value="global">Global</option>` + explicitOptions;
-                let edgeOptions = p.isRaw ? `<option value="leave">-- (Leave)</option><option value="apply">APPLY EDGE</option><option value="remove">REMOVE EDGE</option>` : `<option value="global">Global</option><option value="leave">-- (Leave)</option><option value="apply">APPLY</option><option value="remove">REMOVE</option>`;
-                let adminOptions = p.isRaw ? `<option value="leave">-- (Leave)</option><option value="up">UP</option><option value="down">DOWN</option><option value="bounce">BOUNCE</option>` : `<option value="global">Global</option><option value="leave">-- (Leave)</option><option value="up">UP</option><option value="down">DOWN</option><option value="bounce">BNC</option>`;
-
-                let dragAttrs = NoccatState.hasRawPortsGlobal ? `draggable="true" ondragstart="dragPort(event, '${p.name}', this)" ondragover="allowRowDrop(event)" ondragleave="dragRowLeave(event)" ondrop="dropOnRow(event, '${p.name}')" onclick="toggleRowSelection(this, event, ${rowIndex})" data-port="${p.name}"` : '';
-                let applyAllBtn = NoccatState.hasRawPortsGlobal ? '' : `<button class="expand-btn" style="padding: 4px 8px; font-size: 12px;" onclick="applyToAllMatrix('${safeName}')" title="Apply to all ports">⏬</button>`;
-
-                let displayStyle = "";
-                if (NoccatState.activeSecFilter) {
-                    let matches = false;
-                    if (NoccatState.activeSecFilter === 'DOT1X' && curSec === 'DOT1X') matches = true; else if (NoccatState.activeSecFilter === 'STICKY' && curSec === 'STICKY') matches = true; else if (NoccatState.activeSecFilter === 'DUAL' && curSec === 'DUAL') matches = true; else if (NoccatState.activeSecFilter === 'NONE' && curSec === 'NONE') matches = true;
-                    if (!matches) displayStyle = 'display: none;';
-                }
-
-                gridHTML += `<tr ${dragAttrs} style="${displayStyle}">
-                    <td><strong>${p.name}</strong></td>
-                    <td style="opacity: 0.8; font-size: 10px; white-space: nowrap;">${statusDot} | V: ${origVlanDisplay} | S: ${curSec}</td>
-                    <td><input type="number" id="ovr_vlan_${safeName}" class="override-input" placeholder="${p.isRaw ? '--' : 'Global'}" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; triggerScriptUpdate();"></td>
-                    <td><select id="ovr_sec_${safeName}" class="override-select" onchange="handleMatrixSecChange(this)">${secOptions}</select></td>
-                    <td><select id="ovr_edge_${safeName}" class="override-select" onchange="triggerScriptUpdate()">${edgeOptions}</select></td>
-                    <td><select id="ovr_admin_${safeName}" class="override-select" style="width:85px;" onchange="triggerScriptUpdate()">${adminOptions}</select></td>
-                    <td style="text-align:center;">${applyAllBtn}</td>
-                </tr>`;
-                rowIndex++;
-            });
-            
-            overrideTableBody.innerHTML = gridHTML; overrideSection.style.display = 'block';
-            let clearMatrixBtn = document.getElementById('clearMatrixBtn'); if (clearMatrixBtn) { let isExpanded = document.getElementById('advOptionsWrapper').classList.contains('expanded'); clearMatrixBtn.style.display = (!NoccatState.hasRawPortsGlobal && isExpanded) ? 'block' : 'none'; }
-            for (let id in currentOverrides) { let el = document.getElementById(id); if (el && (!el.disabled || el.value !== 'reset')) { el.value = currentOverrides[id]; if (el.classList.contains('override-select') && el.value.startsWith('remove') && id.includes('_sec_')) el.classList.add('danger-mode'); } }
-        } else { overrideSection.style.display = 'none'; overrideTableBody.innerHTML = ""; }
-
-        let warningHTML = ""; let baseHasContent = false;
-        if (hasRawPorts) { warningHTML += `<div style="margin-bottom: ${(unsafePorts.length > 0 || shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// 🛑 DANGER: BLIND OVERRIDE MODE (RAW PORTS) 🛑 //////</strong><br><em style="color: var(--accent-red);">Idempotency and Trunk protections are DISABLED. You are configuring unknown states. Proceed with extreme caution.</em></div>`; baseHasContent = true; }
-        if (unsafePorts.length > 0) { warningHTML += `<div class="${baseHasContent ? 'notice-section' : ''}" style="border-top-color: rgba(var(--accent-red-rgb), 0.4); margin-bottom: ${(shutdownPorts.length > 0 || conflictedPorts.length > 0 || fragmentPorts.length > 0 || noSecPorts.length > 0) ? '10px' : '0'};"><strong>////// 🛑 CRITICAL SAFETY LOCK 🛑 //////</strong><br>Trunk/Uplink ports detected: <span style="color: #fff; font-weight: bold;">${unsafePorts.join(', ')}</span><br><em style="color: var(--accent-red);">SAFETY LOCK ENGAGED: The engine has completely locked out these ports and will refuse to generate scripts for them.</em></div>`; baseHasContent = true; }
-        if (conflictedPorts.length > 0) { warningHTML += `<div class="${baseHasContent ? 'conflict-section' : ''}"><strong style="color: var(--hl-magenta); text-shadow: 0 0 5px rgba(255, 0, 255, 0.4);">////// CONFLICT: DUAL SECURITY DETECTED //////</strong><br>Sticky MAC & 802.1X found on: <span style="color: #fff; font-weight: bold;">${conflictedPorts.join(', ')}</span><br><em style="color: var(--text-main);">Note: Combining 802.1X and Sticky MAC causes severe race conditions. <strong>RESET is disabled for these ports.</strong> Select DOT1X, STICKY, or REMOVE to explicitly overwrite and clean them up.</em></div>`; baseHasContent = true; }
-        if (fragmentPorts.length > 0) { warningHTML += `<div class="${baseHasContent ? 'fragment-section' : ''}"><strong style="color: var(--hl-yellow); text-shadow: 0 0 5px rgba(227, 179, 65, 0.4);">////// FRAGMENTED SECURITY CONFIG //////</strong><br>Incomplete security setup on: <span style="color: #fff; font-weight: bold;">${fragmentPorts.join(', ')}</span><br><em style="color: var(--text-main);">Select a Protocol Mode (03) to automatically repair and complete these configurations.</em></div>`; baseHasContent = true; }
-        if (noSecPorts.length > 0) { warningHTML += `<div class="${baseHasContent ? 'nosec-section' : ''}"><strong style="color: var(--hl-cyan); text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);">⚠️ NOTICE: NO PORT SECURITY DETECTED</strong><br>Unsecured ports: <span style="color: #fff; font-weight: bold;">${noSecPorts.join(', ')}</span><br><em style="color: var(--text-main);">Port security is a mandatory config for most ports specially in production use. Proceed with caution.</em></div>`; baseHasContent = true; }
-        if (shutdownPorts.length > 0 && !hasRawPorts) { warningHTML += `<div class="${baseHasContent ? 'notice-section' : ''}"><strong style="color: var(--hl-orange); text-shadow: 0 0 5px rgba(255, 157, 0, 0.4);">////// NOTICE: SHUTDOWN PORTS DETECTED //////</strong><br>Administratively down: <span style="color: #fff; font-weight: bold;">${shutdownPorts.join(', ')}</span><br><em style="color: var(--text-main);">Set '05 // ADMIN STATE' to UP to explicitly bring them online.</em></div>`; }
-
-        if (warningHTML !== "") {
-            warningBox.style.display = 'block'; warningBox.innerHTML = warningHTML;
-            if (unsafePorts.length > 0) warningBox.style.borderColor = 'var(--accent-red)'; else if (hasRawPorts) warningBox.style.borderColor = 'var(--accent-red)'; else if (conflictedPorts.length > 0) warningBox.style.borderColor = 'var(--hl-magenta)'; else if (fragmentPorts.length > 0) warningBox.style.borderColor = 'var(--hl-yellow)'; else if (noSecPorts.length > 0) warningBox.style.borderColor = 'var(--hl-cyan)'; else warningBox.style.borderColor = 'var(--hl-orange)';
-        } else { warningBox.style.display = 'none'; }
-    }
-
     function doGenerateScript() {
         if (NoccatState.typeInterval) clearInterval(NoccatState.typeInterval);
 
@@ -2296,8 +1884,11 @@
         let forceAccessCheckboxElem = document.getElementById('forceAccessCheckbox');
         let forceAccess = forceAccessCheckboxElem ? forceAccessCheckboxElem.checked : false; 
         
-        let verifyLogsCheckboxElem = document.getElementById('verifyLogsCheckbox');
-        let verifyLogs = verifyLogsCheckboxElem ? verifyLogsCheckboxElem.checked : false; 
+        let verifyRunCheckboxElem = document.getElementById('verifyRunCheckbox');
+        let verifyRun = verifyRunCheckboxElem ? verifyRunCheckboxElem.checked : false; 
+
+        let verifyStatusCheckboxElem = document.getElementById('verifyStatusCheckbox');
+        let verifyStatus = verifyStatusCheckboxElem ? verifyStatusCheckboxElem.checked : false; 
 
         let forceResetStickyCheckboxElem = document.getElementById('forceResetStickyCheckbox');
         let forceResetSticky = forceResetStickyCheckboxElem && forceResetStickyCheckboxElem.checked;
@@ -2626,12 +2217,23 @@
                 lines.push("end", "wr", "!"); 
             }
 
-            if (verifyLogs && modifiedPortsForVerify.length > 0) {
+            let verifyRunCheckboxElem = document.getElementById('verifyRunCheckbox');
+            let verifyRun = verifyRunCheckboxElem ? verifyRunCheckboxElem.checked : false; 
+            
+            let verifyStatusCheckboxElem = document.getElementById('verifyStatusCheckbox');
+            let verifyStatus = verifyStatusCheckboxElem ? verifyStatusCheckboxElem.checked : false; 
+
+            if (fn === getPrimary && (verifyRun || verifyStatus) && modifiedPortsForVerify.length > 0) {
                 lines.push("! --- VERIFICATION LOGS ---");
-                modifiedPortsForVerify.sort((a, b) => a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'})).forEach(p => {
-                    lines.push(`show run int ${p}`);
-                    lines.push(`show int ${p} status`);
-                });
+                
+                let uniqueVerify = [...new Set(modifiedPortsForVerify)].sort((a, b) => a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'}));
+                
+                if (verifyRun) {
+                    uniqueVerify.forEach(p => lines.push(`show run int ${p}`));
+                }
+                if (verifyStatus) {
+                    uniqueVerify.forEach(p => lines.push(`show int ${p} status`));
+                }
                 lines.push("!");
             }
 
@@ -2663,7 +2265,7 @@
                 } else {
                     clearInterval(NoccatState.typeInterval);
                 }
-            }, 60); // 60ms delay per block creates a smooth "hacker typing" speed
+            }, 60); 
         }
 
         let hasPrimaryChanges = !generatedPrimary.includes("NO_CHANGES_REQUIRED");
