@@ -1008,10 +1008,8 @@
 </div>
 <!-- PASTE PART 2 (JAVASCRIPT) BELOW THIS LINE -->
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-<script>
+    <script>
     // --- APP STATE ENCAPSULATION ---
     const NoccatState = {
         db: {},
@@ -1607,8 +1605,14 @@
         const execBtn = document.getElementById('executeBtn'); execBtn.disabled = true; execBtn.classList.remove('ready', 'auto-cast'); execBtn.innerText = "Execute_Run";
         
         document.querySelectorAll('input[name="securityMode"], #stpCheckbox, input[name="adminState"], #forceAccessCheckbox, #slowPasteCheckbox, #verifyRunCheckbox, #verifyStatusCheckbox, #forceResetStickyCheckbox').forEach(btn => { 
-            if (btn.type === 'radio' && btn.value && btn.value !== 'leave') { btn.disabled = true; btn.closest('label').classList.add('disabled'); } 
-            else if (btn.type === 'checkbox') { btn.checked = false; btn.disabled = true; btn.closest('label').classList.add('disabled'); }
+            if (btn.type === 'radio' && btn.value && btn.value !== 'leave') { 
+                btn.disabled = true; 
+                if(btn.closest('label')) btn.closest('label').classList.add('disabled'); 
+            } else if (btn.type === 'checkbox') { 
+                btn.checked = false; 
+                btn.disabled = true; 
+                if(btn.closest('label')) btn.closest('label').classList.add('disabled'); 
+            }
         }); 
         
         document.getElementById('copyPrimaryBtn').disabled = true; document.getElementById('copyRollbackBtn').disabled = true; document.getElementById('dlPrimaryBtn').disabled = true; document.getElementById('dlRollbackBtn').disabled = true; document.getElementById('statusMsg').style.display = 'none'; document.getElementById('warningBox').style.display = 'none'; document.getElementById('deviceHud').classList.remove('visible'); document.getElementById('advancedOptionsContainer').style.display = 'none'; document.getElementById('advOptionsWrapper').classList.remove('expanded'); document.getElementById('advOptionsBtn').innerText = "[ EXPAND ]"; document.getElementById('overrideTableBody').innerHTML = ''; 
@@ -1938,8 +1942,13 @@
             textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) { textarea.classList.remove('expanded'); expandBtn.innerText = "[ EXPAND ]"; }
             document.querySelectorAll('.global-param-section, .force-access-section').forEach(el => el.classList.remove('disabled-panel'));
             
-            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceAllRadio, bounceChgRadio, forceAccessCheckbox, slowPasteCheckbox, verifyRunCheckboxElem, verifyStatusCheckboxElem];
-            allToggles.forEach(t => { if(t){ t.disabled = true; t.closest('label').classList.add('disabled'); } });
+            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceAllRadio, bounceChgRadio, forceAccessCheckboxElem, slowPasteCheckbox, verifyRunCheckboxElem, verifyStatusCheckboxElem];
+            allToggles.forEach(t => { 
+                if(t) { 
+                    t.disabled = true; 
+                    if(t.closest('label')) t.closest('label').classList.add('disabled'); 
+                } 
+            });
             
             if (leaveSecRadio) leaveSecRadio.checked = true; 
             if (leaveAdminRadio) leaveAdminRadio.checked = true; 
@@ -2657,10 +2666,10 @@
                 let uniqueVerify = [...new Set(modifiedPortsForVerify)].sort((a, b) => a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'}));
                 
                 if (verifyRun) {
-                    uniqueVerify.forEach(p => lines.push(`show run int ${p}`));
+                    uniqueVerify.forEach(p => lines.push(`sh run int ${p}`));
                 }
                 if (verifyStatus) {
-                    uniqueVerify.forEach(p => lines.push(`show int ${p} status`));
+                    uniqueVerify.forEach(p => lines.push(`sh int ${p} status`));
                 }
                 lines.push("!");
             }
@@ -2706,4 +2715,4 @@
             document.getElementById('statusMsg').innerHTML = `<span>STATUS: 0 ELIGIBLE PORTS_COMPILED</span><span></span>`; 
         }
     }
-</script> 
+</script>
