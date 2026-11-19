@@ -398,10 +398,10 @@
         .ip-highlight { font-weight: bold; text-shadow: 0 0 5px rgba(var(--neon-green-rgb), 0.4); }
 
         /* --- UI CONTROLS --- */
-        .controls-row { display: flex; gap: 12px; margin-bottom: 15px; margin-top: 15px; align-items: stretch; flex-wrap: wrap; }
-        .controls-row .form-group { margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; }
-        .radio-group, .checkbox-group { display: flex; gap: 6px; width: 100%; }
-        .radio-group label, .checkbox-group label { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 8px; border-radius: 4px; cursor: pointer; font-family: "Segoe UI", Roboto, sans-serif; font-size: 12px; margin-bottom: 0; display: inline-block; text-align: center; flex-grow: 1; box-sizing: border-box; }
+        .controls-row { display: flex; gap: 10px; margin-bottom: 15px; margin-top: 15px; align-items: stretch; flex-wrap: wrap; }
+        .controls-row .form-group { margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 12px; }
+        .radio-group, .checkbox-group { display: flex; gap: 5px; width: 100%; }
+        .radio-group label, .checkbox-group label { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 6px; border-radius: 4px; cursor: pointer; font-family: "Segoe UI", Roboto, sans-serif; font-size: 11px; margin-bottom: 0; display: inline-block; text-align: center; flex-grow: 1; box-sizing: border-box; }
         
         .radio-group input, .checkbox-group input { display: none; }
         .radio-group label:has(input:checked), .checkbox-group label:has(input:checked) { border-color: var(--neon-green); color: #111; background-color: rgba(var(--neon-green-rgb), 0.8); box-shadow: 0 0 8px rgba(var(--neon-green-rgb), 0.4); }
@@ -423,7 +423,7 @@
         
         .radio-group label:has(input[value="remove"]:checked) { border-color: var(--accent-red) !important; color: #fff !important; background: rgba(var(--accent-red-rgb), 0.5) !important; animation: danger-glitch 2s infinite linear !important; }
 
-        input[type="number"], input[type="text"].override-input { background: var(--code-bg); border: 1px solid var(--border-color); color: var(--hl-yellow); padding: 6px; border-radius: 4px; width: 100%; box-sizing: border-box; outline: none; font-family: "Courier New", Courier, monospace; text-align: center; height: 31px; }
+        input[type="number"], input[type="text"].override-input { background: var(--code-bg); border: 1px solid var(--border-color); color: var(--hl-yellow); padding: 6px; border-radius: 4px; width: 100%; box-sizing: border-box; outline: none; font-family: "Courier New", Courier, monospace; text-align: center; height: 29px; }
 
         /* --- BLIND GROUPING UI --- */
         .groups-grid { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px; }
@@ -612,7 +612,7 @@
 
         <h2>
             <span class="logo-text">N0C<span class="logo-accent">&lt;</span>AT</span>
-            <span class="version-tag">// Configuration Automation Tool // v12.1</span>
+            <span class="version-tag">// Configuration Automation Tool // v12.2</span>
         </h2>
         
         <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
@@ -734,11 +734,11 @@
         </div>
 
         <div class="controls-row">
-            <div class="form-group global-param-section" style="width: 80px;">
+            <div class="form-group global-param-section" style="width: 72px;">
                 <div style="margin-bottom: 10px;">
                     <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
                         02 // VLAN
-                        <div class="tooltip-icon" data-tooltip="GLOBAL MASTER: This VLAN applies to all parsed ports simultaneously. Overrides can be set in Section 09.">i</div>
+                        <div class="tooltip-icon" data-tooltip="GLOBAL MASTER: This VLAN applies to all parsed ports simultaneously. Overrides can be set in Section 10.">i</div>
                     </label>
                 </div>
                 <input type="number" id="vlanInput" placeholder="ALL" min="1" max="4094" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && parseInt(this.value) > 4094) this.value = 4094; generateScript();">
@@ -770,7 +770,7 @@
                 </div>
             </div>
 
-            <div class="form-group global-param-section" style="width: 100px;">
+            <div class="form-group global-param-section" style="width: 85px;">
                 <div style="margin-bottom: 10px;">
                     <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
                         04 // EDGE
@@ -782,7 +782,7 @@
                 </div>
             </div>
 
-            <div class="form-group global-param-section" style="width: 290px;">
+            <div class="form-group global-param-section" style="width: 265px;">
                 <div style="margin-bottom: 10px;">
                     <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
                         05 // ADMIN STATE
@@ -798,7 +798,7 @@
                 </div>
             </div>
             
-            <div class="form-group force-access-section" style="width: 90px;">
+            <div class="form-group force-access-section" style="width: 80px;">
                 <div style="margin-bottom: 10px;">
                     <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
                         06 // ACCESS
@@ -810,7 +810,7 @@
                 </div>
             </div>
             
-            <div class="form-group global-param-section" style="width: 90px;">
+            <div class="form-group global-param-section" style="width: 82px;">
                 <div style="margin-bottom: 10px;">
                     <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
                         07 // DELAY
@@ -822,7 +822,7 @@
                 </div>
             </div>
 
-            <div class="form-group global-param-section" style="width: 110px;">
+            <div class="form-group global-param-section" style="width: 96px;">
                 <div style="margin-bottom: 10px;">
                     <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
                         08 // VERIFY
@@ -834,12 +834,24 @@
                     <label class="disabled"><input type="checkbox" id="verifyStatusCheckbox" disabled onchange="checkDynamicWarnings(); generateScript();"><span>STAT</span></label>
                 </div>
             </div>
+
+            <div class="form-group global-param-section" style="width: 75px;">
+                <div style="margin-bottom: 10px;">
+                    <label style="display: flex; align-items: center; gap: 4px; margin-bottom: 0;">
+                        09 // SAVE
+                        <div class="tooltip-icon" data-tooltip="Includes 'wr' (write memory) at the end of configuration changes. Uncheck to speed up CLI paste execution.">i</div>
+                    </label>
+                </div>
+                <div class="checkbox-group">
+                    <label class="disabled"><input type="checkbox" id="writeMemCheckbox" checked disabled onchange="generateScript()"><span>WR</span></label>
+                </div>
+            </div>
         </div>
         
         <div id="advancedOptionsContainer" class="form-group input-section" style="display: none; border-color: rgba(var(--p-matrix-title-rgb), 0.4);">
             <div class="header-row">
                 <label style="color: var(--p-matrix-title); text-shadow: 0 0 8px rgba(var(--p-matrix-title-rgb), 0.4); display: flex; align-items: center; gap: 6px;">
-                    09 // ADVANCED OPTIONS [ PER-PORT MATRIX ]
+                    10 // ADVANCED OPTIONS [ PER-PORT MATRIX ]
                     <div class="tooltip-icon" style="color: var(--p-matrix-title); border-color: var(--p-matrix-title);" data-tooltip="Granular control. Inputs here will overwrite the Global selections for specific individual ports. Edits here will NOT auto-execute until you hit Execute_Run.">i</div>
                 </label>
                 <div style="display: flex; gap: 10px; align-items: center;">
@@ -1606,12 +1618,12 @@
         
         const execBtn = document.getElementById('executeBtn'); execBtn.disabled = true; execBtn.classList.remove('ready', 'auto-cast'); execBtn.innerText = "Execute_Run";
         
-        document.querySelectorAll('input[name="securityMode"], #stpCheckbox, input[name="adminState"], #forceAccessCheckbox, #slowPasteCheckbox, #verifyRunCheckbox, #verifyStatusCheckbox, #forceResetStickyCheckbox').forEach(btn => { 
+        document.querySelectorAll('input[name="securityMode"], #stpCheckbox, input[name="adminState"], #forceAccessCheckbox, #slowPasteCheckbox, #verifyRunCheckbox, #verifyStatusCheckbox, #writeMemCheckbox, #forceResetStickyCheckbox').forEach(btn => { 
             if (btn.type === 'radio' && btn.value && btn.value !== 'leave') { 
                 btn.disabled = true; 
                 if(btn.closest('label')) btn.closest('label').classList.add('disabled'); 
             } else if (btn.type === 'checkbox') { 
-                btn.checked = false; 
+                btn.checked = (btn.id === 'writeMemCheckbox'); 
                 btn.disabled = true; 
                 if(btn.closest('label')) btn.closest('label').classList.add('disabled'); 
             }
@@ -1889,7 +1901,7 @@
         const leaveSecRadio = document.querySelector('input[name="securityMode"][value="leave"]'); 
         
         let checkedRadio = document.querySelector('input[name="securityMode"]:checked');
-        const selectedSecurityMode = checkedRadio ? checkedRadio.value : 'leave';
+        let selectedSecurityMode = checkedRadio ? checkedRadio.value : 'leave';
 
         const edgeCheckbox = document.getElementById('stpCheckbox'); 
         const upRadio = document.querySelector('input[name="adminState"][value="up"]'); 
@@ -1900,6 +1912,7 @@
         const slowPasteCheckbox = document.getElementById('slowPasteCheckbox');
         const verifyRunCheckboxElem = document.getElementById('verifyRunCheckbox');
         const verifyStatusCheckboxElem = document.getElementById('verifyStatusCheckbox');
+        const writeMemCheckboxElem = document.getElementById('writeMemCheckbox');
         
         let isRawModeGlobal = !/^[ \t]*(?:interface|int)\s+[A-Za-z0-9\/\.\-]+/im.test(configText);
         let textBlocks = []; let hasRawPorts = false;
@@ -1944,7 +1957,7 @@
             textarea.dataset.manualCollapse = ""; if (textarea.classList.contains('expanded')) { textarea.classList.remove('expanded'); expandBtn.innerText = "[ EXPAND ]"; }
             document.querySelectorAll('.global-param-section, .force-access-section').forEach(el => el.classList.remove('disabled-panel'));
             
-            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceAllRadio, bounceChgRadio, forceAccessCheckboxElem, slowPasteCheckbox, verifyRunCheckboxElem, verifyStatusCheckboxElem];
+            const allToggles = [dot1xRadio, stickyRadio, removeRadio, resetRadio, edgeCheckbox, upRadio, downRadio, bounceAllRadio, bounceChgRadio, forceAccessCheckboxElem, slowPasteCheckbox, verifyRunCheckboxElem, verifyStatusCheckboxElem, writeMemCheckboxElem];
             allToggles.forEach(t => { 
                 if(t) { 
                     t.disabled = true; 
@@ -2181,6 +2194,7 @@
             if (forceAccessCheckboxElem) { forceAccessCheckboxElem.disabled = false; forceAccessCheckboxElem.closest('label').classList.remove('disabled'); }
             if (verifyRunCheckboxElem) { verifyRunCheckboxElem.disabled = false; verifyRunCheckboxElem.closest('label').classList.remove('disabled'); }
             if (verifyStatusCheckboxElem) { verifyStatusCheckboxElem.disabled = false; verifyStatusCheckboxElem.closest('label').classList.remove('disabled'); }
+            if (writeMemCheckboxElem) { writeMemCheckboxElem.disabled = false; writeMemCheckboxElem.closest('label').classList.remove('disabled'); }
         } else {
             document.querySelectorAll('.global-param-section, .force-access-section').forEach(el => el.classList.remove('disabled-panel')); blindContainer.style.display = 'none';
             if (totalParsedPorts > 0) { 
@@ -2188,6 +2202,7 @@
                 if (slowPasteCheckbox) { slowPasteCheckbox.disabled = false; slowPasteCheckbox.closest('label').classList.remove('disabled'); }
                 if (verifyRunCheckboxElem) { verifyRunCheckboxElem.disabled = false; verifyRunCheckboxElem.closest('label').classList.remove('disabled'); }
                 if (verifyStatusCheckboxElem) { verifyStatusCheckboxElem.disabled = false; verifyStatusCheckboxElem.closest('label').classList.remove('disabled'); }
+                if (writeMemCheckboxElem) { writeMemCheckboxElem.disabled = false; writeMemCheckboxElem.closest('label').classList.remove('disabled'); }
             }
         }
 
@@ -2324,6 +2339,10 @@
         let checkedSecRadio = document.querySelector('input[name="securityMode"]:checked');
         let globalSecurityMode = checkedSecRadio ? checkedSecRadio.value : 'leave';
         
+        if (globalSecurityMode === 'reset' && document.querySelector('input[name="securityMode"][value="reset"]').disabled) {
+            globalSecurityMode = 'leave';
+        }
+
         let stpCheckboxElem = document.getElementById('stpCheckbox');
         let applyStp = stpCheckboxElem ? stpCheckboxElem.checked : false; 
         
@@ -2341,6 +2360,9 @@
 
         let verifyStatusCheckboxElem = document.getElementById('verifyStatusCheckbox');
         let verifyStatus = verifyStatusCheckboxElem ? verifyStatusCheckboxElem.checked : false; 
+
+        let writeMemCheckboxElem = document.getElementById('writeMemCheckbox');
+        let writeMem = writeMemCheckboxElem ? writeMemCheckboxElem.checked : true;
 
         let forceResetStickyCheckboxElem = document.getElementById('forceResetStickyCheckbox');
         let forceResetSticky = forceResetStickyCheckboxElem && forceResetStickyCheckboxElem.checked;
@@ -2664,16 +2686,13 @@
             
             if (lines.length > 0 && lines[lines.length - 1] === "exit") { 
                 lines[lines.length - 1] = "end"; 
-                lines.push("wr", "!"); 
+                if (writeMem) lines.push("wr");
+                lines.push("!"); 
             } else { 
-                lines.push("end", "wr", "!"); 
+                lines.push("end");
+                if (writeMem) lines.push("wr");
+                lines.push("!"); 
             }
-
-            let verifyRunCheckboxElem = document.getElementById('verifyRunCheckbox');
-            let verifyRun = verifyRunCheckboxElem ? verifyRunCheckboxElem.checked : false; 
-            
-            let verifyStatusCheckboxElem = document.getElementById('verifyStatusCheckbox');
-            let verifyStatus = verifyStatusCheckboxElem ? verifyStatusCheckboxElem.checked : false; 
 
             if (fn === getPrimary && (verifyRun || verifyStatus) && modifiedPortsForVerify.length > 0) {
                 lines.push("! --- VERIFICATION LOGS ---");
@@ -2731,3 +2750,5 @@
         }
     }
 </script>
+</body>
+</html>
